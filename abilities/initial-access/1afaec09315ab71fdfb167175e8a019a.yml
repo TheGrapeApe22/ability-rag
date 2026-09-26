@@ -1,0 +1,25 @@
+---
+- id: 1afaec09315ab71fdfb167175e8a019a
+  name: Download Macro-Enabled Phishing Attachment
+  description: 'This atomic test downloads a macro enabled document from the Atomic
+    Red Team GitHub repository, simulating an end user clicking a phishing link to
+    download the file.
+
+    The file "PhishingAttachment.xlsm" is downloaded to the %temp% directory.
+
+    '
+  tactic: initial-access
+  technique:
+    attack_id: T1566.001
+    name: 'Phishing: Spearphishing Attachment'
+  platforms:
+    windows:
+      psh:
+        command: $url = 'https://github.com/redcanaryco/atomic-red-team/raw/master/atomics/T1566.001/bin/PhishingAttachment.xlsm';
+          [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;
+          Invoke-WebRequest -Uri $url -OutFile $env:TEMP\PhishingAttachment.xlsm
+        payloads: []
+        cleanup: Remove-Item $env:TEMP\PhishingAttachment.xlsm -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

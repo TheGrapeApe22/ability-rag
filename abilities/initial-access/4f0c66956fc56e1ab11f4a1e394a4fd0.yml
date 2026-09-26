@@ -1,0 +1,23 @@
+---
+- id: 4f0c66956fc56e1ab11f4a1e394a4fd0
+  name: Octopus Scanner Malware Open Source Supply Chain
+  description: 'This test simulates an adversary Octopus drop the RAT dropper ExplorerSync.db
+
+    [octopus-scanner-malware-open-source-supply-chain](https://securitylab.github.com/research/octopus-scanner-malware-open-source-supply-chain/)
+
+    [the-supreme-backdoor-factory](https://www.dfir.it/blog/2019/02/26/the-supreme-backdoor-factory/)
+
+    '
+  tactic: initial-access
+  technique:
+    attack_id: T1195
+    name: Supply Chain Compromise
+  platforms:
+    windows:
+      cmd:
+        command: copy %temp%\ExplorerSync.db %temp%\..\Microsoft\ExplorerSync.db &&
+          schtasks /create /tn ExplorerSync /tr "javaw -jar %temp%\..\Microsoft\ExplorerSync.db"
+          /sc MINUTE /f
+        payloads: []
+        cleanup: schtasks /delete /tn ExplorerSync /F 2>null && del %temp%\..\Microsoft\ExplorerSync.db
+          2>null && del %temp%\ExplorerSync.db 2>null

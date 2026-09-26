@@ -1,0 +1,31 @@
+---
+- id: 235df62bdf6b88453e41748ab928a5f3
+  name: Simulate npm package installation on a Linux system
+  description: "Launches a short\u2011lived Kubernetes pod using the Node 18 image,\
+    \ initializes a minimal npm project in /tmp/test, and installs the specified npm\
+    \ package without audit/fund/package\u2011lock options, simulating potentially\
+    \ suspicious package retrieval (e.g., typosquatting/dependency confusion) from\
+    \ within a container. The pod is deleted after execution.\n"
+  tactic: initial-access
+  technique:
+    attack_id: T1195.002
+    name: Compromise Software Supply Chain
+  platforms:
+    unknown:
+      sh:
+        command: kubectl run atomic-npm-install --image=node:18 --restart=Never --attach
+          --rm -i -- bash -lc "mkdir -p /tmp/test && cd /tmp/test && npm init -y >/dev/null
+          2>&1 && echo '--- package.json before install ---' && cat package.json &&
+          npm install tinycolor --no-audit --no-fund --no-package-lock && echo '---
+          package.json after install ---' && cat package.json"
+        payloads: []
+        cleanup: ''
+    linux:
+      sh:
+        command: kubectl run atomic-npm-install --image=node:18 --restart=Never --attach
+          --rm -i -- bash -lc "mkdir -p /tmp/test && cd /tmp/test && npm init -y >/dev/null
+          2>&1 && echo '--- package.json before install ---' && cat package.json &&
+          npm install tinycolor --no-audit --no-fund --no-package-lock && echo '---
+          package.json after install ---' && cat package.json"
+        payloads: []
+        cleanup: ''
