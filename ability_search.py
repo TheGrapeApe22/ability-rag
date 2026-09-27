@@ -20,7 +20,7 @@ import yaml
 
 
 DEFAULT_DATABASE = Path(".ability_search.sqlite")
-SCHEMA_VERSION = 2
+SCHEMA_VERSION = 3
 SEARCH_COLUMNS = (
     "name",
     "description",
@@ -37,6 +37,7 @@ BM25_WEIGHTS = (10.0, 5.0, 4.0, 8.0, 8.0, 3.0, 1.0)
 @dataclass(frozen=True)
 class AbilityRecord:
     ability_id: str
+    index_key: str
     source_path: str
     source_paths: tuple[str, ...]
     digest: str
@@ -84,6 +85,7 @@ def _ability_from_mapping(item: dict[str, Any], source: Path) -> AbilityRecord:
     canonical = yaml.safe_dump(item, allow_unicode=True, sort_keys=True)
     return AbilityRecord(
         ability_id=ability_id,
+        index_key=ability_id,
         source_path=source.as_posix(),
         source_paths=(source.as_posix(),),
         digest=hashlib.sha256(canonical.encode("utf-8")).hexdigest(),
@@ -104,8 +106,7 @@ def load_abilities(directory: Path) -> list[AbilityRecord]:
         raise ValueError(f"Abilities directory does not exist: {directory}")
 
     paths = sorted((*directory.rglob("*.yml"), *directory.rglob("*.yaml")))
-    records: list[AbilityRecord] = []
-    seen: dict[str, AbilityRecord] = {}
+    seen: dict[tuple[str, str], AbilityRecord] = {}
     for path in paths:
         with path.open("r", encoding="utf-8") as stream:
             document = yaml.safe_load(stream)
@@ -114,20 +115,30 @@ def load_abilities(directory: Path) -> list[AbilityRecord]:
             if not isinstance(item, dict):
                 raise ValueError(f"Expected an ability mapping in {path}")
             record = _ability_from_mapping(item, path)
-            previous = seen.get(record.ability_id)
+            key = (record.ability_id, record.digest)
+            previous = seen.get(key)
             if previous is not None:
-                if previous.digest != record.digest:
-                    raise ValueError(
-                        f"Conflicting ability id {record.ability_id!r} in "
-                        f"{path} and {previous.source_path}"
-                    )
-                seen[record.ability_id] = replace(
+                seen[key] = replace(
                     previous,
                     source_paths=previous.source_paths + (record.source_path,),
                 )
             else:
-                seen[record.ability_id] = record
-    return list(seen.values())
+                seen[key] = record
+
+    counts: dict[str, int] = {}
+    for record in seen.values():
+        counts[record.ability_id] = counts.get(record.ability_id, 0) + 1
+    return [
+        replace(
+            record,
+            index_key=(
+                f"{record.ability_id}@{record.digest}"
+                if counts[record.ability_id] > 1
+                else record.ability_id
+            ),
+        )
+        for record in seen.values()
+    ]
 
 
 def _normalize_filter(value: str) -> str:
@@ -172,6 +183,7 @@ class AbilitySearch:
             CREATE TABLE IF NOT EXISTS abilities (
                 rowid INTEGER PRIMARY KEY,
                 ability_id TEXT NOT NULL UNIQUE,
+                original_id TEXT NOT NULL DEFAULT '',
                 source_path TEXT NOT NULL,
                 source_paths TEXT NOT NULL DEFAULT '[]',
                 digest TEXT NOT NULL,
@@ -260,10 +272,15 @@ class AbilitySearch:
             connection.execute(
                 "UPDATE abilities SET source_paths = json_array(source_path)"
             )
+        if "original_id" not in columns:
+            connection.execute(
+                "ALTER TABLE abilities ADD COLUMN original_id TEXT NOT NULL DEFAULT ''"
+            )
+            connection.execute("UPDATE abilities SET original_id = ability_id")
         existing = connection.execute(
             "SELECT value FROM metadata WHERE key = 'schema_version'"
         ).fetchone()
-        if existing and int(existing["value"]) not in (1, SCHEMA_VERSION):
+        if existing and int(existing["value"]) not in (1, 2, SCHEMA_VERSION):
             raise ValueError(
                 "The search database uses an incompatible schema. Delete it and re-index."
             )
@@ -274,7 +291,7 @@ class AbilitySearch:
 
     def index(self, abilities_dir: Path | str = "abilities") -> dict[str, int]:
         records = load_abilities(Path(abilities_dir))
-        by_id = {record.ability_id: record for record in records}
+        by_id = {record.index_key: record for record in records}
 
         with self._connect(create_parent=True) as connection:
             self._create_schema(connection)
@@ -299,12 +316,13 @@ class AbilitySearch:
             connection.executemany(
                 """
                 INSERT INTO abilities (
-                    ability_id, source_path, source_paths, digest, name, description,
+                    ability_id, original_id, source_path, source_paths, digest, name, description,
                     tactic, tactic_norm, technique_id, technique_id_norm,
                     technique_name, technique_name_norm, platforms, commands,
                     record_json
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 ON CONFLICT(ability_id) DO UPDATE SET
+                    original_id=excluded.original_id,
                     source_path=excluded.source_path,
                     source_paths=excluded.source_paths,
                     digest=excluded.digest,
@@ -324,6 +342,7 @@ class AbilitySearch:
                 """,
                 [
                     (
+                        record.index_key,
                         record.ability_id,
                         record.source_path,
                         json.dumps(record.source_paths),
@@ -357,6 +376,8 @@ class AbilitySearch:
             "deleted": len(stale_ids),
             "total": len(records),
             "duplicates_collapsed": sum(len(record.source_paths) - 1 for record in records),
+            "conflicting_ids_retained": len(records)
+            - len({record.ability_id for record in records}),
         }
 
     def _require_index(self) -> None:

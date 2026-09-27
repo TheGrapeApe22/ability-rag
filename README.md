@@ -24,7 +24,7 @@ Synchronize the SQLite index with every `.yml` and `.yaml` file beneath
 New and changed records are indexed, and records whose YAML was deleted are
 removed. Identical YAML records sharing an ability ID are indexed once; search
 results list every source path in `sources`. Same-ID records with different YAML
-content stop indexing with a conflict error.
+content are kept as separate search results with their original IDs and sources.
 
 ## Search
 

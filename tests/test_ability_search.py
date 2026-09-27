@@ -130,7 +130,7 @@ class AbilitySearchTests(unittest.TestCase):
     def test_plain_text_cannot_inject_fts_operators(self) -> None:
         self.assertEqual(_fts_query('PowerShell OR "local accounts"'), '"PowerShell" OR "OR" OR "local accounts"')
 
-    def test_duplicate_ids_are_rejected(self) -> None:
+    def test_conflicting_ids_remain_separate_search_results(self) -> None:
         _write_ability(
             self.abilities / "duplicate.yml",
             ability_id="one",
@@ -140,8 +140,18 @@ class AbilitySearchTests(unittest.TestCase):
             technique_id="T0000",
             technique_name="Duplicate",
         )
-        with self.assertRaisesRegex(ValueError, "Conflicting ability id"):
-            load_abilities(self.abilities)
+        records = load_abilities(self.abilities)
+        self.assertEqual(len(records), 3)
+        self.assertEqual(len({record.index_key for record in records}), 3)
+        summary = self.search.index(self.abilities)
+        self.assertEqual(summary["conflicting_ids_retained"], 1)
+        matches = self.search.search(tactics=["initial-access", "other"])
+        same_id = [match for match in matches if match["ability"]["id"] == "one"]
+        self.assertEqual(len(same_id), 2)
+        self.assertEqual(
+            {match["ability"]["tactic"] for match in same_id},
+            {"initial-access", "other"},
+        )
 
     def test_identical_duplicates_collapse_and_track_all_sources(self) -> None:
         original = self.abilities / "folders-do-not-matter" / "one.yml"
