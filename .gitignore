@@ -1,2 +1,5 @@
 __pycache__/
 .venv/
+.ability_search.sqlite
+.ability_search.sqlite-shm
+.ability_search.sqlite-wal
