@@ -1,0 +1,26 @@
+---
+- id: 18f9a845a555ee29c90044522661c232
+  name: System Service Discovery - Services Registry Enumeration
+  description: 'Enumerates Windows services by reading the Services registry key
+
+    (HKLM\SYSTEM\CurrentControlSet\Services) instead of using Service Control
+
+    Manager APIs or CLI tools such as sc.exe or Get-Service.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1007
+    name: System Service Discovery
+  platforms:
+    windows:
+      psh:
+        command: Get-ChildItem -Path 'HKLM:\SYSTEM\CurrentControlSet\Services' |;   ForEach-Object
+          {;     $p = Get-ItemProperty -Path $_.PSPath -ErrorAction SilentlyContinue;     [PSCustomObject]@{;       Name        =
+          $_.PSChildName;       DisplayName = $p.DisplayName;       ImagePath   =
+          $p.ImagePath;       StartType   = $p.Start;     };   }
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

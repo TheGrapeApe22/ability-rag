@@ -1,0 +1,25 @@
+---
+- id: 16bca79cfdc46b5f9b63731bbd958acd
+  name: Event Log Manipulations- Time slipping via Powershell
+  description: "Changes the system time on the computer to a time that you specify.\
+    \ It involves altering the system\u2019s clock or adjusting the dates of files,\
+    \ affecting timestamp integrity within Event Logs. This technique can disrupt\
+    \ the sequence of logged events, complicating incident analysis and forensics.\
+    \ \nReference - \nhttps://detect.fyi/event-log-manipulations-1-time-slipping-55bf95631c40\n\
+    https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/set-date?view=powershell-7.4"
+  tactic: stealth
+  technique:
+    attack_id: T1070.006
+    name: 'Indicator Removal on Host: Timestomp'
+  platforms:
+    windows:
+      psh:
+        command: try{ ;   Set-Date -Date (Get-Date).AddDays(3);   Add-Content "$env:APPDATA\slipDays.bak"
+          3; }; catch {exit 1}
+        payloads: []
+        cleanup: if(Test-Path "$env:APPDATA\slipDays.bak" ){;   foreach($line in (get-content
+          $env:APPDATA\slipDays.bak)){;     Set-Date -Date (Get-Date).AddDays(-$line);   };   rm
+          "$env:APPDATA\slipDays.bak"; }
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

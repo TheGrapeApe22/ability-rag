@@ -1,0 +1,23 @@
+---
+- id: eaebbb8dc8419231d74713ad9f50ce78
+  name: chmod - Change file or folder mode (numeric mode) recursively
+  description: 'Changes a file or folder''s permissions recursively using chmod and
+    a specified numeric mode.
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1222.002
+    name: 'File and Directory Permissions Modification: FreeBSD, Linux and Mac File
+      and Directory Permissions Modification'
+  platforms:
+    linux:
+      sh:
+        command: chmod -R 755 /tmp/AtomicRedTeam/atomics/T1222.002
+        payloads: []
+        cleanup: ''
+    darwin:
+      sh:
+        command: chmod -R 755 /tmp/AtomicRedTeam/atomics/T1222.002
+        payloads: []
+        cleanup: ''

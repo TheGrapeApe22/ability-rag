@@ -1,0 +1,31 @@
+---
+- id: 5b0527d3382ac91860501cccc9595348
+  name: Create and start Hyper-V virtual machine
+  description: 'Create a simple Hyper-V VM (Windows native hypervisor) and start up
+    the machine
+
+    Cleanup command stops and deletes the newly created VM
+
+    https://docs.microsoft.com/en-us/virtualization/hyper-v-on-windows/quick-start/enable-hyper-v
+
+    https://embracethered.com/blog/posts/2020/shadowbunny-virtual-machine-red-teaming-technique/
+
+    https://attack.mitre.org/techniques/T1564/006/
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1564.006
+    name: Run Virtual Instance
+  platforms:
+    windows:
+      psh:
+        command: if ((Get-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V)
+          { ; } else {Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V
+          -All -Force};  $VM = "Atomic VM"; New-VM -Name $VM -Generation 2; Set-VMFirmware
+          $VM -EnableSecureBoot Off; Start-VM $VM
+        payloads: []
+        cleanup: Stop-VM $VM -Force; Remove-VM $VM -Force
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

@@ -1,0 +1,18 @@
+---
+- id: b45fd03b806850f944005821c3044cc1
+  name: AWS - Create a group and add a user to that group
+  description: 'Adversaries create AWS group, add users to specific to that group
+    to elevate their privileges to gain more accesss
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1098
+    name: Account Manipulation
+  platforms:
+    unknown:
+      sh:
+        command: aws iam create-group --group-name; aws iam add-user-to-group --user-name
+        payloads: []
+        cleanup: aws iam remove-user-from-group --user-name; aws iam delete-group
+          --group-name

@@ -1,0 +1,22 @@
+---
+- id: 7e4a00e15142a1c5edb9dd0ecc86f1d3
+  name: Masquerading - cscript.exe running as notepad.exe
+  description: 'Copies cscript.exe, renames it, and launches it to masquerade as an
+    instance of notepad.exe.
+
+
+    Upon successful execution, cscript.exe is renamed as notepad.exe and executed
+    from non-standard path.
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1036.003
+    name: 'Masquerading: Rename System Utilities'
+  platforms:
+    windows:
+      cmd:
+        command: copy %SystemRoot%\System32\cscript.exe %APPDATA%\notepad.exe /Y &&
+          cmd.exe /c %APPDATA%\notepad.exe /B
+        payloads: []
+        cleanup: del /Q /F %APPDATA%\notepad.exe >nul 2>&1

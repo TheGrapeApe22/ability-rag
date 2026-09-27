@@ -1,0 +1,22 @@
+---
+- id: 9bc50b2e45993cea40d17d7894200f19
+  name: Extract chrome Browsing History
+  description: 'This test will extract browsing history of the chrome user
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1217
+    name: Browser Bookmark Discovery
+  platforms:
+    windows:
+      psh:
+        command: $Username = (whoami).Split('\')[1]; $URL_Regex = '(htt(p|s))://([\w-]+\.)+[\w-]+(/[\w-
+          ./?%&=]*)*?'; $History = Get-Content -Path "$Env:systemdrive\Users\$UserName\AppData\Local\Google\Chrome\User
+          Data\Default\History" | Select-String -AllMatches $URL_Regex | ForEach-Object
+          { $_.Matches.Value } | Sort -Unique; $History | Out-File -FilePath "$Env:USERPROFILE\Downloads\chromebrowsinghistory.txt"
+        payloads: []
+        cleanup: Remove-Item -Path "$Env:USERPROFILE\Downloads\chromebrowsinghistory.txt"
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

@@ -1,0 +1,17 @@
+---
+- id: 76a08342e6fbac272eb4fec065d87c10
+  name: Copy a sensitive File over Administrative share with copy
+  description: 'Copy from sensitive File from the c$ of another LAN computer with
+    copy cmd
+
+    https://twitter.com/SBousseaden/status/1211636381086339073'
+  tactic: collection
+  technique:
+    attack_id: T1039
+    name: Data from Network Shared Drive
+  platforms:
+    windows:
+      cmd:
+        command: copy \\127.0.0.1\C$\Windows\temp\Easter_Bunny.password %TEMP%\Easter_egg.password
+        payloads: []
+        cleanup: del \\127.0.0.1\C$\Windows\temp\Easter_Bunny.password && del %TEMP%\Easter_egg.password

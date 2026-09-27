@@ -1,0 +1,22 @@
+---
+- id: 1c849fe3ef3770531cd727bc20c98eb3
+  name: List Credential Files via PowerShell
+  description: 'Via PowerShell,list files where credentials are stored in Windows
+    Credential Manager
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1552.001
+    name: 'Unsecured Credentials: Credentials In Files'
+  platforms:
+    windows:
+      psh:
+        command: $usernameinfo = (Get-ChildItem Env:USERNAME).Value; Get-ChildItem
+          -Hidden C:\Users\$usernameinfo\AppData\Roaming\Microsoft\Credentials\; Get-ChildItem
+          -Hidden C:\Users\$usernameinfo\AppData\Local\Microsoft\Credentials\
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

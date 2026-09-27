@@ -1,0 +1,19 @@
+---
+- id: ab9772e11fc810ac94eb41230d445859
+  name: Linux File Extension Masquerading
+  description: 'Creates and executes a shell script masquerading as a PDF document
+    using a double extension (.pdf.sh).
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1036.007
+    name: 'Masquerading: Double File Extension'
+  platforms:
+    linux:
+      sh:
+        command: echo '#!/bin/sh' > /tmp/report.pdf.sh; echo 'echo "Simulating malicious
+          double extension execution"' >> /tmp/report.pdf.sh; chmod +x /tmp/report.pdf.sh;
+          /tmp/report.pdf.sh
+        payloads: []
+        cleanup: rm -f /tmp/report.pdf.sh

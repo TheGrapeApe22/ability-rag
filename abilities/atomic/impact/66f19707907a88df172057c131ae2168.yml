@@ -1,0 +1,17 @@
+---
+- id: 66f19707907a88df172057c131ae2168
+  name: Overwrite deleted data on C drive
+  description: "RansomEXX malware removes all deleted files using windows built-in\
+    \ cipher.exe to prevent forensic recover.\nThis process is very slow and test\
+    \ execution may timeout. \nhttps://www.cybereason.com/blog/cybereason-vs.-ransomexx-ransomware\n\
+    https://support.microsoft.com/en-us/topic/cipher-exe-security-tool-for-the-encrypting-file-system-56c85edd-85cf-ac07-f2f7-ca2d35dab7e4\n"
+  tactic: impact
+  technique:
+    attack_id: T1485
+    name: Data Destruction
+  platforms:
+    windows:
+      cmd:
+        command: 'cipher.exe /w:C:'
+        payloads: []
+        cleanup: ''

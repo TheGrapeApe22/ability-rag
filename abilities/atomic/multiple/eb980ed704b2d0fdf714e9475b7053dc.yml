@@ -1,0 +1,36 @@
+---
+- id: eb980ed704b2d0fdf714e9475b7053dc
+  name: UUID custom process Injection
+  description: 'The UUIDs Process Injection code was first introduced by the NCC Group.
+    The code can be stored in UUID forms on the heap and converted back to binary
+    via UuidFromStringA at runtime. In this new custom version of UUID injection,
+    EnumSystemLocalesA is the only API called to execute the code. We used custom
+    UuidToString and UuidFromString implementations to avoid using UuidFromStringA
+    and RPCRT4.dll, thereby eliminating the static signatures. This technique also
+    avoided the use of VirtualAlloc, WriteProcessMemory and CreateThread
+
+
+    The injected shellcode will open a message box and a notepad.
+
+
+    Reference to NCC Group: https://research.nccgroup.com/2021/01/23/rift-analysing-a-lazarus-shellcode-execution-method/
+
+    Concept from: http://ropgadget.com/posts/abusing_win_functions.html
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1055
+    name: Process Injection
+  platforms:
+    windows:
+      psh:
+        command: Start-Process "ded272_uuid_injection.exe"; Start-Sleep -Seconds 7;
+          Get-Process -Name Notepad -ErrorAction SilentlyContinue | Stop-Process -Force
+        payloads:
+        - ded272_uuid_injection.exe
+        cleanup: Get-Process -Name Notepad -ErrorAction SilentlyContinue | Stop-Process
+          -Force
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

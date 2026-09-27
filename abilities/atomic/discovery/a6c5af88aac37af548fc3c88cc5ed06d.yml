@@ -1,0 +1,19 @@
+---
+- id: a6c5af88aac37af548fc3c88cc5ed06d
+  name: Active Directory Enumeration with LDIFDE
+  description: 'Output information from Active Directory to a specified file. [Ldifde](https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2012-R2-and-2012/cc731033(v=ws.11))
+    is a CLI tool for creating, modifying and deleting directory objects.
+
+    The test is derived from the CISA Report on Voly Typhoon. Reference: https://media.defense.gov/2023/May/24/2003229517/-1/-1/0/CSA_Living_off_the_Land.PDF
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1069.002
+    name: 'Permission Groups Discovery: Domain Groups'
+  platforms:
+    windows:
+      cmd:
+        command: ldifde.exe -f C:\Windows\temp\atomic_ldifde.txt -p subtree
+        payloads: []
+        cleanup: del C:\Windows\temp\atomic_ldifde.txt

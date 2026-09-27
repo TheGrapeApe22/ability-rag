@@ -1,0 +1,25 @@
+---
+- id: d3383e5caa773a806b523071c78aa875
+  name: using device audio capture commandlet
+  description: 'Uses AudioDeviceCmdlets to set the default recording device and simulate
+    audio capture.
+
+    Module repo: [AudioDeviceCmdlets](https://github.com/frgnca/AudioDeviceCmdlets)
+
+    '
+  tactic: collection
+  technique:
+    attack_id: T1123
+    name: Audio Capture
+  platforms:
+    windows:
+      psh:
+        command: 'if (Get-Module -ListAvailable -Name AudioDeviceCmdlets) { ; } else
+          {Install with: Install-Module -Name AudioDeviceCmdlets -Force"};  $mic =
+          Get-AudioDevice -Recording; Set-AudioDevice -ID $mic.ID; Start-Sleep -Seconds
+          5'
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

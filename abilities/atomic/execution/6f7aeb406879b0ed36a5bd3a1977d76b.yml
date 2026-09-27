@@ -1,0 +1,16 @@
+---
+- id: 6f7aeb406879b0ed36a5bd3a1977d76b
+  name: Launchctl
+  description: 'Utilize launchctl
+
+    '
+  tactic: execution
+  technique:
+    attack_id: T1569.001
+    name: 'System Services: Launchctl'
+  platforms:
+    darwin:
+      sh:
+        command: launchctl submit -l evil -- /System/Applications/Calculator.app/Contents/MacOS/Calculator
+        payloads: []
+        cleanup: launchctl remove evil

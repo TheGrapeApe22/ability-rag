@@ -1,0 +1,24 @@
+---
+- id: d0ce4e6adf21279c5b4ca2b10932bbdf
+  name: AWS - CloudTrail Changes
+  description: 'Creates a new cloudTrail in AWS, Upon successful creation it will
+    Update,Stop and Delete the cloudTrail
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685.002
+    name: 'Disable or Modify Tools: Disable or Modify Cloud Log'
+  platforms:
+    unknown:
+      sh:
+        command: 'if [ -f "$PathToAtomicsFolder/T1685.002/src/T1685.002-1/terraform.tfstate"
+          ]; then : ; else cd "$PathToAtomicsFolder/T1685.002/src/T1685.002-1/"; terraform
+          init; terraform apply -auto-approve; fi;  aws cloudtrail update-trail --name
+          redatomictesttrail --s3-bucket-name redatomic-test  --is-multi-region-trail
+          --region us-east-1; aws cloudtrail stop-logging --name redatomictesttrail
+          --region us-east-1; aws cloudtrail delete-trail --name redatomictesttrail
+          --region us-east-1'
+        payloads: []
+        cleanup: cd "$PathToAtomicsFolder/T1685.002/src/T1685.002-1/"; terraform destroy
+          -auto-approve

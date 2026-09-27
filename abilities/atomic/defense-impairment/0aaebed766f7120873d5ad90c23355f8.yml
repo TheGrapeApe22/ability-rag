@@ -1,0 +1,18 @@
+---
+- id: 0aaebed766f7120873d5ad90c23355f8
+  name: Overwrite Linux Mail Spool
+  description: 'This test overwrites the Linux mail spool of a specified user. This
+    technique was used by threat actor Rocke during the exploitation of Linux web
+    servers.
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685.006
+    name: 'Disable or Modify Tools: Clear Linux or Mac System Logs'
+  platforms:
+    linux:
+      sh:
+        command: echo 0> /var/spool/mail/root
+        payloads: []
+        cleanup: ''

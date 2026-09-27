@@ -1,0 +1,15 @@
+---
+- id: b1c3786e5dbfd37c274a7336355e4083
+  name: Safe Mode Boot
+  description: Allows adversaries to abuse safe mode to disable endpoint defenses
+    that may not start with limited boot
+  tactic: defense-impairment
+  technique:
+    attack_id: T1688
+    name: Safe Mode Boot
+  platforms:
+    windows:
+      cmd:
+        command: bcdedit /set safeboot network
+        payloads: []
+        cleanup: bcdedit /deletevalue {current} safeboot

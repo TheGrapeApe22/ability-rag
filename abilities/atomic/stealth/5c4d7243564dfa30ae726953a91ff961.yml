@@ -1,0 +1,26 @@
+---
+- id: 5c4d7243564dfa30ae726953a91ff961
+  name: Indirect Command Execution - RunMRU Dialog
+  description: "Simulates execution of commands via the Windows Run dialog (Win+R)\
+    \ by programmatically opening the Run dialog, \ncopying a command to clipboard,\
+    \ and automating the paste and execution. This generates artifacts in the RunMRU\
+    \ registry key,\nwhich is commonly abused by threat actors to execute malicious\
+    \ commands disguised as CAPTCHA verification steps.\nUpon execution, a test PowerShell\
+    \ command will be executed through the Run dialog.\n"
+  tactic: stealth
+  technique:
+    attack_id: T1202
+    name: Indirect Command Execution
+  platforms:
+    windows:
+      psh:
+        command: Set-Clipboard -Value 'calc.exe'; Start-Process -FilePath "powershell"
+          -ArgumentList "-c (New-Object -ComObject 'Shell.Application').FileRun()"
+          -WindowStyle Hidden; Start-Sleep -Seconds 1; Add-Type -AssemblyName System.Windows.Forms;
+          [System.Windows.Forms.SendKeys]::SendWait('^v'); Start-Sleep -Milliseconds
+          500; [System.Windows.Forms.SendKeys]::SendWait('{ENTER}')
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

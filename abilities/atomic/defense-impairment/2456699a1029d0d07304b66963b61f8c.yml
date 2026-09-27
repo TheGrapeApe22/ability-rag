@@ -1,0 +1,17 @@
+---
+- id: 2456699a1029d0d07304b66963b61f8c
+  name: Disable Memory Swap
+  description: "disable swapping of device paging that impaire the compromised host\
+    \ to swap data if the RAM is full. Awfulshred wiper used this technique as an\
+    \ additional \npayload to the compromised host and to make sure that there will\
+    \ be no recoverable data due to swap feature of FreeBSD/linux.\n"
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685
+    name: Disable or Modify Tools
+  platforms:
+    linux:
+      sh:
+        command: swapon -a ; sleep 2; swapoff -a; sync
+        payloads: []
+        cleanup: swapon -a; sleep 2; sync

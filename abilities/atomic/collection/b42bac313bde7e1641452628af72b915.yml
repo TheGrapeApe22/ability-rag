@@ -1,0 +1,21 @@
+---
+- id: b42bac313bde7e1641452628af72b915
+  name: Compress Data for Exfiltration With Rar
+  description: "An adversary may compress data (e.g., sensitive documents) that is\
+    \ collected prior to exfiltration.\nWhen the test completes you should find the\
+    \ txt files from the %USERPROFILE% directory compressed in a file called T1560.001-data.rar\
+    \ in the %USERPROFILE% directory \n"
+  tactic: collection
+  technique:
+    attack_id: T1560.001
+    name: 'Archive Collected Data: Archive via Utility'
+  platforms:
+    windows:
+      cmd:
+        command: if not exist "%programfiles%/WinRAR/Rar.exe"  ( call ) ELSE ( echo
+          Downloading Winrar installer && bitsadmin /transfer myDownloadJob /download
+          /priority normal "https://www.win-rar.com/fileadmin/winrar-versions/winrar/th/winrar-x64-580.exe"
+          %TEMP%\winrar.exe && %TEMP%\winrar.exe /S ) &&   &&  "%programfiles%/WinRAR/Rar.exe"
+          a -r %USERPROFILE%\T1560.001-data.rar %USERPROFILE%\*.txt
+        payloads: []
+        cleanup: del /f /q /s %USERPROFILE%\T1560.001-data.rar >nul 2>&1

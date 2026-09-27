@@ -1,0 +1,18 @@
+---
+- id: c718b1860b3b1689beda518f39b4e90a
+  name: Deploy Docker container
+  description: "Adversaries may deploy containers based on retrieved or built malicious\
+    \ images or from benign images that download and execute malicious payloads at\
+    \ runtime. They can do this using docker create and docker start commands. Kinsing\
+    \ & Doki was exploited using this technique. \n"
+  tactic: execution
+  technique:
+    attack_id: T1610
+    name: Deploy a container
+  platforms:
+    unknown:
+      sh:
+        command: docker build -t t1610 $PathtoAtomicsFolder/T1610/src/; docker run
+          --name t1610_container --rm -itd t1610 bash /tmp/script.sh
+        payloads: []
+        cleanup: docker stop t1610_container; docker rmi -f t1610:latest

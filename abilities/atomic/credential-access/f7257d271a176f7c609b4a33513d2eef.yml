@@ -1,0 +1,30 @@
+---
+- id: f7257d271a176f7c609b4a33513d2eef
+  name: Export Root Certificate with Export-PFXCertificate
+  description: 'Creates a Root certificate and exports it with Export-PFXCertificate
+    PowerShell Cmdlet.
+
+    Upon a successful attempt, this will write a pfx to disk and utilize the Cmdlet
+    Export-PFXCertificate.
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1552.004
+    name: 'Unsecured Credentials: Private Keys'
+  platforms:
+    windows:
+      psh:
+        command: $mypwd = ConvertTo-SecureString -String "AtomicRedTeam" -Force -AsPlainText;
+          $cert = New-SelfSignedCertificate -DnsName atomicredteam.com -CertStoreLocation
+          cert:\LocalMachine\My; Set-Location Cert:\LocalMachine\My; Get-ChildItem
+          -Path $cert.Thumbprint | Export-PfxCertificate -FilePath $env:Temp\atomicredteam.pfx
+          -Password $mypwd
+        payloads: []
+        cleanup: try {; $cert = Import-Certificate -FilePath $env:Temp\atomicredteam.pfx
+          -CertStoreLocation Cert:\LocalMachine\My; Get-ChildItem Cert:\LocalMachine\My\$($cert.Thumbprint)
+          -ErrorAction Ignore | Remove-Item -ErrorAction Ignore; Get-ChildItem Cert:\LocalMachine\Root\$($cert.Thumbprint)
+          -ErrorAction Ignore | Remove-Item -ErrorAction Ignore; } catch { }
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

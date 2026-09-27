@@ -1,0 +1,17 @@
+---
+- id: 1a877cae5bfda737bd8c362423d1b8e3
+  name: Cat the contents of a Kubernetes service account token file
+  description: 'Access the Kubernetes service account access token stored within a
+    container in a cluster.
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1552.007
+    name: Kubernetes List Secrets
+  platforms:
+    linux:
+      sh:
+        command: kubectl --context kind-atomic-cluster exec atomic-pod -- cat /run/secrets/kubernetes.io/serviceaccount/token
+        payloads: []
+        cleanup: kubectl --context kind-atomic-cluster delete pod atomic-pod

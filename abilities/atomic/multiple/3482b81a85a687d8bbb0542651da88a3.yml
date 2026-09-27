@@ -1,0 +1,20 @@
+---
+- id: 3482b81a85a687d8bbb0542651da88a3
+  name: Detect Virtualization Environment via ioreg
+  description: 'ioreg contains registry entries for all the device drivers in the
+    system. If it''s a virtual machine, one of the device manufacturer will be a Virtualization
+    Software.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1497.001
+    name: 'Virtualization/Sandbox Evasion: System Checks'
+  platforms:
+    darwin:
+      sh:
+        command: 'if (ioreg -l | grep -e Manufacturer -e ''Vendor Name'' | grep -iE
+          ''Oracle|VirtualBox|VMWare|Parallels'') then echo ''Virtualization Environment
+          detected''; fi; '
+        payloads: []
+        cleanup: ''

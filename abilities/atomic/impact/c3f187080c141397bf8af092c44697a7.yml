@@ -1,0 +1,21 @@
+---
+- id: c3f187080c141397bf8af092c44697a7
+  name: Azure AD - Delete user via Azure CLI
+  description: Deletes a user in Azure AD. Adversaries may interrupt availability
+    of system and network resources by inhibiting access to accounts utilized by legitimate
+    users. Accounts may be deleted, locked, or manipulated (excluding changed credentials)
+    to remove access to accounts.
+  tactic: impact
+  technique:
+    attack_id: T1531
+    name: Account Access Removal
+  platforms:
+    unknown:
+      psh:
+        command: az login; $userprincipalname = "atomicredteam@yourdomain.com"; az
+          ad user delete --id $userprincipalname
+        payloads: []
+        cleanup: N/A
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

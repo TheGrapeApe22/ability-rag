@@ -1,0 +1,23 @@
+---
+- id: 1bf75b999d80624fee63ec4bc336b96d
+  name: Packet Capture FreeBSD using tshark or tcpdump
+  description: 'Perform a PCAP. Wireshark will be required for tshark. TCPdump may
+    already be installed.
+
+
+    Upon successful execution, tshark or tcpdump will execute and capture 5 packets
+    on interface ens33.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1040
+    name: Network Sniffing
+  platforms:
+    linux:
+      sh:
+        command: if [ ! -x "$(command -v tcpdump)" ] && [ ! -x "$(command -v tshark)"
+          ]; then (which pkg && pkg install -y wireshark-nox11); fi;  tcpdump -c 5
+          -nnni em0; tshark -c 5 -i em0
+        payloads: []
+        cleanup: ''

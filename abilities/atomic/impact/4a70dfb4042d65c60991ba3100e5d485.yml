@@ -1,0 +1,24 @@
+---
+- id: 4a70dfb4042d65c60991ba3100e5d485
+  name: FreeBSD/macOS/Linux - Simulate CPU Load with Yes
+  description: 'This test simulates a high CPU load as you might observe during cryptojacking
+    attacks.
+
+    End the test by using CTRL/CMD+C to break.
+
+    '
+  tactic: impact
+  technique:
+    attack_id: T1496
+    name: Resource Hijacking
+  platforms:
+    linux:
+      sh:
+        command: yes > /dev/null
+        payloads: []
+        cleanup: ''
+    darwin:
+      sh:
+        command: yes > /dev/null
+        payloads: []
+        cleanup: ''

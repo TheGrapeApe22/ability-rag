@@ -1,0 +1,22 @@
+---
+- id: 8e7c28877a9c7826fece190f185b534c
+  name: Use Space Before Command to Avoid Logging to History
+  description: 'Using a space before a command causes the command to not be logged
+    in the Bash History file
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1070.003
+    name: 'Indicator Removal on Host: Clear Command History'
+  platforms:
+    linux:
+      sh:
+        command: hostname; whoami
+        payloads: []
+        cleanup: ''
+    darwin:
+      sh:
+        command: hostname; whoami
+        payloads: []
+        cleanup: ''

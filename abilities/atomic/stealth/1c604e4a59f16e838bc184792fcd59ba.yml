@@ -1,0 +1,16 @@
+---
+- id: 1c604e4a59f16e838bc184792fcd59ba
+  name: Clear Bash history (echo)
+  description: 'Clears bash history via echo
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1070.003
+    name: 'Indicator Removal on Host: Clear Command History'
+  platforms:
+    linux:
+      sh:
+        command: echo "" > ~/.bash_history
+        payloads: []
+        cleanup: ''

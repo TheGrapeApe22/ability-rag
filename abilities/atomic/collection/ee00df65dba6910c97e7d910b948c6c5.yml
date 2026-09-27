@@ -1,0 +1,16 @@
+---
+- id: ee00df65dba6910c97e7d910b948c6c5
+  name: Screencapture
+  description: 'Use screencapture command to collect a full desktop screenshot
+
+    '
+  tactic: collection
+  technique:
+    attack_id: T1113
+    name: Screen Capture
+  platforms:
+    darwin:
+      sh:
+        command: screencapture /tmp/T1113_desktop.png
+        payloads: []
+        cleanup: rm /tmp/T1113_desktop.png

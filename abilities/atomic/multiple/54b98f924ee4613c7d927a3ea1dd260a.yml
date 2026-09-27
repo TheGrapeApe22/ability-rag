@@ -1,0 +1,25 @@
+---
+- id: 54b98f924ee4613c7d927a3ea1dd260a
+  name: WMI Invoke-CimMethod Scheduled Task
+  description: 'Create an scheduled task that executes notepad.exe after user login
+    from XML by leveraging WMI class PS_ScheduledTask. Does the same thing as Register-ScheduledTask
+    cmdlet behind the scenes.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1053.005
+    name: 'Scheduled Task/Job: Scheduled Task'
+  platforms:
+    windows:
+      psh:
+        command: $xml = [System.IO.File]::ReadAllText("2cc1c4_T1053_005_WMI.xml");
+          Invoke-CimMethod -ClassName PS_ScheduledTask -NameSpace "Root\Microsoft\Windows\TaskScheduler"
+          -MethodName "RegisterByXml" -Arguments @{ Force = $true; Xml =$xml; }
+        payloads:
+        - 2cc1c4_T1053_005_WMI.xml
+        cleanup: Unregister-ScheduledTask -TaskName "T1053_005_WMI" -confirm:$false
+          >$null 2>&1
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

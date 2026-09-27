@@ -1,0 +1,22 @@
+---
+- id: a09dd05a4de1fd52c13deada3209e4aa
+  name: File and Directory Discovery (cmd.exe)
+  description: 'Find or discover files on the file system.  Upon successful execution,
+    this test will output the results of all the data discovery commands to a specified
+    file.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1083
+    name: File and Directory Discovery
+  platforms:
+    windows:
+      cmd:
+        command: dir /s c:\ >> %temp%\T1083Test1.txt && dir /s "c:\Documents and Settings"
+          >> %temp%\T1083Test1.txt && dir /s "c:\Program Files\" >> %temp%\T1083Test1.txt
+          && dir "%systemdrive%\Users\*.*" >> %temp%\T1083Test1.txt && dir "%userprofile%\AppData\Roaming\Microsoft\Windows\Recent\*.*"
+          >> %temp%\T1083Test1.txt && dir "%userprofile%\Desktop\*.*" >> %temp%\T1083Test1.txt
+          && tree /F >> %temp%\T1083Test1.txt
+        payloads: []
+        cleanup: del %temp%\T1083Test1.txt

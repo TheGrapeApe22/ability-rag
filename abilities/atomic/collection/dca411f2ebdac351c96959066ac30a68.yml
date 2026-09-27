@@ -1,0 +1,19 @@
+---
+- id: dca411f2ebdac351c96959066ac30a68
+  name: Add or copy content to clipboard with xClip
+  description: 'Utilize Linux Xclip to copy history and place in clipboard then output
+    to a history.txt file. Successful execution will capture history and output to
+    a file on disk.
+
+    '
+  tactic: collection
+  technique:
+    attack_id: T1115
+    name: Clipboard Data
+  platforms:
+    linux:
+      sh:
+        command: apt install xclip -y; history | tail -n 30 | xclip -sel clip; xclip
+          -o > history.txt
+        payloads: []
+        cleanup: ''

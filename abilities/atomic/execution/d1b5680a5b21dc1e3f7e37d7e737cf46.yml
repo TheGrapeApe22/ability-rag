@@ -1,0 +1,36 @@
+---
+- id: d1b5680a5b21dc1e3f7e37d7e737cf46
+  name: Create systemd Service Unit from /dev/shm (Unusual Location)
+  description: 'Creates a systemd service unit file in /dev/shm and loads it using
+    systemctl.
+
+    /dev/shm is a memory-backed filesystem that is world-writable on most Linux systems
+
+    and does not persist across reboots, making it particularly attractive to adversaries
+
+    seeking to execute transient payloads while evading file-based forensic detection.
+
+
+    This technique has been observed in post-exploitation scenarios where attackers
+
+    deliberately avoid writing to disk-backed locations to limit forensic artefacts.
+
+    '
+  tactic: execution
+  technique:
+    attack_id: T1569.003
+    name: 'System Services: Systemctl'
+  platforms:
+    linux:
+      sh:
+        command: echo "[Unit]" > /dev/shm/atomic_shm.service; echo "Description=Atomic
+          SHM Service" >> /dev/shm/atomic_shm.service; echo "" >> /dev/shm/atomic_shm.service;
+          echo "[Service]" >> /dev/shm/atomic_shm.service; echo "ExecStart=/bin/bash
+          -c "whoami > /tmp/atomic_shm_output.txt"" >> /dev/shm/atomic_shm.service;
+          echo "" >> /dev/shm/atomic_shm.service; echo "[Install]" >> /dev/shm/atomic_shm.service;
+          echo "WantedBy=multi-user.target" >> /dev/shm/atomic_shm.service; systemctl
+          link /dev/shm/atomic_shm.service; systemctl start $(basename /dev/shm/atomic_shm.service);
+          systemctl status $(basename /dev/shm/atomic_shm.service)
+        payloads: []
+        cleanup: systemctl stop $(basename /dev/shm/atomic_shm.service) 2>/dev/null
+          || true; rm -f /dev/shm/atomic_shm.service; rm -f /tmp/atomic_shm_output.txt

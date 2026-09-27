@@ -1,0 +1,22 @@
+---
+- id: bf9cc3d98c38f79c948a0f4a7f888034
+  name: Invoke HTML Application - Jscript Engine over Local UNC Simulating Lateral
+    Movement
+  description: Executes an HTA Application using JScript script engine using local
+    UNC path simulating lateral movement.
+  tactic: stealth
+  technique:
+    attack_id: T1218.005
+    name: 'Signed Binary Proxy Execution: Mshta'
+  platforms:
+    windows:
+      psh:
+        command: $RequiredModule = Get-Module -Name AtomicTestHarnesses -ListAvailable;
+          if (-not $RequiredModule) {Install-Module -Name AtomicTestHarnesses -Scope
+          CurrentUser -Force};  Invoke-ATHHTMLApplication -HTAFilePath Test.hta -ScriptEngine
+          JScript -AsLocalUNCPath -SimulateLateralMovement -MSHTAFilePath $env:windir\system32\mshta.exe
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

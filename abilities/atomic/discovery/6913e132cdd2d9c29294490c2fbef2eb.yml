@@ -1,0 +1,20 @@
+---
+- id: 6913e132cdd2d9c29294490c2fbef2eb
+  name: System Time Discovery - PowerShell
+  description: 'Identify the system time via PowerShell. Upon execution, the system
+    time will be displayed.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1124
+    name: System Time Discovery
+  platforms:
+    windows:
+      psh:
+        command: Get-Date
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

@@ -1,0 +1,20 @@
+---
+- id: 87c08b408756abf34e1fa3403d01fde7
+  name: MacOS - Load Kernel Module via kextload and kmutil
+  description: 'This test uses the kextload and kmutil commands to load and unload
+    a MacOS kernel module.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1547.006
+    name: 'Boot or Logon Autostart Execution: Kernel Modules and Extensions'
+  platforms:
+    darwin:
+      sh:
+        command: set -x; sudo kextload /Library/Extensions/SoftRAID.kext; kextstat
+          2>/dev/null | grep SoftRAID; sudo kextunload /Library/Extensions/SoftRAID.kext;
+          sudo kmutil load -p /Library/Extensions/SoftRAID.kext; kextstat 2>/dev/null
+          | grep SoftRAID; sudo kmutil unload -p /Library/Extensions/SoftRAID.kext
+        payloads: []
+        cleanup: ''

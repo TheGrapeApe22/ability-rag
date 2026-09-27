@@ -1,0 +1,20 @@
+---
+- id: 8beb34c915b17873e357c030d517be0a
+  name: Disable .NET Event Tracing for Windows Via Registry (powershell)
+  description: Disables ETW for the .NET Framework using PowerShell to update the
+    Windows registry
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685
+    name: Disable or Modify Tools
+  platforms:
+    windows:
+      psh:
+        command: New-ItemProperty -Path HKLM:\Software\Microsoft\.NETFramework -Name
+          ETWEnabled -Value 0 -PropertyType "DWord" -Force
+        payloads: []
+        cleanup: REG DELETE HKLM\Software\Microsoft\.NETFramework /v ETWEnabled /f
+          > $null 2>&1
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

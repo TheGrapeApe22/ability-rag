@@ -1,0 +1,24 @@
+---
+- id: 8dcbd96c363f960bd864ef6554658f27
+  name: Disable auditd using auditctl
+  description: 'The command `auditctl -e 0` disables the audit system. By setting
+    the parameter to `0`, auditing is deactivated, halting the monitoring and recording
+    of security-related events. This action stops the generation of audit logs, ceasing
+    the collection of data regarding system activities. Disabling auditing may be
+    done for various reasons, such as troubleshooting, performance optimization, or
+    temporarily suspending auditing requirements, but it reduces visibility into system
+    events and can impact security monitoring and compliance efforts.
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685.004
+    name: 'Disable or Modify Tools: Disable or Modify Linux Audit System Log'
+  platforms:
+    linux:
+      sh:
+        command: 'if [ $(command -v auditctl) ]; then : ; else (yum install auditd
+          -y) || (apt-get install auditd -y) || (dnf install auditd -y); fi;  auditctl
+          -e 0'
+        payloads: []
+        cleanup: auditctl -e 1

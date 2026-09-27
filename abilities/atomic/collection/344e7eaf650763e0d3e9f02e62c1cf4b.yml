@@ -1,0 +1,25 @@
+---
+- id: 344e7eaf650763e0d3e9f02e62c1cf4b
+  name: Recon information for export with PowerShell
+  description: 'collect information for exfiltration. Upon execution, check the users
+    temp directory (%temp%) for files T1119_*.txt
+
+    to see what was collected.
+
+    '
+  tactic: collection
+  technique:
+    attack_id: T1119
+    name: Automated Collection
+  platforms:
+    windows:
+      psh:
+        command: 'Get-Service > $env:TEMP\T1119_1.txt; Get-ChildItem Env: > $env:TEMP\T1119_2.txt;
+          Get-Process > $env:TEMP\T1119_3.txt'
+        payloads: []
+        cleanup: Remove-Item $env:TEMP\T1119_1.txt -ErrorAction Ignore; Remove-Item
+          $env:TEMP\T1119_2.txt -ErrorAction Ignore; Remove-Item $env:TEMP\T1119_3.txt
+          -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

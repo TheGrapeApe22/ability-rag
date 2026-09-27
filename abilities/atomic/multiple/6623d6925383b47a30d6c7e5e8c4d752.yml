@@ -1,0 +1,17 @@
+---
+- id: 6623d6925383b47a30d6c7e5e8c4d752
+  name: Windows Internal pktmon capture
+  description: 'Will start a packet capture and store log file as t1040.etl.
+
+    https://lolbas-project.github.io/lolbas/Binaries/Pktmon/'
+  tactic: multiple
+  technique:
+    attack_id: T1040
+    name: Network Sniffing
+  platforms:
+    windows:
+      cmd:
+        command: pktmon.exe start --etw  -f %TEMP%\t1040.etl && TIMEOUT /T 5 >nul
+          2>&1 && pktmon.exe stop
+        payloads: []
+        cleanup: del %TEMP%\t1040.etl

@@ -1,0 +1,28 @@
+---
+- id: 099395411c4b883e0addb4f66dec9544
+  name: Data Compressed - nix - zip
+  description: 'An adversary may compress data (e.g., sensitive documents) that is
+    collected prior to exfiltration. This test uses standard zip compression.
+
+    '
+  tactic: collection
+  technique:
+    attack_id: T1560.001
+    name: 'Archive Collected Data: Archive via Utility'
+  platforms:
+    linux:
+      sh:
+        command: 'if [ $(ls /var/log/{w,b}tmp | wc -l) > 0 ] && [ -x $(which zip)
+          ] ; then : ; else (which yum && yum -y install epel-release zip)||(which
+          apt-get && apt-get install -y zip); echo Please set input_files argument
+          to include files that exist; fi;  zip $HOME/data.zip /var/log/{w,b}tmp'
+        payloads: []
+        cleanup: rm -f $HOME/data.zip
+    darwin:
+      sh:
+        command: 'if [ $(ls /var/log/{w,b}tmp | wc -l) > 0 ] && [ -x $(which zip)
+          ] ; then : ; else (which yum && yum -y install epel-release zip)||(which
+          apt-get && apt-get install -y zip); echo Please set input_files argument
+          to include files that exist; fi;  zip $HOME/data.zip /var/log/{w,b}tmp'
+        payloads: []
+        cleanup: rm -f $HOME/data.zip

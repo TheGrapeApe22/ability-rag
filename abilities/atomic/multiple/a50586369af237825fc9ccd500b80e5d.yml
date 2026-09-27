@@ -1,0 +1,24 @@
+---
+- id: a50586369af237825fc9ccd500b80e5d
+  name: Logon Scripts
+  description: 'Adds a registry value to run batch script created in the %temp% directory.
+    Upon execution, there will be a new environment variable in the HKCU\Environment
+    key
+
+    that can be viewed in the Registry Editor.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1037.001
+    name: 'Boot or Logon Initialization Scripts: Logon Script (Windows)'
+  platforms:
+    windows:
+      cmd:
+        command: echo "echo Art "Logon Script" atomic test was successful. >> %USERPROFILE%\desktop\T1037.001-log.txt"
+          > %temp%\art.bat && REG.exe ADD HKCU\Environment /v UserInitMprLogonScript
+          /t REG_SZ /d "%temp%\art.bat" /f
+        payloads: []
+        cleanup: REG.exe DELETE HKCU\Environment /v UserInitMprLogonScript /f >nul
+          2>&1 && del %temp%\art.bat >nul 2>&1 && del "%USERPROFILE%\desktop\T1037.001-log.txt"
+          >nul 2>&1

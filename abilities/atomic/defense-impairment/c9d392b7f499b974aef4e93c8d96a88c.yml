@@ -1,0 +1,23 @@
+---
+- id: c9d392b7f499b974aef4e93c8d96a88c
+  name: Delete all auditd rules using auditctl
+  description: 'Using ''auditctl -D'' deletes all existing audit rules, resulting
+    in the loss of previously configured monitoring settings and the audit trail.
+    This action reduces visibility into system activities, potentially leading to
+    compliance concerns and hampering security monitoring efforts. Additionally, it
+    poses a risk of covering unauthorized activities by erasing evidence from audit
+    logs.
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685.004
+    name: 'Disable or Modify Tools: Disable or Modify Linux Audit System Log'
+  platforms:
+    linux:
+      sh:
+        command: 'if [ $(command -v auditctl) ]; then : ; else (yum install auditd
+          -y) || (apt-get install auditd -y) || (dnf install auditd -y); fi;  auditctl
+          -D'
+        payloads: []
+        cleanup: service auditd restart

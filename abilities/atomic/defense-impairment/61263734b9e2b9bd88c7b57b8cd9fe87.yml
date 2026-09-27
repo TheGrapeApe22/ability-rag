@@ -1,0 +1,27 @@
+---
+- id: 61263734b9e2b9bd88c7b57b8cd9fe87
+  name: Setting the HISTCONTROL environment variable
+  description: "An attacker may exploit the space before a command (e.g. \" ls\")\
+    \ or the duplicate command suppression feature in Bash history to prevent their\
+    \ commands from being recorded in the history file or to obscure the order of\
+    \ commands used. \n\nIn this test we 1. sets $HISTCONTROL to ignoreboth 2. clears\
+    \ the history cache 3. executes ls -la with a space in-front of it 4. confirms\
+    \ that ls -la is not in the history cache 5. sets $HISTCONTROL to erasedups 6.\
+    \ clears the history cache 7..9 executes ls -la $HISTFILE 3 times 10. confirms\
+    \ that their is only one command in history\n"
+  tactic: defense-impairment
+  technique:
+    attack_id: T1690
+    name: Prevent Command History Logging
+  platforms:
+    linux:
+      sh:
+        command: TEST=$(echo $HISTCONTROL); if [ "$HISTCONTROL" != "ignoreboth" ];
+          then export HISTCONTROL="ignoreboth"; fi; history -c ; ls -la $HISTFILE;
+          if [ $(history |wc -l) -eq 1 ]; then echo "ls -la is not in history cache";
+          fi; if [ "$HISTCONTROL" != "erasedups" ]; then export HISTCONTROL="erasedups";
+          fi; history -c ; ls -la $HISTFILE; ls -la $HISTFILE; ls -la $HISTFILE; if
+          [ $(history |wc -l) -eq 2 ]; then echo "Their is only one entry for ls -la
+          $HISTFILE"; fi
+        payloads: []
+        cleanup: export HISTCONTROL=$(echo $TEST)

@@ -1,0 +1,21 @@
+---
+- id: 36aa805044ab4f4d7f6f372a46c8bab2
+  name: Delete an entire folder - Windows PowerShell
+  description: 'Recursively delete a folder in the temporary directory using Powershell.
+    Upon execution, no output will be displayed. Use File Explorer to verify the folder
+    was deleted.
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1070.004
+    name: 'Indicator Removal on Host: File Deletion'
+  platforms:
+    windows:
+      psh:
+        command: Remove-Item -Path $env:TEMP\deleteme_folder_T1551.004 -Recurse
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

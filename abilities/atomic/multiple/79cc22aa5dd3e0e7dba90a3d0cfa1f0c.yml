@@ -1,0 +1,22 @@
+---
+- id: 79cc22aa5dd3e0e7dba90a3d0cfa1f0c
+  name: Packet Capture macOS using tcpdump or tshark
+  description: 'Perform a PCAP on macOS. This will require Wireshark/tshark to be
+    installed. TCPdump may already be installed.
+
+
+    Upon successful execution, tshark or tcpdump will execute and capture 5 packets
+    on interface en0A.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1040
+    name: Network Sniffing
+  platforms:
+    darwin:
+      sh:
+        command: 'sudo tcpdump -c 5 -nnni en0A    ; if [ -x "$(command -v tshark)"
+          ]; then sudo tshark -c 5 -i en0A; fi; '
+        payloads: []
+        cleanup: ''

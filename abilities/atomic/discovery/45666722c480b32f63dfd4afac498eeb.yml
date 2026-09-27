@@ -1,0 +1,17 @@
+---
+- id: 45666722c480b32f63dfd4afac498eeb
+  name: sysctl to gather macOS hardware info
+  description: Gets the macOS hardware information, which can be used to determine
+    whether the target macOS host is running on a physical or virtual machine. sysctl
+    can be used to gather interesting macOS host data, including hardware information,
+    memory size, logical cpu information, etc.
+  tactic: discovery
+  technique:
+    attack_id: T1082
+    name: System Information Discovery
+  platforms:
+    darwin:
+      sh:
+        command: sysctl -n hw.model
+        payloads: []
+        cleanup: ''

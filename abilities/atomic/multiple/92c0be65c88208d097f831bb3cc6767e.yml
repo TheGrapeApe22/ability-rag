@@ -1,0 +1,18 @@
+---
+- id: 92c0be65c88208d097f831bb3cc6767e
+  name: Add file to Local Library StartupItems
+  description: 'Modify or create an file in /Library/StartupItems
+
+    [Reference](https://www.alienvault.com/blogs/labs-research/diversity-in-recent-mac-malware)
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1037.005
+    name: 'Boot or Logon Initialization Scripts: Startup Items'
+  platforms:
+    darwin:
+      sh:
+        command: sudo touch /Library/StartupItems/EvilStartup.plist
+        payloads: []
+        cleanup: sudo rm /Library/StartupItems/EvilStartup.plist

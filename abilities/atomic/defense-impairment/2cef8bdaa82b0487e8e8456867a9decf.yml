@@ -1,0 +1,20 @@
+---
+- id: 2cef8bdaa82b0487e8e8456867a9decf
+  name: Take ownership using takeown utility
+  description: 'Modifies the filesystem permissions of the specified file or folder
+    to take ownership of the object. Upon execution, "SUCCESS" will
+
+    be displayed for the folder and each file inside of it.
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1222.001
+    name: 'File and Directory Permissions Modification: Windows File and Directory
+      Permissions Modification'
+  platforms:
+    windows:
+      cmd:
+        command: takeown.exe /f %temp%\T1222.001_takeown_folder /r
+        payloads: []
+        cleanup: ''

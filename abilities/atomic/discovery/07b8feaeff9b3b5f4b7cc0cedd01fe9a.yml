@@ -1,0 +1,22 @@
+---
+- id: 07b8feaeff9b3b5f4b7cc0cedd01fe9a
+  name: Network Share Discovery PowerShell
+  description: 'Network Share Discovery utilizing PowerShell. The computer name variable
+    may need to be modified to point to a different host
+
+    Upon execution, available network shares will be displayed in the powershell session
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1135
+    name: Network Share Discovery
+  platforms:
+    windows:
+      psh:
+        command: get-smbshare
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

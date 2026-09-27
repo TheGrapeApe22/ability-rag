@@ -1,0 +1,17 @@
+---
+- id: b5b9bf30b09bf2f3367effa3022e7aa7
+  name: Environment variables discovery on windows
+  description: 'Identify all environment variables. Upon execution, environments variables
+    and your path info will be displayed.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1082
+    name: System Information Discovery
+  platforms:
+    windows:
+      cmd:
+        command: set
+        payloads: []
+        cleanup: ''

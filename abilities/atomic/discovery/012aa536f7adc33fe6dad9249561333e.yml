@@ -1,0 +1,20 @@
+---
+- id: 012aa536f7adc33fe6dad9249561333e
+  name: Remote Desktop Services Discovery via PowerShell
+  description: 'Availability of remote desktop services can be checked using get-
+    cmdlet of PowerShell
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1046
+    name: Network Service Discovery
+  platforms:
+    windows:
+      psh:
+        command: Get-Service -Name "Remote Desktop Services", "Remote Desktop Configuration"
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

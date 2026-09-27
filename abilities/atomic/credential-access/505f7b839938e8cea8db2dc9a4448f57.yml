@@ -1,0 +1,29 @@
+---
+- id: 505f7b839938e8cea8db2dc9a4448f57
+  name: Dump LSASS.exe Memory through Silent Process Exit
+  description: "WerFault.exe (Windows Error Reporting process that handles process\
+    \ crashes) can be abused to create a \nmemory dump of lsass.exe, in a directory\
+    \ of your choice. This method relies on a mechanism \nintroduced in Windows 7\
+    \ called Silent Process Exit, which provides the ability to trigger\nspecific\
+    \ actions for a monitored process in one of two scenarios; either the process\
+    \ terminates\nitself by calling ExitProcess(), or another process terminates it\
+    \ via the TerminateProcess() API. \nThe major advantage of this technique is that\
+    \ it does not cause lsass.exe to crash, and since \nWerFault.exe is used to create\
+    \ file dumps all the time (not just lsass.exe), this method provides \nthe added\
+    \ advantage of going undetected. WerFault.exe is a process known for dumping every\
+    \ crashing process, \nfrom an attacker standpoint this is appealing as their illicit\
+    \ credential extraction will \nappear benign because from a defender\u2019s viewpoint\
+    \ it\u2019s within the realm of normal activity.\n\nUpon successful execution,\
+    \ you should find the dump file in directory of your choice or \"%temp%\\SilentProcessExit\"\
+    \ by default.\n"
+  tactic: credential-access
+  technique:
+    attack_id: T1003.001
+    name: 'OS Credential Dumping: LSASS Memory'
+  platforms:
+    windows:
+      cmd:
+        command: PathToAtomicsFolder\..\ExternalPayloads\nanodump.x64.exe --silent-process-exit
+          "%temp%\SilentProcessExit"
+        payloads: []
+        cleanup: rmdir "%temp%\SilentProcessExit" /s /q >nul 2> nul

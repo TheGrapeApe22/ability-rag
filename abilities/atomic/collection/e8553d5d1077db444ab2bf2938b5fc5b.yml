@@ -1,0 +1,26 @@
+---
+- id: e8553d5d1077db444ab2bf2938b5fc5b
+  name: using Quicktime Player
+  description: 'Use AppleScript to get Quicktime Player to record an audio file from
+    the default microphone.
+
+
+    Should create a non-empty m4a file with sound from the microphone.
+
+
+    - requires Automation permissions but no additional microphone permissions
+
+    - saves file in /tmp by default. Other locations likely to require more permissions.
+
+    '
+  tactic: collection
+  technique:
+    attack_id: T1123
+    name: Audio Capture
+  platforms:
+    darwin:
+      sh:
+        command: sh 28b0bd_T1123.sh /tmp/T1123.m4a 5
+        payloads:
+        - 28b0bd_T1123.sh
+        cleanup: if test -w /tmp/T1123.m4a; then   rm /tmp/T1123.m4a; fi

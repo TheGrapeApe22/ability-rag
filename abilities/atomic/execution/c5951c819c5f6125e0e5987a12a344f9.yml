@@ -1,0 +1,24 @@
+---
+- id: c5951c819c5f6125e0e5987a12a344f9
+  name: NTFS Alternate Data Stream Access
+  description: 'Creates a file with an alternate data stream and simulates executing
+    that hidden code/file. Upon execution, "Stream Data Executed" will be displayed.
+
+    '
+  tactic: execution
+  technique:
+    attack_id: T1059.001
+    name: 'Command and Scripting Interpreter: PowerShell'
+  platforms:
+    windows:
+      psh:
+        command: if((Get-Volume -DriveLetter $env:HOMEDRIVE[0]) { ; } else {Write-Host
+          Prereq's for this test cannot be met automatically};  Add-Content -Path
+          $env:TEMP\NTFS_ADS.txt -Value 'Write-Host "Stream Data Executed"' -Stream
+          'streamCommand'; $streamcommand = Get-Content -Path $env:TEMP\NTFS_ADS.txt
+          -Stream 'streamcommand'; Invoke-Expression $streamcommand
+        payloads: []
+        cleanup: Remove-Item $env:TEMP\NTFS_ADS.txt -Force -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

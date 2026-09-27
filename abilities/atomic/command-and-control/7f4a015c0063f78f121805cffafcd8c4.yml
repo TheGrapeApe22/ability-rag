@@ -1,0 +1,33 @@
+---
+- id: 7f4a015c0063f78f121805cffafcd8c4
+  name: Steganographic Tarball Embedding
+  description: "This atomic test, named \"Steganographic Tarball Embedding\", simulates\
+    \ the technique of data obfuscation via steganography by embedding a tar archive\
+    \ file (tarball) \nwithin an image.\n\nThe test begins by ensuring the availability\
+    \ of the image file and the tarball file containing data . It then generates random\
+    \ passwords and saves them to a \nfile. Subsequently, the tarball file is created,\
+    \ containing the passwords file. The test executor command reads the contents\
+    \ of the image \nfile and the tarball file as byte arrays and appends them together\
+    \ to form a new image file. This process effectively embeds the tarball \nfile\
+    \ within the image, utilizing steganography techniques for data obfuscation.\n\
+    \nThis atomic test simulates the technique of data obfuscation via steganography,\
+    \ enabling attackers to clandestinely transfer files across systems undetected.\
+    \ \nBy embedding the tarball file within the image, adversaries can obscure their\
+    \ activities, facilitating covert communication and data exfiltration.\n"
+  tactic: command-and-control
+  technique:
+    attack_id: T1001.002
+    name: Data Obfuscation via Steganography
+  platforms:
+    windows:
+      psh:
+        command: Get-Content "PathToAtomicsFolder\T1001.002\bin\T1001.002.jpg", "$env:PUBLIC\Downloads\T1001.002.tarz"
+          -Encoding byte -ReadCount 0 | Set-Content "$env:PUBLIC\Downloads\T1001.002New.jpg"
+          -Encoding byte
+        payloads: []
+        cleanup: Set-ExecutionPolicy Bypass -Scope Process -Force -ErrorAction Ignore;
+          Remove-Item -Path "$env:PUBLIC\Downloads\T1001.002New.jpg" -Force -ErrorAction
+          Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

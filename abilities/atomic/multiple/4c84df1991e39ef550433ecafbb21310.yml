@@ -1,0 +1,18 @@
+---
+- id: 4c84df1991e39ef550433ecafbb21310
+  name: Modify UseTPMKeyPIN Registry entry
+  description: 'Allow startup key and PIN with TPM for Bitlocker tool
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1112
+    name: Modify Registry
+  platforms:
+    windows:
+      cmd:
+        command: reg add "HKLM\SOFTWARE\Policies\Microsoft\FVE" /v UseTPMKeyPIN /t
+          REG_DWORD /d 2 /f
+        payloads: []
+        cleanup: reg delete "HKLM\SOFTWARE\Policies\Microsoft\FVE" /v UseTPMKeyPIN
+          /f

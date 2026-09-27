@@ -1,0 +1,51 @@
+---
+- id: cbf44e79b4bef7b2e997508f759beee3
+  name: Azure - adding user to Azure role in subscription
+  description: "The adversaries want to add user to some Azure role, also called Azure\
+    \ resource role. Threat actor \nmay be interested primarily in highly privileged\
+    \ roles, e.g. Owner, Contributor.\nBy default, the role Reader is assigned to\
+    \ user in this test.\n\nNew-AzRoleAssignment cmdlet could be also use to assign\
+    \ user/service principal to resource, resource group and management group.\n\n\
+    The account you use to run the PowerShell command must have Microsoft.Authorization/roleAssignments/write\
+    \ \n(e.g. such as User Access Administrator or Owner) and the Azure Active Directory\
+    \ Graph Directory.Read.All \nand Microsoft Graph Directory.Read.All permissions.\n\
+    \nDetection hint - check Operation Name \"Create role assignment\" in subscriptions\
+    \ Activity Logs.\n"
+  tactic: multiple
+  technique:
+    attack_id: T1098
+    name: Account Manipulation
+  platforms:
+    unknown:
+      psh:
+        command: try {if (Get-InstalledModule -Name Az.Resources -ErrorAction SilentlyContinue)
+          { ; } else {Install-Module -Name Az.Resources -Force};  Import-Module -Name
+          Az.Resources; $PWord = ConvertTo-SecureString -String "p4sswd" -AsPlainText
+          -Force; $Credential = New-Object -TypeName System.Management.Automation.PSCredential
+          -ArgumentList "jonh@contoso.com", $Pword; Connect-AzAccount -Credential
+          $Credential; $user = Get-AzADUser | where-object {$_.DisplayName -eq "SuperUser"
+          -or $_.UserPrincipalName -eq "SuperUser" }; if ($user -eq $null) { Write-Warning
+          "User not found"; exit }; $subscription = Get-AzSubscription | where-object
+          {$_.Name -eq "Azure subscription 1"}; if ($subscription -eq $null) { Write-Warning
+          "Subscription not found"; exit }; $role = Get-AzRoleDefinition | where-object
+          {$_.Name -eq "Reader"}; if ($role -eq $null) { Write-Warning "Role not found";
+          exit }; New-AzRoleAssignment -ObjectId $user.id -RoleDefinitionId $role.id
+          -Scope /subscriptions/$subscription; Write-Host "User $($user.DisplayName)
+          was added to $($role.Name) role in subscriptions $($subscriptions.Name)"
+        payloads: []
+        cleanup: Import-Module -Name AzureAD -ErrorAction Ignore; $PWord = ConvertTo-SecureString
+          -String "p4sswd" -AsPlainText -Force; $Credential = New-Object -TypeName
+          System.Management.Automation.PSCredential -ArgumentList "jonh@contoso.com",
+          $Pword; Connect-AzAccount -Credential $Credential -ErrorAction Ignore; $user
+          = Get-AzADUser | where-object {$_.DisplayName -eq "SuperUser" -or $_.UserPrincipalName
+          -eq "SuperUser" }; if ($user -eq $null) { Write-Warning "User not found";
+          exit }; $subscription = Get-AzSubscription | where-object {$_.Name -eq "Azure
+          subscription 1"}; if ($subscription -eq $null) { Write-Warning "Subscription
+          not found"; exit }; $role = Get-AzRoleDefinition | where-object {$_.Name
+          -eq "Reader"}; if ($role -eq $null) { Write-Warning "Role not found"; exit
+          }; Remove-AzRoleAssignment -ObjectId $user.id -RoleDefinitionId $role.id
+          -Scope /subscriptions/$subscription; Write-Host "User Principal $($sp.DisplayName)
+          was removed from $($role.Name) role in subscriptions $($subscriptions.Name)"
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

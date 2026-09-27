@@ -1,0 +1,36 @@
+---
+- id: 58ef43e598c111afc81ba9a22c6af108
+  name: Base64 decoding with Python
+  description: 'Use Python to decode a base64-encoded text string and echo it to the
+    console
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1140
+    name: Deobfuscate/Decode Files or Information
+  platforms:
+    linux:
+      sh:
+        command: ENCODED=$(python3 -c 'import base64;enc=base64.b64encode("Hello from
+          Atomic Red Team test T1140!".encode());print(enc.decode())'); python3 -c
+          "import base64;dec=base64.b64decode(\"$ENCODED\");print(dec.decode())";
+          python3 -c "import base64 as d;dec=d.b64decode(\"$ENCODED\");print(dec.decode())";
+          python3 -c "from base64 import b64decode;dec=b64decode(\"$ENCODED\");print(dec.decode())";
+          python3 -c "from base64 import b64decode as d;dec=d(\"$ENCODED\");print(dec.decode())";
+          echo $ENCODED | python3 -c "import base64,sys;dec=base64.b64decode(sys.stdin.read());print(dec.decode())";
+          echo $ENCODED > /tmp/T1140.encoded && python3 -c "import base64;dec=base64.b64decode(open('/tmp/T1140.encoded').read());print(dec.decode())"
+        payloads: []
+        cleanup: ''
+    darwin:
+      sh:
+        command: ENCODED=$(python3 -c 'import base64;enc=base64.b64encode("Hello from
+          Atomic Red Team test T1140!".encode());print(enc.decode())'); python3 -c
+          "import base64;dec=base64.b64decode(\"$ENCODED\");print(dec.decode())";
+          python3 -c "import base64 as d;dec=d.b64decode(\"$ENCODED\");print(dec.decode())";
+          python3 -c "from base64 import b64decode;dec=b64decode(\"$ENCODED\");print(dec.decode())";
+          python3 -c "from base64 import b64decode as d;dec=d(\"$ENCODED\");print(dec.decode())";
+          echo $ENCODED | python3 -c "import base64,sys;dec=base64.b64decode(sys.stdin.read());print(dec.decode())";
+          echo $ENCODED > /tmp/T1140.encoded && python3 -c "import base64;dec=base64.b64decode(open('/tmp/T1140.encoded').read());print(dec.decode())"
+        payloads: []
+        cleanup: ''

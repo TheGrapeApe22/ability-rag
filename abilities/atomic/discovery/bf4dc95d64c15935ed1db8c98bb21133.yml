@@ -1,0 +1,20 @@
+---
+- id: bf4dc95d64c15935ed1db8c98bb21133
+  name: Remote System Discovery - ping sweep
+  description: 'Identify remote systems via ping sweep.
+
+
+    Upon successful execution, cmd.exe will perform a for loop against the 192.168.1.1/24
+    network. Output will be via stdout.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1018
+    name: Remote System Discovery
+  platforms:
+    windows:
+      cmd:
+        command: for /l %i in (1,1,254) do ping -n 1 -w 100 192.168.1.%i
+        payloads: []
+        cleanup: ''

@@ -1,0 +1,14 @@
+---
+- id: 476b47c89891196f2eecd8bb59076e7a
+  name: Check OS version via "ver" command
+  description: Ver command shows information about os version.
+  tactic: discovery
+  technique:
+    attack_id: T1082
+    name: System Information Discovery
+  platforms:
+    windows:
+      cmd:
+        command: ver
+        payloads: []
+        cleanup: ''

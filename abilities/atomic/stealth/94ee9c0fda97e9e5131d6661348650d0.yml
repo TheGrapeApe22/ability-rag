@@ -1,0 +1,21 @@
+---
+- id: 94ee9c0fda97e9e5131d6661348650d0
+  name: Indirect Command Execution - pcalua.exe
+  description: 'The Program Compatibility Assistant (pcalua.exe) may invoke the execution
+    of programs and commands from a Command-Line Interface.
+
+    [Reference](https://twitter.com/KyleHanslovan/status/912659279806640128)
+
+    Upon execution, calc.exe should open
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1202
+    name: Indirect Command Execution
+  platforms:
+    windows:
+      cmd:
+        command: 'pcalua.exe -a #{process} && pcalua.exe -a #{payload_path}'
+        payloads: []
+        cleanup: ''

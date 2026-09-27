@@ -1,0 +1,26 @@
+---
+- id: 936fe6aeffd82b69c6e95a931dc177de
+  name: Discover System Language with Powershell
+  description: "This PowerShell script collects key system settings, such as the UI\
+    \ language, user language preferences, system locale, current culture, UI culture,\
+    \ and time zone, into a hash table. \n\nIt then outputs these settings in a readable\
+    \ key-value format directly to the terminal. The script is simple and efficient\
+    \ for quickly displaying system configuration details.\n"
+  tactic: discovery
+  technique:
+    attack_id: T1614.001
+    name: 'System Location Discovery: System Language Discovery'
+  platforms:
+    windows:
+      psh:
+        command: '$info = @{;   UILanguage     = Get-WinUILanguageOverride;   UserLanguages  =
+          (Get-WinUserLanguageList).LanguageTag -join '', '';   SystemLocale   = Get-WinSystemLocale;   CurrentCulture
+          = [System.Globalization.CultureInfo]::CurrentCulture.Name;   CurrentUICulture
+          = [System.Globalization.CultureInfo]::CurrentUICulture.Name;   TimeZone       =
+          (Get-TimeZone).Id; }; $info.GetEnumerator() | ForEach-Object { "$($_.Name):
+          $($_.Value)" }'
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

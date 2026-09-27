@@ -1,0 +1,21 @@
+---
+- id: a045281d139abd10801354001c7fffff
+  name: ESXi - Change VIB acceptance level to CommunitySupported via ESXCLI
+  description: 'An adversary will change the VIB acceptance level to CommunitySupported
+    to downgrade the acceptance criteria via ESXCLI. Afterwards an adversary may proceed
+    to installing malicious VIBs on the host.
+
+    [Reference](https://www.mandiant.com/resources/blog/esxi-hypervisors-detection-hardening)
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1689
+    name: Downgrade Attack
+  platforms:
+    windows:
+      cmd:
+        command: echo "" | "PathToAtomicsFolder\..\ExternalPayloads\plink.exe" "atomic.local"
+          -ssh  -l "root" -pw "pass" -m "PathToAtomicsFolder\T1698\src\esx_community_supported.txt"
+        payloads: []
+        cleanup: ''

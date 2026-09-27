@@ -1,0 +1,27 @@
+---
+- id: de10885aaa24cc74dd16b27befe0c508
+  name: Port Scan using nmap (Port range)
+  description: 'Scan multiple ports to check for listening ports with nmap
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1046
+    name: Network Service Discovery
+  platforms:
+    linux:
+      sh:
+        command: 'if [ -x "$(command -v nmap)" ]; then : ; else (which yum && yum
+          -y install epel-release nmap)||(which apt-get && DEBIAN_FRONTEND=noninteractive
+          apt-get install -y nmap)||(which pkg && pkg install -y nmap)||(which brew
+          && brew install nmap); fi;  nmap -Pn -sV -p 0-65535 127.0.0.1'
+        payloads: []
+        cleanup: ''
+    darwin:
+      sh:
+        command: 'if [ -x "$(command -v nmap)" ]; then : ; else (which yum && yum
+          -y install epel-release nmap)||(which apt-get && DEBIAN_FRONTEND=noninteractive
+          apt-get install -y nmap)||(which pkg && pkg install -y nmap)||(which brew
+          && brew install nmap); fi;  nmap -Pn -sV -p 0-65535 127.0.0.1'
+        payloads: []
+        cleanup: ''

@@ -1,0 +1,61 @@
+---
+- id: 0dcdfc2121f4571d78f4d91bb021f3e7
+  name: Azure - Dump Azure Storage Account Objects via Azure CLI
+  description: "This test dumps the content of the storage account objects present\
+    \ in the file defined in file_shares_csv_file_path. Note that this file is created\
+    \ in the atomic test T1619 \"Azure - Enumerate Storage Account Objects via Key-based\
+    \ authentication using Azure CLI\". When created manually, it must contain the\
+    \ columns \"ResourceGroup\",\"StorageAccountName\", \"FileShareName\", \"ContainerName\"\
+    , \"BlobName\".\n\nRequirements:\n    - The test is intended to be executed in\
+    \ interactive mode (with -Interactive parameter) in order to complete the az login\
+    \ command when MFA is required.\n    - The EntraID user must have the role \"\
+    Storage Account Contributor\", or a role with similar permissions."
+  tactic: collection
+  technique:
+    attack_id: T1530
+    name: Data from Cloud Storage Object
+  platforms:
+    unknown:
+      psh:
+        command: '$storage_account_objects = Import-Csv -Path "#{storage_account_objects_csv_file_path}";
+          az login; if (-not (Test-Path -Path "#{output_folder}")) {;     New-Item
+          -ItemType Directory -Path "#{output_folder}"; }; foreach ($row in $storage_account_objects)
+          {;     if ($row.FileShareName -ne ""){;         $allowSharedKeyAccess =
+          az storage account show --name $row.StorageAccountName --resource-group
+          $row.ResourceGroup --query "allowSharedKeyAccess";         if ($allowSharedKeyAccess
+          -eq "false") {;             Write-Output "Shared key access is disabled
+          for this storage account.";         } else {;             Write-Output "Fetching
+          content from file share: $($row.FileShareName) in storage account $($row.StorageAccountName)
+          ...";             $connectionString = az storage account show-connection-string
+          --name $row.StorageAccountName --resource-group $row.ResourceGroup --query
+          connectionString --output tsv;             $storageAccountOutputPath = Join-Path;             if
+          (-not (Test-Path -Path $storageAccountOutputPath)) {;                 New-Item
+          -ItemType Directory -Path $storageAccountOutputPath;             };             $fileSharePath
+          = Join-Path -Path $storageAccountOutputPath $row.FileShareName;             if
+          (-not (Test-Path -Path $fileSharePath)) {;                 New-Item -ItemType
+          Directory -Path $fileSharePath;             };             az storage file
+          download-batch --connection-string $connectionString --source $row.FileShareName
+          --destination $fileSharePath;         };     } elseif ($row.ContainerName
+          -ne "" -and $row.BlobName -eq "") {;         $allowSharedKeyAccess = az
+          storage account show --name $row.StorageAccountName --resource-group $row.ResourceGroup
+          --query "allowSharedKeyAccess";         if ($allowSharedKeyAccess -eq "false")
+          {;             Write-Output "Shared key access is disabled for this storage
+          account.";         } else {;             Write-Output "Fetching all blobs
+          from container $($row.ContainerName) in storage account $($row.StorageAccountName)
+          ...";             $connectionString = az storage account show-connection-string
+          --name $row.StorageAccountName --resource-group $row.ResourceGroup --query
+          connectionString --output tsv;             $storageAccountOutputPath = Join-Path;             if
+          (-not (Test-Path -Path $storageAccountOutputPath)) {;                 New-Item
+          -ItemType Directory -Path $storageAccountOutputPath;             };             $containerFolderPath
+          = Join-Path $storageAccountOutputPath $row.ContainerName;             if
+          (-not (Test-Path -Path $containerFolderPath)) {;                 New-Item
+          -ItemType Directory -Path $containerFolderPath;             };             az
+          storage blob download-batch --destination $containerFolderPath --source
+          $row.ContainerName --connection-string $connectionString;         };     };
+          }'
+        payloads: []
+        cleanup: Remove-Item -Path "$env:temp\T1530_storage_account_objects" -Recurse
+          -Force -erroraction silentlycontinue; Write-Output "Removed $env:temp\T1530_storage_account_objects"
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

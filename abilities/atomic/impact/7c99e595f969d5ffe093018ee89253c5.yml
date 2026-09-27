@@ -1,0 +1,21 @@
+---
+- id: 7c99e595f969d5ffe093018ee89253c5
+  name: Shutdown System via `shutdown` - FreeBSD/macOS/Linux
+  description: 'This test shuts down a FreeBSD/macOS/Linux system using a halt.
+
+    '
+  tactic: impact
+  technique:
+    attack_id: T1529
+    name: System Shutdown/Reboot
+  platforms:
+    linux:
+      sh:
+        command: shutdown -h now
+        payloads: []
+        cleanup: ''
+    darwin:
+      sh:
+        command: shutdown -h now
+        payloads: []
+        cleanup: ''

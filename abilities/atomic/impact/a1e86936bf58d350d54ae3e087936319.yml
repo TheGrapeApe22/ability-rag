@@ -1,0 +1,22 @@
+---
+- id: a1e86936bf58d350d54ae3e087936319
+  name: Linux - Stop service using systemctl
+  description: 'Stops a specified service using the systemctl command.
+
+    Upon execution, if the specified service was running, it will change to a state
+    of inactive and it can be restarted by running the cleanup command.
+
+    You can list all available services with following command: "systemctl list-units
+    --type=service"
+
+    '
+  tactic: impact
+  technique:
+    attack_id: T1489
+    name: Service Stop
+  platforms:
+    linux:
+      sh:
+        command: sudo systemctl stop cron
+        payloads: []
+        cleanup: sudo systemctl start cron 2> /dev/null

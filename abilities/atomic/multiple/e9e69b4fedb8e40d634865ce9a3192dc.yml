@@ -1,0 +1,25 @@
+---
+- id: e9e69b4fedb8e40d634865ce9a3192dc
+  name: Detect Virtualization Environment (Windows)
+  description: 'Windows Management Instrumentation(WMI) objects contains system information
+    which helps to detect virtualization. This command will specifically attempt to
+    get the CurrentTemperature value from this object and will check to see if the
+    attempt results in an error that contains the word supported. This is meant to
+    find the result of Not supported, which is the result if run in a virtual machine
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1497.001
+    name: 'Virtualization/Sandbox Evasion: System Checks'
+  platforms:
+    windows:
+      psh:
+        command: $error.clear(); Get-WmiObject -Query "SELECT * FROM MSAcpi_ThermalZoneTemperature"
+          -ErrorAction SilentlyContinue; if($error) {echo "Virtualization Environment
+          detected"}
+        payloads: []
+        cleanup: $error.clear()
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

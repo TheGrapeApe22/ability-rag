@@ -1,0 +1,19 @@
+---
+- id: f61806069d16a394937451304cac35af
+  name: Security Software Discovery - pgrep (FreeBSD)
+  description: 'Methods to identify Security Software on an endpoint
+
+    when sucessfully executed, command shell is going to display AV/Security software
+    it is running.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1518.001
+    name: 'Software Discovery: Security Software Discovery'
+  platforms:
+    linux:
+      sh:
+        command: pgrep -l 'bareos-fd|icinga2|cbagentd|wazuh-agent|packetbeat|filebeat|osqueryd'
+        payloads: []
+        cleanup: ''

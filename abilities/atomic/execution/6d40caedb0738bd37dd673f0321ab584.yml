@@ -1,0 +1,17 @@
+---
+- id: 6d40caedb0738bd37dd673f0321ab584
+  name: psexec.py (Impacket)
+  description: 'Will execute a command on the remote host with Impacket psexec.py
+    script.
+
+    '
+  tactic: execution
+  technique:
+    attack_id: T1569.002
+    name: 'System Services: Service Execution'
+  platforms:
+    linux:
+      sh:
+        command: psexec.py '/Administrator:P@ssw0rd1@127.0.0.1' 'whoami'
+        payloads: []
+        cleanup: ''

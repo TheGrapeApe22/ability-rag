@@ -1,0 +1,31 @@
+---
+- id: a9a7e30a21e6a7b5c28c9f0e41a293c0
+  name: Create SysV Service
+  description: 'This test creates a SysV service unit file and enables it as a service.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1543.002
+    name: 'Create or Modify System Process: SysV/Systemd Service'
+  platforms:
+    linux:
+      sh:
+        command: 'echo ''#\!/bin/sh'' > /usr/local/etc/rc.d/art-test; echo '' '' >>
+          /usr/local/etc/rc.d/art-test; echo ''#'' >> /usr/local/etc/rc.d/art-test;
+          echo ''# PROVIDE: art-test'' >> /usr/local/etc/rc.d/art-test; echo ''# REQUIRE:
+          LOGIN'' >> /usr/local/etc/rc.d/art-test; echo ''# KEYWORD: shutdown'' >>
+          /usr/local/etc/rc.d/art-test; echo '' '' >> /usr/local/etc/rc.d/art-test;
+          echo ''. /etc/rc.subr'' >> /usr/local/etc/rc.d/art-test; echo '' '' >> /usr/local/etc/rc.d/art-test;
+          echo ''name="art_test"'' >> /usr/local/etc/rc.d/art-test; echo ''rcvar=art_test_enable''
+          >> /usr/local/etc/rc.d/art-test; echo ''load_rc_config ${name}'' >> /usr/local/etc/rc.d/art-test;
+          echo ''command="/usr/bin/touch"'' >> /usr/local/etc/rc.d/art-test; echo
+          ''start_cmd="art_test_start"'' >> /usr/local/etc/rc.d/art-test; echo ''''
+          >> /usr/local/etc/rc.d/art-test; echo ''art_test_start()'' >> /usr/local/etc/rc.d/art-test     ;
+          echo ''{'' >> /usr/local/etc/rc.d/art-test; echo ''  ${command} /tmp/art-test.marker''
+          >> /usr/local/etc/rc.d/art-test; echo ''}'' >> /usr/local/etc/rc.d/art-test;
+          echo '' '' >> /usr/local/etc/rc.d/art-test     ; echo ''run_rc_command "$1"''
+          >> /usr/local/etc/rc.d/art-test; chmod +x /usr/local/etc/rc.d/art-test;
+          service art-test enable; service art-test start'
+        payloads: []
+        cleanup: sysrc -x art_test_enable; rm -f /usr/local/etc/rc.d/art-test

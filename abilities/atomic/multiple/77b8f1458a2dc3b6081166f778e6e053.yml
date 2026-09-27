@@ -1,0 +1,19 @@
+---
+- id: 77b8f1458a2dc3b6081166f778e6e053
+  name: Set-Up Proxy Server
+  description: 'A modification registry to setup proxy server. This technique was
+    seen in DarkGate malware as part of its installation.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1112
+    name: Modify Registry
+  platforms:
+    windows:
+      cmd:
+        command: reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet
+          Settings" /v ProxyServer /t REG_SZ /d "proxy.atomic-test.com:8080" /f
+        payloads: []
+        cleanup: reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet
+          Settings" /v ProxyServer /f

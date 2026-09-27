@@ -1,0 +1,20 @@
+---
+- id: ebd7b83ab68975948d0a88fea84ba0c0
+  name: InfDefaultInstall.exe .inf Execution
+  description: 'Test execution of a .inf using InfDefaultInstall.exe
+
+
+    Reference: https://github.com/LOLBAS-Project/LOLBAS/blob/master/yml/OSBinaries/Infdefaultinstall.yml
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1218
+    name: Signed Binary Proxy Execution
+  platforms:
+    windows:
+      cmd:
+        command: InfDefaultInstall.exe "67d07e_Infdefaultinstall.inf"
+        payloads:
+        - 67d07e_Infdefaultinstall.inf
+        cleanup: ''

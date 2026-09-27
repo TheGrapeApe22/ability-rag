@@ -1,0 +1,20 @@
+---
+- id: 409acf7907007b041753a5f452b3df9b
+  name: Windows - vssadmin Resize Shadowstorage Volume
+  description: Adversaries generally try to Resize Shadowstorage Volume using vssadmin.exe
+    to avoid the shadow volumes being made again. This technique is typically found
+    used by adversaries during a ransomware event and a precursor to deleting the
+    shadowstorage.
+  tactic: impact
+  technique:
+    attack_id: T1490
+    name: Inhibit System Recovery
+  platforms:
+    windows:
+      psh:
+        command: 'vssadmin resize shadowstorage /For=C: /On=C: /MaxSize=20%'
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

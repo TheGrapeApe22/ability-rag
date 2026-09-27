@@ -1,0 +1,20 @@
+---
+- id: 8ddfaf982ab359cda13626b870ccb339
+  name: Find and Display Internet Explorer Browser Version
+  description: 'Query the registry to determine the version of internet explorer installed
+    on the system.
+
+    Upon execution, version information about internet explorer will be displayed.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1518
+    name: Software Discovery
+  platforms:
+    windows:
+      cmd:
+        command: reg query "HKEY_LOCAL_MACHINE\Software\Microsoft\Internet Explorer"
+          /v svcVersion
+        payloads: []
+        cleanup: ''

@@ -1,0 +1,18 @@
+---
+- id: c22a786c46feabe3f5ee1f253175f30d
+  name: Execution from Compressed JScript File
+  description: 'Mimic execution of compressed JavaScript file. When successfully executed,
+    calculator.exe will open. This test is meant to help emulate Gootloader as per
+    https://redcanary.com/blog/gootloader/
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1027
+    name: Obfuscated Files or Information
+  platforms:
+    windows:
+      cmd:
+        command: '"PathToAtomicsFolder\..\ExternalPayloads\temp_T1027js.zip\T1027js.js"'
+        payloads: []
+        cleanup: taskkill /f /im calculator.exe >nul 2>nul

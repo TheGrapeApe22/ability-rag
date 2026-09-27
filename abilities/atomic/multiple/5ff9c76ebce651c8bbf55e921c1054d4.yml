@@ -1,0 +1,25 @@
+---
+- id: 5ff9c76ebce651c8bbf55e921c1054d4
+  name: Modify Service to Run Arbitrary Binary (Powershell)
+  description: "This test will use PowerShell to temporarily modify a service to run\
+    \ an arbitrary executable by changing its binary path and will then revert the\
+    \ binary path change, restoring the service to its original state.\nThis technique\
+    \ was previously observed through SnapMC's use of Powerspolit's invoke-serviceabuse\
+    \ function. \n[Reference](https://blog.fox-it.com/2021/10/11/snapmc-skips-ransomware-steals-data/)\n"
+  tactic: multiple
+  technique:
+    attack_id: T1543.003
+    name: 'Create or Modify System Process: Windows Service'
+  platforms:
+    windows:
+      psh:
+        command: Stop-Service -Name "fax" -force -erroraction silentlycontinue | Out-Null;
+          set-servicebinarypath -name "fax" -path "$env:windir\system32\notepad.exe";
+          start-service -Name "fax" -erroraction silentlycontinue | out-null
+        payloads: []
+        cleanup: Stop-Service -Name "fax" -force -erroraction silentlycontinue | Out-Null;
+          set-servicebinarypath -name "fax" -path "$env:windir\system32\fxssvc.exe"
+          -erroraction silentlycontinue | out-null
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

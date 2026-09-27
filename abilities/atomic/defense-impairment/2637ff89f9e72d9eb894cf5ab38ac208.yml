@@ -1,0 +1,20 @@
+---
+- id: 2637ff89f9e72d9eb894cf5ab38ac208
+  name: Modify/delete iptables firewall rules
+  description: "Instead of completely \"disabling\" iptables, adversaries may choose\
+    \ to delete a certain rule, which, for example, blocks data exfiltration via ftp.\n\
+    By doing so, they may cause less noise to avoid detection. \n"
+  tactic: defense-impairment
+  technique:
+    attack_id: T1686
+    name: Disable or Modify System Firewall
+  platforms:
+    linux:
+      sh:
+        command: 'if [ ! -x "$(command -v iptables)" ]; then : ; else iptables-save
+          > /tmp/iptables.rules; if echo "$(iptables -L)" | grep -q "DROP .*dpt:ftp";
+          then echo "Rule found"; else echo "Rule not found. Setting it..."; iptables
+          -A OUTPUT -p tcp --dport 21 -j DROP; fi; fi;  iptables -D OUTPUT -p tcp
+          --dport 21 -j DROP'
+        payloads: []
+        cleanup: iptables-restore < /tmp/iptables.rules

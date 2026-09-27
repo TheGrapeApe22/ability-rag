@@ -1,0 +1,48 @@
+---
+- id: 05a6b8247535b43039a0bf917ed50d2a
+  name: Outlook Rules - Enumerate Existing Rules via PowerShell COM Object
+  description: 'Enumerates all Outlook rules configured on the local profile using
+    the
+
+    PowerShell COM object. Simulates the discovery phase where an adversary
+
+    audits existing rules before implanting their own, or where a threat actor
+
+    tool such as Ruler lists rules to understand the environment. This
+
+    enumeration should itself generate telemetry - use it to validate that
+
+    your monitoring catches PowerShell spawning Outlook COM for recon purposes.
+
+    NOTE: This test MUST be run from a non-elevated (standard user) PowerShell
+
+    session. Outlook COM fails with 0x80080005 when invoked as Administrator.
+
+    '
+  tactic: persistence
+  technique:
+    attack_id: T1137.005
+    name: 'Office Application Startup: Outlook Rules'
+  platforms:
+    windows:
+      psh:
+        command: '$clsid = (Get-ItemProperty "REGISTRY::HKEY_CLASSES_ROOT\Outlook.Application\CLSID"
+          -ErrorAction SilentlyContinue) { ; } else {Write-Host "[-] Classic Outlook
+          is not installed or COM is not registered."; Write-Host "    Install Microsoft
+          365 Apps with Classic Outlook before running this test."; Write-Host "    Note:
+          The new Outlook for Windows does NOT support COM automation."; exit 1};  $isAdmin
+          = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]"Administrator");
+          if ($isAdmin) {;     Write-Host "[-] This test must be run from a non-elevated
+          PowerShell session.";     Write-Host "    Outlook COM fails with 0x80080005
+          when run as Administrator.";     exit 1; }; $outlook = New-Object -ComObject
+          Outlook.Application; $rules   = $outlook.GetNamespace("MAPI").DefaultStore.GetRules();
+          Write-Host "`n[*] Enumerating Outlook rules on local profile..."; Write-Host
+          "    Total rules found: $($rules.Count)`n"; for ($i = 1; $i -le $rules.Count;
+          $i++) {;     $r = $rules.Item($i);     Write-Host "  Rule $i : Name=''$($r.Name)''
+          | Enabled=$($r.Enabled)"; }; if ($rules.Count -eq 0) {;     Write-Host "  (No
+          rules configured)"; }'
+        payloads: []
+        cleanup: Write-Host "[*] No cleanup required for enumeration test."
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

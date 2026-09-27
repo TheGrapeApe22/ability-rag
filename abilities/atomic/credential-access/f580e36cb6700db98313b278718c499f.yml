@@ -1,0 +1,22 @@
+---
+- id: f580e36cb6700db98313b278718c499f
+  name: Password Cracking with Hashcat
+  description: Execute Hashcat.exe with provided SAM file from registry of Windows
+    and Password list to crack against
+  tactic: credential-access
+  technique:
+    attack_id: T1110.002
+    name: 'Brute Force: Password Cracking'
+  platforms:
+    windows:
+      cmd:
+        command: cd PathToAtomicsFolder\..\ExternalPayloads\hashcat6\hashcat-6.1.1\hashcat.exe\..
+          && PathToAtomicsFolder\..\ExternalPayloads\hashcat6\hashcat-6.1.1\hashcat.exe
+          -a 0 -m 1000 -r .\rules\Incisive-leetspeak.rule c5068b_sam.txt cab59f_password.lst
+        payloads:
+        - c5068b_sam.txt
+        - cab59f_password.lst
+        cleanup: del "PathToAtomicsFolder\..\ExternalPayloads\hashcat6.7z" >nul 2>&1
+          && del "PathToAtomicsFolder\..\ExternalPayloads\7z1900.exe" >nul 2>&1 &&
+          del "PathToAtomicsFolder\..\ExternalPayloads\7z" /Q /S >nul 2>&1 && del
+          "PathToAtomicsFolder\..\ExternalPayloads\hashcat-unzip" /Q /S >nul 2>&1

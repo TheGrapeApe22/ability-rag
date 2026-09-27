@@ -1,0 +1,21 @@
+---
+- id: 20d2fcbd24cdd2cf4e6e74181a3a97dd
+  name: Trigger an authenticated RPC call to a target server with no Sign flag set
+  description: 'RpcPing command can be used to trigger an authenticated RPC call to
+    the target server (/s) that could be relayed to a privileged resource (Sign flag
+    not Set)
+
+    Ref: https://twitter.com/splinter_code/status/1421144623678988298'
+  tactic: credential-access
+  technique:
+    attack_id: T1187
+    name: Forced Authentication
+  platforms:
+    windows:
+      psh:
+        command: rpcping -s
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

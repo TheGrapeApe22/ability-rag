@@ -1,0 +1,17 @@
+---
+- id: 7de3d7b4922a7b996d8df36fb22bb118
+  name: Creating W32Time similar named service using schtasks
+  description: Creating W32Time similar named service (win32times) using schtasks
+    just like threat actor dubbed "Operation Wocao"
+  tactic: stealth
+  technique:
+    attack_id: T1036.004
+    name: 'Masquerading: Masquerade Task or Service'
+  platforms:
+    windows:
+      cmd:
+        command: schtasks /create /ru system /sc daily /tr "cmd /c powershell.exe
+          -ep bypass -file c:\T1036.004_NonExistingScript.ps1" /tn win32times /f &&
+          schtasks /query /tn win32times
+        payloads: []
+        cleanup: schtasks /tn win32times /delete /f

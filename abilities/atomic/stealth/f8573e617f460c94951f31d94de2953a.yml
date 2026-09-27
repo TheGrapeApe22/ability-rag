@@ -1,0 +1,53 @@
+---
+- id: f8573e617f460c94951f31d94de2953a
+  name: Masquerading cmd.exe as VEDetector.exe
+  description: 'This test simulates an adversary renaming cmd.exe to VEDetector.exe
+    to masquerade as a legitimate application.
+
+    The test copies cmd.exe, renames it to VEDetector.exe, adds a registry run key
+    for persistence, and executes the renamed binary.
+
+    This technique may be used to evade detection by mimicking legitimate software
+    names or locations.
+
+
+    **Expected Output:**
+
+    - A new process named VEDetector.exe appears in the process list, but its behavior
+    matches cmd.exe.
+
+    - SIEM/EDR systems may detect this as suspicious process activity (e.g., Sysmon
+    Event ID 1 for process creation, or Event ID 13 for registry modifications).
+
+    - Registry modification in HKLM:\Software\Microsoft\Windows\CurrentVersion\Run
+    may trigger persistence alerts in XDR platforms.
+
+
+    **References:**
+
+    - [MITRE ATT&CK T1036.005](https://attack.mitre.org/techniques/T1036/005/)
+
+    - [Sysmon Process Creation](https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon)
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1036.005
+    name: 'Masquerading: Match Legitimate Name or Location'
+  platforms:
+    windows:
+      psh:
+        command: Copy-Item -Path "$env:SystemRoot\System32\cmd.exe" -Destination "$env:TEMP\VEDetector.exe"
+          -Force; New-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Run"
+          -Name "VEDetector" -Value "$env:TEMP\VEDetector.exe" -PropertyType String
+          -Force; Start-Process -FilePath "$env:TEMP\VEDetector.exe"; Start-Sleep
+          -Seconds 5
+        payloads: []
+        cleanup: Remove-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Run"
+          -Name "VEDetector" -ErrorAction SilentlyContinue; Stop-Process -Name "VEDetector"
+          -Force -ErrorAction SilentlyContinue; Remove-Item -Path "$env:TEMP\VEDetector.exe"
+          -Force -ErrorAction SilentlyContinue; Write-Host "[+] Cleaned up VEDetector
+          artifacts"
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

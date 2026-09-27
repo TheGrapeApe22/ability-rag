@@ -1,0 +1,16 @@
+---
+- id: 5ce7021ba9047ccd38a91c3a99723e2e
+  name: Disable SELinux
+  description: 'Disables SELinux enforcement
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685
+    name: Disable or Modify Tools
+  platforms:
+    linux:
+      sh:
+        command: setenforce 0
+        payloads: []
+        cleanup: setenforce 1

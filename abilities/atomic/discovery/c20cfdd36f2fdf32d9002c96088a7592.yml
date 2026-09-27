@@ -1,0 +1,22 @@
+---
+- id: c20cfdd36f2fdf32d9002c96088a7592
+  name: Azure - Enumerate Azure Blobs with MicroBurst
+  description: "Upon successful execution, this test will utilize a wordlist to enumerate\
+    \ the public facing containers and blobs of a specified Azure storage account.\
+    \ \nSee https://www.netspi.com/blog/technical/cloud-penetration-testing/anonymously-enumerating-azure-file-resources/\
+    \ . \n"
+  tactic: discovery
+  technique:
+    attack_id: T1619
+    name: Cloud Storage Object Discovery
+  platforms:
+    unknown:
+      psh:
+        command: import-module "PathToAtomicsFolder\..\ExternalPayloads\Invoke-EnumerateAzureBlobs.ps1";
+          Invoke-EnumerateAzureBlobs -base secure -permutations "PathToAtomicsFolder\..\ExternalPayloads\permutations.txt"
+          -outputfile "$env:temp\T1619Test1.txt"
+        payloads: []
+        cleanup: remove-item $env:temp\T1619Test1.txt -erroraction silentlycontinue
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

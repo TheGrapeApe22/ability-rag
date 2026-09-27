@@ -1,0 +1,18 @@
+---
+- id: da7bc079d166455a9cb13572b4f901c3
+  name: Enable Local and Remote Symbolic Links via fsutil
+  description: "Use fsutil to enable both \u2018remote to local\u2019 and \u2018remote\
+    \ to remote\u2019 symbolic links. This allows access to files from local shortcuts\
+    \ with local or remote paths.\n[reference](https://symantec-enterprise-blogs.security.com/threat-intelligence/noberus-blackcat-alphv-rust-ransomware/)\n"
+  tactic: defense-impairment
+  technique:
+    attack_id: T1222
+    name: File and Directory Permissions Modification
+  platforms:
+    windows:
+      cmd:
+        command: fsutil behavior set SymlinkEvaluation R2L:1 && fsutil behavior set
+          SymlinkEvaluation R2R:1
+        payloads: []
+        cleanup: fsutil behavior set SymlinkEvaluation R2L:0 && fsutil behavior set
+          SymlinkEvaluation R2R:0

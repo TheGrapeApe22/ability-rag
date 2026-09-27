@@ -1,0 +1,46 @@
+---
+- id: e425fac1a6a46933a8b7ae03e436bd94
+  name: Return Address Overwrite
+  description: 'This technique performs control-flow hijacking via Return Address
+    Overwriting.
+
+    It first identifies a code cave by scanning /proc/<pid>/maps
+
+    and writes the shellcode into it through /proc/<pid>/mem.
+
+    It then inspects the process stack (from the RSP register) and overwrite
+
+    every possibile candidate for return address with the location with the address
+    of the code cave,
+
+    the execution is redirected to the payload the moment the CPU executes the next
+    RET instruction.
+
+
+    Note: this test forks a child process to use as the injection target.
+
+    This allows the test to run on systems where ptrace_scope=1 (default on most Linux
+    distributions),
+
+    where a process can only modify the memory of its own descendants.
+
+    This may differ from a real-world scenario where the attacker targets an arbitrary
+    process,
+
+    but for the purpose of this test it preserves the detection-relevant behavior:
+    the same syscalls and /proc/<pid>/mem
+
+    access patterns are generated regardless of the relationship between injector
+    and target.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1055.009
+    name: 'Process Injection: Proc Memory'
+  platforms:
+    linux:
+      sh:
+        command: PathToAtomicsFolder/T1055.009/bin/return_address_overwrite
+        payloads: []
+        cleanup: rm -f /tmp/pwned

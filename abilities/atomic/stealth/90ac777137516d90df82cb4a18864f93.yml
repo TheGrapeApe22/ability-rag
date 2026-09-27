@@ -1,0 +1,17 @@
+---
+- id: 90ac777137516d90df82cb4a18864f93
+  name: Copy and Delete Mailbox Data on macOS
+  description: 'Copies and deletes mail data on macOS
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1070.008
+    name: 'Email Collection: Mailbox Manipulation'
+  platforms:
+    darwin:
+      sh:
+        command: mkdir ~/Library/Mail/copy; cp -R ~/Library/Mail/* ~/Library/Mail/copy;
+          rm -rf ~/Library/Mail/copy/*
+        payloads: []
+        cleanup: rm -rf ~/Library/Mail/copy

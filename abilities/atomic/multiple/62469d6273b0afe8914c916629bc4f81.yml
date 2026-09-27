@@ -1,0 +1,22 @@
+---
+- id: 62469d6273b0afe8914c916629bc4f81
+  name: Create/Append to .bash_logout
+  description: "The Bash shell runs ~/.bash_logout \"if it exists\" to run commands\
+    \ on user logout. An adversary may create or append to a .bash_logout to clear\
+    \ history, start processes etc. Note the ~/.bash_logout is only run if you explicitly\
+    \ exit or log out of an \"interactive login shell session\" i.e. via the console,\
+    \ SSH, /bin/bash -l or su -l <username>. \n\nThis test creates the art user, logs\
+    \ in, creates a .bash_logout which will echo some text into the art.txt file on\
+    \ logout and logs out and the /home/art/art.txt is created.\n"
+  tactic: multiple
+  technique:
+    attack_id: T1546.004
+    name: 'Event Triggered Execution: .bash_profile .bashrc and .shrc'
+  platforms:
+    linux:
+      sh:
+        command: useradd --create-home --shell /bin/bash art; su -l art -c "echo 'echo
+          \"Atomic Red Team was here... T1546.004\" >> /home/art/art.txt' >> /home/art/.bash_logout;
+          exit"
+        payloads: []
+        cleanup: userdel -fr art

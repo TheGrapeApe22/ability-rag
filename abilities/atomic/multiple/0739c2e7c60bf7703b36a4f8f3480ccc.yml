@@ -1,0 +1,18 @@
+---
+- id: 0739c2e7c60bf7703b36a4f8f3480ccc
+  name: System shell profile scripts
+  description: 'An adversary may wish to establish persistence by adding commands
+    into any of the script files in the /etc/profile.d/ directory, which are executed
+    every time "any" user logs in.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1546.004
+    name: 'Event Triggered Execution: .bash_profile .bashrc and .shrc'
+  platforms:
+    linux:
+      sh:
+        command: echo '# Atomic Red Team was here... T1546.004' >> /etc/profile.d/bash_completion.sh
+        payloads: []
+        cleanup: sed -i "s/# Atomic Red Team was here... T1546.004//" /etc/profile.d/bash_completion.sh

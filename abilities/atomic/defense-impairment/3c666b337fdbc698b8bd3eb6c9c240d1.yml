@@ -1,0 +1,16 @@
+---
+- id: 3c666b337fdbc698b8bd3eb6c9c240d1
+  name: Stop/Start Packet Filter
+  description: 'Stop the Packet Filter if installed.
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1686
+    name: Disable or Modify System Firewall
+  platforms:
+    linux:
+      sh:
+        command: service pf stop; service pf disable
+        payloads: []
+        cleanup: service pf enable; service pf start; service pf status

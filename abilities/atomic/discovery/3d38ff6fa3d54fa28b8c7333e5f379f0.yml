@@ -1,0 +1,23 @@
+---
+- id: 3d38ff6fa3d54fa28b8c7333e5f379f0
+  name: Security Software Discovery - AV Discovery via Get-CimInstance and Get-WmiObject
+    cmdlets
+  description: 'Discovery of installed antivirus products via Get-CimInstance and
+    Get-WmiObject cmdlets of powershell.
+
+
+    when sucessfully executed, information about installed AV software is displayed..
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1518.001
+    name: 'Software Discovery: Security Software Discovery'
+  platforms:
+    windows:
+      cmd:
+        command: powershell Get-CimInstance -Namespace root/securityCenter2 -classname
+          antivirusproduct && powershell Get-WmiObject -Namespace root\securitycenter2
+          -Class antivirusproduct
+        payloads: []
+        cleanup: ''

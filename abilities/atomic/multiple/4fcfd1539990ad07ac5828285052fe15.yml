@@ -1,0 +1,24 @@
+---
+- id: 4fcfd1539990ad07ac5828285052fe15
+  name: Modify RDP-Tcp Initial Program Registry Entry
+  description: 'If the fInheritInitialProgram value is set to 1, the exe indicated
+    in the InitialProgram value is automatically started on RDP connection.
+
+    Once the test commands are run, notepad will execute automatically on new RDP
+    connection
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1112
+    name: Modify Registry
+  platforms:
+    windows:
+      cmd:
+        command: reg add "HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp"
+          /v fInheritInitialProgram /t REG_DWORD /d 1 /f && reg add "HKLM\SYSTEM\CurrentControlSet\Control\Terminal
+          Server\WinStations\RDP-Tcp" /v InitialProgram /t REG_SZ /d "C:\Windows\System32\notepad.exe"
+          /f
+        payloads: []
+        cleanup: reg add "HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp"
+          /v InitialProgram /t REG_SZ /d "" /f

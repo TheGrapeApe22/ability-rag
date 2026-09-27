@@ -1,0 +1,18 @@
+---
+- id: da912f911c137cb52199c830f00a0da5
+  name: Cron - Add script to /etc/cron.d folder
+  description: 'This test adds a script to /etc/cron.d folder configured to execute
+    on a schedule.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1053.003
+    name: 'Scheduled Task/Job: Cron'
+  platforms:
+    linux:
+      sh:
+        command: echo "echo '*/5     *       *       *       *       root    echo
+          "Hello from Atomic Red Team"' > /tmp/atomic.log" > /etc/cron.d/persistevil
+        payloads: []
+        cleanup: rm /etc/cron.d/persistevil -f

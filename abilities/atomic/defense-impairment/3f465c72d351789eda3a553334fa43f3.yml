@@ -1,0 +1,22 @@
+---
+- id: 3f465c72d351789eda3a553334fa43f3
+  name: Clear bash history
+  description: "An attacker may clear the bash history cache and the history file\
+    \ as their last act before logging off to remove the record of their command line\
+    \ activities. \n\nIn this test we use the $HISTFILE variable throughout to 1.\
+    \ confirms the $HISTFILE variable is set 2. echo \"\" into it 3..5 confirm the\
+    \ file is empty 6 clear the history cache 7. confirm the history cache is empty.\
+    \ This is when the attacker would logoff.\n"
+  tactic: defense-impairment
+  technique:
+    attack_id: T1690
+    name: Prevent Command History Logging
+  platforms:
+    linux:
+      sh:
+        command: cp $HISTFILE $HISTFILE.OLD; if ((${#HISTFILE[@]})); then echo $HISTFILE;
+          fi; echo "" > $HISTFILE; if [ $(wc -c <$HISTFILE) -gt 1 ]; then echo "$HISTFILE
+          is larger than 1k"; fi; ls -la $HISTFILE ; cat $HISTFILE; history -c ; if
+          [ $(history |wc -l) -eq 1 ]; then echo "History cache cleared"; fi
+        payloads: []
+        cleanup: mv -f $HISTFILE.OLD $HISTFILE

@@ -1,0 +1,16 @@
+---
+- id: 00b8079429ee497bc192465a63bb8ceb
+  name: Auditing Configuration Changes on FreeBSD Host
+  description: 'Emulates modification of auditd configuration files
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685
+    name: Disable or Modify Tools
+  platforms:
+    linux:
+      sh:
+        command: echo '#art_test_1562_006_1' >> /etc/security/audit_event
+        payloads: []
+        cleanup: sed -i "" '/#art_test_1562_006_1/d' /etc/security/audit_event

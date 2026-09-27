@@ -1,0 +1,22 @@
+---
+- id: 2e67492398849fce5623b13a3fef49f2
+  name: Get Windows Defender exclusion settings using WMIC
+  description: "In this test, a WMIC command is used to probe the local Windows system\
+    \ for the configuration of Windows Defender's exclusions. This command targets\
+    \ the MSFT_MpPreference \nclass within the Windows Management Instrumentation\
+    \ (WMI) namespace, allowing the retrieval of critical settings such as disabled\
+    \ real-time monitoring and specified \nexclusion paths, file extensions, and processes.\
+    \ Attackers might use this approach to understand what is excluded from antivirus\
+    \ scans, enabling further exploitation.\n"
+  tactic: discovery
+  technique:
+    attack_id: T1518.001
+    name: 'Software Discovery: Security Software Discovery'
+  platforms:
+    windows:
+      cmd:
+        command: wmic /Node:localhost /Namespace:\\root\Microsoft\Windows\Defender
+          Path MSFT_MpPreference Get /format:list | findstr /i /C:"DisableRealtimeMonitoring"
+          /C:"ExclusionPath" /C:"ExclusionExtension" /C:"ExclusionProcess"
+        payloads: []
+        cleanup: ''

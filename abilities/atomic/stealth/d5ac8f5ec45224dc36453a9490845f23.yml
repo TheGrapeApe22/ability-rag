@@ -1,0 +1,22 @@
+---
+- id: d5ac8f5ec45224dc36453a9490845f23
+  name: Masquerading as Windows LSASS process
+  description: 'Copies cmd.exe, renames it, and launches it to masquerade as an instance
+    of lsass.exe.
+
+
+    Upon execution, cmd will be launched by powershell. If using Invoke-AtomicTest,
+    The test will hang until the 120 second timeout cancels the session
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1036.003
+    name: 'Masquerading: Rename System Utilities'
+  platforms:
+    windows:
+      cmd:
+        command: copy %SystemRoot%\System32\cmd.exe %SystemRoot%\Temp\lsass.exe &&
+          %SystemRoot%\Temp\lsass.exe /B
+        payloads: []
+        cleanup: del /Q /F %SystemRoot%\Temp\lsass.exe >nul 2>&1

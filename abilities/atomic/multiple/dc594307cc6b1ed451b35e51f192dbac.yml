@@ -1,0 +1,20 @@
+---
+- id: dc594307cc6b1ed451b35e51f192dbac
+  name: Packet Capture Linux socket AF_INET,SOCK_PACKET,UDP with sudo
+  description: 'Captures packets with domain=AF_INET,type=SOCK_PACKET,protocol=UDP
+    for a few seconds.
+
+    SOCK_PACKET is "obsolete" according to the man page, but still works on Ubuntu
+    20.04
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1040
+    name: Network Sniffing
+  platforms:
+    linux:
+      sh:
+        command: sudo /tmp/t1040_linux_pcapdemo -4 -P -p 17 -t 3
+        payloads: []
+        cleanup: rm -f /tmp/t1040_linux_pcapdemo

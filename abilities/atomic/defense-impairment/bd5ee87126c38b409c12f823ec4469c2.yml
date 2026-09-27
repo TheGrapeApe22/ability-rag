@@ -1,0 +1,22 @@
+---
+- id: bd5ee87126c38b409c12f823ec4469c2
+  name: Opening ports for proxy - HARDRAIN
+  description: 'This test creates a listening interface on a victim device. This tactic
+    was used by HARDRAIN for proxying.
+
+
+    reference: https://www.us-cert.gov/sites/default/files/publications/MAR-10135536-F.pdf
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1686
+    name: Disable or Modify System Firewall
+  platforms:
+    windows:
+      cmd:
+        command: netsh advfirewall firewall add rule name="atomic testing" action=allow
+          dir=in protocol=TCP localport=450
+        payloads: []
+        cleanup: netsh advfirewall firewall delete rule name="atomic testing" protocol=TCP
+          localport=450 >nul 2>&1

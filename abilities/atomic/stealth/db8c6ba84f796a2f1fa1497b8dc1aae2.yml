@@ -1,0 +1,27 @@
+---
+- id: db8c6ba84f796a2f1fa1497b8dc1aae2
+  name: Pad Binary to Change Hash using truncate command - Linux/macOS
+  description: 'Uses truncate to add a byte to the binary to change the hash.
+
+
+    Upon successful execution, truncate will modify `/tmp/evil-binary`, therefore
+    the expected hash will change.
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1027.001
+    name: 'Obfuscated Files or Information: Binary Padding'
+  platforms:
+    linux:
+      sh:
+        command: 'if [ -f /tmp/evil-binary ]; then : ; else cp /bin/ls /tmp/evil-binary;
+          fi;  truncate -s +1 /tmp/evil-binary'
+        payloads: []
+        cleanup: rm /tmp/evil-binary
+    darwin:
+      sh:
+        command: 'if [ -f /tmp/evil-binary ]; then : ; else cp /bin/ls /tmp/evil-binary;
+          fi;  truncate -s +1 /tmp/evil-binary'
+        payloads: []
+        cleanup: rm /tmp/evil-binary

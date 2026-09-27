@@ -1,0 +1,17 @@
+---
+- id: 5d33ac0040c34d41ff53062518e841c7
+  name: Compressing data using GZip in Python (FreeBSD/Linux)
+  description: 'Uses GZip from Python to compress files
+
+    '
+  tactic: collection
+  technique:
+    attack_id: T1560.002
+    name: 'Archive Collected Data: Archive via Library'
+  platforms:
+    linux:
+      sh:
+        command: which_python=`which python || which python3`; $which_python -c "import
+          gzip;input_file=open('/etc/passwd', 'rb');content=input_file.read();input_file.close();output_file=gzip.GzipFile('/tmp/passwd.gz','wb',compresslevel=6);output_file.write(content);output_file.close();"
+        payloads: []
+        cleanup: rm /tmp/passwd.gz

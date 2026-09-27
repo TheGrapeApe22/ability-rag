@@ -1,0 +1,17 @@
+---
+- id: 4e0f69a36c9e0b956f08afd5824972ce
+  name: Activate Guest Account
+  description: 'The Adversaries can activate the default Guest user. The guest account
+    is inactivated by default
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1078.001
+    name: 'Valid Accounts: Default Accounts'
+  platforms:
+    windows:
+      cmd:
+        command: net user guest /active:yes
+        payloads: []
+        cleanup: net user guest /active:no

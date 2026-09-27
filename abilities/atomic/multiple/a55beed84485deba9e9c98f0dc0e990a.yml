@@ -1,0 +1,20 @@
+---
+- id: a55beed84485deba9e9c98f0dc0e990a
+  name: Abusing MyComputer Disk Backup Path for Persistence
+  description: 'Replacing the registry settings with custom executable will end up
+    with the replacement programs being executed at the time OS will decide to kick
+    off the respective activity
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1112
+    name: Modify Registry
+  platforms:
+    windows:
+      cmd:
+        command: reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\BackupPath"
+          /t REG_EXPAND_SZ /d "%systemroot%\system32\notepad.exe" /f
+        payloads: []
+        cleanup: reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\BackupPath"
+          /t REG_EXPAND_SZ /d "%SystemRoot%\system32\sdclt.exe" /f

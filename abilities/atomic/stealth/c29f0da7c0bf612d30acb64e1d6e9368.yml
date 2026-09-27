@@ -1,0 +1,21 @@
+---
+- id: c29f0da7c0bf612d30acb64e1d6e9368
+  name: Invoke HTML Application - Simulate Lateral Movement over UNC Path
+  description: Executes an HTA Application with Simulate lateral movement over UNC
+    Path.
+  tactic: stealth
+  technique:
+    attack_id: T1218.005
+    name: 'Signed Binary Proxy Execution: Mshta'
+  platforms:
+    windows:
+      psh:
+        command: $RequiredModule = Get-Module -Name AtomicTestHarnesses -ListAvailable;
+          if (-not $RequiredModule) {Install-Module -Name AtomicTestHarnesses -Scope
+          CurrentUser -Force};  Invoke-ATHHTMLApplication -TemplatePE -AsLocalUNCPath
+          -MSHTAFilePath $env:windir\system32\mshta.exe
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

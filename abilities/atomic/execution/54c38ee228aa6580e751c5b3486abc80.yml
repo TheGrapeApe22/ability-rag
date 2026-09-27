@@ -1,0 +1,22 @@
+---
+- id: 54c38ee228aa6580e751c5b3486abc80
+  name: Pipe Creation - PsExec Tool Execution From Suspicious Locations
+  description: "Requires PsExec tool installed. BlackCat Ransomeware tried to propagate\
+    \ by creating pipe using PsExec process executing from suspicious locations (In\
+    \ the particular case the legitimate PsExec executable is embedded within the\
+    \ Windows variant and is dropped in the victim\u2019s %TEMP% directory). pon successful\
+    \ execution, PsExec will be executed from suspicious location and create a new\
+    \ pipe to execute CMD."
+  tactic: execution
+  technique:
+    attack_id: T1569.002
+    name: 'System Services: Service Execution'
+  platforms:
+    windows:
+      psh:
+        command: cd C:\Users\Public\Temp\ ; .\PsExec.exe -i -s cmd  -accepteula
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

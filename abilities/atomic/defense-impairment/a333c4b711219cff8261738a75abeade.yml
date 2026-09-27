@@ -1,0 +1,18 @@
+---
+- id: a333c4b711219cff8261738a75abeade
+  name: Azure - Create Snapshot from Managed Disk
+  description: 'Creates a snapshot of a managed disk in Azure using the Azure CLI.
+
+    Simulates adversary snapshotting behavior for persistence or data duplication.
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1578.001
+    name: 'Modify Cloud Compute Infrastructure: Create Snapshot'
+  platforms:
+    unknown:
+      sh:
+        command: az snapshot create --resource-group
+        payloads: []
+        cleanup: az snapshot delete --resource-group

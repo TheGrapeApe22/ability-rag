@@ -1,0 +1,20 @@
+---
+- id: c830227b2970ddd7620b51a37ab58e8e
+  name: Enable Local and Remote Symbolic Links via reg.exe
+  description: "Use reg.exe to enable both \u2018remote to local\u2019 and \u2018\
+    remote to remote\u2019 symbolic links. This allows access to files from local\
+    \ shortcuts with local or remote paths.\n[reference](https://symantec-enterprise-blogs.security.com/threat-intelligence/noberus-blackcat-alphv-rust-ransomware/)\n"
+  tactic: defense-impairment
+  technique:
+    attack_id: T1222
+    name: File and Directory Permissions Modification
+  platforms:
+    windows:
+      cmd:
+        command: reg add "HKLM\SYSTEM\CurrentControlSet\Control\FileSystem" /v SymlinkRemoteToLocalEvaluation
+          /t REG_DWORD /d "1" /f && reg add "HKLM\SYSTEM\CurrentControlSet\Control\FileSystem"
+          /v SymlinkRemoteToRemoteEvaluation /t REG_DWORD /d "1" /f
+        payloads: []
+        cleanup: reg add "HKLM\SYSTEM\CurrentControlSet\Control\FileSystem" /v SymlinkRemoteToLocalEvaluation
+          /t REG_DWORD /d "0" /f && reg add "HKLM\SYSTEM\CurrentControlSet\Control\FileSystem"
+          /v SymlinkRemoteToRemoteEvaluation /t REG_DWORD /d "0" /f

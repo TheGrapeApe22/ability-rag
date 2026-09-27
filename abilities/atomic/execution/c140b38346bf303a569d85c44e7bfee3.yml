@@ -1,0 +1,47 @@
+---
+- id: c140b38346bf303a569d85c44e7bfee3
+  name: Masquerade Malicious Service as Legitimate System Service
+  description: 'Creates a systemd service with a name and description closely resembling
+    a legitimate
+
+    system service to blend in with normal service activity. Adversaries may deliberately
+
+    choose service names similar to well-known system services such as systemd-networkd,
+
+    cron, or ssh to evade detection from analysts reviewing service lists or automated
+
+    alerting on service names.
+
+
+    This masquerading technique is particularly effective in environments where detection
+
+    relies on service name allowlists or manual review of systemctl list-units output
+
+    rather than behavioural analysis of service unit file contents and ExecStart paths.
+
+    '
+  tactic: execution
+  technique:
+    attack_id: T1569.003
+    name: 'System Services: Systemctl'
+  platforms:
+    linux:
+      sh:
+        command: echo "[Unit]" > /etc/systemd/system/systemd-network-helper.service;
+          echo "Description=Network connectivity helper service" >> /etc/systemd/system/systemd-network-helper.service;
+          echo "After=network.target" >> /etc/systemd/system/systemd-network-helper.service;
+          echo "Before=network-online.target" >> /etc/systemd/system/systemd-network-helper.service;
+          echo "" >> /etc/systemd/system/systemd-network-helper.service; echo "[Service]"
+          >> /etc/systemd/system/systemd-network-helper.service; echo "ExecStart=/bin/bash
+          -c "echo masquerade > /tmp/atomic_masquerade_output.txt"" >> /etc/systemd/system/systemd-network-helper.service;
+          echo "Restart=on-failure" >> /etc/systemd/system/systemd-network-helper.service;
+          echo "RestartSec=5" >> /etc/systemd/system/systemd-network-helper.service;
+          echo "" >> /etc/systemd/system/systemd-network-helper.service; echo "[Install]"
+          >> /etc/systemd/system/systemd-network-helper.service; echo "WantedBy=multi-user.target"
+          >> /etc/systemd/system/systemd-network-helper.service; systemctl daemon-reload;
+          systemctl start systemd-network-helper.service; systemctl status systemd-network-helper.service
+        payloads: []
+        cleanup: systemctl stop systemd-network-helper.service 2>/dev/null || true;
+          systemctl disable systemd-network-helper.service 2>/dev/null || true; rm
+          -f /etc/systemd/system/systemd-network-helper.service; systemctl daemon-reload;
+          rm -f /tmp/atomic_masquerade_output.txt

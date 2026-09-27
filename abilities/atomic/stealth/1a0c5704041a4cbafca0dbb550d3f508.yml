@@ -1,0 +1,23 @@
+---
+- id: 1a0c5704041a4cbafca0dbb550d3f508
+  name: Create Hidden Directory via $index_allocation
+  description: 'Create an Alternate Data Stream Directory and File with the command
+    prompt. Write access is required. Upon execution,
+
+    run "dir /A /Q /R" in the %temp% folder to view that the alternate data stream
+    folder exists. To view the data in the
+
+    alternate data stream, run "type %temp%\...$.......::$index_allocation\secrets.txt"
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1564.004
+    name: 'Hide Artifacts: NTFS File Attributes'
+  platforms:
+    windows:
+      cmd:
+        command: md %temp%\...$.......::$index_allocation && echo too many secrets
+          > %temp%\...$.......::$index_allocation\secrets.txt
+        payloads: []
+        cleanup: rmdir /S /Q %temp%\...$.......::$index_allocation >nul 2>&1

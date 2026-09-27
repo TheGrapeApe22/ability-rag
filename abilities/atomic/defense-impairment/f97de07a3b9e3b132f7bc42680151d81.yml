@@ -1,0 +1,16 @@
+---
+- id: f97de07a3b9e3b132f7bc42680151d81
+  name: Edit UFW firewall main configuration file
+  description: "Edit the Uncomplicated Firewall (UFW) main configuration file for\
+    \ setting \ndefault policies /etc/default/ufw.\n"
+  tactic: defense-impairment
+  technique:
+    attack_id: T1686
+    name: Disable or Modify System Firewall
+  platforms:
+    linux:
+      sh:
+        command: echo "# THIS IS A COMMENT" >> /etc/default/ufw; grep "# THIS IS A
+          COMMENT" /etc/default/ufw
+        payloads: []
+        cleanup: sed -i 's/# THIS IS A COMMENT//g' /etc/default/ufw

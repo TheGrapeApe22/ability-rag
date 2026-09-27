@@ -1,0 +1,25 @@
+---
+- id: 6030515771f31561f2b87d5832743888
+  name: chattr - Remove immutable file attribute
+  description: 'Remove''s a file''s `immutable` attribute using `chattr`.
+
+    This technique was used by the threat actor Rocke during the compromise of Linux
+    web servers.
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1222.002
+    name: 'File and Directory Permissions Modification: FreeBSD, Linux and Mac File
+      and Directory Permissions Modification'
+  platforms:
+    darwin:
+      sh:
+        command: chattr -i /var/spool/cron/root
+        payloads: []
+        cleanup: ''
+    linux:
+      sh:
+        command: chattr -i /var/spool/cron/root
+        payloads: []
+        cleanup: ''

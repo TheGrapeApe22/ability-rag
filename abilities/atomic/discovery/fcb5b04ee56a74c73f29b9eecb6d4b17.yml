@@ -1,0 +1,20 @@
+---
+- id: fcb5b04ee56a74c73f29b9eecb6d4b17
+  name: Remote System Discovery - nltest
+  description: 'Identify domain controllers for specified domain.
+
+
+    Upon successful execution, cmd.exe will execute nltest.exe against a target domain
+    to retrieve a list of domain controllers. Output will be via stdout.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1018
+    name: Remote System Discovery
+  platforms:
+    windows:
+      cmd:
+        command: nltest.exe /dclist:%userdnsdomain%
+        payloads: []
+        cleanup: ''

@@ -1,0 +1,18 @@
+---
+- id: 6881a4589710d53f0c146e91db513f01
+  name: Windows Internal Packet Capture
+  description: 'Uses the built-in Windows packet capture
+
+    After execution you should find a file named trace.etl and trace.cab in the temp
+    directory'
+  tactic: multiple
+  technique:
+    attack_id: T1040
+    name: Network Sniffing
+  platforms:
+    windows:
+      cmd:
+        command: netsh trace start capture=yes tracefile=%temp%\trace.etl maxsize=10
+        payloads: []
+        cleanup: netsh trace stop >nul 2>&1 && TIMEOUT /T 5 >nul 2>&1 && del %temp%\trace.etl
+          >nul 2>&1 && del %temp%\trace.cab >nul 2>&1

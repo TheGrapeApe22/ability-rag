@@ -1,0 +1,22 @@
+---
+- id: 879ca53b9d98c0a7fbcf8759d79ec560
+  name: Elevated group enumeration using net group (Domain)
+  description: 'Runs "net group" command including command aliases and loose typing
+    to simulate enumeration/discovery of high value domain groups. This
+
+    test will display some errors if run on a computer not connected to a domain.
+    Upon execution, domain information will be displayed.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1069.002
+    name: 'Permission Groups Discovery: Domain Groups'
+  platforms:
+    windows:
+      cmd:
+        command: net groups "Account Operators" /domain && net groups "Exchange Organization
+          Management" /domain && net group "BUILTIN\Backup Operators" /domain && net
+          group "Domain Admins" /domain
+        payloads: []
+        cleanup: ''

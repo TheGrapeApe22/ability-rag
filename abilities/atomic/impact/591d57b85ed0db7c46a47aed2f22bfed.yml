@@ -1,0 +1,24 @@
+---
+- id: 591d57b85ed0db7c46a47aed2f22bfed
+  name: Linux - Stop service by killing process using kill
+  description: 'Stops a specified service by sending a SIGTERM signal to the linked
+    process using the kill command. Upon execution, if the service''s main process
+    was running, it will be terminated.
+
+    If the service was not running, no process will be found to kill and it can be
+    restarted by running the cleanup command.
+
+    You can list all available services with following command: "systemctl list-units
+    --type=service"
+
+    '
+  tactic: impact
+  technique:
+    attack_id: T1489
+    name: Service Stop
+  platforms:
+    linux:
+      sh:
+        command: sudo kill -SIGTERM $(pgrep cron)
+        payloads: []
+        cleanup: sudo systemctl start cron 2> /dev/null

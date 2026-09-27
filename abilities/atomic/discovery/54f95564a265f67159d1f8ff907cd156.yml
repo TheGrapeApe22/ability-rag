@@ -1,0 +1,28 @@
+---
+- id: 54f95564a265f67159d1f8ff907cd156
+  name: Enumerate COM Objects in Registry with Powershell
+  description: "This test is designed to enumerate the COM objects listed in HKCR,\
+    \ then output their methods and CLSIDs to a text file.\nAn adversary could then\
+    \ use this information to identify COM objects that might be vulnerable to abuse,\
+    \ such as using them to spawn arbitrary processes. \nSee: https://www.mandiant.com/resources/hunting-com-objects"
+  tactic: discovery
+  technique:
+    attack_id: T1012
+    name: Query Registry
+  platforms:
+    windows:
+      psh:
+        command: New-PSDrive -PSProvider registry -Root HKEY_CLASSES_ROOT -Name HKCR;
+          Get-ChildItem -Path HKCR:\CLSID -Name | Select -Skip 1 > $env:temp\clsids.txt;
+          ForEach($CLSID in Get-Content "$env:temp\clsids.txt"); {try{write-output
+          "$($Position)-$($CLSID)"; write-output "------------"| out-file $env:temp\T1592.002Test1.txt
+          -append; write-output $($CLSID)| out-file $env:temp\T1592.002Test1.txt -append;
+          $handle=[activator]::CreateInstance([type]::GetTypeFromCLSID($CLSID)); $handle
+          | get-member -erroraction silentlycontinue | out-file $env:temp\T1592.002Test1.txt
+          -append; $position += 1} catch{}}
+        payloads: []
+        cleanup: remove-item $env:temp\T1592.002Test1.txt -force -erroraction silentlycontinue;
+          remove-item $env:temp\clsids.txt -force -erroraction silentlycontinue
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

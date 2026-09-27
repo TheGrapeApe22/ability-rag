@@ -1,0 +1,37 @@
+---
+- id: f7c881e0d021a2f5b45546b5d0b4998e
+  name: Winlogon Notify Key Logon Persistence - PowerShell
+  description: 'PowerShell code to set Winlogon Notify key to execute a notification
+    package DLL at logon.
+
+
+    Upon successful execution, PowerShell will modify a registry value to execute
+    atomicNotificationPackage.dll upon logon.
+
+
+    Please note that Winlogon Notifications have been removed as of Windows Vista
+    / Windows Server 2008 and that this test thus only applies to erlier versions
+    of Windows.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1547.004
+    name: 'Boot or Logon Autostart Execution: Winlogon Helper DLL'
+  platforms:
+    windows:
+      psh:
+        command: New-Item "HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Winlogon\Notify\AtomicRedTeam"
+          -Force; Set-ItemProperty "HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Winlogon\Notify\AtomicRedTeam"
+          "DllName" "C:\Windows\Temp\atomicNotificationPackage.dll" -Type ExpandString
+          -Force; Set-ItemProperty "HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Winlogon\Notify\AtomicRedTeam"
+          "Logon" "AtomicTestFunction" -Force; Set-ItemProperty "HKCU:\Software\Microsoft\Windows
+          NT\CurrentVersion\Winlogon\Notify\AtomicRedTeam" "Impersonate" 1 -Type DWord
+          -Force; Set-ItemProperty "HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Winlogon\Notify\AtomicRedTeam"
+          "Asynchronous" 0 -Type DWord -Force
+        payloads: []
+        cleanup: Remove-Item "HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Winlogon\Notify"
+          -Force -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

@@ -1,0 +1,17 @@
+---
+- id: 541ae50dab880a665b83c2234a40c0a8
+  name: Clear Docker Container Logs
+  description: 'Clears Docker container logs using the Docker CLI and the truncate
+    command, removing all log entries.
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1070.003
+    name: 'Indicator Removal on Host: Clear Command History'
+  platforms:
+    linux:
+      sh:
+        command: docker container prune -f && sudo truncate -s 0 /var/lib/docker/containers/*/*-json.log
+        payloads: []
+        cleanup: ''

@@ -1,0 +1,16 @@
+---
+- id: 10971624ef3e693f52e8f526fdc26f5f
+  name: Reboot System via `halt` - Linux
+  description: 'This test restarts a Linux system using `halt`.
+
+    '
+  tactic: impact
+  technique:
+    attack_id: T1529
+    name: System Shutdown/Reboot
+  platforms:
+    linux:
+      sh:
+        command: halt --reboot
+        payloads: []
+        cleanup: ''

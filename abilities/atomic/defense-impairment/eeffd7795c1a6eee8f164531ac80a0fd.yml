@@ -1,0 +1,15 @@
+---
+- id: eeffd7795c1a6eee8f164531ac80a0fd
+  name: Blackbit - Disable Windows Firewall using netsh firewall
+  description: "An adversary tries to modify the windows firewall configuration using\
+    \ the deprecated netsh firewall command (command still works).     \n"
+  tactic: defense-impairment
+  technique:
+    attack_id: T1686
+    name: Disable or Modify System Firewall
+  platforms:
+    windows:
+      cmd:
+        command: netsh firewall set opmode mode=disable
+        payloads: []
+        cleanup: netsh firewall set opmode mode=enable >nul 2>&1

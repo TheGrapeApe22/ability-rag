@@ -1,0 +1,19 @@
+---
+- id: b21d3cc0264422aab3d86bab38c7e894
+  name: MSBuild Bypass Using Inline Tasks (VB)
+  description: 'Executes the code in a project file using msbuild.exe. The default
+    Visual Basic example file (vb.xml) will simply print "Hello from a Visual Basic
+    inline task!" to the screen.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1127.001
+    name: 'Trusted Developer Utilities Proxy Execution: MSBuild'
+  platforms:
+    windows:
+      cmd:
+        command: C:\Windows\Microsoft.NET\Framework\v4.0.30319\msbuild.exe "f8ed8b_vb.xml"
+        payloads:
+        - f8ed8b_vb.xml
+        cleanup: ''

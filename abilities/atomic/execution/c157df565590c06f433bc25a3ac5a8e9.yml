@@ -1,0 +1,19 @@
+---
+- id: c157df565590c06f433bc25a3ac5a8e9
+  name: LinEnum tool execution
+  description: 'LinEnum is a bash script that performs discovery commands for accounts,processes,
+    kernel version, applications, services, and uses the information from these commands
+    to present operator with ways of escalating privileges or further exploitation
+    of targeted host.
+
+    '
+  tactic: execution
+  technique:
+    attack_id: T1059.004
+    name: 'Command and Scripting Interpreter: Bash'
+  platforms:
+    linux:
+      sh:
+        command: chmod +x PathToAtomicsFolder/T1059.004/src/LinEnum.sh; bash PathToAtomicsFolder/T1059.004/src/LinEnum.sh
+        payloads: []
+        cleanup: rm -rf PathToAtomicsFolder/T1059.004/src/LinEnum.sh

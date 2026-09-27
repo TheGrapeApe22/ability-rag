@@ -1,0 +1,26 @@
+---
+- id: 97eb1eb07611c5f98768250b1b705a67
+  name: Trap SIGINT
+  description: 'Launch bash shell with command arg to create TRAP on SIGINT (CTRL+C),
+    then send SIGINT signal.
+
+    The trap executes script that writes to /tmp/art-fish.txt
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1546.005
+    name: 'Event Triggered Execution: Trap'
+  platforms:
+    darwin:
+      sh:
+        command: bash -c 'trap "nohup sh $PathToAtomicsFolder/T1546.005/src/echo-art-fish.sh"
+          SIGINT && kill -SIGINT $$'
+        payloads: []
+        cleanup: rm -f /tmp/art-fish.txt
+    linux:
+      sh:
+        command: bash -c 'trap "nohup sh $PathToAtomicsFolder/T1546.005/src/echo-art-fish.sh"
+          SIGINT && kill -SIGINT $$'
+        payloads: []
+        cleanup: rm -f /tmp/art-fish.txt

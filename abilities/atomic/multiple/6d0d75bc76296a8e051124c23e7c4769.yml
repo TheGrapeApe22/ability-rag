@@ -1,0 +1,19 @@
+---
+- id: 6d0d75bc76296a8e051124c23e7c4769
+  name: Detect Virtualization Environment (FreeBSD)
+  description: 'Detects execution in a virtualized environment.
+
+    At boot, dmesg stores a log if a hypervisor is detected.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1497.001
+    name: 'Virtualization/Sandbox Evasion: System Checks'
+  platforms:
+    linux:
+      sh:
+        command: if [ "$(sysctl -n hw.hv_vendor)" != "" ]; then echo "Virtualization
+          Environment detected"; fi
+        payloads: []
+        cleanup: ''

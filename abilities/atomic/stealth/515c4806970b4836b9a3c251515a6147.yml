@@ -1,0 +1,16 @@
+---
+- id: 515c4806970b4836b9a3c251515a6147
+  name: Hidden files
+  description: 'Requires Apple Dev Tools
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1564.001
+    name: 'Hide Artifacts: Hidden Files and Directories'
+  platforms:
+    darwin:
+      sh:
+        command: setfile -a V /tmp/evil
+        payloads: []
+        cleanup: ''

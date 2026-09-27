@@ -1,0 +1,22 @@
+---
+- id: 61a3e3faa588f1946a659139d6fd7a18
+  name: Windows - Stop service using net.exe
+  description: 'Stops a specified service using the net.exe command. Upon execution,
+    if the service was running "The Print Spooler service was stopped successfully."
+
+    will be displayed. If the service was not running, "The Print Spooler service
+    is not started." will be displayed and it can be
+
+    started by running the cleanup command.
+
+    '
+  tactic: impact
+  technique:
+    attack_id: T1489
+    name: Service Stop
+  platforms:
+    windows:
+      cmd:
+        command: net.exe stop spooler
+        payloads: []
+        cleanup: net.exe start spooler >nul 2>&1

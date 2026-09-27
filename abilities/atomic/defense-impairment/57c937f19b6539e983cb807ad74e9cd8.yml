@@ -1,0 +1,15 @@
+---
+- id: 57c937f19b6539e983cb807ad74e9cd8
+  name: Tail the UFW firewall log file
+  description: "Print  the last 10 lines of the Uncomplicated Firewall (UFW) log file\
+    \ \n/var/log/ufw.log.\n"
+  tactic: defense-impairment
+  technique:
+    attack_id: T1686
+    name: Disable or Modify System Firewall
+  platforms:
+    linux:
+      sh:
+        command: tail /var/log/ufw.log
+        payloads: []
+        cleanup: ''

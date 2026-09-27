@@ -1,0 +1,17 @@
+---
+- id: 5fab72013505efcd896475f9fe06c280
+  name: Capture Linux Desktop using Import Tool
+  description: 'Use import command from ImageMagick to collect a full desktop screenshot
+
+    '
+  tactic: collection
+  technique:
+    attack_id: T1113
+    name: Screen Capture
+  platforms:
+    linux:
+      sh:
+        command: 'if import -help > /dev/null 2>&1; then : ; else sudo apt install
+          graphicsmagick-imagemagick-compat; fi;  import -window root /tmp/T1113_desktop.png'
+        payloads: []
+        cleanup: rm /tmp/T1113_desktop.png

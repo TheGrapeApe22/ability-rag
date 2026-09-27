@@ -1,0 +1,20 @@
+---
+- id: 84457d914b35ebe7b506e70b66067f6b
+  name: Create Windows System File with Attrib
+  description: 'Creates a file and marks it as a system file using the attrib.exe
+    utility. Upon execution, open the file in file explorer then open Properties >
+    Details
+
+    and observe that the Attributes are "SA" for System and Archive.
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1564.001
+    name: 'Hide Artifacts: Hidden Files and Directories'
+  platforms:
+    windows:
+      cmd:
+        command: attrib.exe +s %temp%\T1564.001.txt
+        payloads: []
+        cleanup: del /A:S %temp%\T1564.001.txt >nul 2>&1

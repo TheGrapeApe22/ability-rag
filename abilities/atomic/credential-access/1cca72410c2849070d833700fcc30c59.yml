@@ -1,0 +1,20 @@
+---
+- id: 1cca72410c2849070d833700fcc30c59
+  name: Simulating access to Opera Login Data
+  description: "Simulates an adversary accessing encrypted credentials from Opera\
+    \ web browser's login database. \n"
+  tactic: credential-access
+  technique:
+    attack_id: T1555.003
+    name: 'Credentials from Password Stores: Credentials from Web Browsers'
+  platforms:
+    windows:
+      psh:
+        command: Copy-Item "$env:APPDATA\Opera Software\Opera Stable\Login Data" -Destination
+          "PathToAtomicsFolder\..\ExternalPayloads"
+        payloads: []
+        cleanup: Remove-Item -Path "PathToAtomicsFolder\..\ExternalPayloads\Login
+          Data" -Force -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

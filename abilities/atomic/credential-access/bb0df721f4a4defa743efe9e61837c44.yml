@@ -1,0 +1,25 @@
+---
+- id: bb0df721f4a4defa743efe9e61837c44
+  name: Cached Credential Dump via Cmdkey
+  description: 'List credentials currently stored on the host via the built-in Windows
+    utility cmdkey.exe
+
+    Credentials listed with Cmdkey only pertain to the current user
+
+    Passwords will not be displayed once they are stored
+
+    https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/cmdkey
+
+    https://www.peew.pw/blog/2017/11/26/exploring-cmdkey-an-edge-case-for-privilege-escalation
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1003.005
+    name: 'OS Credential Dumping: Cached Domain Credentials'
+  platforms:
+    windows:
+      cmd:
+        command: cmdkey /list
+        payloads: []
+        cleanup: ''

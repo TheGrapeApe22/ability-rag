@@ -1,0 +1,28 @@
+---
+- id: 5ffa5b3b330848d39dc1728365dad61c
+  name: Set a file's creation timestamp
+  description: 'Stomps on the create timestamp of a file
+
+
+    Setting the creation timestamp requires changing the system clock and reverting.
+
+    Sudo or root privileges are required to change date. Use with caution.
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1070.006
+    name: 'Indicator Removal on Host: Timestomp'
+  platforms:
+    linux:
+      sh:
+        command: NOW=$(date +%m%d%H%M%Y); date 010100001971; touch /tmp/T1070.006-creation.txt;
+          date "$NOW"; stat /tmp/T1070.006-creation.txt
+        payloads: []
+        cleanup: rm -f /tmp/T1070.006-creation.txt
+    darwin:
+      sh:
+        command: NOW=$(date +%m%d%H%M%Y); date 010100001971; touch /tmp/T1070.006-creation.txt;
+          date "$NOW"; stat /tmp/T1070.006-creation.txt
+        payloads: []
+        cleanup: rm -f /tmp/T1070.006-creation.txt

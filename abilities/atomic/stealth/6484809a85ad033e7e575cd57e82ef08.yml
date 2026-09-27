@@ -1,0 +1,22 @@
+---
+- id: 6484809a85ad033e7e575cd57e82ef08
+  name: Copy and Modify Mailbox Data on Linux
+  description: 'Copies and modifies mail data on Linux
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1070.008
+    name: 'Email Collection: Mailbox Manipulation'
+  platforms:
+    linux:
+      sh:
+        command: if [ -z "$(ls -A /var/spool/mail/)" ]; then if [ -z "$(ls -A /var/spool/mail/)"
+          ]; then touch /var/spool/mail/temp; fi; fi;  mkdir -p /var/spool/mail/copy;
+          for file in /var/spool/mail/*; do if [ "$(basename "$file")" != "copy" ];
+          then cp -R "$file" /var/spool/mail/copy/; if [ -f "/var/spool/mail/copy/$(basename
+          "$file")" ]; then echo "Modification for Atomic Red Test" >> "/var/spool/mail/copy/$(basename
+          "$file")"; fi; fi; done
+        payloads: []
+        cleanup: rm -rf /var/spool/mail/copy; if [ -f "$(ls -A /var/spool/mail/temp)"
+          ]; then rm /var/spool/mail/temp; fi

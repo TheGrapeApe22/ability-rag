@@ -1,0 +1,31 @@
+---
+- id: a143851d865d77e7c3638b148820324c
+  name: Copy and Compress AppData Folder
+  description: 'Copies the AppData folder, compresses it, and cleans up temporary
+    files.
+
+    '
+  tactic: collection
+  technique:
+    attack_id: T1560.001
+    name: 'Archive Collected Data: Archive via Utility'
+  platforms:
+    windows:
+      psh:
+        command: if (-not ([Security.Principal.WindowsPrincipal] `;     [Security.Principal.WindowsIdentity]::GetCurrent()
+          { ; } else {Run PowerShell as Administrator and ensure .NET compression
+          assemblies are available.};  $AppData="$env:USERPROFILE\AppData"; $Copy="$env:USERPROFILE\Desktop\AppDataCopy";
+          $Zip="$env:USERPROFILE\Desktop\AppDataBackup.zip"; if (Test-Path $Copy)
+          { Remove-Item $Copy -Recurse -Force }; New-Item -ItemType Directory -Path
+          $Copy | Out-Null; Get-ChildItem $AppData -Recurse -Force | ForEach-Object
+          {;   $rel = $_.FullName.Substring($AppData.Length + 1);   $dest = Join-Path
+          $Copy $rel;   if ($_.PSIsContainer) { New-Item -ItemType Directory -Path
+          $dest -Force | Out-Null };   else { Copy-Item $_.FullName -Destination $dest
+          -Force -ErrorAction SilentlyContinue }; }; Add-Type -AssemblyName System.IO.Compression.FileSystem;
+          [System.IO.Compression.ZipFile]::CreateFromDirectory($Copy, $Zip, [System.IO.Compression.CompressionLevel]::Optimal,
+          $false)
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

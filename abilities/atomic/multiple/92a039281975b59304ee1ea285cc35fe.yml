@@ -1,0 +1,20 @@
+---
+- id: 92a039281975b59304ee1ea285cc35fe
+  name: Use PsExec to elevate to NT Authority\SYSTEM account
+  description: "PsExec is a powerful tool most known for its remote management capability.\
+    \ However, it can also be used to run processes as the local system account.\n\
+    \nThe local system account is a default windows account which has unrestricted\
+    \ access to all system resources.\n\nUpon successful execution, PsExec.exe will\
+    \ spawn a command prompt which will run 'whoami' as the local system account and\
+    \ then exit.    \n"
+  tactic: multiple
+  technique:
+    attack_id: T1078.003
+    name: 'Valid Accounts: Local Accounts'
+  platforms:
+    windows:
+      cmd:
+        command: '"PathToAtomicsFolder\..\ExternalPayloads\PsExec.exe" -accepteula
+          -s %COMSPEC% /c whoami'
+        payloads: []
+        cleanup: ''

@@ -1,0 +1,26 @@
+---
+- id: 94ed0dc720f83c0a463b67ceb15cbabd
+  name: Add launch script to launch daemon
+  description: 'Add launch script to /Library/StartupItems to launch agent
+
+    [Example](https://cybersecurity.att.com/blogs/labs-research/diversity-in-recent-mac-malware)
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1037.005
+    name: 'Boot or Logon Initialization Scripts: Startup Items'
+  platforms:
+    darwin:
+      sh:
+        command: sudo cp ed9e67_StartupParameters.plist /Library/StartupItems/StartupParameters.plist;
+          sudo cp e2722e_T1037.005_daemon.sh /Library/StartupItems/atomic.sh; sudo
+          cp 04cb63_T1037_005_daemon.plist /tmp/T1037_005_daemon.plist; sudo /Library/StartupItems/atomic.sh
+          start
+        payloads:
+        - ed9e67_StartupParameters.plist
+        - e2722e_T1037.005_daemon.sh
+        - 04cb63_T1037_005_daemon.plist
+        cleanup: sudo launchctl unload /tmp/T1037_005_daemon.plist; sudo rm /tmp/T1037_005_daemon.plist;
+          sudo rm /Library/StartupItems/atomic.sh; sudo rm /Library/StartupItems/StartupParameters.plist;
+          sudo rm /tmp/T1037_005_daemon.txt

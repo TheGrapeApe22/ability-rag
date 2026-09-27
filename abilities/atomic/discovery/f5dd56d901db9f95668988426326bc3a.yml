@@ -1,0 +1,21 @@
+---
+- id: f5dd56d901db9f95668988426326bc3a
+  name: Enumerate Users Not Requiring Pre Auth (ASRepRoast)
+  description: 'When successful, accounts that do not require kerberos pre-auth will
+    be returned
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1069.002
+    name: 'Permission Groups Discovery: Domain Groups'
+  platforms:
+    windows:
+      psh:
+        command: get-aduser -f * -pr DoesNotRequirePreAuth | where {$_.DoesNotRequirePreAuth
+          -eq $TRUE}
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

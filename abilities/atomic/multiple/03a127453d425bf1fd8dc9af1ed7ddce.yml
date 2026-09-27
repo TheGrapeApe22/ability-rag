@@ -1,0 +1,32 @@
+---
+- id: 03a127453d425bf1fd8dc9af1ed7ddce
+  name: Suspicious bat file run from startup Folder
+  description: 'bat files can be placed in and executed from the startup folder to
+    maintain persistance
+
+
+    Upon execution, cmd will be run and immediately closed. Additionally, the new
+    files can be viewed in the "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup"
+
+    folder and will also run when the computer is restarted and the user logs in.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1547.001
+    name: 'Boot or Logon Autostart Execution: Registry Run Keys / Startup Folder'
+  platforms:
+    windows:
+      psh:
+        command: Copy-Item "$PathToAtomicsFolder\T1547.001\src\batstartup.bat" "$env:APPDATA\Microsoft\Windows\Start
+          Menu\Programs\Startup\batstartup.bat"; Copy-Item "$PathToAtomicsFolder\T1547.001\src\batstartup.bat"
+          "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\batstartup.bat";
+          Start-Process "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup\batstartup.bat";
+          Start-Process "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\batstartup.bat"
+        payloads: []
+        cleanup: Remove-Item "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup\batstartup.bat"
+          -ErrorAction Ignore; Remove-Item "C:\ProgramData\Microsoft\Windows\Start
+          Menu\Programs\StartUp\batstartup.bat" -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

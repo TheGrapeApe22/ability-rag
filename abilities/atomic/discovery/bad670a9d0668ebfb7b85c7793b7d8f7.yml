@@ -1,0 +1,19 @@
+---
+- id: bad670a9d0668ebfb7b85c7793b7d8f7
+  name: Local Storage Discovery via PSDrive
+  description: Will enumerate logical drives and file system details using the "Get-PSDrive"
+    Powershell cmdlet. Get-Volume is then used to get details status, capacity, and
+    file system information for all storage volumes on a system.
+  tactic: discovery
+  technique:
+    attack_id: T1680
+    name: Local Storage Discovery
+  platforms:
+    windows:
+      psh:
+        command: Get-PSDrive -PSProvider FileSystem; Get-Volume
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

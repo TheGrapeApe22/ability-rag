@@ -1,0 +1,26 @@
+---
+- id: 5c23188ed301af9f1b6b55d4f3f60b46
+  name: Winlogon Userinit Key Persistence - PowerShell
+  description: 'PowerShell code to set Winlogon userinit key to execute a binary at
+    logon along with userinit.exe.
+
+
+    Upon successful execution, PowerShell will modify a registry value to execute
+    cmd.exe upon logon/logoff.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1547.004
+    name: 'Boot or Logon Autostart Execution: Winlogon Helper DLL'
+  platforms:
+    windows:
+      psh:
+        command: Set-ItemProperty "HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Winlogon\"
+          "Userinit" "Userinit.exe, C:\Windows\System32\cmd.exe" -Force
+        payloads: []
+        cleanup: Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Winlogon\"
+          -Name "Userinit" -Force -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

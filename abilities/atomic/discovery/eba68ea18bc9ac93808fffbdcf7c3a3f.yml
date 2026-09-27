@@ -1,0 +1,17 @@
+---
+- id: eba68ea18bc9ac93808fffbdcf7c3a3f
+  name: Discover Specific Process - tasklist
+  description: "Adversaries may use command line tools to discover specific processes\
+    \ in preparation of further attacks. \nExamples of this could be discovering the\
+    \ PID of lsass.exe to dump its memory or discovering whether specific security\
+    \ processes (e.g. AV or EDR) are running.\n"
+  tactic: discovery
+  technique:
+    attack_id: T1057
+    name: Process Discovery
+  platforms:
+    windows:
+      cmd:
+        command: tasklist | findstr lsass
+        payloads: []
+        cleanup: ''

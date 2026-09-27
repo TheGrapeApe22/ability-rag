@@ -1,0 +1,15 @@
+---
+- id: 3939013428dfc0bc10825755685849c2
+  name: Add and delete UFW firewall rules
+  description: "Add and delete a rule on the Uncomplicated Firewall (UFW) if installed\
+    \ and enabled. \n"
+  tactic: defense-impairment
+  technique:
+    attack_id: T1686
+    name: Disable or Modify System Firewall
+  platforms:
+    linux:
+      sh:
+        command: ufw prepend deny from 1.2.3.4; ufw status numbered
+        payloads: []
+        cleanup: '{ echo y; echo response; } | ufw delete 1; ufw status numbered'

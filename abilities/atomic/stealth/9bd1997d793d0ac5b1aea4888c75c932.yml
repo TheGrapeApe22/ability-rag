@@ -1,0 +1,16 @@
+---
+- id: 9bd1997d793d0ac5b1aea4888c75c932
+  name: Loadable Kernel Module based Rootkit
+  description: 'Loadable Kernel Module based Rootkit
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1014
+    name: Rootkit
+  platforms:
+    linux:
+      sh:
+        command: sudo insmod PathToAtomicsFolder/T1014/bin/T1014.ko
+        payloads: []
+        cleanup: sudo rmmod T1014; sudo rm -rf PathToAtomicsFolder/T1014/bin

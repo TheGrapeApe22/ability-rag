@@ -1,0 +1,18 @@
+---
+- id: 5c2ddc375b4963647ac9c913641ab6d6
+  name: Execute command writing output to local Admin Share
+  description: 'Executes a command, writing the output to a local Admin Share.
+
+    This technique is used by post-exploitation frameworks.
+
+    '
+  tactic: lateral-movement
+  technique:
+    attack_id: T1021.002
+    name: 'Remote Services: SMB/Windows Admin Shares'
+  platforms:
+    windows:
+      cmd:
+        command: cmd.exe /Q /c hostname 1> \\127.0.0.1\ADMIN$\output.txt 2>&1
+        payloads: []
+        cleanup: ''

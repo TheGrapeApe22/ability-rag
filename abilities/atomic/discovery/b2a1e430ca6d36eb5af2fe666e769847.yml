@@ -1,0 +1,16 @@
+---
+- id: b2a1e430ca6d36eb5af2fe666e769847
+  name: Process Discovery - wmic process
+  description: "Utilize windows management instrumentation to identify processes.\n\
+    \nUpon successful execution, WMIC will execute process to list processes. Output\
+    \ will be via stdout. \n"
+  tactic: discovery
+  technique:
+    attack_id: T1057
+    name: Process Discovery
+  platforms:
+    windows:
+      cmd:
+        command: wmic process get /format:list
+        payloads: []
+        cleanup: ''

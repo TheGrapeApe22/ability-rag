@@ -1,0 +1,18 @@
+---
+- id: 2030ccf9f80ce3020e4ee510fadeb0be
+  name: Rundll32 with desk.cpl
+  description: "Rundll32.exe loading an executable renamed as .scr using desk.cpl\
+    \ \nReference: \n  - [LOLBAS - Libraries/Desk](https://lolbas-project.github.io/lolbas/Libraries/Desk/)\n\
+    SIGMA rules:\n  - [SCR File Write Event](https://github.com/SigmaHQ/sigma/blob/b53f08b081e0a50099be9b9e8eced82097fdbaf2/rules/windows/file_event/file_event_win_new_src_file.yml)\n\
+    \  - [Rundll32 InstallScreenSaver Execution](https://github.com/SigmaHQ/sigma/blob/b53f08b081e0a50099be9b9e8eced82097fdbaf2/rules/windows/process_creation/proc_creation_win_lolbin_rundll32_installscreensaver.yml)\n"
+  tactic: stealth
+  technique:
+    attack_id: T1218.011
+    name: 'Signed Binary Proxy Execution: Rundll32'
+  platforms:
+    windows:
+      cmd:
+        command: copy %windir%\System32\calc.exe not_an_scr.scr && rundll32.exe desk.cpl,InstallScreenSaver
+          not_an_scr.scr
+        payloads: []
+        cleanup: del not_an_scr.scr

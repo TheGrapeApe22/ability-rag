@@ -1,0 +1,24 @@
+---
+- id: bef247bd0ac9b48f33f893fc937448cc
+  name: Execute a process from a directory masquerading as the current parent directory
+  description: 'Create and execute a process from a directory masquerading as the
+    current parent directory (`...` instead of normal `..`)
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1036.005
+    name: 'Masquerading: Match Legitimate Name or Location'
+  platforms:
+    darwin:
+      sh:
+        command: mkdir $HOME/...; cp $(which sh) $HOME/...; $HOME/.../sh -c "echo
+          Hello from the Atomic Red Team test T1036.005#1"
+        payloads: []
+        cleanup: rm -f $HOME/.../sh; rmdir $HOME/.../
+    linux:
+      sh:
+        command: mkdir $HOME/...; cp $(which sh) $HOME/...; $HOME/.../sh -c "echo
+          Hello from the Atomic Red Team test T1036.005#1"
+        payloads: []
+        cleanup: rm -f $HOME/.../sh; rmdir $HOME/.../

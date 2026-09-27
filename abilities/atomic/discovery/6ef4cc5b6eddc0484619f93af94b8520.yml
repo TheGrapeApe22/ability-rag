@@ -1,0 +1,20 @@
+---
+- id: 6ef4cc5b6eddc0484619f93af94b8520
+  name: Discover OS Product Name via Registry
+  description: 'Identify the Operating System Product Name via registry with the reg.exe
+    command.
+
+    Upon execution, the OS Product Name will be displayed.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1082
+    name: System Information Discovery
+  platforms:
+    windows:
+      cmd:
+        command: reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v
+          ProductName
+        payloads: []
+        cleanup: ''

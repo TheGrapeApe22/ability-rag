@@ -1,0 +1,38 @@
+---
+- id: db1bb4f8462260edf0e7c4b892dd66ca
+  name: List Open Egress Ports
+  description: 'This is to test for what ports are open outbound.  The technique used
+    was taken from the following blog:
+
+    https://www.blackhillsinfosec.com/poking-holes-in-the-firewall-egress-testing-with-allports-exposed/
+
+
+    Upon successful execution, powershell will read top-128.txt (ports) and contact
+    each port to confirm if open or not. Output will be to Desktop\open-ports.txt.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1016
+    name: System Network Configuration Discovery
+  platforms:
+    windows:
+      psh:
+        command: $ports = Get-content "88a14d_top-128.txt"; $file = "$env:USERPROFILE\Desktop\open-ports.txt";
+          $totalopen = 0; $totalports = 0; New-Item $file -Force; foreach ($port in
+          $ports) {;     $test = new-object system.Net.Sockets.TcpClient;     $wait
+          = $test.beginConnect("allports.exposed", $port, $null, $null);     $wait.asyncwaithandle.waitone(250,
+          $false) | Out-Null;     $totalports++ | Out-Null;     if ($test.Connected)
+          {;         $result = "$port open" ;         Write-Host -ForegroundColor
+          Green $result;         $result | Out-File -Encoding ASCII -append $file;         $totalopen++
+          | Out-Null;     };     else {;         $result = "$port closed" ;         Write-Host
+          -ForegroundColor Red $result;         $totalclosed++ | Out-Null;         $result
+          | Out-File -Encoding ASCII -append $file;     }; }; $results = "There were
+          a total of $totalopen open ports out of $totalports ports tested."; $results
+          | Out-File -Encoding ASCII -append $file; Write-Host $results
+        payloads:
+        - 88a14d_top-128.txt
+        cleanup: Remove-Item -ErrorAction ignore "$env:USERPROFILE\Desktop\open-ports.txt"
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

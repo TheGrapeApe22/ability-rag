@@ -1,0 +1,19 @@
+---
+- id: f25fb8543b8e49af2aba023985234d1e
+  name: Windows - Discover domain trusts with dsquery
+  description: 'Uses the dsquery command to discover domain trusts.
+
+    Requires the installation of dsquery via Windows RSAT or the Windows Server AD
+    DS role.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1482
+    name: Domain Trust Discovery
+  platforms:
+    windows:
+      cmd:
+        command: dsquery * -filter "(objectClass=trustedDomain)" -attr *
+        payloads: []
+        cleanup: ''

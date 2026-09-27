@@ -1,0 +1,46 @@
+---
+- id: 0690e0818b5749092595a472831f362f
+  name: 'Domain Password Policy Check: No Lowercase Character in Password'
+  description: "Attempt to change the password of the current domain user in order\
+    \ to check password policy. Ideally, you would only run this atomic test to verify\
+    \ that your password policy is blocking the use of the new password.\nIf the password\
+    \ is succesfully changed to the new password, the credential file will be updated\
+    \ to reflect the new password. You can then run the atomic manually and specify\
+    \ a new password of your choosing, however the\npassword policy will likely prevent\
+    \ you from setting the password back to what it was. \n"
+  tactic: multiple
+  technique:
+    attack_id: T1098
+    name: Account Manipulation
+  platforms:
+    windows:
+      psh:
+        command: 'if (Test-Path $env:LOCALAPPDATA\AtomicRedTeam\$env:USERNAME.txt)
+          { ; } else {New-Item -Type Directory (split-path "$env:LOCALAPPDATA\AtomicRedTeam\$env:USERNAME.txt")
+          -ErrorAction Ignore | Out-Null; $cred = Get-Credential -UserName  $env:USERNAME
+          -message "Enter password for $env:USERNAME to use during password change
+          attempt"; $cred.Password | ConvertFrom-SecureString | Out-File "$env:LOCALAPPDATA\AtomicRedTeam\$env:USERNAME.txt"};  $credFile
+          = "$env:LOCALAPPDATA\AtomicRedTeam\$env:USERNAME.txt"; if (Test-Path $credFile)
+          {;     $cred = New-Object -TypeName System.Management.Automation.PSCredential
+          -ArgumentList $env:USERNAME, (Get-Content $credFile | ConvertTo-SecureString);     if($cred.GetNetworkCredential().Password
+          -eq "UPPER-LONG-SPECIAL-333"){;       Write-Host -ForegroundColor Yellow
+          "The new password is the same as the password stored in the credential file.
+          Please specify a different new password."; exit -1;     };     try {;         $newPassword
+          = ConvertTo-SecureString UPPER-LONG-SPECIAL-333 -AsPlainText -Force;         Set-ADAccountPassword
+          -Identity $env:USERNAME -OldPassword $cred.password -NewPassword $newPassword;     };     catch
+          { ;         $_.Exception;         $errCode = $_.Exception.ErrorCode;         Write-Host
+          "Error code: $errCode";         if ($errCode -eq 86) {;             Write-Host
+          -ForegroundColor Yellow "The stored password for the current user is incorrect.
+          Please run the prereq commands to set the correct credentials";             Remove-Item
+          $credFile;         };         exit $errCode;     };     Write-Host -ForegroundColor
+          Cyan "Successfully changed the password to UPPER-LONG-SPECIAL-333";     $newCred
+          = New-Object System.Management.Automation.PSCredential ($env:USERNAME, $(ConvertTo-SecureString
+          "UPPER-LONG-SPECIAL-333" -AsPlainText -Force));     $newCred.Password |
+          ConvertFrom-SecureString | Out-File $credFile; }; else {;     Write-Host
+          -ForegroundColor Yellow "You must store the password of the current user
+          by running the prerequisite commands first"; }'
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

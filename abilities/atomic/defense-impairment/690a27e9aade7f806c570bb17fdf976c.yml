@@ -1,0 +1,18 @@
+---
+- id: 690a27e9aade7f806c570bb17fdf976c
+  name: Delete system log files using OSAScript
+  description: 'This test deletes the system log file using osascript via "do shell
+    script"(sh/bash by default) which in-turn spawns rm utility, requires admin privileges
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685.006
+    name: 'Disable or Modify Tools: Clear Linux or Mac System Logs'
+  platforms:
+    darwin:
+      sh:
+        command: osascript -e 'do shell script "rm /var/log/system.log" with administrator
+          privileges'
+        payloads: []
+        cleanup: ''

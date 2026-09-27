@@ -1,0 +1,16 @@
+---
+- id: 69ac4d0ed190b9442fca7e16f649a2be
+  name: Suspend History
+  description: 'suspend Shell History seen in Awfulshred wiper- https://unix.stackexchange.com/questions/10922/temporarily-suspend-bash-history-on-a-given-shell
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685
+    name: Disable or Modify Tools
+  platforms:
+    linux:
+      sh:
+        command: set +o history
+        payloads: []
+        cleanup: set -o history

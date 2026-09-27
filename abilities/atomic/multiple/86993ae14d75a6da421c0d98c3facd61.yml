@@ -1,0 +1,24 @@
+---
+- id: 86993ae14d75a6da421c0d98c3facd61
+  name: Disable Windows CMD application
+  description: 'Modify the registry of the currently logged in user using reg.exe
+    via cmd console to disable the windows CMD application.
+
+    See example how Agent Tesla malware abuses this technique: https://any.run/report/ea4ea08407d4ee72e009103a3b77e5a09412b722fdef67315ea63f22011152af/a866d7b1-c236-4f26-a391-5ae32213dfc4#registry
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1112
+    name: Modify Registry
+  platforms:
+    windows:
+      psh:
+        command: New-ItemProperty -Path "HKCU:\Software\Policies\Microsoft\Windows\System"
+          -Name DisableCMD -Value 1
+        payloads: []
+        cleanup: Remove-ItemProperty -Path "HKCU:\Software\Policies\Microsoft\Windows\System"
+          -Name DisableCMD -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

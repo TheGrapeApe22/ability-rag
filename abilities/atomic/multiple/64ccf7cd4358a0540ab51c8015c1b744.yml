@@ -1,0 +1,26 @@
+---
+- id: 64ccf7cd4358a0540ab51c8015c1b744
+  name: Detect Virtualization Environment via WMI Manufacturer/Model Listing (Windows)
+  description: "Windows Management Instrumentation(WMI) objects contain system information\
+    \ which helps to detect virtualization. This test will get the model and manufacturer\
+    \ of the machine to determine if it is a virtual machine, such as through VMware\
+    \ or VirtualBox. \n"
+  tactic: multiple
+  technique:
+    attack_id: T1497.001
+    name: 'Virtualization/Sandbox Evasion: System Checks'
+  platforms:
+    windows:
+      psh:
+        command: $Manufacturer = Get-WmiObject -Class Win32_ComputerSystem | select-object
+          -expandproperty "Manufacturer"; $Model = Get-WmiObject -Class Win32_ComputerSystem
+          | select-object -expandproperty "Model"; if((($Manufacturer.ToLower() -eq
+          "microsoft corporation") -and ($Model.ToLower().contains("virtual"))) -or
+          ($Manufacturer.ToLower().contains("vmware")) -or ($Model.ToLower() -eq "virtualbox"))
+          {write-host "Virtualization environment detected!"} else {write-host "No
+          virtualization environment detected!"}
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

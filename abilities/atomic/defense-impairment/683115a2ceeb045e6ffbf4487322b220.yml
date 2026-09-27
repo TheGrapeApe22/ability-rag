@@ -1,0 +1,16 @@
+---
+- id: 683115a2ceeb045e6ffbf4487322b220
+  name: Edit UFW firewall sysctl.conf file
+  description: "Edit the Uncomplicated Firewall (UFW) configuration file for setting\
+    \ network \nvariables /etc/ufw/sysctl.conf.\n"
+  tactic: defense-impairment
+  technique:
+    attack_id: T1686
+    name: Disable or Modify System Firewall
+  platforms:
+    linux:
+      sh:
+        command: echo "# THIS IS A COMMENT" >> /etc/ufw/sysctl.conf; grep "# THIS
+          IS A COMMENT" /etc/ufw/sysctl.conf
+        payloads: []
+        cleanup: sed -i 's/# THIS IS A COMMENT//g' /etc/ufw/sysctl.conf; cat /etc/ufw/sysctl.conf

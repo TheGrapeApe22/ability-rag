@@ -1,0 +1,16 @@
+---
+- id: 0a77bb56f5a2b18e5c7fc0eefdf368c8
+  name: 'Local Storage Discovery via wmic '
+  description: Will enumerate logical drives and file system details using the "Get-PSDrive"
+    Powershell cmdlet. Get-Volume is then used to get details status, capacity, and
+    file system information for all storage volumes on a system.
+  tactic: discovery
+  technique:
+    attack_id: T1680
+    name: Local Storage Discovery
+  platforms:
+    windows:
+      cmd:
+        command: wmic logicaldisk get deviceid, freespace, size, volumeserialnumber
+        payloads: []
+        cleanup: ''

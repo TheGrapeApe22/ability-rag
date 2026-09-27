@@ -1,0 +1,17 @@
+---
+- id: 3d331538a65d7ebee865a1906f729bad
+  name: Linux Download File and Run
+  description: 'Utilize linux Curl to download a remote file, chmod +x it and run
+    it.
+
+    '
+  tactic: command-and-control
+  technique:
+    attack_id: T1105
+    name: Ingress Tool Transfer
+  platforms:
+    linux:
+      sh:
+        command: curl -sO
+        payloads: []
+        cleanup: rm

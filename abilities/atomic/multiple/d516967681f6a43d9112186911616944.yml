@@ -1,0 +1,17 @@
+---
+- id: d516967681f6a43d9112186911616944
+  name: PDQ Deploy RAT
+  description: 'An adversary may use PDQ Deploy Software to deploy the Remote Adminstartion
+    Tool, this will start the PDQ console.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1072
+    name: Software Deployment Tools
+  platforms:
+    windows:
+      cmd:
+        command: '"%PROGRAMFILES(x86)%/Admin Arsenal/PDQ Deploy/PDQDeployConsole.exe"'
+        payloads: []
+        cleanup: ''

@@ -1,0 +1,22 @@
+---
+- id: 926b740001bc0c7f6da164874105610b
+  name: Scarab Ransomware Defense Evasion Activities
+  description: 'Scarab Ransomware defense evasion activities that can abuse the registry
+    values to modify the settings of the Credential Security Support Provider to overcome
+    potential RDP connection issues.
+
+    [Scarab Ransomware Article](https://www.welivesecurity.com/en/eset-research/scarabs-colon-izing-vulnerable-servers/)
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1112
+    name: Modify Registry
+  platforms:
+    windows:
+      cmd:
+        command: reg add "HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System\CredSSP\Parameters"
+          /v AllowEncryptionOracle /t REG_DWORD /d 2 /f
+        payloads: []
+        cleanup: reg add "HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System\CredSSP\Parameters"
+          /v AllowEncryptionOracle /t REG_DWORD /d 0 /f

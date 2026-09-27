@@ -1,0 +1,54 @@
+---
+- id: c9f3287d7902918f81ed2634b172bce9
+  name: Python Startup Hook - usercustomize.py (Linux / MacOS)
+  description: "Executes code via usercustomize.py. This is a per-user persistence\
+    \ mechanism \nthat does not require root privileges.\n"
+  tactic: multiple
+  technique:
+    attack_id: T1546.018
+    name: 'Event Triggered Execution: Python Startup Hooks'
+  platforms:
+    linux:
+      sh:
+        command: 'PYTHON_EXE=$(command -v python3 || command -v python); USER_PACKAGES=$($PYTHON_EXE
+          -c "import site; print(site.getusersitepackages())"); mkdir -p "$USER_PACKAGES";
+          echo "import os; os.system(''date > /tmp/poc.txt'')" > "$USER_PACKAGES/usercustomize.py";
+          if [ -f "$USER_PACKAGES/usercustomize.py" ]; then echo "Success: usercustomize.py
+          created under $USER_PACKAGES\n" $(ls -la "$USER_PACKAGES" | grep usercustomize*);
+          else echo "Failed: usercustomize.py not found under $USER_PACKAGES"; fi;
+          $PYTHON_EXE -c "print(''Triggering Hook via usercustomize.py...'')"; if
+          [ -f /tmp/poc.txt ]; then echo "Success: poc.txt created under /tmp\n" $(ls
+          -la /tmp/ | grep -w poc.txt); else echo "Failed: /tmp/poc.txt not found";
+          fi'
+        payloads: []
+        cleanup: "PYTHON_CMD=$(command -v python3 || command -v python); USER_PACKAGES=$($PYTHON_CMD\
+          \ -S -c \"import site; print(site.getusersitepackages())\"); if [ ! -f /tmp/poc.txt\
+          \ ] || [ ! -f $USER_PACKAGES/usercustomize.py ]; then echo \"[!] Artifact\
+          \ missing: /tmp/poc.txt and $USER_PACKAGES/usercustomize.py \u2014 [-] Please\
+          \ Run : Invoke-AtomicTest T1546.018\"; exit 0; fi; if [ -e \"$USER_PACKAGES\"\
+          /usercustomize* ]; then echo \"[+] Successful remove $USER_PACKAGES/usercustomize.py\\\
+          n\" $(rm -rf \"$USER_PACKAGES\"/usercustomize*); else echo \"usercustomize.py\
+          \ not found under $USER_PACKAGES\"; fi; rm -rf /tmp/poc.txt; echo \"[+]\
+          \ Successful remove poc.txt under /tmp\""
+    darwin:
+      sh:
+        command: 'PYTHON_EXE=$(command -v python3 || command -v python); USER_PACKAGES=$($PYTHON_EXE
+          -c "import site; print(site.getusersitepackages())"); mkdir -p "$USER_PACKAGES";
+          echo "import os; os.system(''date > /tmp/poc.txt'')" > "$USER_PACKAGES/usercustomize.py";
+          if [ -f "$USER_PACKAGES/usercustomize.py" ]; then echo "Success: usercustomize.py
+          created under $USER_PACKAGES\n" $(ls -la "$USER_PACKAGES" | grep usercustomize*);
+          else echo "Failed: usercustomize.py not found under $USER_PACKAGES"; fi;
+          $PYTHON_EXE -c "print(''Triggering Hook via usercustomize.py...'')"; if
+          [ -f /tmp/poc.txt ]; then echo "Success: poc.txt created under /tmp\n" $(ls
+          -la /tmp/ | grep -w poc.txt); else echo "Failed: /tmp/poc.txt not found";
+          fi'
+        payloads: []
+        cleanup: "PYTHON_CMD=$(command -v python3 || command -v python); USER_PACKAGES=$($PYTHON_CMD\
+          \ -S -c \"import site; print(site.getusersitepackages())\"); if [ ! -f /tmp/poc.txt\
+          \ ] || [ ! -f $USER_PACKAGES/usercustomize.py ]; then echo \"[!] Artifact\
+          \ missing: /tmp/poc.txt and $USER_PACKAGES/usercustomize.py \u2014 [-] Please\
+          \ Run : Invoke-AtomicTest T1546.018\"; exit 0; fi; if [ -e \"$USER_PACKAGES\"\
+          /usercustomize* ]; then echo \"[+] Successful remove $USER_PACKAGES/usercustomize.py\\\
+          n\" $(rm -rf \"$USER_PACKAGES\"/usercustomize*); else echo \"usercustomize.py\
+          \ not found under $USER_PACKAGES\"; fi; rm -rf /tmp/poc.txt; echo \"[+]\
+          \ Successful remove poc.txt under /tmp\""

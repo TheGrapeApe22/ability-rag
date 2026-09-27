@@ -1,0 +1,18 @@
+---
+- id: bf3ae4e7a5954330f178f69ec6ef91cb
+  name: Truncate system log files via truncate utility (freebsd)
+  description: 'This test truncates the system log files using the truncate utility
+    with (-s 0 or --size=0) parameter which sets file size to zero, thus emptying
+    the file content
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685.006
+    name: 'Disable or Modify Tools: Clear Linux or Mac System Logs'
+  platforms:
+    linux:
+      sh:
+        command: truncate -s 0 /var/log/messages; truncate --size=0 /var/log/security
+        payloads: []
+        cleanup: ''

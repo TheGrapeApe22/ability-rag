@@ -1,0 +1,18 @@
+---
+- id: 74bbb7b3aa058ed738d9c92e5bd76165
+  name: Keychain Dump
+  description: "This command will dump keychain credential information from login.keychain.\
+    \ \nSource: https://www.loobins.io/binaries/security/\n\n### Keychain File path\n\
+    \  ~/Library/Keychains/\n  /Library/Keychains/\n  /Network/Library/Keychains/\n\
+    \  [Security Reference](https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/security.1.html)\n\
+    \  "
+  tactic: credential-access
+  technique:
+    attack_id: T1555.001
+    name: 'Credentials from Password Stores: Keychain'
+  platforms:
+    darwin:
+      sh:
+        command: sudo security dump-keychain -d login.keychain
+        payloads: []
+        cleanup: ''

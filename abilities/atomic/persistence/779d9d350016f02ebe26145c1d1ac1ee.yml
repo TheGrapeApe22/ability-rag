@@ -1,0 +1,20 @@
+---
+- id: 779d9d350016f02ebe26145c1d1ac1ee
+  name: Create a Linux user via kubectl in a Pod
+  description: 'Launches a short-lived Alpine pod and creates a Linux user inside
+    the pod.
+
+    The pod is automatically deleted after execution.
+
+    '
+  tactic: persistence
+  technique:
+    attack_id: T1136.001
+    name: 'Create Account: Local Account'
+  platforms:
+    unknown:
+      sh:
+        command: kubectl run atomic-linux-useradd --image=alpine --restart=Never --rm
+          -it -- sh -lc 'adduser -D evil_user && id evil_user'
+        payloads: []
+        cleanup: ''

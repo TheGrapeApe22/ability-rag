@@ -1,0 +1,19 @@
+---
+- id: 6940ffd670787cd1c410997e66629573
+  name: Remove Network Share PowerShell
+  description: 'Removes a Network Share utilizing PowerShell
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1070.005
+    name: 'Indicator Removal on Host: Network Share Connection Removal'
+  platforms:
+    windows:
+      psh:
+        command: Remove-SmbShare -Name \\test\share; Remove-FileShare -Name \\test\share
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

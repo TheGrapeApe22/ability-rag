@@ -1,0 +1,21 @@
+---
+- id: 23d7e527e935b4c35b7a2a27d4f66005
+  name: Clear Bash history (rm)
+  description: 'Clears bash history via rm
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1070.003
+    name: 'Indicator Removal on Host: Clear Command History'
+  platforms:
+    linux:
+      sh:
+        command: rm ~/.bash_history
+        payloads: []
+        cleanup: ''
+    darwin:
+      sh:
+        command: rm ~/.bash_history
+        payloads: []
+        cleanup: ''

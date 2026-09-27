@@ -1,0 +1,91 @@
+---
+- id: b19ccc7ed208e4b2041eadbecf1d7dae
+  name: Azure - Enumerate Storage Account Objects via Shared Key authorization using
+    Azure CLI
+  description: 'This test enumerates all existing storage accounts and tries to fetch
+    for each account the contained storage account objects. The access to storage
+    objects is only possible if Shared Key authorization is enabled (e.g this is the
+    case per default for storage objects creaded by Azure Function Apps).
+
+
+    Requirements:
+
+    - The test is intended to be executed in interactive mode (with -Interactive parameter)
+    in order to complete the az login command when MFA is required.
+
+    - The EntraID user must have the role "Storage Account Contributor", or a role
+    with similar permissions.
+
+
+    Output format: Csv file that contains the found storage account objects
+
+    - Columns: ResourceGroup, StorageAccountName, FileShareName, ContainerName, BlobName,
+    TableName, QueueName
+
+    - The content of these columns is filled out depending on the object. Not-required
+    columns are left empt. Example: For a blob object the ResourceGroup, StorageAccountName,
+    ContainerName, BlobName are filled out, the other fields are left empty.'
+  tactic: discovery
+  technique:
+    attack_id: T1619
+    name: Cloud Storage Object Discovery
+  platforms:
+    unknown:
+      psh:
+        command: 'az login; $storageAccounts = az storage account list --query "[].{name:name,
+          resourceGroup:resourceGroup}" --output json | ConvertFrom-Json; $storageAccountObjects
+          = @(); $downloadedFunctionFiles = @(); foreach ($account in $storageAccounts)
+          {;     Write-Output "`nFound storage account $($account.name)";     $storageAccountObjects
+          += [PSCustomObject]@{;         ResourceGroup      = $account.resourceGroup;         StorageAccountName
+          = $account.name;         FileShareName      = "";         ContainerName      =
+          "";         BlobName           = "";         TableName          = "";         QueueName          =
+          "";     };     $allowSharedKeyAccess = az storage account show --name $account.name
+          --resource-group $account.resourceGroup --query "allowSharedKeyAccess";     if
+          ($allowSharedKeyAccess -eq "false") {;         Write-Output "Shared key
+          access is disabled for this storage account.";     } else {;         $connectionString
+          = az storage account show-connection-string --name $account.name --resource-group
+          $account.resourceGroup --query connectionString --output tsv;         $fileShares
+          = az storage share list --connection-string $connectionString --query "[].name"
+          --output json | ConvertFrom-Json;         foreach($fileShare in $fileShares)
+          {;             Write-Output "Found file share: $($fileShare)";             $storageAccountObjects
+          += [PSCustomObject]@{;                 ResourceGroup      = $account.resourceGroup;                 StorageAccountName
+          = $account.name;                 FileShareName      = $fileShare;                 ContainerName      =
+          "";                 BlobName           = "";                 TableName          =
+          "";                 QueueName          = "";             };         };         $containers
+          = az storage container list --connection-string $connectionString --query
+          "[].name" --output json | ConvertFrom-Json;         foreach($container in
+          $containers) {;             Write-Output "Found container: $($container)";             $storageAccountObjects
+          += [PSCustomObject]@{;                 ResourceGroup      = $account.resourceGroup;                 StorageAccountName
+          = $account.name;                 FileShareName      = "";                 ContainerName      =
+          $container;                 BlobName           = "";                 TableName          =
+          "";                 QueueName          = "";             };             $blobs
+          = az storage blob list --connection-string $connectionString --container-name
+          $container --query "[].name" --output json | ConvertFrom-Json;             foreach($blob
+          in $blobs) {;                 Write-Output "Found blob: $($blob)";                 $storageAccountObjects
+          += [PSCustomObject]@{;                     ResourceGroup      = $account.resourceGroup;                     StorageAccountName
+          = $account.name;                     FileShareName      = "";                     ContainerName      =
+          $container;                     BlobName           = $blob;                     TableName          =
+          "";                     QueueName          = "";                 };             };         };         $tables
+          = az storage table list --connection-string $connectionString --query "[].name"
+          --output json | ConvertFrom-Json;         foreach($table in $tables) {;             Write-Output
+          "Found table: $($table)";             $storageAccountObjects += [PSCustomObject]@{;                 ResourceGroup      =
+          $account.resourceGroup;                 StorageAccountName = $account.name;                 FileShareName      =
+          "";                 ContainerName      = "";                 BlobName           =
+          "";                 TableName          = $table;                 QueueName          =
+          "";             };         };         $queues = az storage queue list --connection-string
+          $connectionString --query "[].name" --output json | ConvertFrom-Json;         foreach($queue
+          in $queues) {;             Write-Output "Found table: $($table)";             $storageAccountObjects
+          += [PSCustomObject]@{;                 ResourceGroup      = $account.resourceGroup;                 StorageAccountName
+          = $account.name;                 FileShareName      = "";                 ContainerName      =
+          "";                 BlobName           = "";                 TableName          =
+          "";                 QueueName          = $queue;             };         };     };
+          }; $storageAccountObjects | Export-Csv -Path "#{output_file}" -NoTypeInformation;
+          Write-Output "`nDownloaded storage account objects to #{output_file}"; $storageAccountObjects
+          | Format-Table -Property ResourceGroup, StorageAccountName, FileShareName,
+          ContainerName, BlobName, TableName, QueueName -AutoSize -Wrap'
+        payloads: []
+        cleanup: Remove-Item -Path "$env:temp\T1619_storage_account_objects.csv" -Force
+          -erroraction silentlycontinue; Write-Output "Removed $env:temp\T1619_storage_account_objects.csv"
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

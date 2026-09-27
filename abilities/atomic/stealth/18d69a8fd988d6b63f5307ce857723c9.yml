@@ -1,0 +1,20 @@
+---
+- id: 18d69a8fd988d6b63f5307ce857723c9
+  name: Set Custom AddToHistoryHandler to Avoid History File Logging
+  description: "The \"AddToHistoryHandler\" receives the current command as the $line\
+    \ variable and then returns $true if \nthe line should be written to the history\
+    \ file. Here we simply return $false so nothing gets added to \nthe history file\
+    \ for the current session. \n"
+  tactic: stealth
+  technique:
+    attack_id: T1070.003
+    name: 'Indicator Removal on Host: Clear Command History'
+  platforms:
+    windows:
+      psh:
+        command: Set-PSReadLineOption -AddToHistoryHandler { return $false }
+        payloads: []
+        cleanup: Set-PSReadLineOption -AddToHistoryHandler $null
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

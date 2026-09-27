@@ -1,0 +1,15 @@
+---
+- id: 3251504068a28572c3fac01294e247d9
+  name: Nimgrab - Transfer Files
+  description: "Use nimgrab.exe to download a file from the web. \n"
+  tactic: command-and-control
+  technique:
+    attack_id: T1105
+    name: Ingress Tool Transfer
+  platforms:
+    windows:
+      cmd:
+        command: cmd /c "PathToAtomicsFolder\..\ExternalPayloads\nimgrab.exe" https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/LICENSE.txt
+          $env:TEMP\Atomic-license.txt
+        payloads: []
+        cleanup: del $env:TEMP\Atomic-license.txt >nul 2>&1

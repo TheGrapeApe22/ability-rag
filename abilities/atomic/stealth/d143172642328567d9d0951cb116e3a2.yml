@@ -1,0 +1,21 @@
+---
+- id: d143172642328567d9d0951cb116e3a2
+  name: Invoke HTML Application - Jscript Engine Simulating Double Click
+  description: Executes an HTA Application using JScript script engine simulating
+    double click.
+  tactic: stealth
+  technique:
+    attack_id: T1218.005
+    name: 'Signed Binary Proxy Execution: Mshta'
+  platforms:
+    windows:
+      psh:
+        command: $RequiredModule = Get-Module -Name AtomicTestHarnesses -ListAvailable;
+          if (-not $RequiredModule) {Install-Module -Name AtomicTestHarnesses -Scope
+          CurrentUser -Force};  Invoke-ATHHTMLApplication -HTAFilePath Test.hta -ScriptEngine
+          JScript -SimulateUserDoubleClick
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

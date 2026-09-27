@@ -1,0 +1,17 @@
+---
+- id: c6bf167afe0b85a1e88127fc0d093e4d
+  name: Create a new Windows domain admin user
+  description: 'Creates a new domain admin user in a command prompt.
+
+    '
+  tactic: persistence
+  technique:
+    attack_id: T1136.002
+    name: 'Create Account: Domain Account'
+  platforms:
+    windows:
+      cmd:
+        command: net user "#{username}" "#{password}" /add /domain && net group "#{group}"
+          "#{username}" /add /domain
+        payloads: []
+        cleanup: net user "T1136.002_Admin" >nul 2>&1 /del /domain

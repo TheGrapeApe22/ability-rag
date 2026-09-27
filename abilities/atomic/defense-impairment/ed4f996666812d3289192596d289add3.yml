@@ -1,0 +1,23 @@
+---
+- id: ed4f996666812d3289192596d289add3
+  name: Unload Sysmon Filter Driver
+  description: 'Unloads the Sysinternals Sysmon filter driver without stopping the
+    Sysmon service. To verify successful execution,
+
+    run the prereq_command''s and it should fail with an error of "sysmon filter must
+    be loaded".
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685
+    name: Disable or Modify Tools
+  platforms:
+    windows:
+      cmd:
+        command: fltmc.exe unload SysmonDrv
+        payloads: []
+        cleanup: sysmon -u -i > nul 2>&1 && sysmon -i -accepteula -i > nul 2>&1 &&
+          "PathToAtomicsFolder\..\ExternalPayloads\Sysmon\Sysmon.exe" -u > nul 2>&1
+          && "PathToAtomicsFolder\..\ExternalPayloads\Sysmon\Sysmon.exe" -accepteula
+          -i > nul 2>&1

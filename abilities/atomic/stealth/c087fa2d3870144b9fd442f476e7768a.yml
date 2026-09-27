@@ -1,0 +1,39 @@
+---
+- id: c087fa2d3870144b9fd442f476e7768a
+  name: CheckIfInstallable method call
+  description: 'Executes the CheckIfInstallable class constructor runner instead of
+    executing InstallUtil. Upon execution, the InstallUtil test harness will be executed.
+
+    If no output is displayed the test executed successfuly.
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1218.004
+    name: 'Signed Binary Proxy Execution: InstallUtil'
+  platforms:
+    windows:
+      psh:
+        command: 'if (Test-Path "eaecbe_InstallUtilTestHarness.ps1") { ; } else {New-Item
+          -Type Directory (split-path "eaecbe_InstallUtilTestHarness.ps1") -ErrorAction
+          ignore | Out-Null; Invoke-WebRequest ''https://github.com/redcanaryco/atomic-red-team/raw/master/atomics/T1218.004/src/InstallUtilTestHarness.ps1''
+          -OutFile "eaecbe_InstallUtilTestHarness.ps1"}; . "eaecbe_InstallUtilTestHarness.ps1";
+          $InstallerAssemblyDir = "$Env:TEMP\"; $InstallerAssemblyFileName = "T1218.004.dll";
+          $InstallerAssemblyFullPath = Join-Path -Path $InstallerAssemblyDir -ChildPath
+          $InstallerAssemblyFileName; $ExpectedOutput = ''Constructor_''; $TestArgs
+          = @{;     OutputAssemblyDirectory = $InstallerAssemblyDir;     OutputAssemblyFileName
+          = $InstallerAssemblyFileName;     InvocationMethod = ''CheckIfInstallable'';
+          }; $ActualOutput = Invoke-BuildAndInvokeInstallUtilAssembly @TestArgs -MinimumViableAssembly;
+          if ($ActualOutput -ne $ExpectedOutput) {;     throw @"; CheckIfInstallable
+          method execution test failure. Installer assembly execution output did not
+          match the expected output.; Expected: $ExpectedOutput; Actual: $ActualOutput;
+          "@; }'
+        payloads:
+        - eaecbe_InstallUtilTestHarness.ps1
+        cleanup: $InstallerAssemblyDir = "$Env:TEMP\"; $InstallerAssemblyFileName
+          = "T1218.004.dll"; $InstallerAssemblyFullPath = Join-Path -Path $InstallerAssemblyDir
+          -ChildPath $InstallerAssemblyFileName; Remove-Item -Path $InstallerAssemblyFullPath
+          -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

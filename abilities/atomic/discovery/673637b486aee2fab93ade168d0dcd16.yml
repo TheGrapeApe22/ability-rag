@@ -1,0 +1,29 @@
+---
+- id: 673637b486aee2fab93ade168d0dcd16
+  name: Azure - Scan for Anonymous Access to Azure Storage (Powershell)
+  description: "Upon successful execution, this test will test for anonymous access\
+    \ to Azure storage containers by invoking a web request and outputting the results\
+    \ to a file. \nThe corresponding response could then be interpreted to determine\
+    \ whether or not the resource/container exists, as well as other information.\
+    \ \nSee https://ninocrudele.com/the-three-most-effective-and-dangerous-cyberattacks-to-azure-and-countermeasures-part-2-attack-the-azure-storage-service\
+    \     \n"
+  tactic: discovery
+  technique:
+    attack_id: T1619
+    name: Cloud Storage Object Discovery
+  platforms:
+    unknown:
+      psh:
+        command: 'try{$response = invoke-webrequest "https://T1619Test2.blob.core.windows.net/None/None"
+          -method "GET"}; catch [system.net.webexception]; {if($_.Exception.Response
+          -ne $null); {$Response = $_.Exception.Response.GetResponseStream(); $ReadResponse
+          = New-Object System.IO.StreamReader($Response); $ReadResponse.BaseStream.Position
+          = 0; $responseBody = $ReadResponse.ReadToEnd()}; else {$responseBody = "The
+          storage account could not be anonymously accessed."}}; "Response received
+          for T1619Test2.blob.core.windows.net/None/None: $responsebody" | out-file
+          -filepath $env:temp\T1619Test2.txt -append'
+        payloads: []
+        cleanup: remove-item $env:temp\T1619Test2.txt -erroraction silentlycontinue
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

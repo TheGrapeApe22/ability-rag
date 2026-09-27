@@ -1,0 +1,21 @@
+---
+- id: 5d426eb0a666aec389a212616662c66d
+  name: attrib - Remove read-only attribute
+  description: 'Removes the read-only attribute from a file or folder using the attrib.exe
+    command. Upon execution, no output will be displayed.
+
+    Open the file in File Explorer > Right Click - Prperties and observe that the
+    Read Only checkbox is empty.
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1222.001
+    name: 'File and Directory Permissions Modification: Windows File and Directory
+      Permissions Modification'
+  platforms:
+    windows:
+      cmd:
+        command: attrib.exe -r %temp%\T1222.001_attrib\*.* /s
+        payloads: []
+        cleanup: ''

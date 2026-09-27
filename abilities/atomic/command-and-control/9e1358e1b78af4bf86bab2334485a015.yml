@@ -1,0 +1,19 @@
+---
+- id: 9e1358e1b78af4bf86bab2334485a015
+  name: Ammyy Admin Software Execution
+  description: "An adversary may attempt to trick the user into downloading Ammyy\
+    \ Admin Remote Desktop Software for use as a C2 channel. \nUpon successful execution,\
+    \ Ammyy Admin will be executed. \n"
+  tactic: command-and-control
+  technique:
+    attack_id: T1219
+    name: Remote Access Software
+  platforms:
+    windows:
+      psh:
+        command: Start-Process "PathToAtomicsFolder\..\ExternalPayloads\ammyy.exe"
+        payloads: []
+        cleanup: Stop-Process -Name "Ammyy" -force -erroraction silentlycontinue
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

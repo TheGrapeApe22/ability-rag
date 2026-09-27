@@ -1,0 +1,23 @@
+---
+- id: 0ab4afc4ebdc53069eff03db608b3034
+  name: Splashtop Execution
+  description: 'An adversary may attempt to trick the user into downloading Splashtop
+    for use as a C2 channel.
+
+    Upon successful execution, Splashtop will be executed.
+
+    '
+  tactic: command-and-control
+  technique:
+    attack_id: T1219
+    name: Remote Access Software
+  platforms:
+    windows:
+      psh:
+        command: Start-Process "${env:programfiles(x86)}\Splashtop\Splashtop Remote\Client
+          for STP\strwinclt.exe"
+        payloads: []
+        cleanup: Stop-Process -Name "strwinclt" -force -erroraction silentlycontinue
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

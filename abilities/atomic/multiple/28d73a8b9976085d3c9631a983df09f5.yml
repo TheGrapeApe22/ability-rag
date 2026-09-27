@@ -1,0 +1,21 @@
+---
+- id: 28d73a8b9976085d3c9631a983df09f5
+  name: Trap SIGINT (freebsd)
+  description: 'Launch bash shell with command arg to create TRAP on SIGINT (CTRL+C),
+    then send SIGINT signal.
+
+    The trap executes script that writes to /tmp/art-fish.txt
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1546.005
+    name: 'Event Triggered Execution: Trap'
+  platforms:
+    linux:
+      sh:
+        command: if [ ! -x "$(command -v bash)" ]; then (which pkg && pkg install
+          -y bash); fi;  bash -c 'trap "nohup sh $PathToAtomicsFolder/T1546.005/src/echo-art-fish.sh"
+          SIGINT && kill -SIGINT $$'
+        payloads: []
+        cleanup: rm -f /tmp/art-fish.txt

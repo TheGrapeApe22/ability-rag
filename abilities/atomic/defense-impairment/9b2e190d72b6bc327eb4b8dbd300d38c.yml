@@ -1,0 +1,30 @@
+---
+- id: 9b2e190d72b6bc327eb4b8dbd300d38c
+  name: Azure - Eventhub Deletion
+  description: 'Identifies an Event Hub deletion in Azure.
+
+    An Event Hub is an event processing service that ingests and processes large volumes
+    of events and data.
+
+    An adversary may delete an Event Hub in an attempt to evade detection.
+
+    https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-about.
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685.002
+    name: 'Disable or Modify Tools: Disable or Modify Cloud Log'
+  platforms:
+    unknown:
+      psh:
+        command: $secure_pwd = "#{password}" | ConvertTo-SecureString -AsPlainText
+          -Force; $creds = New-Object System.Management.Automation.PSCredential -ArgumentList
+          "#{username}", $secure_pwd; Connect-AzureAD -Credential $creds; Remove-AzEventHub
+          -ResourceGroupName
+        payloads: []
+        cleanup: cd "$PathToAtomicsFolder/T1685.002/src/T1685.002-2/"; terraform destroy
+          -auto-approve
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

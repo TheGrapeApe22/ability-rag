@@ -1,0 +1,25 @@
+---
+- id: b998976ca5853b8a221fd3fa952c9fbf
+  name: Azure - Enumerate common cloud services
+  description: 'Upon successful execution, this test will enumerate common resources
+    that are contained within a valid Azure subscription.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1526
+    name: Cloud Service Discovery
+  platforms:
+    unknown:
+      psh:
+        command: Import-Module "PathToAtomicsFolder\T1526\src\AzureDiscovery.ps1";
+          $client_id = "None"; $client_secret = "None"; $tenant_id = "None"; $environment
+          = "AzureCloud"; Set-AzureAuthentication -ClientID $client_id -ClientSecret
+          $client_secret -TenantID $tenant_id -Environment $environment; Get-AzureDiscoveryData
+          -OutputDirectory "$env:TMPDIR/azure_discovery" -Environment $environment;
+          Remove-BlankFiles -OutputDirectory "$env:TMPDIR/azure_discovery"
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

@@ -1,0 +1,18 @@
+---
+- id: b7a4a64f2b422ab95be4e7322de0a00c
+  name: Cron - Add script to /var/spool/cron/crontabs/ folder
+  description: 'This test adds a script to a /var/spool/cron/crontabs folder configured
+    to execute on a schedule. This technique was used by the threat actor Rocke during
+    the exploitation of Linux web servers.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1053.003
+    name: 'Scheduled Task/Job: Cron'
+  platforms:
+    linux:
+      sh:
+        command: echo "echo 'Hello from Atomic Red Team' > /tmp/atomic.log" >> /var/spool/cron/crontabs/persistevil
+        payloads: []
+        cleanup: rm /var/spool/cron/crontabs/persistevil -f

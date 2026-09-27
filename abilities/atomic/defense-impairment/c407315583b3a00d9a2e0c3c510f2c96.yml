@@ -1,0 +1,21 @@
+---
+- id: c407315583b3a00d9a2e0c3c510f2c96
+  name: Tamper with Windows Defender Evade Scanning -Process
+  description: "Malware can exclude specific processes from being scanned and evading\
+    \ detection.\nUpon successful execution, the process(es) should be on the list\
+    \ of excluded processes. \nTo check the exclusion list using poweshell  (Get-MpPreference).ExclusionProcess.\"\
+    \n"
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685
+    name: Disable or Modify Tools
+  platforms:
+    windows:
+      psh:
+        command: $excludedProcess = "outlook.exe"; Add-MpPreference -ExclusionProcess
+          $excludedProcess
+        payloads: []
+        cleanup: $excludedProcess = "outlook.exe"; Remove-MpPreference -ExclusionProcess  $excludedProcess
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

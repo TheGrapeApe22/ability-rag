@@ -1,0 +1,20 @@
+---
+- id: a098a7b460198c82a15f4c7c3355275c
+  name: Basic Permission Groups Discovery Windows (Domain)
+  description: 'Basic Permission Groups Discovery for Windows. This test will display
+    some errors if run on a computer not connected to a domain. Upon execution, domain
+
+    information will be displayed.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1069.002
+    name: 'Permission Groups Discovery: Domain Groups'
+  platforms:
+    windows:
+      cmd:
+        command: net localgroup && net group /domain && net group "enterprise admins"
+          /domain && net group "domain admins" /domain
+        payloads: []
+        cleanup: ''

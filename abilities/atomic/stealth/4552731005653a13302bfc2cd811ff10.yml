@@ -1,0 +1,16 @@
+---
+- id: 4552731005653a13302bfc2cd811ff10
+  name: Rundll32 with Control_RunDLL
+  description: "Rundll32.exe loading dll with 'control_rundll' within the command-line,\
+    \ loading a .cpl or another file type related to CVE-2021-40444. \n"
+  tactic: stealth
+  technique:
+    attack_id: T1218.011
+    name: 'Signed Binary Proxy Execution: Rundll32'
+  platforms:
+    windows:
+      cmd:
+        command: rundll32.exe shell32.dll,Control_RunDLL "6349c0_calc.dll"
+        payloads:
+        - 6349c0_calc.dll
+        cleanup: ''

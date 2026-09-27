@@ -1,0 +1,26 @@
+---
+- id: ed172018f897dab90147a47995ce197d
+  name: Obfuscated Command in PowerShell
+  description: 'This is an obfuscated PowerShell command which when executed prints
+    "Hello, from PowerShell!". Example is from the 2021 Threat Detection Report by
+    Red Canary.
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1027
+    name: Obfuscated Files or Information
+  platforms:
+    windows:
+      psh:
+        command: $cmDwhy =[TyPe]("{0}{1}" -f 'S','TrING')  ;   $pz2Sb0  =[TYpE]("{1}{0}{2}"-f'nv','cO','ert')  ;  &("{0}{2}{3}{1}{4}"
+          -f'In','SiO','vOKe-EXp','ReS','n') (  (&("{1}{2}{0}"-f'blE','gET-','vaRIA')  ('CMdw'+'h'+'y'))."v`ALUe"::("{1}{0}"
+          -f'iN','jO').Invoke('',( (127, 162,151, 164,145 ,55 , 110 ,157 ,163 , 164
+          ,40,47, 110 , 145 ,154, 154 ,157 , 54 ,40, 146, 162 , 157,155 ,40, 120,
+          157 ,167,145 , 162 ,123,150 ,145 , 154 , 154 , 41,47)| .('%') { ( [CHAR]
+          (  $Pz2sB0::"t`OinT`16"(( [sTring]${_}) ,8)))})) )
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

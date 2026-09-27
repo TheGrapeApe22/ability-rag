@@ -1,0 +1,20 @@
+---
+- id: d3e69d970c19fb2a9a2ee8be47ea17ad
+  name: WMI Win32_Product Class - Execute Local MSI file with embedded VBScript
+  description: 'Executes an MSI containing embedded VBScript code using the WMI Win32_Product
+    class
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1218.007
+    name: 'Signed Binary Proxy Execution: Msiexec'
+  platforms:
+    windows:
+      psh:
+        command: Invoke-CimMethod -ClassName Win32_Product -MethodName
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

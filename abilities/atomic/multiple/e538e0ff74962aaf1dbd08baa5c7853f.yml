@@ -1,0 +1,22 @@
+---
+- id: e538e0ff74962aaf1dbd08baa5c7853f
+  name: powerShell Persistence via hijacking default modules - Get-Variable.exe
+  description: "Colibri leverages PowerShell in a unique way to maintain persistence\
+    \ after a reboot. Depending on the Windows version, Colibri drops its copy in\
+    \ %APPDATA%\\Local\\Microsoft\\WindowsApps and \nnames it Get-Variable.exe for\
+    \ Windows 10 and above.\nhttps://blog.malwarebytes.com/threat-intelligence/2022/04/colibri-loader-combines-task-scheduler-and-powershell-in-clever-persistence-technique/\n"
+  tactic: multiple
+  technique:
+    attack_id: T1574.008
+    name: 'Hijack Execution Flow: Path Interception by Search Order Hijacking'
+  platforms:
+    windows:
+      psh:
+        command: C:\Windows\Microsoft.NET\Framework64\v4.0.30319\csc.exe /out:"$env:localappdata\Microsoft\WindowsApps\Get-Variable.exe"
+          "PathToAtomicsFolder\T1574.008\bin\calc.cs"; Powershell -noprofile
+        payloads: []
+        cleanup: Remove-Item "$env:localappdata\Microsoft\WindowsApps\Get-Variable.exe"
+          -ErrorAction Ignore; Stop-Process -Name "calculator"
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

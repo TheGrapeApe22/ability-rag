@@ -1,0 +1,32 @@
+---
+- id: 51ef5578afcd873709d2c7672234e57b
+  name: LOLBAS CustomShellHost to Spawn Process
+  description: 'This test simulates an adversary copying `customshellhost.exe` and
+    `calc.exe` from `C:\windows\system32\` to `C:\temp\`, renaming `calc.exe` to `explorer.exe`.
+
+    Upon execution, customshellhost.exe will spawn calc.exe.
+
+    Note this will only work on Windows 10 or 11.
+
+    [LOLBAS](https://lolbas-project.github.io/lolbas/Binaries/CustomShellHost/)
+
+    [BishopFox](https://bishopfox.com/blog/edr-bypass-with-lolbins)
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1218
+    name: Signed Binary Proxy Execution
+  platforms:
+    windows:
+      psh:
+        command: if (-not (Test-Path C:\test)) {; New-Item -Path C:\test -ItemType
+          Directory; } else {; Write-Host "Directory C:\test already exists." }; Copy-Item
+          -Path "C:\windows\system32\customshellhost.exe" -Destination "C:\test\customshellhost.exe"
+          -Force; Copy-Item -Path "C:\windows\system32\calc.exe" -Destination "C:\test\explorer.exe"
+          -Force; C:\test\customshellhost.exe
+        payloads: []
+        cleanup: Remove-Item -Path C:\test -Recurse -Force
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

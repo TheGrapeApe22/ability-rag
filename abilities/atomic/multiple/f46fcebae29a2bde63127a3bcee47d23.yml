@@ -1,0 +1,25 @@
+---
+- id: f46fcebae29a2bde63127a3bcee47d23
+  name: Add command to .bash_profile
+  description: 'Adds a command to the .bash_profile file of the current user
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1546.004
+    name: 'Event Triggered Execution: .bash_profile .bashrc and .shrc'
+  platforms:
+    darwin:
+      sh:
+        command: echo 'echo "Hello from Atomic Red Team T1546.004" > /tmp/T1546.004'
+          >> ~/.bash_profile
+        payloads: []
+        cleanup: head -n '-2' ~/.bash_profile > /tmp/T1546.004; mv /tmp/T1546.004
+          ~/.bash_profile
+    linux:
+      sh:
+        command: echo 'echo "Hello from Atomic Red Team T1546.004" > /tmp/T1546.004'
+          >> ~/.bash_profile
+        payloads: []
+        cleanup: head -n '-2' ~/.bash_profile > /tmp/T1546.004; mv /tmp/T1546.004
+          ~/.bash_profile

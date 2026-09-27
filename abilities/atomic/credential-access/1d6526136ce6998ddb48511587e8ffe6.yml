@@ -1,0 +1,24 @@
+---
+- id: 1d6526136ce6998ddb48511587e8ffe6
+  name: Copy the users GnuPG directory with rsync
+  description: 'Copy the users GnuPG (.gnupg) directory on a Mac or Linux system to
+    a staging folder using the `rsync` command.
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1552.004
+    name: 'Unsecured Credentials: Private Keys'
+  platforms:
+    darwin:
+      sh:
+        command: mkdir /tmp/GnuPG; find / -type d -name '.gnupg' 2>/dev/null -exec
+          rsync -Rr {} /tmp/GnuPG \; exit 0
+        payloads: []
+        cleanup: rm -rf /tmp/GnuPG
+    linux:
+      sh:
+        command: mkdir /tmp/GnuPG; find / -type d -name '.gnupg' 2>/dev/null -exec
+          rsync -Rr {} /tmp/GnuPG \; exit 0
+        payloads: []
+        cleanup: rm -rf /tmp/GnuPG

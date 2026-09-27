@@ -1,0 +1,14 @@
+---
+- id: e5b238f98f504894f9c2387cf411022b
+  name: Enable root account using dsenableroot utility - MacOS
+  description: After execution the current/new user will have root access
+  tactic: multiple
+  technique:
+    attack_id: T1078.003
+    name: 'Valid Accounts: Local Accounts'
+  platforms:
+    darwin:
+      sh:
+        command: dsenableroot; dsenableroot -u art-tester -p art-tester -r art-root
+        payloads: []
+        cleanup: dsenableroot -d; dsenableroot -d -u art-tester -p art-tester

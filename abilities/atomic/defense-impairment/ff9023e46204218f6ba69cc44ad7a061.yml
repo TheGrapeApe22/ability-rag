@@ -1,0 +1,17 @@
+---
+- id: ff9023e46204218f6ba69cc44ad7a061
+  name: Delete system log files using shred utility
+  description: 'This test overwrites the contents of the log file with zero bytes(-z)
+    using three passes(-n 3) of data, and then delete the file(-u) securely
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685.006
+    name: 'Disable or Modify Tools: Clear Linux or Mac System Logs'
+  platforms:
+    darwin:
+      sh:
+        command: sudo shred -u -z -n 3 /var/log/system.log
+        payloads: []
+        cleanup: ''

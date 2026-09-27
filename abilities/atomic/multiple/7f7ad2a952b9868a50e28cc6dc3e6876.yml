@@ -1,0 +1,18 @@
+---
+- id: 7f7ad2a952b9868a50e28cc6dc3e6876
+  name: Enable RDP via Registry (fDenyTSConnections)
+  description: "Modify the registry value of fDenyTSConnections to allow incoming\
+    \ RDP connections. \nThis activity has been observed by multiple ransomware groups,\
+    \ including Hive ransomware. \n[Reference](https://www.rapid7.com/blog/post/2023/01/11/increasing-the-sting-of-hive-ransomware/)\n"
+  tactic: multiple
+  technique:
+    attack_id: T1112
+    name: Modify Registry
+  platforms:
+    windows:
+      cmd:
+        command: reg add "HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server" /v
+          fDenyTSConnections /t REG_DWORD /d 0 /f
+        payloads: []
+        cleanup: if 0 EQU 1 (reg delete "HKLM\SYSTEM\CurrentControlSet\Control\Terminal
+          Server" /v fDenyTSConnections /f >nul 2>&1)

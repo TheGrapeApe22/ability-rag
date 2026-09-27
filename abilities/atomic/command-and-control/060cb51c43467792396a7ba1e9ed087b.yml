@@ -1,0 +1,18 @@
+---
+- id: 060cb51c43467792396a7ba1e9ed087b
+  name: Printer Migration Command-Line Tool UNC share folder into a zip file
+  description: 'Create a ZIP file from a folder in a remote drive
+
+    '
+  tactic: command-and-control
+  technique:
+    attack_id: T1105
+    name: Ingress Tool Transfer
+  platforms:
+    windows:
+      cmd:
+        command: del %TEMP%\PrintBrm.zip >nul 2>&1  && C:\Windows\System32\spool\tools\PrintBrm.exe
+          -b -d \\127.0.0.1\c$\AtomicRedTeam\atomics\T1105\src\  -f %TEMP%\PrintBrm.zip
+          -O FORCE
+        payloads: []
+        cleanup: del %TEMP%\PrintBrm.zip >nul 2>&1

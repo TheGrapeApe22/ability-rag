@@ -1,0 +1,17 @@
+---
+- id: a233dbf07406b463283abfd13388a2c5
+  name: Overwrite FreeBSD system log via echo utility
+  description: 'This test overwrites the contents of system log file with an empty
+    string using echo utility
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685.006
+    name: 'Disable or Modify Tools: Clear Linux or Mac System Logs'
+  platforms:
+    linux:
+      sh:
+        command: echo '' > /var/log/messages
+        payloads: []
+        cleanup: ''

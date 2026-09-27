@@ -1,0 +1,21 @@
+---
+- id: e97da2031a0e807b08cc9c3765dc19a3
+  name: UACME Bypass Method 39
+  description: "Executes User Account Control Bypass according to the methods listed\
+    \ below. Upon successful execution you should see event viewer load and two administrative\
+    \ command prompts.\nNote: The cleanup_command's which kill the spawned cmd and\
+    \ event viewer processes only work if run as admin.\n\nAuthor: Stefan Kanthak\n\
+    \nType:\tDll Hijack\n\nMethod: .NET Code Profiler\n\nTarget:\t\\system32\\mmc.exe\n\
+    \nComponent:\tAttacker defined\n\nImplementation:\tucmCorProfilerMethod\n\nUCM\
+    \ Method:\tUacMethodCorProfiler\n\nhttps://github.com/hfiref0x/UACME\n"
+  tactic: privilege-escalation
+  technique:
+    attack_id: T1548.002
+    name: 'Abuse Elevation Control Mechanism: Bypass User Account Control'
+  platforms:
+    windows:
+      cmd:
+        command: '"PathToAtomicsFolder\..\ExternalPayloads\uacme\39 Akagi64.exe"'
+        payloads: []
+        cleanup: powershell Stop-Process -Name cmd -Force -ErrorAction Ignore && powershell
+          Stop-Process -Name mmc -Force -ErrorAction Ignore

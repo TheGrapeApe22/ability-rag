@@ -1,0 +1,41 @@
+---
+- id: c6d457b89710a7223c62091943b0bcc1
+  name: Port Scan Nmap
+  description: 'Scan ports to check for listening ports with Nmap.
+
+    Upon successful execution, sh will utilize nmap, telnet, and nc to contact a single
+    or range of addresses on port 80 to determine if listening. Results will be via
+    stdout.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1046
+    name: Network Service Discovery
+  platforms:
+    linux:
+      sh:
+        command: 'if [ -x "$(command -v telnet)" ]; then : ; else (which yum && yum
+          -y install epel-release telnet)||(which apt-get && DEBIAN_FRONTEND=noninteractive
+          apt-get install -y telnet); fi; if [ -x "$(command -v nc)" ]; then : ; else
+          (which yum && yum -y install epel-release nc)||(which apt-get && DEBIAN_FRONTEND=noninteractive
+          apt-get install -y netcat)||(which pkg && pkg install -y netcat); fi; if
+          [ -x "$(command -v nmap)" ]; then : ; else (which yum && yum -y install
+          epel-release nmap)||(which apt-get && DEBIAN_FRONTEND=noninteractive apt-get
+          install -y nmap)||(which pkg && pkg install -y nmap); fi;  sudo nmap -sS
+          192.168.1.0/24 -p 80; telnet 192.168.1.1 80; nc -nv 192.168.1.1 80'
+        payloads: []
+        cleanup: ''
+    darwin:
+      sh:
+        command: 'if [ -x "$(command -v telnet)" ]; then : ; else (which yum && yum
+          -y install epel-release telnet)||(which apt-get && DEBIAN_FRONTEND=noninteractive
+          apt-get install -y telnet); fi; if [ -x "$(command -v nc)" ]; then : ; else
+          (which yum && yum -y install epel-release nc)||(which apt-get && DEBIAN_FRONTEND=noninteractive
+          apt-get install -y netcat)||(which pkg && pkg install -y netcat); fi; if
+          [ -x "$(command -v nmap)" ]; then : ; else (which yum && yum -y install
+          epel-release nmap)||(which apt-get && DEBIAN_FRONTEND=noninteractive apt-get
+          install -y nmap)||(which pkg && pkg install -y nmap); fi;  sudo nmap -sS
+          192.168.1.0/24 -p 80; telnet 192.168.1.1 80; nc -nv 192.168.1.1 80'
+        payloads: []
+        cleanup: ''

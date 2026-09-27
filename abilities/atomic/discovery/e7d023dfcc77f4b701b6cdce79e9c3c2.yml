@@ -1,0 +1,17 @@
+---
+- id: e7d023dfcc77f4b701b6cdce79e9c3c2
+  name: Hostname Discovery (Windows)
+  description: 'Identify system hostname for Windows. Upon execution, the hostname
+    of the device will be displayed.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1082
+    name: System Information Discovery
+  platforms:
+    windows:
+      cmd:
+        command: hostname
+        payloads: []
+        cleanup: ''

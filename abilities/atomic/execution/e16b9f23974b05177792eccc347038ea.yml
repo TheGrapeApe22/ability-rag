@@ -1,0 +1,18 @@
+---
+- id: e16b9f23974b05177792eccc347038ea
+  name: Application uninstall using WMIC
+  description: Emulates uninstalling  applications using WMIC.  This method only works
+    if the product was installed with an msi file.  APTs have been seen using this
+    to uninstall security products.
+  tactic: execution
+  technique:
+    attack_id: T1047
+    name: Windows Management Instrumentation
+  platforms:
+    windows:
+      cmd:
+        command: wmic /node:"127.0.0.1" product where "name like 'Tightvnc%%'" call
+          uninstall
+        payloads: []
+        cleanup: msiexec /i "PathToAtomicsFolder\..\ExternalPayloads\tightvncinstaller.msi"
+          /qn /norestart

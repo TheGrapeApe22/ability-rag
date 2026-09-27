@@ -1,0 +1,20 @@
+---
+- id: 08a146a382df6fea9fa2275073e9d245
+  name: Windows - Timestomp a File
+  description: "Timestomp kxwn.lock.\n\nSuccessful execution will include the placement\
+    \ of kxwn.lock in #{file_path} and execution of timestomp.ps1 to modify the time\
+    \ of the .lock file. \n\n[Mitre ATT&CK Evals](https://github.com/mitre-attack/attack-arsenal/blob/master/adversary_emulation/APT29/CALDERA_DIY/evals/data/abilities/defensive-evasion/4a2ad84e-a93a-4b2e-b1f0-c354d6a41278.yml)\n"
+  tactic: stealth
+  technique:
+    attack_id: T1070.006
+    name: 'Indicator Removal on Host: Timestomp'
+  platforms:
+    windows:
+      psh:
+        command: import-module "PathToAtomicsFolder\..\ExternalPayloads\timestomp.ps1";
+          timestomp -dest "PathToAtomicsFolder\..\ExternalPayloads\kxwn.lock"
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

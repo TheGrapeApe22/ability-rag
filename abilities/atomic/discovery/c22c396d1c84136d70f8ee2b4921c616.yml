@@ -1,0 +1,18 @@
+---
+- id: c22c396d1c84136d70f8ee2b4921c616
+  name: Discover System Language with WMIC
+  description: "WMIC (Windows Management Instrumentation Command-line) is a command-line\
+    \ tool that provides a simplified interface to query and manage Windows system\
+    \ configurations, processes, and hardware information using WMI. \n\nThe command\
+    \ in this test retrieves information about the system's locale, operating system\
+    \ language, and multilingual user interface (MUI) languages.\n"
+  tactic: discovery
+  technique:
+    attack_id: T1614.001
+    name: 'System Location Discovery: System Language Discovery'
+  platforms:
+    windows:
+      cmd:
+        command: wmic /node:localhost os get Locale,OSLanguage,MUILanguages /format:table
+        payloads: []
+        cleanup: ''

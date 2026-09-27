@@ -1,0 +1,20 @@
+---
+- id: 0aedcd84c2a29f000e04961edb9a6294
+  name: Hidden Window-Conhost Execution
+  description: "Launch conhost.exe in \"headless\" mode, it means that no visible\
+    \ window will pop up on the victim's machine. \nThis could be a sign of \"conhost\"\
+    \ usage as a LOLBIN or potential process injection activity.\nconhost.exe can\
+    \ be used as proxy the execution of arbitrary commands\n"
+  tactic: stealth
+  technique:
+    attack_id: T1564.003
+    name: 'Hide Artifacts: Hidden Window'
+  platforms:
+    windows:
+      psh:
+        command: conhost.exe --headless calc.exe
+        payloads: []
+        cleanup: Stop-Process -Name calc*
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

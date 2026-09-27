@@ -1,0 +1,23 @@
+---
+- id: 78c03eac53060523b4eef3ad473d218c
+  name: Add command to .bashrc
+  description: 'Adds a command to the .bashrc file of the current user
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1546.004
+    name: 'Event Triggered Execution: .bash_profile .bashrc and .shrc'
+  platforms:
+    darwin:
+      sh:
+        command: echo 'echo "Hello from Atomic Red Team T1546.004" > /tmp/T1546.004'
+          >> ~/.bashrc
+        payloads: []
+        cleanup: head -n '-2' ~/.bashrc > /tmp/T1546.004; mv /tmp/T1546.004 ~/.bashrc
+    linux:
+      sh:
+        command: echo 'echo "Hello from Atomic Red Team T1546.004" > /tmp/T1546.004'
+          >> ~/.bashrc
+        payloads: []
+        cleanup: head -n '-2' ~/.bashrc > /tmp/T1546.004; mv /tmp/T1546.004 ~/.bashrc

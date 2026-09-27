@@ -1,0 +1,18 @@
+---
+- id: a3b64217448636e67d4f974cb1bb1905
+  name: SubInAcl Execution
+  description: This test simulates an adversary executing the Windows Resource kit
+    utility SubInAcl. This utility was abused by adversaries in the past in order
+    to modify access permissions. Upon execution, a process creation log should be
+    generated indicating successful execution.
+  tactic: defense-impairment
+  technique:
+    attack_id: T1222.001
+    name: 'File and Directory Permissions Modification: Windows File and Directory
+      Permissions Modification'
+  platforms:
+    windows:
+      cmd:
+        command: '"C:\Program Files (x86)\Windows Resource Kits\Tools\subinacl.exe"'
+        payloads: []
+        cleanup: ''

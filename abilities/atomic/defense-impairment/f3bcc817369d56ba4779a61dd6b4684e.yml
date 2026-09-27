@@ -1,0 +1,24 @@
+---
+- id: f3bcc817369d56ba4779a61dd6b4684e
+  name: ESXi - Disable Account Lockout Policy via PowerCLI
+  description: 'An adversary may disable account lockout policy within ESXi to have
+    the ability to prevent defensive actions from being enforced in the future or
+    to prevent future alerting.
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685
+    name: Disable or Modify Tools
+  platforms:
+    linux:
+      psh:
+        command: Set-PowerCLIConfiguration -InvalidCertificateAction Ignore -ParticipateInCEIP:$false
+          -Confirm:$false ; Connect-VIServer -Server atomic.local -User root -Password
+          pass; Get-AdvancedSetting -Entity atomic.local -Name 'Security.AccountLockFailures'
+          | Set-AdvancedSetting -Value '0' -Confirm:$false; Disconnect-VIServer -Confirm:$false
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

@@ -1,0 +1,19 @@
+---
+- id: 5ee8f6e61f16d103237c744080587e59
+  name: Clears Recycle bin via rd
+  description: 'An adversary clears the recycle bin in the system partition using
+    rd to remove traces of deleted files.
+
+    [Reference](https://thedfirreport.com/2024/08/12/threat-actors-toolkit-leveraging-sliver-poshc2-batch-scripts/)
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1070.004
+    name: 'Indicator Removal on Host: File Deletion'
+  platforms:
+    windows:
+      cmd:
+        command: rd /s /q %systemdrive%\$RECYCLE.BIN
+        payloads: []
+        cleanup: ''

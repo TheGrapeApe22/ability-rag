@@ -1,0 +1,24 @@
+---
+- id: 4370001012f5f0df001269627b4737e9
+  name: System Owner/User Discovery
+  description: 'Identify System owner or users on an endpoint
+
+
+    Upon successful execution, sh will stdout list of usernames.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1033
+    name: System Owner/User Discovery
+  platforms:
+    linux:
+      sh:
+        command: users; w; who
+        payloads: []
+        cleanup: ''
+    darwin:
+      sh:
+        command: users; w; who
+        payloads: []
+        cleanup: ''

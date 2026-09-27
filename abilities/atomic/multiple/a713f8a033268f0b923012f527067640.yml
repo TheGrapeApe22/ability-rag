@@ -1,0 +1,21 @@
+---
+- id: a713f8a033268f0b923012f527067640
+  name: Disable Windows Change Password Feature
+  description: 'Modify the registry of the currently logged in user using reg.exe
+    via cmd console to disable the windows change password feature.
+
+    See how ransomware abuses this technique- https://www.trendmicro.com/vinfo/us/threat-encyclopedia/malware/ransom_heartbleed.thdobah
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1112
+    name: Modify Registry
+  platforms:
+    windows:
+      cmd:
+        command: reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\System"
+          /v DisableChangePassword /t REG_DWORD /d 1 /f
+        payloads: []
+        cleanup: reg delete "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\System"
+          /v DisableChangePassword /f >nul 2>&1

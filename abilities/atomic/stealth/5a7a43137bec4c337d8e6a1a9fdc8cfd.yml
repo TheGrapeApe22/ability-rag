@@ -1,0 +1,21 @@
+---
+- id: 5a7a43137bec4c337d8e6a1a9fdc8cfd
+  name: Running DLL with .init extension and function
+  description: 'This test, based on common Gamarue tradecraft, consists of a DLL file
+    with a .init extension being run by rundll32.exe. When this DLL file''s ''krnl''
+    function is called, it launches a Windows pop-up.
+
+    DLL created with the AtomicTestHarnesses Portable Executable Builder script.
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1218.011
+    name: 'Signed Binary Proxy Execution: Rundll32'
+  platforms:
+    windows:
+      cmd:
+        command: rundll32.exe 0391ca__WT.init,krnl
+        payloads:
+        - 0391ca__WT.init
+        cleanup: ''

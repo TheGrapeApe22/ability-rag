@@ -1,0 +1,19 @@
+---
+- id: ebfd4c7cf9546d48220c187b2c8538d4
+  name: Active Directory Domain Search
+  description: 'Output information from LDAPSearch. LDAP Password is the admin-user
+    password on Active Directory
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1087.002
+    name: 'Account Discovery: Domain Account'
+  platforms:
+    linux:
+      sh:
+        command: ldapsearch -H ldap://example.test:389 -x -D user@example.test -w
+          s3CurePssw0rD! -b "CN=Users,DC=example,DC=test" -s sub -a always -z 1000
+          dn
+        payloads: []
+        cleanup: ''

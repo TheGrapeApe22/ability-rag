@@ -1,0 +1,20 @@
+---
+- id: 76147189e1a5880afa047d0869cf6d17
+  name: Security Software Discovery - AV Discovery via WMI
+  description: 'Discovery of installed antivirus products via a WMI query.
+
+
+    when sucessfully executed, the test is going to display installed AV software.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1518.001
+    name: 'Software Discovery: Security Software Discovery'
+  platforms:
+    windows:
+      cmd:
+        command: wmic.exe /Namespace:\\root\SecurityCenter2 Path AntiVirusProduct
+          Get displayName /Format:List
+        payloads: []
+        cleanup: ''

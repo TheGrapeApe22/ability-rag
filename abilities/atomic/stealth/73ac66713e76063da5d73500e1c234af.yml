@@ -1,0 +1,20 @@
+---
+- id: 73ac66713e76063da5d73500e1c234af
+  name: WINWORD Remote Template Injection
+  description: "Open a .docx file that loads a remote .dotm macro enabled template\
+    \ from https://github.com/redcanaryco/atomic-red-team/tree/master/atomics/T1221/src/opencalc.dotm\
+    \ \nExecutes the code specified within the .dotm template.\nRequires download\
+    \ of WINWORD found in Microsoft Ofiice at Microsoft: https://www.microsoft.com/en-us/download/office.aspx.\
+    \  \nDefault docs file opens Calculator.exe when test sucessfully executed, while\
+    \ AV turned off.\n"
+  tactic: stealth
+  technique:
+    attack_id: T1221
+    name: Template Injection
+  platforms:
+    windows:
+      cmd:
+        command: start "01b633_Calculator.docx"
+        payloads:
+        - 01b633_Calculator.docx
+        cleanup: ''

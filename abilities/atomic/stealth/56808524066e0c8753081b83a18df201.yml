@@ -1,0 +1,18 @@
+---
+- id: 56808524066e0c8753081b83a18df201
+  name: Regsvr32 local COM scriptlet execution
+  description: 'Regsvr32.exe is a command-line program used to register and unregister
+    OLE controls. Upon execution, calc.exe will be launched.
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1218.010
+    name: 'Signed Binary Proxy Execution: Regsvr32'
+  platforms:
+    windows:
+      cmd:
+        command: C:\Windows\system32\regsvr32.exe /s /u /i:"4774cd_RegSvr32.sct" scrobj.dll
+        payloads:
+        - 4774cd_RegSvr32.sct
+        cleanup: ''

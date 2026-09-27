@@ -1,0 +1,20 @@
+---
+- id: 71b3d2945679566b9d94d8cb11df4b70
+  name: List Windows Firewall Rules
+  description: 'Enumerates Windows Firewall Rules using netsh.
+
+
+    Upon successful execution, cmd.exe will spawn netsh.exe to list firewall rules.
+    Output will be via stdout.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1016
+    name: System Network Configuration Discovery
+  platforms:
+    windows:
+      cmd:
+        command: netsh advfirewall firewall show rule name=all
+        payloads: []
+        cleanup: ''

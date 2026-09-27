@@ -1,0 +1,17 @@
+---
+- id: 74f5140a14273acffca8154b94ce2b54
+  name: Enumerate Kernel Driver Files (Linux)
+  description: 'Finds and lists all kernel driver files on a Linux system in order
+    to provide a broader view of available drivers, not just loaded ones.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1652
+    name: Device Driver Discovery
+  platforms:
+    linux:
+      sh:
+        command: find /lib/modules/$(uname -r)/kernel/drivers -name "*.ko*"
+        payloads: []
+        cleanup: ''

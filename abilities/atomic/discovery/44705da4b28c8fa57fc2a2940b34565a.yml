@@ -1,0 +1,16 @@
+---
+- id: 44705da4b28c8fa57fc2a2940b34565a
+  name: System Information Discovery
+  description: 'Identify System Info
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1082
+    name: System Information Discovery
+  platforms:
+    darwin:
+      sh:
+        command: system_profiler; ls -al /Applications
+        payloads: []
+        cleanup: ''

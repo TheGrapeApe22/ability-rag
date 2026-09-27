@@ -1,0 +1,23 @@
+---
+- id: f4ed47d4cc35b5bf33ae62657a960ee6
+  name: Cobalt Strike Lateral Movement (psexec_psh) pipe
+  description: 'Uses the [Named Pipes Micro Emulation](https://github.com/center-for-threat-informed-defense/adversary_emulation_library/tree/master/micro_emulation_plans/src/named_pipes)
+    executable from the Center for Threat Informed Defense to create a named pipe
+    for inter-process communication.
+
+
+    The named pipe executable will pause for 30 seconds to allow the client and server
+    to exchange a message through the pipe.
+
+    '
+  tactic: execution
+  technique:
+    attack_id: T1559
+    name: Inter-Process Communication
+  platforms:
+    windows:
+      cmd:
+        command: '"PathToAtomicsFolder\..\ExternalPayloads\build\namedpipes_executor.exe"
+          --pipe 2'
+        payloads: []
+        cleanup: ''

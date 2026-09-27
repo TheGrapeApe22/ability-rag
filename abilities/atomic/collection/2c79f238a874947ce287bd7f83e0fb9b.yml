@@ -1,0 +1,28 @@
+---
+- id: 2c79f238a874947ce287bd7f83e0fb9b
+  name: Encrypts collected data with AES-256 and Base64
+  description: "An adversary may compress all the collected data, encrypt and send\
+    \ them to a C2 server using base64 encoding. \nThis atomic test tries to emulate\
+    \ the behaviour of the FLEXIROOT backdoor to archive the collected data. FLEXIROOT\
+    \ typically utilizes AES encryption and base64 encoding to transfer the encrypted\
+    \ data to the C2 server. \nIn this test, standard zip compression and the OpenSSL\
+    \ library are used to encrypt the compressed data.\nhttps://attack.mitre.org/versions/v7/software/S0267/"
+  tactic: collection
+  technique:
+    attack_id: T1560.001
+    name: 'Archive Collected Data: Archive via Utility'
+  platforms:
+    linux:
+      sh:
+        command: zip -r  /tmp/t1560/t1560_data.zip /tmp/t1560; openssl enc -aes-256-cbc
+          -pass pass:atomic_enc_pass -p -in /tmp/t1560/t1560_data.zip -out /tmp/t1560/t1560_data.enc
+          ; cat /tmp/t1560/t1560_data.enc | base64
+        payloads: []
+        cleanup: rm -rf /tmp/t1560
+    darwin:
+      sh:
+        command: zip -r  /tmp/t1560/t1560_data.zip /tmp/t1560; openssl enc -aes-256-cbc
+          -pass pass:atomic_enc_pass -p -in /tmp/t1560/t1560_data.zip -out /tmp/t1560/t1560_data.enc
+          ; cat /tmp/t1560/t1560_data.enc | base64
+        payloads: []
+        cleanup: rm -rf /tmp/t1560

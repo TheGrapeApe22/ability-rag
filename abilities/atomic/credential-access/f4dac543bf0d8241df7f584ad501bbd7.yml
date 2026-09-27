@@ -1,0 +1,24 @@
+---
+- id: f4dac543bf0d8241df7f584ad501bbd7
+  name: Copy Private SSH Keys with rsync
+  description: 'Copy private SSH keys on a Linux or macOS system to a staging folder
+    using the `rsync` command.
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1552.004
+    name: 'Unsecured Credentials: Private Keys'
+  platforms:
+    darwin:
+      sh:
+        command: mkdir /tmp/art-staging; find / -name id_rsa 2>/dev/null -exec rsync
+          -R {} /tmp/art-staging \; exit 0
+        payloads: []
+        cleanup: rm -rf /tmp/art-staging
+    linux:
+      sh:
+        command: mkdir /tmp/art-staging; find / -name id_rsa 2>/dev/null -exec rsync
+          -R {} /tmp/art-staging \; exit 0
+        payloads: []
+        cleanup: rm -rf /tmp/art-staging

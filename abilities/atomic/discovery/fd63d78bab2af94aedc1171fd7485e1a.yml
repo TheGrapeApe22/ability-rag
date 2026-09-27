@@ -1,0 +1,16 @@
+---
+- id: fd63d78bab2af94aedc1171fd7485e1a
+  name: System Service Discovery - Windows Scheduled Tasks (schtasks)
+  description: 'Enumerates scheduled tasks on Windows using schtasks.exe.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1007
+    name: System Service Discovery
+  platforms:
+    windows:
+      cmd:
+        command: schtasks /query /fo LIST /v
+        payloads: []
+        cleanup: ''

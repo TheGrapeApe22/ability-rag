@@ -1,0 +1,19 @@
+---
+- id: b8a4225aa3022f4bde3d812c250f7217
+  name: Loadable Kernel Module based Rootkit (Diamorphine)
+  description: 'Loads Diamorphine kernel module, which hides itself and a processes.
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1014
+    name: Rootkit
+  platforms:
+    linux:
+      sh:
+        command: sudo modprobe diamorphine; ping -c 10 localhost >/dev/null & TARGETPID="$!";
+          ps $TARGETPID; kill -31 $TARGETPID; ps $TARGETPID || echo "process ${TARGETPID}
+          hidden"
+        payloads: []
+        cleanup: kill -63 1; sudo modprobe -r diamorphine; sudo rm -rf /lib/modules/$(uname
+          -r)/diamorphine.ko /tmp/atomic; sudo depmod -a

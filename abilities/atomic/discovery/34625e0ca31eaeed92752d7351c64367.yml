@@ -1,0 +1,20 @@
+---
+- id: 34625e0ca31eaeed92752d7351c64367
+  name: 'operating system discovery '
+  description: 'operating system discovery using get-ciminstance
+
+    https://petri.com/getting-operating-system-information-powershell/'
+  tactic: discovery
+  technique:
+    attack_id: T1082
+    name: System Information Discovery
+  platforms:
+    windows:
+      psh:
+        command: Get-CimInstance Win32_OperatingSystem | Select-Object Caption, Version,
+          ServicePackMajorVersion, OSArchitecture, CSName, WindowsDirectory | Out-null
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

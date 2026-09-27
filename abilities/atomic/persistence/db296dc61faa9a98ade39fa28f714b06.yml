@@ -1,0 +1,16 @@
+---
+- id: db296dc61faa9a98ade39fa28f714b06
+  name: Create a user account on a FreeBSD system
+  description: 'Create a user via pw
+
+    '
+  tactic: persistence
+  technique:
+    attack_id: T1136.001
+    name: 'Create Account: Local Account'
+  platforms:
+    linux:
+      sh:
+        command: pw useradd evil_user -s /usr/sbin/nologin -d /nonexistent -c evil_account
+        payloads: []
+        cleanup: rmuser -y evil_user

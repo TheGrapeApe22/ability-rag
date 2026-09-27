@@ -1,0 +1,19 @@
+---
+- id: fb0b14dad49dfa79ddae55c0a2a10a9b
+  name: TruffleSnout - Listing AD Infrastructure
+  description: 'Iterative AD discovery toolkit for offensive operators. Situational
+    awareness and targeted low noise enumeration. Preference for OpSec.- https://github.com/dsnezhkov/TruffleSnout
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1482
+    name: Domain Trust Discovery
+  platforms:
+    windows:
+      cmd:
+        command: '"PathToAtomicsFolder\..\ExternalPayloads\TruffleSnout.exe" forest
+          -n %userdomain% && "PathToAtomicsFolder\..\ExternalPayloads\TruffleSnout.exe"
+          domain -n %userdomain%'
+        payloads: []
+        cleanup: ''

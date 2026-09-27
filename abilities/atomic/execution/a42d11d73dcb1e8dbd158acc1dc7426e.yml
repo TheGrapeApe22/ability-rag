@@ -1,0 +1,23 @@
+---
+- id: a42d11d73dcb1e8dbd158acc1dc7426e
+  name: Cobalt Strike SSH (postex_ssh) pipe
+  description: 'Uses the [Named Pipes Micro Emulation](https://github.com/center-for-threat-informed-defense/adversary_emulation_library/tree/master/micro_emulation_plans/src/named_pipes)
+    executable from the Center for Threat Informed Defense to create a named pipe
+    for inter-process communication.
+
+
+    The named pipe executable will pause for 30 seconds to allow the client and server
+    to exchange a message through the pipe.
+
+    '
+  tactic: execution
+  technique:
+    attack_id: T1559
+    name: Inter-Process Communication
+  platforms:
+    windows:
+      cmd:
+        command: '"PathToAtomicsFolder\..\ExternalPayloads\build\namedpipes_executor.exe"
+          --pipe 3'
+        payloads: []
+        cleanup: ''

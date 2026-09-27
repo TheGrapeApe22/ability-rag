@@ -1,0 +1,21 @@
+---
+- id: 94d025af9b1f9d5e5c1aab0fedc6aa5a
+  name: Data Encrypt Using DiskCryptor
+  description: 'DiskCryptor, an open source encryption utility, can be exploited by
+    adversaries for encrypting all disk partitions, including system partitions. This
+    tool was identified in a ransomware campaign, as reported on https://thedfirreport.com/2021/11/15/exchange-exploit-leads-to-domain-wide-ransomware/.
+    The documentation for DiskCryptor can be found at https://github.com/DavidXanatos/DiskCryptor.
+    During the installation process, running dcrypt.exe starts the encryption console.
+    It''s important to note that a system reboot is necessary as part of the installation.
+
+    '
+  tactic: impact
+  technique:
+    attack_id: T1486
+    name: Data Encrypted for Impact
+  platforms:
+    windows:
+      cmd:
+        command: '""%PROGRAMFILES%\dcrypt"\dcrypt.exe"'
+        payloads: []
+        cleanup: ''

@@ -1,0 +1,30 @@
+---
+- id: 0a8ba50ba9014596f83a65edb0c2b84f
+  name: Run Chrome-password Collector
+  description: 'A modified sysinternals suite will be downloaded and staged. The Chrome-password
+    collector, renamed accesschk.exe, will then be executed from #{file_path}.
+
+
+    Successful execution will produce stdout message stating "Copying db ... passwordsDB
+    DB Opened. statement prepare DB connection closed properly". Upon completion,
+    final output will be a file modification of PathToAtomicsFolder\..\ExternalPayloads\sysinternals\passwordsdb.
+
+
+    Adapted from [MITRE ATTACK Evals](https://github.com/mitre-attack/attack-arsenal/blob/66650cebd33b9a1e180f7b31261da1789cdceb66/adversary_emulation/APT29/CALDERA_DIY/evals/data/abilities/credential-access/e7cab9bb-3e3a-4d93-99cc-3593c1dc8c6d.yml)
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1555.003
+    name: 'Credentials from Password Stores: Credentials from Web Browsers'
+  platforms:
+    windows:
+      psh:
+        command: Start-Process "PathToAtomicsFolder\..\ExternalPayloads\Sysinternals\accesschk.exe"
+          -ArgumentList "-accepteula ."
+        payloads: []
+        cleanup: Remove-Item "PathToAtomicsFolder\..\ExternalPayloads\Sysinternals"
+          -Force -Recurse -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

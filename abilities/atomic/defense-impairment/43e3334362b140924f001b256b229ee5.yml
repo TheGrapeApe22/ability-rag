@@ -1,0 +1,25 @@
+---
+- id: 43e3334362b140924f001b256b229ee5
+  name: Tamper with Windows Defender Registry
+  description: 'Disable Windows Defender from starting after a reboot. Upen execution,
+    if the computer is rebooted the entire Virus and Threat protection window in Settings
+    will be
+
+    grayed out and have no info.
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685
+    name: Disable or Modify Tools
+  platforms:
+    windows:
+      psh:
+        command: Set-ItemProperty "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender"
+          -Name DisableAntiSpyware -Value 1
+        payloads: []
+        cleanup: Set-ItemProperty "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender"
+          -Name DisableAntiSpyware -Value 0
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

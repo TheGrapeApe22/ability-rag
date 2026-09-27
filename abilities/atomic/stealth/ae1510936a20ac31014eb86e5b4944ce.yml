@@ -1,0 +1,21 @@
+---
+- id: ae1510936a20ac31014eb86e5b4944ce
+  name: Invoke CHM Shortcut Command with ITS and Help Topic
+  description: Executes a CHM file using the Shortcut Command method with a defined
+    ITS Protocol Handler, and help topic extension.
+  tactic: stealth
+  technique:
+    attack_id: T1218.001
+    name: 'Signed Binary Proxy Execution: Compiled HTML File'
+  platforms:
+    windows:
+      psh:
+        command: $RequiredModule = Get-Module -Name AtomicTestHarnesses -ListAvailable;
+          if (-not $RequiredModule) {Install-Module -Name AtomicTestHarnesses -Scope
+          CurrentUser -Force};  Invoke-ATHCompiledHelp -ExecuteShortcutCommand -InfoTechStorageHandler
+          its -TopicExtension html -HHFilePath $env:windir\hh.exe -CHMFilePath Test.chm
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

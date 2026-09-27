@@ -1,0 +1,19 @@
+---
+- id: 67b70e159366bc144b2cd78668416dd2
+  name: Detect a Debugger Presence in the Machine
+  description: Detecting a running debugger process or if the debugger is attached
+    to a process via PowerShell
+  tactic: multiple
+  technique:
+    attack_id: T1622
+    name: Debugger Evasion
+  platforms:
+    windows:
+      psh:
+        command: $debuggerProcesses = Get-Process | Where-Object { $_.ProcessName
+          -match "dbg" -or $_.ProcessName -match "debug" }; $debuggingFlags = [System.Diagnostics.Debugger]::IsAttached
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

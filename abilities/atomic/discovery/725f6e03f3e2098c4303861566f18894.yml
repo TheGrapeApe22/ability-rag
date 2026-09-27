@@ -1,0 +1,24 @@
+---
+- id: 725f6e03f3e2098c4303861566f18894
+  name: System Discovery - SocGholish whoami
+  description: "SocGholish performs whoami discovery commands and outputs the results\
+    \ to a tmp file. \nThe test will generate a filename similar to the random one\
+    \ generated during execution and write the file to AppData\\Temp.\n\nReference:\
+    \ https://redcanary.com/threat-detection-report/threats/socgholish/\n"
+  tactic: discovery
+  technique:
+    attack_id: T1033
+    name: System Owner/User Discovery
+  platforms:
+    windows:
+      psh:
+        command: $TokenSet = @{;   U = [Char[]]'ABCDEFGHIJKLMNOPQRSTUVWXYZ';   N =
+          [Char[]]'0123456789'; }; $Upper = Get-Random -Count 5 -InputObject $TokenSet.U;
+          $Number = Get-Random -Count 5 -InputObject $TokenSet.N; $StringSet = $Upper
+          + $Number; $rad = (Get-Random -Count 5 -InputObject $StringSet) -join '';
+          $file = "rad" + $rad + ".tmp"; whoami.exe /all >> $env:temp\$file
+        payloads: []
+        cleanup: Remove-Item -Path $env:temp\rad*.tmp -Force
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

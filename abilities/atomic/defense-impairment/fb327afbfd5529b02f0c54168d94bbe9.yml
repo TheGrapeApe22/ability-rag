@@ -1,0 +1,16 @@
+---
+- id: fb327afbfd5529b02f0c54168d94bbe9
+  name: Delete system log files via unlink utility (freebsd)
+  description: 'This test deletes the messages log file using unlink utility
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685.006
+    name: 'Disable or Modify Tools: Clear Linux or Mac System Logs'
+  platforms:
+    linux:
+      sh:
+        command: unlink /var/log/messages
+        payloads: []
+        cleanup: ''

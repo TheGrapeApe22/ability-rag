@@ -1,0 +1,21 @@
+---
+- id: 33a24ff44719e6ac0614b58f8c9a7c72
+  name: Security Software Discovery - Sysmon Service
+  description: 'Discovery of an installed Sysinternals Sysmon service using driver
+    altitude (even if the name is changed).
+
+
+    when sucessfully executed, the test is going to display sysmon driver instance
+    if it is installed.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1518.001
+    name: 'Software Discovery: Security Software Discovery'
+  platforms:
+    windows:
+      cmd:
+        command: fltmc.exe | findstr.exe 385201
+        payloads: []
+        cleanup: ''

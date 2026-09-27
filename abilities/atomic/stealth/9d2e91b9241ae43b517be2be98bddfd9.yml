@@ -1,0 +1,20 @@
+---
+- id: 9d2e91b9241ae43b517be2be98bddfd9
+  name: Indicator Removal using FSUtil
+  description: 'Manages the update sequence number (USN) change journal, which provides
+    a persistent log of all changes made to files on the volume. Upon execution, no
+    output
+
+    will be displayed. More information about fsutil can be found at https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/fsutil-usn
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1070
+    name: Indicator Removal on Host
+  platforms:
+    windows:
+      cmd:
+        command: 'fsutil usn deletejournal /D C:'
+        payloads: []
+        cleanup: 'fsutil usn createjournal m=1000 a=100 c:'

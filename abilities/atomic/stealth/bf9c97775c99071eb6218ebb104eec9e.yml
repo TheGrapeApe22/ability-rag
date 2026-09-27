@@ -1,0 +1,20 @@
+---
+- id: bf9c97775c99071eb6218ebb104eec9e
+  name: Masquerading as FreeBSD or Linux crond process.
+  description: 'Copies sh process, renames it as crond, and executes it to masquerade
+    as the cron daemon.
+
+
+    Upon successful execution, sh is renamed to `crond` and executed.
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1036.003
+    name: 'Masquerading: Rename System Utilities'
+  platforms:
+    linux:
+      sh:
+        command: cp /bin/sh /tmp/crond; echo 'sleep 5' | /tmp/crond
+        payloads: []
+        cleanup: rm /tmp/crond

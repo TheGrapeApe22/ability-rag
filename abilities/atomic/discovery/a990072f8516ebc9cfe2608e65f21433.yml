@@ -1,0 +1,17 @@
+---
+- id: a990072f8516ebc9cfe2608e65f21433
+  name: System Service Discovery - systemctl/service
+  description: 'Enumerates system service using systemctl/service
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1007
+    name: System Service Discovery
+  platforms:
+    linux:
+      sh:
+        command: 'if [ "$(uname)" = ''FreeBSD'' ]; then service -e; else systemctl
+          --type=service; fi; '
+        payloads: []
+        cleanup: ''

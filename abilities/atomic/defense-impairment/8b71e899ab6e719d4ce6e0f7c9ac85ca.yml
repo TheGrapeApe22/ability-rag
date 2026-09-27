@@ -1,0 +1,24 @@
+---
+- id: 8b71e899ab6e719d4ce6e0f7c9ac85ca
+  name: Disable Arbitrary Security Windows Service
+  description: 'With administrative rights, an adversary can disable Windows Services
+    related to security products. This test requires McAfeeDLPAgentService to be installed.
+
+    Change the service_name input argument for your AV solution. Upon exeuction, infomration
+    will be displayed stating the status of the service.
+
+    To verify that the service has stopped, run "sc query McAfeeDLPAgentService"
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685
+    name: Disable or Modify Tools
+  platforms:
+    windows:
+      cmd:
+        command: net.exe stop McAfeeDLPAgentService && sc.exe config McAfeeDLPAgentService
+          start= disabled
+        payloads: []
+        cleanup: sc.exe config McAfeeDLPAgentService start= auto >nul 2>&1 && net.exe
+          start McAfeeDLPAgentService >nul 2>&1

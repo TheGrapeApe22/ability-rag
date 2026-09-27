@@ -1,0 +1,21 @@
+---
+- id: cb6e6c7e18aba2207c696368f8edb23a
+  name: LockBit Black - Disable Privacy Settings Experience Using Registry -Powershell
+  description: 'LockBit Black - Disable Privacy Settings Experience Using Registry
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685
+    name: Disable or Modify Tools
+  platforms:
+    windows:
+      psh:
+        command: New-ItemProperty "HKCU:\Software\Policies\Microsoft\Windows\OOBE"
+          -Name DisablePrivacyExperience -PropertyType DWord -Value 1 -Force
+        payloads: []
+        cleanup: Remove-ItemProperty "HKCU:\Software\Policies\Microsoft\Windows\OOBE"
+          -Name DisablePrivacyExperience -Force -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

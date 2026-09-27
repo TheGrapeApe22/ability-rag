@@ -1,0 +1,18 @@
+---
+- id: 01e01a033708852596a20e930bc7bd9b
+  name: Msiexec.exe - Execute the DllUnregisterServer function of a DLL
+  description: 'Loads a DLL into msiexec.exe and calls its DllUnregisterServer function.
+    Note: the DLL included in the "bin" folder is only built for 64-bit, so this won''t
+    work on a 32-bit OS.
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1218.007
+    name: 'Signed Binary Proxy Execution: Msiexec'
+  platforms:
+    windows:
+      cmd:
+        command: '#{msi_exe} /z "#{dll_payload}"'
+        payloads: []
+        cleanup: ''

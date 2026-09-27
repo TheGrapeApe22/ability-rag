@@ -1,0 +1,33 @@
+---
+- id: 701c6b4a12e74ff933d2584609cb538d
+  name: Enumerate All systemd Services Using systemctl
+  description: 'Enumerates all systemd services and their current states using systemctl
+    list-units
+
+    and systemctl list-unit-files. Adversaries may enumerate running and enabled services
+
+    to identify targets for hijacking, understand the host environment, map installed
+
+    security tooling, or identify gaps in monitoring coverage.
+
+
+    Service enumeration is a common reconnaissance step during post-exploitation and
+    may
+
+    precede service hijacking or masquerading activity. This test does not require
+
+    elevation as service listing is available to unprivileged users on most Linux
+    systems.
+
+    '
+  tactic: execution
+  technique:
+    attack_id: T1569.003
+    name: 'System Services: Systemctl'
+  platforms:
+    linux:
+      sh:
+        command: systemctl list-units --type=service --all; systemctl list-unit-files
+          --type=service
+        payloads: []
+        cleanup: echo "No cleanup required"

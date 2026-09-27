@@ -1,0 +1,22 @@
+---
+- id: aa538a7e846b968fdc3173f02296eb2b
+  name: PowerShell Network Sniffing
+  description: 'PowerShell Built-in Cmdlets to capture network traffic.
+
+    https://learn.microsoft.com/en-us/powershell/module/neteventpacketcapture/new-neteventsession?view=windowsserver2022-ps'
+  tactic: multiple
+  technique:
+    attack_id: T1040
+    name: Network Sniffing
+  platforms:
+    windows:
+      psh:
+        command: New-NetEventSession -Name Capture007 -LocalFilePath "$ENV:Temp\sniff.etl";
+          Add-NetEventPacketCaptureProvider -SessionName Capture007 -TruncationLength
+          100; Start-NetEventSession -Name Capture007; Stop-NetEventSession -Name
+          Capture007; Remove-NetEventSession -Name Capture007
+        payloads: []
+        cleanup: del $ENV:Temp\sniff.etl
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

@@ -1,0 +1,22 @@
+---
+- id: aacd267972f9630f533d3890407cb8c7
+  name: chown - Change file or folder mode ownership only
+  description: 'Changes a file or folder''s ownership only using chown.
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1222.002
+    name: 'File and Directory Permissions Modification: FreeBSD, Linux and Mac File
+      and Directory Permissions Modification'
+  platforms:
+    linux:
+      sh:
+        command: chown root /tmp/AtomicRedTeam/atomics/T1222.002/T1222.002.yaml
+        payloads: []
+        cleanup: ''
+    darwin:
+      sh:
+        command: chown root /tmp/AtomicRedTeam/atomics/T1222.002/T1222.002.yaml
+        payloads: []
+        cleanup: ''

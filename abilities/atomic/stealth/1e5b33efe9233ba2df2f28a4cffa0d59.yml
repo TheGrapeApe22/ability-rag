@@ -1,0 +1,19 @@
+---
+- id: 1e5b33efe9233ba2df2f28a4cffa0d59
+  name: Disable Bash History Logging with SSH -T
+  description: 'Keeps history clear and stays out of lastlog,wtmp,btmp ssh -T keeps
+    the ssh client from catching a proper TTY, which is what usually gets logged on
+    lastlog
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1070.003
+    name: 'Indicator Removal on Host: Clear Command History'
+  platforms:
+    linux:
+      sh:
+        command: sshpass -p 'pwd101!' ssh testuser1@localhost -T hostname
+        payloads: []
+        cleanup: '[ "$(uname)" = ''FreeBSD'' ] && rmuser -y testuser1 || userdel -f
+          testuser1'

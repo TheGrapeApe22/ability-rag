@@ -1,0 +1,20 @@
+---
+- id: e637a4d643bf8f7ba902c8bf61c4371c
+  name: ESXi - Local Account Discovery via ESXCLI
+  description: 'An adversary can use ESXCLI to enumerate a list of all local accounts
+    on an ESXi host.
+
+    [Reference](https://lolesxi-project.github.io/LOLESXi/lolesxi/Binaries/esxcli/#account%20enumeration)"
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1087.001
+    name: 'Account Discovery: Local Account'
+  platforms:
+    windows:
+      cmd:
+        command: echo "" | "PathToAtomicsFolder\..\ExternalPayloads\plink.exe" -batch
+          "atomic.local" -ssh -l root -pw "password" "esxcli system account list"
+        payloads: []
+        cleanup: ''

@@ -1,0 +1,20 @@
+---
+- id: d7264e14d130acb7e172b05ec2e1ae47
+  name: Create local account with admin privileges - MacOS
+  description: After execution the new account will be active and added to the Administrators
+    group
+  tactic: multiple
+  technique:
+    attack_id: T1078.003
+    name: 'Valid Accounts: Local Accounts'
+  platforms:
+    darwin:
+      sh:
+        command: dscl . -create /Users/AtomicUser; dscl . -create /Users/AtomicUser
+          UserShell /bin/bash; dscl . -create /Users/AtomicUser RealName "Atomic User";
+          dscl . -create /Users/AtomicUser UniqueID 503; dscl . -create /Users/AtomicUser
+          PrimaryGroupID 503; dscl . -create /Users/AtomicUser NFSHomeDirectory /Local/Users/AtomicUser;
+          dscl . -passwd /Users/AtomicUser mySecretPassword; dscl . -append /Groups/admin
+          GroupMembership AtomicUser
+        payloads: []
+        cleanup: sudo dscl . -delete /Users/AtomicUser

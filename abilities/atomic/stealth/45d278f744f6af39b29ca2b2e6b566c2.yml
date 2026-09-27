@@ -1,0 +1,22 @@
+---
+- id: 45d278f744f6af39b29ca2b2e6b566c2
+  name: Masquerading - wscript.exe running as svchost.exe
+  description: 'Copies wscript.exe, renames it, and launches it to masquerade as an
+    instance of svchost.exe.
+
+
+    Upon execution, no windows will remain open but wscript will have been renamed
+    to svchost and ran out of the temp folder
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1036.003
+    name: 'Masquerading: Rename System Utilities'
+  platforms:
+    windows:
+      cmd:
+        command: copy %SystemRoot%\System32\wscript.exe %APPDATA%\svchost.exe /Y &&
+          cmd.exe /c %APPDATA%\svchost.exe "PathToAtomicsFolder\..\ExternalPayloads\T1036.003\src\T1036.003_masquerading.vbs"
+        payloads: []
+        cleanup: del /Q /F %APPDATA%\svchost.exe >nul 2>&1

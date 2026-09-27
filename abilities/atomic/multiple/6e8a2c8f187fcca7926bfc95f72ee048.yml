@@ -1,0 +1,27 @@
+---
+- id: 6e8a2c8f187fcca7926bfc95f72ee048
+  name: Windows Add Registry Value to Load Service in Safe Mode without Network
+  description: 'Modify the registry to allow a driver, service, to persist in Safe
+    Mode.
+
+    see https://redcanary.com/blog/tracking-driver-inventory-to-expose-rootkits/ and
+    https://blog.didierstevens.com/2007/03/26/playing-with-safe-mode/ for further
+    details.
+
+    Adding a subkey to Minimal with the name of your service and a default value set
+    to Service, makes that your service will be started when you boot into Safe Mode
+    without networking. The same applies for the Network subkey.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1112
+    name: Modify Registry
+  platforms:
+    windows:
+      cmd:
+        command: REG ADD "HKLM\SYSTEM\CurrentControlSet\Control\SafeBoot\Minimal\AtomicSafeMode"
+          /VE /T REG_SZ /F /D "Service"
+        payloads: []
+        cleanup: reg delete "HKLM\SYSTEM\CurrentControlSet\Control\SafeBoot\Minimal\AtomicSafeMode"
+          /f

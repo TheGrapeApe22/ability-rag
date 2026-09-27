@@ -1,0 +1,40 @@
+---
+- id: 44178ac3908af6182d31d06fa647ae4e
+  name: Process Injection with Go using CreateThread WinAPI
+  description: 'This program executes shellcode in the current process using the following
+    steps
+
+    1. Allocate memory for the shellcode with VirtualAlloc setting the page permissions
+    to Read/Write
+
+    2. Use the RtlCopyMemory macro to copy the shellcode to the allocated memory space
+
+    3. Change the memory page permissions to Execute/Read with VirtualProtect
+
+    4. Call CreateThread on shellcode address
+
+    5. Call WaitForSingleObject so the program does not end before the shellcode is
+    executed
+
+
+    This program leverages the functions from golang.org/x/sys/windows to call Windows
+    procedures instead of manually loading them
+
+
+    - PoC Credit: (https://github.com/Ne0nd0g/go-shellcode#createthread)
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1055
+    name: Process Injection
+  platforms:
+    windows:
+      psh:
+        command: f68181_CreateThread.exe -debug
+        payloads:
+        - f68181_CreateThread.exe
+        cleanup: Stop-Process -Name CalculatorApp -ErrorAction SilentlyContinue
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

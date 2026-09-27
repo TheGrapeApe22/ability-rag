@@ -1,0 +1,21 @@
+---
+- id: 26d3702887944abcc64b406baf8f8e43
+  name: Enumerate users and groups
+  description: 'Utilize groups and id to enumerate users and groups
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1087.001
+    name: 'Account Discovery: Local Account'
+  platforms:
+    linux:
+      sh:
+        command: groups; id
+        payloads: []
+        cleanup: ''
+    darwin:
+      sh:
+        command: groups; id
+        payloads: []
+        cleanup: ''

@@ -1,0 +1,21 @@
+---
+- id: b3f5118a34b5aa8eee17a0344e815b77
+  name: Disable history collection
+  description: 'Disables history collection in shells
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1690
+    name: Prevent Command History Logging
+  platforms:
+    linux:
+      sh:
+        command: export HISTCONTROL=ignoreboth; whoami
+        payloads: []
+        cleanup: ''
+    darwin:
+      sh:
+        command: export HISTCONTROL=ignoreboth; whoami
+        payloads: []
+        cleanup: ''

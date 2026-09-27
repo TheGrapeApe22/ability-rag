@@ -1,0 +1,17 @@
+---
+- id: 17d93ab1fd57382921a239cff1605f5b
+  name: Execution through API - CreateProcess
+  description: Execute program by leveraging Win32 API's. By default, this will launch
+    calc.exe from the command prompt.
+  tactic: execution
+  technique:
+    attack_id: T1106
+    name: Native API
+  platforms:
+    windows:
+      cmd:
+        command: C:\Windows\Microsoft.NET\Framework\v4.0.30319\csc.exe /out:"%tmp%\T1106.exe"
+          /target:exe "7175f8_CreateProcess.cs" && %tmp%/T1106.exe
+        payloads:
+        - 7175f8_CreateProcess.cs
+        cleanup: ''

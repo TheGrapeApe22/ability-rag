@@ -1,0 +1,19 @@
+---
+- id: 12dd8be2c42ace34a458ce2b7efdce8c
+  name: List Mozilla Firefox Bookmark Database Files on FreeBSD/Linux
+  description: 'Searches for Mozilla Firefox''s places.sqlite file (on FreeBSD or
+    Linux distributions) that contains bookmarks and lists any found instances to
+    a text file.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1217
+    name: Browser Bookmark Discovery
+  platforms:
+    linux:
+      sh:
+        command: find / -path "*.mozilla/firefox/*/places.sqlite" 2>/dev/null -exec
+          echo {} >> /tmp/T1217-Firefox.txt \; cat /tmp/T1217-Firefox.txt 2>/dev/null
+        payloads: []
+        cleanup: rm -f /tmp/T1217-Firefox.txt 2>/dev/null

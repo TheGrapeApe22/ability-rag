@@ -1,0 +1,17 @@
+---
+- id: 37e3d052edf6ba414a2209bf5bc4b958
+  name: Compressing data using zipfile in Python (FreeBSD/Linux)
+  description: 'Uses zipfile from Python to compress files
+
+    '
+  tactic: collection
+  technique:
+    attack_id: T1560.002
+    name: 'Archive Collected Data: Archive via Library'
+  platforms:
+    linux:
+      sh:
+        command: which_python=`which python || which python3`; $which_python -c "from
+          zipfile import ZipFile; ZipFile('/tmp/passwd.zip', mode='w').write('/etc/passwd')"
+        payloads: []
+        cleanup: rm /tmp/passwd.zip

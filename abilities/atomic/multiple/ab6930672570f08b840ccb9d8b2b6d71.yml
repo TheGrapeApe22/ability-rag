@@ -1,0 +1,18 @@
+---
+- id: ab6930672570f08b840ccb9d8b2b6d71
+  name: Disable Windows Remote Desktop Protocol
+  description: 'Modify the registry of the machine to disable remote desktop protocol.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1112
+    name: Modify Registry
+  platforms:
+    windows:
+      cmd:
+        command: reg add "HKLM\System\CurrentControlSet\Control\Terminal Server" /v
+          fDenyTSConnections /t REG_DWORD /d 1 /f
+        payloads: []
+        cleanup: reg delete "HKLM\System\CurrentControlSet\Control\Terminal Server"
+          /v fDenyTSConnections /f

@@ -1,0 +1,23 @@
+---
+- id: c33bd0d7424951f39b73a1f5f491fe17
+  name: Allow RDP Remote Assistance Feature
+  description: 'Modify the registry of the currently logged in user using reg.exe
+    via cmd console to allow rdp remote assistance feature. This feature allow specific
+
+    user to rdp connect on the targeted machine.
+
+    See how azorult malware abuses this technique- https://app.any.run/tasks/a6f2ffe2-e6e2-4396-ae2e-04ea0143f2d8/
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1112
+    name: Modify Registry
+  platforms:
+    windows:
+      cmd:
+        command: reg add "HKLM\System\CurrentControlSet\Control\Terminal Server" /v
+          fAllowToGetHelp /t REG_DWORD /d 1 /f
+        payloads: []
+        cleanup: reg delete "HKLM\System\CurrentControlSet\Control\Terminal Server"
+          /v fAllowToGetHelp /f >nul 2>&1

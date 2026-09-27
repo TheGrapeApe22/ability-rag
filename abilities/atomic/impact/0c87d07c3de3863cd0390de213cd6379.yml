@@ -1,0 +1,17 @@
+---
+- id: 0c87d07c3de3863cd0390de213cd6379
+  name: Delete User via sysadminctl utility
+  description: 'This test deletes the user account using the sysadminctl utility.
+
+    '
+  tactic: impact
+  technique:
+    attack_id: T1531
+    name: Account Access Removal
+  platforms:
+    darwin:
+      sh:
+        command: sysadminctl -deleteUser ARTUserAccount
+        payloads: []
+        cleanup: sysadminctl -addUser ARTUserAccount -fullName "ARTUser" -password
+          ARTPassword

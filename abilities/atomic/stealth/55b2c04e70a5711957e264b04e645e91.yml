@@ -1,0 +1,24 @@
+---
+- id: 55b2c04e70a5711957e264b04e645e91
+  name: Dynamic C# Compile
+  description: "When C# is compiled dynamically, a .cmdline file will be created as\
+    \ a part of the process. \nCertain processes are not typically observed compiling\
+    \ C# code, but can do so without touching disk. This can be used to unpack a payload\
+    \ for execution.\nThe exe file that will be executed is named as T1027.004_DynamicCompile.exe\
+    \ is contained in the 'bin' folder of this atomic, and the source code to the\
+    \ file is in the 'src' folder.\nUpon execution, the exe will print 'T1027.004\
+    \ Dynamic Compile'.\n"
+  tactic: stealth
+  technique:
+    attack_id: T1027.004
+    name: 'Obfuscated Files or Information: Compile After Delivery'
+  platforms:
+    windows:
+      psh:
+        command: Invoke-Expression "893687_T1027.004_DynamicCompile.exe"
+        payloads:
+        - 893687_T1027.004_DynamicCompile.exe
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

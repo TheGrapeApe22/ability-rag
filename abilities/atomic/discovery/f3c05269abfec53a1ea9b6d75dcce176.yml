@@ -1,0 +1,20 @@
+---
+- id: f3c05269abfec53a1ea9b6d75dcce176
+  name: Remote System Discovery - net
+  description: 'Identify remote systems with net.exe.
+
+
+    Upon successful execution, cmd.exe will execute `net.exe view` and display results
+    of local systems on the network that have file and print sharing enabled.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1018
+    name: Remote System Discovery
+  platforms:
+    windows:
+      cmd:
+        command: net view /domain && net view
+        payloads: []
+        cleanup: ''

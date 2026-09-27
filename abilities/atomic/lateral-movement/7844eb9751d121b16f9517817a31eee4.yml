@@ -1,0 +1,20 @@
+---
+- id: 7844eb9751d121b16f9517817a31eee4
+  name: Remote Code Execution with PS Credentials Using Invoke-Command
+  description: "Simulate lateral movement with PowerShell Remoting on the local host.\
+    \ \nUpon successful execution, PowerShell will execute `whoami` using `Invoke-Command`,\
+    \ targeting the \nlocal machine as remote target.\n"
+  tactic: lateral-movement
+  technique:
+    attack_id: T1021.006
+    name: 'Remote Services: Windows Remote Management'
+  platforms:
+    windows:
+      psh:
+        command: Enable-PSRemoting -Force; Invoke-Command -ComputerName $env:COMPUTERNAME
+          -ScriptBlock {whoami}
+        payloads: []
+        cleanup: Disable-PSRemoting -Force
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

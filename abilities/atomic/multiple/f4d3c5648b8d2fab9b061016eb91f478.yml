@@ -1,0 +1,29 @@
+---
+- id: f4d3c5648b8d2fab9b061016eb91f478
+  name: Snake Malware Registry Blob
+  description: 'The following Atomic Test creates a registry blob in HKLM:\SOFTWARE\Classes\.wav\OpenWithProgIds,
+    which is related to Snake Malware. Per the report, upon execution, Snake''s WerFault.exe
+    will attempt to decrypt an encrypted blob within the Windows
+
+    registry that is typically found at HKLM:\SOFTWARE\Classes\.wav\OpenWithProgIds.
+    The encrypted data includes the AES key, IV, and path that is used to find and
+    decrypt the file containing Snake''s kernel driver and kernel driver loader.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1112
+    name: Modify Registry
+  platforms:
+    windows:
+      psh:
+        command: $typicalPath = "HKLM:\SOFTWARE\Classes\.wav\OpenWithProgIds"; $randomBytes
+          = New-Object Byte[] 0x1000; (New-Object Random).NextBytes($randomBytes);
+          New-ItemProperty -Path $typicalPath -Name "AtomicSnake" -Value $randomBytes
+          -PropertyType Binary -Force | Out-Null
+        payloads: []
+        cleanup: $typicalPath = "HKLM:\SOFTWARE\Classes\.wav\OpenWithProgIds"; Remove-ItemProperty
+          -Path $typicalPath -Name "AtomicSnake" -ErrorAction SilentlyContinue | Out-Null
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

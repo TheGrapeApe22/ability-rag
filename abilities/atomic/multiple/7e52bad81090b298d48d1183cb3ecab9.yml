@@ -1,0 +1,35 @@
+---
+- id: 7e52bad81090b298d48d1183cb3ecab9
+  name: Return Address Overwrite for full ROP chain execution
+  description: "The injector reads the victim's RSP register from /proc/<pid>/syscall\
+    \ and\nbuilds a ROP chain that serializes an argv vector for execve into a\nwritable\
+    \ memory region, then issues execve to spawn an arbitrary command\nwith arguments\
+    \ (it doesn't support shell metacharacters e.g. '|', '>' or '>>').   \nInstead\
+    \ of overwriting a single return address with the full ROP chain\n(which risks\
+    \ catastrophic stack corruption when multiple return addresses\nare clustered),\
+    \ the chain is placed into a separate zero-filled writable\nregion - the \"Fake\
+    \ Stack\". The injector then scans the victim's stack and\noverwrites every executable-looking\
+    \ pointer (potential saved return\naddress) with a minimal 16-byte trampoline:\
+    \ { pivot_gadget, fake_stack_addr }\nwhere pivot_gadget is a `pop rsp; ret` sequence.\
+    \    \nThe moment the CPU executes any of the overwritten 'ret' instructions,\
+    \ the\nstack pointer is pivoted to the fake stack and the execve ROP chain runs.\
+    \   \nThe chain dynamically adapts to modern glibc constraints by selecting the\n\
+    best available `pop rdx` variant (single or multi-pop) and padding it with\ndummy\
+    \ values where required.\n\nNote: this test forks a child process to use as the\
+    \ injection target.\nThis allows the test to run on systems where ptrace_scope=1\
+    \ (default on most Linux distributions),\nwhere a process can only modify the\
+    \ memory of its own descendants.\nThis may differ from a real-world scenario where\
+    \ the attacker targets an arbitrary process,\nbut for the purpose of this test\
+    \ it preserves the detection-relevant behavior: the same syscalls and /proc/<pid>/mem\n\
+    access patterns are generated regardless of the relationship between injector\
+    \ and target.\n"
+  tactic: multiple
+  technique:
+    attack_id: T1055.009
+    name: 'Process Injection: Proc Memory'
+  platforms:
+    linux:
+      sh:
+        command: PathToAtomicsFolder/T1055.009/bin/return_address_overwrite_fullROPchain
+        payloads: []
+        cleanup: rm -f /tmp/pwned

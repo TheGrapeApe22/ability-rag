@@ -1,0 +1,22 @@
+---
+- id: abeb340acb3e1236c6919339942e7c77
+  name: WebBrowserPassView - Credentials from Browser
+  description: The following Atomic test utilizes WebBrowserPassView to extract passwords
+    from browsers on a Window system. WebBrowserPassView is an open source application
+    used to retrieve passwords stored on a local computer. Recently noticed as a tool
+    used in the BlackCat Ransomware.
+  tactic: credential-access
+  technique:
+    attack_id: T1555.003
+    name: 'Credentials from Password Stores: Credentials from Web Browsers'
+  platforms:
+    windows:
+      psh:
+        command: Start-Process "f3d204_WebBrowserPassView.exe"; Start-Sleep -Second
+          4; Stop-Process -Name "WebBrowserPassView"
+        payloads:
+        - f3d204_WebBrowserPassView.exe
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

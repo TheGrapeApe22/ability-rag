@@ -1,0 +1,19 @@
+---
+- id: 9e198a5c70a03508826676a522587183
+  name: Detect Virtualization Environment using system_profiler
+  description: "system_profiler provides system hardware and software configuration\
+    \ and the Model Identifier should provide the value similar to (sysctl -n hw.model).\
+    \ \nWe should be able to find whether virtualization is enabled by checking whether\
+    \ the Model Identifier does not contain \"Mac\".\n"
+  tactic: multiple
+  technique:
+    attack_id: T1497.001
+    name: 'Virtualization/Sandbox Evasion: System Checks'
+  platforms:
+    darwin:
+      sh:
+        command: 'if [ "$(system_profiler SPHardwareDataType | grep "Model Identifier"
+          | grep -v ''Mac'')" != "" ]; then echo ''Virtualization Environment detected'';
+          fi; '
+        payloads: []
+        cleanup: ''

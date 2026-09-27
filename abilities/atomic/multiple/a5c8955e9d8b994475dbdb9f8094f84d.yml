@@ -1,0 +1,23 @@
+---
+- id: a5c8955e9d8b994475dbdb9f8094f84d
+  name: Launch NSudo Executable
+  description: 'Launches the NSudo executable for a short period of time and then
+    exits.
+
+    NSudo download observed after maldoc execution. NSudo is a system management tool
+    for advanced users to launch programs with full privileges.'
+  tactic: multiple
+  technique:
+    attack_id: T1134.001
+    name: 'Access Token Manipulation: Token Impersonation/Theft'
+  platforms:
+    windows:
+      psh:
+        command: Start-Process "PathToAtomicsFolder\T1134.001\bin\NSudoLG.exe" -Argument
+          "-U:T -P:E cmd"; Start-Sleep -Second 5; Stop-Process -Name "cmd" -force
+          -erroraction silentlycontinue
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

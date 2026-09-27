@@ -1,0 +1,25 @@
+---
+- id: 20e4f555f0b87421c9e9ec83d99eb562
+  name: Azure AD - Create a new user
+  description: Creates a new user in Azure AD. Upon successful creation, a new user
+    will be created. Adversaries create new users so that their malicious activity
+    does not interrupt the normal functions of the compromised users and can remain
+    undetected for a long time.
+  tactic: persistence
+  technique:
+    attack_id: T1136.003
+    name: 'Create Account: Cloud Account'
+  platforms:
+    unknown:
+      psh:
+        command: Connect-AzureAD; $userprincipalname = "atomicredteam@yourdomain.com";
+          $username = "atomicredteam"      ; $password = "reallylongcredential12345ART-ydsfghsdgfhsdgfhgsdhfg";
+          $PasswordProfile = New-Object -TypeName Microsoft.Open.AzureAD.Model.PasswordProfile;
+          $PasswordProfile.Password = $password; New-AzureADUser -DisplayName $username
+          -PasswordProfile $PasswordProfile -UserPrincipalName $userprincipalname
+          -AccountEnabled $true -MailNickName $username
+        payloads: []
+        cleanup: Remove-AzureADUser -ObjectId "atomicredteam@yourdomain.com"
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

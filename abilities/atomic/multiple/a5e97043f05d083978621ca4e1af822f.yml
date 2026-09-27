@@ -1,0 +1,30 @@
+---
+- id: a5e97043f05d083978621ca4e1af822f
+  name: Create Systemd Service and Timer
+  description: "This test creates Systemd service and timer then starts and enables\
+    \ the Systemd timer \n"
+  tactic: multiple
+  technique:
+    attack_id: T1053.006
+    name: 'Scheduled Task/Job: Systemd Timers'
+  platforms:
+    linux:
+      sh:
+        command: echo "[Unit]" > /etc/systemd/system/art-timer.service; echo "Description=Atomic
+          Red Team Systemd Timer Service" >> /etc/systemd/system/art-timer.service;
+          echo "[Service]" >> /etc/systemd/system/art-timer.service; echo "Type=simple"
+          >> /etc/systemd/system/art-timer.service; echo "ExecStart=/bin/touch /tmp/art-systemd-timer-marker"
+          >> /etc/systemd/system/art-timer.service; echo "[Install]" >> /etc/systemd/system/art-timer.service;
+          echo "WantedBy=multi-user.target" >> /etc/systemd/system/art-timer.service;
+          echo "[Unit]" > /etc/systemd/system/art-timer.timer; echo "Description=Executes
+          Atomic Red Team Systemd Timer Service" >> /etc/systemd/system/art-timer.timer;
+          echo "Requires=art-timer.service" >> /etc/systemd/system/art-timer.timer;
+          echo "[Timer]" >> /etc/systemd/system/art-timer.timer; echo "Unit=art-timer.service"
+          >> /etc/systemd/system/art-timer.timer; echo "OnCalendar=*-*-* *:*:00" >>
+          /etc/systemd/system/art-timer.timer; echo "[Install]" >> /etc/systemd/system/art-timer.timer;
+          echo "WantedBy=timers.target" >> /etc/systemd/system/art-timer.timer; systemctl
+          start art-timer.timer; systemctl enable art-timer.timer; systemctl daemon-reload
+        payloads: []
+        cleanup: systemctl stop art-timer.timer; systemctl disable art-timer.timer;
+          rm /etc/systemd/system/art-timer.service; rm /etc/systemd/system/art-timer.timer;
+          systemctl daemon-reload

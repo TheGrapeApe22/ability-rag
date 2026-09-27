@@ -1,0 +1,24 @@
+---
+- id: 92063beb688a60878ad8fa901a9317bc
+  name: AWS - Create Snapshot from EBS Volume
+  description: 'Creates an EBS snapshot in AWS using the AWS CLI.
+
+    This simulates an adversary duplicating volume data via snapshots for persistence
+    or exfiltration.
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1578.001
+    name: 'Modify Cloud Compute Infrastructure: Create Snapshot'
+  platforms:
+    unknown:
+      sh:
+        command: aws ec2 create-snapshot --region us-east-1 --volume-id vol-0123456789abcdef0
+          --description "Atomic Red Team Test Snapshot" --query "SnapshotId" --output
+          text
+        payloads: []
+        cleanup: SNAPSHOT_ID=$(aws ec2 describe-snapshots --region us-east-1 --filters
+          "Name=volume-id,Values=vol-0123456789abcdef0" --query "Snapshots[0].SnapshotId"
+          --output text); if [ "$SNAPSHOT_ID" != "None" ]; then   aws ec2 delete-snapshot
+          --region us-east-1 --snapshot-id "$SNAPSHOT_ID"; fi

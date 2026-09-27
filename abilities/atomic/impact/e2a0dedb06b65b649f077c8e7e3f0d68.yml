@@ -1,0 +1,16 @@
+---
+- id: e2a0dedb06b65b649f077c8e7e3f0d68
+  name: Reboot System via `poweroff` - Linux
+  description: 'This test restarts a Linux system using `poweroff`.
+
+    '
+  tactic: impact
+  technique:
+    attack_id: T1529
+    name: System Shutdown/Reboot
+  platforms:
+    linux:
+      sh:
+        command: poweroff --reboot
+        payloads: []
+        cleanup: ''

@@ -1,0 +1,31 @@
+---
+- id: 100ab97404481eade26a4346edd80d73
+  name: Office 365 - Set Audit Bypass For a Mailbox
+  description: 'Use Exchange Management Shell to Mailbox auditing to bypass. It will
+    prevent any mailbox audit logging entries being generated for the target e-mail
+    box.
+
+    https://learn.microsoft.com/en-us/powershell/module/exchange/set-mailboxauditbypassassociation?view=exchange-ps
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685.002
+    name: 'Disable or Modify Tools: Disable or Modify Cloud Log'
+  platforms:
+    unknown:
+      psh:
+        command: $secure_pwd = "o365_password_test" | ConvertTo-SecureString -AsPlainText
+          -Force; $creds = New-Object System.Management.Automation.PSCredential -ArgumentList
+          "o365_user_test", $secure_pwd; Connect-ExchangeOnline -Credential $creds;
+          Set-MailboxAuditBypassAssociation -Identity "o365_email_test" -AuditBypassEnabled
+          $true
+        payloads: []
+        cleanup: $secure_pwd = "o365_password_test" | ConvertTo-SecureString -AsPlainText
+          -Force; $creds = New-Object System.Management.Automation.PSCredential -ArgumentList
+          "o365_user_test", $secure_pwd; Connect-ExchangeOnline -Credential $creds;
+          Set-MailboxAuditBypassAssociation -Identity "o365_email_test" -AuditBypassEnabled
+          $false; Disconnect-ExchangeOnline -Confirm:$false
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

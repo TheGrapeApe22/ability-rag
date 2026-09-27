@@ -1,0 +1,19 @@
+---
+- id: 02e52d5a90c23e35b321e471c78c7823
+  name: Delete an entire folder - Windows cmd
+  description: 'Recursively delete a folder in the temporary directory using cmd.exe.
+
+    Upon execution, no output will be displayed. Use File Explorer to verify the folder
+    was deleted.
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1070.004
+    name: 'Indicator Removal on Host: File Deletion'
+  platforms:
+    windows:
+      cmd:
+        command: rmdir /s /q %temp%\deleteme_T1551.004
+        payloads: []
+        cleanup: ''

@@ -1,0 +1,24 @@
+---
+- id: e5279c9ad109fef655e2c1abd6304725
+  name: Simulating access to Windows Edge Login Data
+  description: 'Simulates an adversary accessing encrypted credentials from Edge web
+    browser''s login database.
+
+    more info in https://www.forensicfocus.com/articles/chromium-based-microsoft-edge-from-a-forensic-point-of-view/
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1555.003
+    name: 'Credentials from Password Stores: Credentials from Web Browsers'
+  platforms:
+    windows:
+      psh:
+        command: Copy-Item "$env:LOCALAPPDATA\Microsoft\Edge\User Data\Default" -Destination
+          "PathToAtomicsFolder\..\ExternalPayloads\Edge" -Force -Recurse
+        payloads: []
+        cleanup: Remove-Item -Path "PathToAtomicsFolder\..\ExternalPayloads\Edge"
+          -Force -ErrorAction Ignore -Recurse
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

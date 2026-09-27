@@ -1,0 +1,16 @@
+---
+- id: 0e43a2cb76678e7dcaeb96646fa99c14
+  name: Provide the SetUID capability to a file
+  description: 'This test gives a file the capability to set UID without using flags.
+
+    '
+  tactic: privilege-escalation
+  technique:
+    attack_id: T1548.001
+    name: 'Abuse Elevation Control Mechanism: Setuid and Setgid'
+  platforms:
+    linux:
+      sh:
+        command: touch /tmp/evilBinary; sudo setcap cap_setuid=ep /tmp/evilBinary
+        payloads: []
+        cleanup: rm /tmp/evilBinary

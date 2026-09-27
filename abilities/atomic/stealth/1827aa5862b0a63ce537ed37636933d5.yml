@@ -1,0 +1,23 @@
+---
+- id: 1827aa5862b0a63ce537ed37636933d5
+  name: DLP Evasion via Sensitive Data in VBA Macro over email
+  description: 'Upon successful execution, an excel containing VBA Macro containing
+    sensitive data will be sent outside the network using email.
+
+    Sensitive data includes about around 20 odd simulated credit card numbers that
+    passes the LUHN check.
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1027
+    name: Obfuscated Files or Information
+  platforms:
+    windows:
+      psh:
+        command: Send-MailMessage -From
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

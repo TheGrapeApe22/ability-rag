@@ -1,0 +1,20 @@
+---
+- id: ecb6192121bb81b63bc2d5fe696f2c65
+  name: Process Discovery - Process Hacker
+  description: Process Hacker can be exploited to infiltrate system processes, identify
+    weak points, or achieve unauthorized control over systems. However, its malicious
+    use can often be flagged by security defenses, rendering it a perilous tool for
+    illegitimate purposes.
+  tactic: discovery
+  technique:
+    attack_id: T1057
+    name: Process Discovery
+  platforms:
+    windows:
+      psh:
+        command: Start-Process -FilePath "$Env:ProgramFiles\Process Hacker 2\ProcessHacker.exe"
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

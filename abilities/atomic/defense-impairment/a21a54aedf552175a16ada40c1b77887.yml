@@ -1,0 +1,27 @@
+---
+- id: a21a54aedf552175a16ada40c1b77887
+  name: Enable Local and Remote Symbolic Links via Powershell
+  description: "Use Powershell to enable both \u2018remote to local\u2019 and \u2018\
+    remote to remote\u2019 symbolic links. This allows access to files from local\
+    \ shortcuts with local or remote paths.\n[reference](https://symantec-enterprise-blogs.security.com/threat-intelligence/noberus-blackcat-alphv-rust-ransomware/)\n"
+  tactic: defense-impairment
+  technique:
+    attack_id: T1222
+    name: File and Directory Permissions Modification
+  platforms:
+    windows:
+      psh:
+        command: New-ItemProperty -Path HKLM:\Software\Policies\Microsoft\Windows\Filesystems\NTFS
+          -Name SymlinkRemoteToLocalEvaluation -PropertyType DWORD -Value 1 -Force
+          -ErrorAction Ignore; New-ItemProperty -Path HKLM:\Software\Policies\Microsoft\Windows\Filesystems\NTFS
+          -Name SymlinkRemoteToRemoteEvaluation -PropertyType DWORD -Value 1 -Force
+          -ErrorAction Ignore
+        payloads: []
+        cleanup: New-ItemProperty -Path HKLM:\Software\Policies\Microsoft\Windows\Filesystems\NTFS
+          -Name SymlinkRemoteToLocalEvaluation -PropertyType DWORD -Value 0 -Force
+          -ErrorAction Ignore; New-ItemProperty -Path HKLM:\Software\Policies\Microsoft\Windows\Filesystems\NTFS
+          -Name SymlinkRemoteToRemoteEvaluation -PropertyType DWORD -Value 0 -Force
+          -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

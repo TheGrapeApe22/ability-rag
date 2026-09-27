@@ -1,0 +1,19 @@
+---
+- id: 0db253cae97e0901e09ee2cb1d5e69a6
+  name: Encrypt files using ccrypt (FreeBSD/Linux)
+  description: 'Attempts to encrypt data on target systems as root to simulate an
+    interruption authentication to target system. If root permissions are not available
+    then attempts to encrypt data within user''s home directory.
+
+    '
+  tactic: impact
+  technique:
+    attack_id: T1486
+    name: Data Encrypted for Impact
+  platforms:
+    linux:
+      sh:
+        command: which_ccencrypt=`which ccencrypt`; cp /etc/passwd /tmp/passwd; $which_ccencrypt
+          -T -K passwd /tmp/passwd
+        payloads: []
+        cleanup: rm /tmp/passwd.cpt

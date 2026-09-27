@@ -1,0 +1,23 @@
+---
+- id: 92a964d6a72ac5162788d5a81cf1311a
+  name: MacOS Swift Keylogger
+  description: 'Utilizes a swift script to log keys to sout. It runs for 5 seconds
+    then dumps the output to standard. Input Monitoring is required.
+
+    Input Monitoring can be enabled in System Preferences > Security & Privacy > Privacy
+    > Input Monitoring.
+
+    Referece: https://cedowens.medium.com/taking-esf-for-a-nother-spin-6e1e6acd1b74
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1056.001
+    name: 'Input Capture: Keylogging'
+  platforms:
+    darwin:
+      sh:
+        command: swift 8495c4_MacOSKeylogger.swift -keylog
+        payloads:
+        - 8495c4_MacOSKeylogger.swift
+        cleanup: kill `pgrep swift-frontend`

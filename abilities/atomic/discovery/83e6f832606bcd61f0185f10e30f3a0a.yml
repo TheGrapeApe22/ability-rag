@@ -1,0 +1,27 @@
+---
+- id: 83e6f832606bcd61f0185f10e30f3a0a
+  name: System Network Connections Discovery via ss or lsof (Linux/MacOS)
+  description: 'List active TCP/UDP network connections using ss, with lsof as a fallback
+
+    when ss is unavailable. Serves as an alternative to the netstat-based test.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1049
+    name: System Network Connections Discovery
+  platforms:
+    linux:
+      sh:
+        command: if command -v ss >/dev/null 2>&1; then ss -antp 2>/dev/null || ss
+          -ant; ss -aunp 2>/dev/null || true; else lsof -i -nP 2>/dev/null || true;
+          fi
+        payloads: []
+        cleanup: ''
+    darwin:
+      sh:
+        command: if command -v ss >/dev/null 2>&1; then ss -antp 2>/dev/null || ss
+          -ant; ss -aunp 2>/dev/null || true; else lsof -i -nP 2>/dev/null || true;
+          fi
+        payloads: []
+        cleanup: ''

@@ -1,0 +1,28 @@
+---
+- id: 2edd98c78521bde1e05cd1c10c269fab
+  name: Dynamic API Resolution-Ninja-syscall
+  description: 'This test calls NtCreateFile via API hashing and dynamic syscall resolution.
+    I have dubbed this particular combination of techniques ''Ninja-syscall''. When
+    successful, a new file named ''hello.log'' will be created in the default user''s
+    temporary folder, which is a common location for a dropper.
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1027.007
+    name: 'Obfuscated Files or Information: Dynamic API Resolution'
+  platforms:
+    windows:
+      psh:
+        command: Start-Process "2f0ffd_ninja_syscall1.exe"; Start-Sleep -Seconds 7;
+          if (Test-Path "C:\Users\Default\AppData\Local\Temp\hello.log") { Remove-Item
+          "C:\Users\Default\AppData\Local\Temp\hello.log" -Force; Write-Host "[+]
+          hello.log removed." }
+        payloads:
+        - 2f0ffd_ninja_syscall1.exe
+        cleanup: if (Test-Path "C:\Users\Default\AppData\Local\Temp\hello.log") {
+          Remove-Item "C:\Users\Default\AppData\Local\Temp\hello.log" -Force; Write-Host
+          "[+] hello.log removed." }
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

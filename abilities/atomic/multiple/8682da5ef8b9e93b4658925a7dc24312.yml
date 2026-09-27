@@ -1,0 +1,20 @@
+---
+- id: 8682da5ef8b9e93b4658925a7dc24312
+  name: Abusing MyComputer Disk Fragmentation Path for Persistence
+  description: 'Replacing the registry settings with custom executable will end up
+    with the replacement programs being executed at the time OS will decide to kick
+    off the respective activity
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1112
+    name: Modify Registry
+  platforms:
+    windows:
+      cmd:
+        command: reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\DefragPath"
+          /t REG_EXPAND_SZ /d "%systemroot%\system32\notepad.exe" /f
+        payloads: []
+        cleanup: reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\DefragPath"
+          /t REG_EXPAND_SZ /d "%systemroot%\system32\dfrgui.exe" /f

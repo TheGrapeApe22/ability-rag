@@ -1,0 +1,33 @@
+---
+- id: f21623deb932dc0db3f00068ba15bf32
+  name: Psiphon
+  description: 'Psiphon 3 is a circumvention tool from Psiphon Inc. that utilizes
+    VPN, SSH and HTTP Proxy technology to provide you
+
+    with uncensored access to Internet.
+
+    This process will launch Psiphon 3 and establish a connection. Shortly after it
+    will be shut down via process kill commands.
+
+    More information can be found about Psiphon using the following urls
+
+    http://s3.amazonaws.com/0ubz-2q11-gi9y/en.html
+
+    https://psiphon.ca/faq.html
+
+    '
+  tactic: command-and-control
+  technique:
+    attack_id: T1090.003
+    name: 'Proxy: Multi-hop Proxy'
+  platforms:
+    windows:
+      psh:
+        command: '& "PathToAtomicsFolder\T1090.003\src\Psiphon.bat"'
+        payloads: []
+        cleanup: $Proxy = Get-Content $env:Temp\proxy-backup.txt -ErrorAction Ignore;
+          if($null -ne $Proxy) ; {Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet
+          Settings' -Name "ProxyServer" -Value $Proxy}
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

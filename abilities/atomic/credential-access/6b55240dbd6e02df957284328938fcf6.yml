@@ -1,0 +1,20 @@
+---
+- id: 6b55240dbd6e02df957284328938fcf6
+  name: Create Volume Shadow Copy with vssadmin
+  description: 'This test is intended to be run on a domain Controller.
+
+
+    The Active Directory database NTDS.dit may be dumped by copying it from a Volume
+    Shadow Copy.
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1003.003
+    name: 'OS Credential Dumping: NTDS'
+  platforms:
+    windows:
+      cmd:
+        command: 'vssadmin.exe create shadow /for=C:'
+        payloads: []
+        cleanup: ''

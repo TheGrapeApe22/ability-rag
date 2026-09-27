@@ -1,0 +1,16 @@
+---
+- id: a7d883f318d1c6cb4eafbcb8ddc9990d
+  name: Set a SetUID flag on file (freebsd)
+  description: 'This test sets the SetUID flag on a file in FreeBSD.
+
+    '
+  tactic: privilege-escalation
+  technique:
+    attack_id: T1548.001
+    name: 'Abuse Elevation Control Mechanism: Setuid and Setgid'
+  platforms:
+    linux:
+      sh:
+        command: touch /tmp/evilBinary; chown root /tmp/evilBinary; chmod u+xs /tmp/evilBinary
+        payloads: []
+        cleanup: rm /tmp/evilBinary

@@ -1,0 +1,19 @@
+---
+- id: 0ec34c6b5151366e25c75bfebfd03626
+  name: Network Share Discovery command prompt
+  description: 'Network Share Discovery utilizing the command prompt. The computer
+    name variable may need to be modified to point to a different host
+
+    Upon execution available network shares will be displayed in the powershell session
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1135
+    name: Network Share Discovery
+  platforms:
+    windows:
+      cmd:
+        command: net view \\localhost
+        payloads: []
+        cleanup: ''

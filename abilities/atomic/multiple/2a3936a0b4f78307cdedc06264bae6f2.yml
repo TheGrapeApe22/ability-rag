@@ -1,0 +1,20 @@
+---
+- id: 2a3936a0b4f78307cdedc06264bae6f2
+  name: Trap EXIT (freebsd)
+  description: 'Launch bash shell with command arg to create TRAP on EXIT.
+
+    The trap executes script that writes to /tmp/art-fish.txt
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1546.005
+    name: 'Event Triggered Execution: Trap'
+  platforms:
+    linux:
+      sh:
+        command: if [ ! -x "$(command -v bash)" ]; then (which pkg && pkg install
+          -y bash); fi;  bash -c 'trap "nohup sh $PathToAtomicsFolder/T1546.005/src/echo-art-fish.sh"
+          EXIT'
+        payloads: []
+        cleanup: rm -f /tmp/art-fish.txt

@@ -1,0 +1,26 @@
+---
+- id: bcc67122a69408571bad21d170af03d2
+  name: Linux - Stop service by killing process using pkill
+  description: 'Stops a specified service by sending a SIGTERM signal to the linked
+    process using pkill. This method is effective when multiple instances of the process
+    may be running.
+
+    Upon execution, if any instances of the process were running, they will be terminated.
+    If no instances were running, pkill will not find any processes to kill.
+
+    Stopped service can be restarted by running the cleanup command.
+
+    You can list all available services with following command: "systemctl list-units
+    --type=service"
+
+    '
+  tactic: impact
+  technique:
+    attack_id: T1489
+    name: Service Stop
+  platforms:
+    linux:
+      sh:
+        command: sudo pkill -SIGTERM ^cron$
+        payloads: []
+        cleanup: sudo systemctl start cron 2> /dev/null

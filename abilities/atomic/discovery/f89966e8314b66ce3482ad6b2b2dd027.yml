@@ -1,0 +1,16 @@
+---
+- id: f89966e8314b66ce3482ad6b2b2dd027
+  name: Network Share Discovery - linux
+  description: 'Network Share Discovery using smbstatus
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1135
+    name: Network Share Discovery
+  platforms:
+    linux:
+      sh:
+        command: smbstatus --shares
+        payloads: []
+        cleanup: ''

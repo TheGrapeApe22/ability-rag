@@ -1,0 +1,35 @@
+---
+- id: c2a848aa90f93dbb8ab3f16fece23c7f
+  name: Create Systemd Service file,  Enable the service , Modify and Reload the service.
+  description: "This test creates a systemd service unit file and enables it to autostart\
+    \ on boot. Once service is created and enabled, it also modifies this same service\
+    \ file showcasing both Creation and Modification of system process. \n"
+  tactic: multiple
+  technique:
+    attack_id: T1543.002
+    name: 'Create or Modify System Process: SysV/Systemd Service'
+  platforms:
+    linux:
+      sh:
+        command: 'if [ $(cat /etc/os-release | grep -i ID=ubuntu) ] || [ $(cat /etc/os-release
+          | grep -i ID=kali) ] || [ $(cat /etc/os-release | grep -i ''ID="centos"'')
+          ]; then : ; else echo Please run from Ubuntu ,Kali OR CentOS.; fi;  echo
+          "#!/bin/bash" > /etc/init.d/T1543.002; echo "### BEGIN INIT INFO" >> /etc/init.d/T1543.002;
+          echo "# Provides : Atomic Test T1543.002" >> /etc/init.d/T1543.002; echo
+          "# Required-Start: \$all" >> /etc/init.d/T1543.002; echo "# Required-Stop
+          : " >> /etc/init.d/T1543.002; echo "# Default-Start: 2 3 4 5" >> /etc/init.d/T1543.002;
+          echo "# Default-Stop: " >> /etc/init.d/T1543.002; echo "# Short Description:
+          Atomic Test for Systemd Service Creation" >> /etc/init.d/T1543.002; echo
+          "### END INIT INFO" >> /etc/init.d/T1543.002; echo "python3 -c \"import
+          os, base64;exec(base64.b64decode(''aW1wb3J0IG9zCm9zLnBvcGVuKCdlY2hvIGF0b21pYyB0ZXN0IGZvciBDcmVhdGluZyBTeXN0ZW1kIFNlcnZpY2UgVDE1NDMuMDAyID4gL3RtcC9UMTU0My4wMDIuc3lzdGVtZC5zZXJ2aWNlLmNyZWF0aW9uJykK''))
+          \" " >> /etc/init.d/T1543.002; chmod +x /etc/init.d/T1543.002; if [ $(cat
+          /etc/os-release | grep -i ID=ubuntu) ] || [ $(cat /etc/os-release | grep
+          -i ID=kali) ]; then update-rc.d T1543.002 defaults; elif [ $(cat /etc/os-release
+          | grep -i ''ID="centos"'') ]; then chkconfig T1543.002 on ; else echo "Please
+          run this test on Ubnutu , kali OR centos" ; fi; systemctl enable T1543.002;
+          systemctl start T1543.002; echo "python3 -c \"import os, base64;exec(base64.b64decode(''aW1wb3J0IG9zCm9zLnBvcGVuKCdlY2hvIGF0b21pYyB0ZXN0IGZvciBtb2RpZnlpbmcgYSBTeXN0ZW1kIFNlcnZpY2UgVDE1NDMuMDAyID4gL3RtcC9UMTU0My4wMDIuc3lzdGVtZC5zZXJ2aWNlLm1vZGlmaWNhdGlvbicpCg==''))\""
+          | sudo tee -a /etc/init.d/T1543.002; systemctl daemon-reload; systemctl
+          restart T1543.002'
+        payloads: []
+        cleanup: systemctl stop T1543.002; systemctl disable T1543.002; rm -rf /etc/init.d/T1543.002;
+          systemctl daemon-reload

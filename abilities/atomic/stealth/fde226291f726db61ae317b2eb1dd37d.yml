@@ -1,0 +1,22 @@
+---
+- id: fde226291f726db61ae317b2eb1dd37d
+  name: Rundll32 ieadvpack.dll Execution
+  description: 'Test execution of a command using rundll32.exe with ieadvpack.dll.
+
+    Upon execution calc.exe will be launched
+
+
+    Reference: https://github.com/LOLBAS-Project/LOLBAS/blob/master/yml/OSLibraries/Ieadvpack.yml
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1218.011
+    name: 'Signed Binary Proxy Execution: Rundll32'
+  platforms:
+    windows:
+      cmd:
+        command: rundll32.exe ieadvpack.dll,LaunchINFSection "80d0e0_T1218.011.inf",DefaultInstall_SingleUser,1,
+        payloads:
+        - 80d0e0_T1218.011.inf
+        cleanup: ''

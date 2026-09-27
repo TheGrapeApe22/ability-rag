@@ -1,0 +1,23 @@
+---
+- id: abc25aecd2ed0524af31e79add29cc43
+  name: List Google Chrome / Opera Bookmarks on Windows with powershell
+  description: 'Searches for Google Chrome''s and Opera''s Bookmarks file (on Windows
+    distributions) that contains bookmarks.
+
+    Upon execution, paths that contain bookmark files will be displayed.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1217
+    name: Browser Bookmark Discovery
+  platforms:
+    windows:
+      psh:
+        command: Get-ChildItem -Path C:\Users\ -Filter Bookmarks -Recurse -ErrorAction
+          SilentlyContinue -Force
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

@@ -1,0 +1,24 @@
+---
+- id: 3c9dee6c65974cc3b4f34d0a5d1b6992
+  name: Mount ISO image
+  description: 'Mounts ISO image downloaded from internet to evade Mark-of-the-Web.
+    Upon successful execution, powershell will download the .iso from the Atomic Red
+    Team repo, and mount the image. The provided sample ISO simply has a Reports shortcut
+    file in it. Reference: https://www.microsoft.com/security/blog/2021/05/27/new-sophisticated-email-based-attack-from-nobelium/
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1553.005
+    name: 'Subvert Trust Controls: Mark-of-the-Web Bypass'
+  platforms:
+    windows:
+      psh:
+        command: Mount-DiskImage -ImagePath "5fad3e_T1553.005.iso"
+        payloads:
+        - 5fad3e_T1553.005.iso
+        - 5fad3e_T1553.005.iso
+        cleanup: Dismount-DiskImage -ImagePath "5fad3e_T1553.005.iso" | Out-Null
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

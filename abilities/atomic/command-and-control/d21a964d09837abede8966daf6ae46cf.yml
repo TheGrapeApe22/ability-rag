@@ -1,0 +1,21 @@
+---
+- id: d21a964d09837abede8966daf6ae46cf
+  name: UltraViewer - RAT Execution
+  description: "A recent trend by threat actors, once a foothold is established, maintain\
+    \ long term persistence using third party remote services such as UltraViewer\
+    \ to provide the operator with access to the network using legitimate services.\
+    \ \n"
+  tactic: command-and-control
+  technique:
+    attack_id: T1219
+    name: Remote Access Software
+  platforms:
+    windows:
+      psh:
+        command: Start-Process -Wait -FilePath "PathToAtomicsFolder\..\ExternalPayloads\T1219_UltraViewer.exe"
+          -Argument "/silent" -PassThru; Start-Process 'C:\Program Files (x86)\UltraViewer\UltraViewer_Desktop.exe'
+        payloads: []
+        cleanup: Stop-Process -Name "UltraViewer_Desktop" -Force -ErrorAction SilentlyContinue
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

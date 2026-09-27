@@ -1,0 +1,27 @@
+---
+- id: 509bc8343f5a1a91dffcb3596b3fb240
+  name: EarlyBird APC Queue Injection in Go
+  description: "Creates a process in a suspended state and calls QueueUserAPC WinAPI\
+    \ to add a UserAPC to the child process that points to allocated shellcode. \n\
+    ResumeThread is called which then calls NtTestAlert to execute the created UserAPC\
+    \ which then executes the shellcode.\nThis technique allows for the early execution\
+    \ of shellcode and potentially before AV/EDR can hook functions to support detection.\n\
+    - PoC Credit: (https://github.com/Ne0nd0g/go-shellcode#createprocesswithpipe)\n\
+    - References: \n  - https://www.bleepingcomputer.com/news/security/early-bird-code-injection-technique-helps-malware-stay-undetected/\n\
+    \  - https://www.ired.team/offensive-security/code-injection-process-injection/early-bird-apc-queue-code-injection\n"
+  tactic: multiple
+  technique:
+    attack_id: T1055.004
+    name: 'Process Injection: Asynchronous Procedure Call'
+  platforms:
+    windows:
+      psh:
+        command: 4acb2d_EarlyBird.exe -program "C:\Windows\System32\werfault.exe"
+          -debug
+        payloads:
+        - 4acb2d_EarlyBird.exe
+        cleanup: Stop-Process -Name CalculatorApp -ErrorAction SilentlyContinue; Stop-Process
+          -Name "werfault" -ErrorAction SilentlyContinue
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

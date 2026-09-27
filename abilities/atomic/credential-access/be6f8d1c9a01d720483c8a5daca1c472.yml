@@ -1,0 +1,20 @@
+---
+- id: be6f8d1c9a01d720483c8a5daca1c472
+  name: Create Volume Shadow Copy remotely with WMI
+  description: 'This test is intended to be run from a remote workstation with domain
+    admin context.
+
+    The Active Directory database NTDS.dit may be dumped by copying it from a Volume
+    Shadow Copy.
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1003.003
+    name: 'OS Credential Dumping: NTDS'
+  platforms:
+    windows:
+      cmd:
+        command: wmic /node:"localhost" shadowcopy call create Volume=C:\
+        payloads: []
+        cleanup: ''

@@ -1,0 +1,17 @@
+---
+- id: 2f0364a7fa6e83c17bbec42e30d13614
+  name: Check internet connection using ping Windows
+  description: 'Check internet connection using ping on Windows. The default target
+    of the ping is 8.8.8.8 (Google Public DNS).
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1016.001
+    name: 'System Network Configuration Discovery: Internet Connection Discovery'
+  platforms:
+    windows:
+      cmd:
+        command: ping -n 4 8.8.8.8
+        payloads: []
+        cleanup: ''

@@ -1,0 +1,17 @@
+---
+- id: 9d22069ad78a34e50edc9b465ecfc59f
+  name: Linux - Load Kernel Module via insmod
+  description: 'This test uses the insmod command to load a kernel module for Linux.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1547.006
+    name: 'Boot or Logon Autostart Execution: Kernel Modules and Extensions'
+  platforms:
+    linux:
+      sh:
+        command: sudo insmod /tmp/T1547.006/T1547006.ko
+        payloads: []
+        cleanup: sudo rmmod T1547006; [ -f /tmp/T1547.006/safe_to_delete ] && rm -rf
+          /tmp/T1547.006

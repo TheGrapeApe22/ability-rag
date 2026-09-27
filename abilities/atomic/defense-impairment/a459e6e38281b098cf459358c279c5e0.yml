@@ -1,0 +1,32 @@
+---
+- id: a459e6e38281b098cf459358c279c5e0
+  name: Disable Windows Command Line Auditing using reg.exe
+  description: "In Windows operating systems, command line auditing is controlled\
+    \ through the following registry value:\n\n  Registry Path: HKLM\\Software\\Microsoft\\\
+    Windows\\CurrentVersion\\Policies\\System\\Audit\n  \n  Registry Value: ProcessCreationIncludeCmdLine_Enabled\n\
+    \nWhen command line auditing is enabled, the system records detailed information\
+    \ about command execution, including the command executed, the user account responsible\
+    \ for executing the command, and the timestamp of the execution.\nThis information\
+    \ is crucial for security monitoring and forensic analysis, as it helps organizations\
+    \ detect and investigate unauthorized or malicious activities within their systems.\n\
+    By default, command line auditing may not be enabled in Windows systems, and administrators\
+    \ must manually configure the appropriate registry settings to activate it.\n\
+    Conversely, attackers may attempt to tamper with these registry keys to disable\
+    \ command line auditing, as part of their efforts to evade detection and cover\
+    \ their tracks while perpetrating malicious activities.\n\nBecause this attack\
+    \ executes reg.exe using a command prompt, this attack can be detected by monitoring\
+    \ both:\n  Process Creation events for reg.exe (Windows Event ID 4688, Sysmon\
+    \ Event ID 1)\n  Registry events (Windows Event ID 4657, Sysmon Event ID 13)\n\
+    \nRead more here:\nhttps://securitydatasets.com/notebooks/atomic/windows/defense_evasion/SDWIN-220703123711.html\n"
+  tactic: defense-impairment
+  technique:
+    attack_id: T1690
+    name: Prevent Command History Logging
+  platforms:
+    windows:
+      cmd:
+        command: reg add HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System\Audit
+          /v ProcessCreationIncludeCmdLine_Enabled /t REG_DWORD /d 0 /f
+        payloads: []
+        cleanup: reg add HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System\Audit
+          /v ProcessCreationIncludeCmdLine_Enabled /t REG_DWORD /d 1 /f

@@ -1,0 +1,27 @@
+---
+- id: 231b7dd1e4747af98c35602340a1b6bf
+  name: Install IIS Module using AppCmd.exe
+  description: 'The following Atomic will utilize AppCmd.exe to install a new IIS
+    Module. IIS must be installed.
+
+    This atomic utilizes a DLL on disk, but to test further suspiciousness, compile
+    and load [IIS-Raid](https://www.mdsec.co.uk/2020/02/iis-raid-backdooring-iis-using-native-modules/).
+
+    A successful execution will install a module into IIS using AppCmd.exe.
+
+    [Managing and installing Modules Reference](https://learn.microsoft.com/en-us/iis/get-started/introduction-to-iis/iis-modules-overview#to-install-a-module-using-appcmdexe)
+
+    [IIS Modules](https://www.microsoft.com/en-us/security/blog/2022/12/12/iis-modules-the-evolution-of-web-shells-and-how-to-detect-them/)
+
+    '
+  tactic: persistence
+  technique:
+    attack_id: T1505.004
+    name: IIS Components
+  platforms:
+    windows:
+      cmd:
+        command: '%windir%\system32\inetsrv\appcmd.exe install module /name:DefaultDocumentModule_Atomic
+          /image:%windir%\system32\inetsrv\defdoc.dll'
+        payloads: []
+        cleanup: '%windir%\system32\inetsrv\appcmd.exe uninstall module DefaultDocumentModule_Atomic'

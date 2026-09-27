@@ -1,0 +1,19 @@
+---
+- id: ee12056a74be07c381877d47531429b6
+  name: List Google Chrome / Edge Chromium Bookmarks on Windows with command prompt
+  description: 'Searches for Google Chromes''s and Edge Chromium''s Bookmarks file
+    (on Windows distributions) that contains bookmarks.
+
+    Upon execution, paths that contain bookmark files will be displayed.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1217
+    name: Browser Bookmark Discovery
+  platforms:
+    windows:
+      cmd:
+        command: where /R C:\Users\ Bookmarks
+        payloads: []
+        cleanup: ''

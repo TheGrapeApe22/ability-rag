@@ -1,0 +1,22 @@
+---
+- id: 6d6adaf66bc5fa4134f2fa4c07451e5b
+  name: Adfind -Listing password policy
+  description: 'Adfind tool can be used for reconnaissance in an Active directory
+    environment. The example chosen illustrates adfind used to query the local password
+    policy.
+
+    reference- http://www.joeware.net/freetools/tools/adfind/, https://social.technet.microsoft.com/wiki/contents/articles/7535.adfind-command-examples.aspx
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1087.002
+    name: 'Account Discovery: Domain Account'
+  platforms:
+    windows:
+      cmd:
+        command: '"PathToAtomicsFolder\..\ExternalPayloads\AdFind.exe" None -default
+          -s base lockoutduration lockoutthreshold lockoutobservationwindow maxpwdage
+          minpwdage minpwdlength pwdhistorylength pwdproperties'
+        payloads: []
+        cleanup: ''

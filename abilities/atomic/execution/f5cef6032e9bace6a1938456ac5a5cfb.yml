@@ -1,0 +1,21 @@
+---
+- id: f5cef6032e9bace6a1938456ac5a5cfb
+  name: Create and Execute Batch Script
+  description: 'Creates and executes a simple batch script. Upon execution, CMD will
+    briefly launch to run the batch script then close again.
+
+    '
+  tactic: execution
+  technique:
+    attack_id: T1059.003
+    name: 'Command and Scripting Interpreter: Windows Command Shell'
+  platforms:
+    windows:
+      psh:
+        command: Start-Process "PathToAtomicsFolder\..\ExternalPayloads\T1059.003_script.bat"
+        payloads: []
+        cleanup: Remove-Item "PathToAtomicsFolder\..\ExternalPayloads\T1059.003_script.bat"
+          -Force -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

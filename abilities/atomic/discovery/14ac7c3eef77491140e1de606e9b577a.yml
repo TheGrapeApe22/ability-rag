@@ -1,0 +1,23 @@
+---
+- id: 14ac7c3eef77491140e1de606e9b577a
+  name: Account Enumeration with LDAPDomainDump
+  description: 'This test uses LDAPDomainDump to perform account enumeration on a
+    domain.
+
+    [Reference](https://securityonline.info/ldapdomaindump-active-directory-information-dumper-via-ldap/)
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1087.002
+    name: 'Account Discovery: Domain Account'
+  platforms:
+    linux:
+      sh:
+        command: 'if [ -x "$(command -v pip --version)" ]; then : ; else wget -O /tmp/get-pip.py
+          https://bootstrap.pypa.io/pip/3.6/get-pip.py; python3 /tmp/get-pip.py; fi;
+          if [ -x "$(command -v python3 --version)" ]; then : ; else sudo apt-get
+          -y install python3; fi;  ldapdomaindump -u domain\user -p password 127.0.0.1
+          -o /tmp/T1087'
+        payloads: []
+        cleanup: rm -rf /tmp/T1087/ 2>/dev/null

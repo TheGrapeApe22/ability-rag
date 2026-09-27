@@ -1,0 +1,19 @@
+---
+- id: e289eb7edadcdc7ac0ed7a26f636ae89
+  name: Encrypt files using openssl (FreeBSD/Linux)
+  description: 'Uses openssl to encrypt a file
+
+    '
+  tactic: impact
+  technique:
+    attack_id: T1486
+    name: Data Encrypted for Impact
+  platforms:
+    linux:
+      sh:
+        command: which_openssl=`which openssl`; $which_openssl genrsa -out /tmp/key.pem
+          2048; $which_openssl rsa -in /tmp/key.pem -pubout -out /tmp/pub.pem; $which_openssl
+          rsautl -encrypt -inkey /tmp/pub.pem -pubin -in /etc/passwd -out /tmp/passwd.zip
+        payloads: []
+        cleanup: $which_openssl rsautl -decrypt -inkey /tmp/key.pem -in /tmp/passwd.zip;
+          rm /tmp/passwd.zip

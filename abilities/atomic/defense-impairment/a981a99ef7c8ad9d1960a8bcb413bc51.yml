@@ -1,0 +1,16 @@
+---
+- id: a981a99ef7c8ad9d1960a8bcb413bc51
+  name: Disable OpenDNS Umbrella
+  description: 'Disables OpenDNS Umbrella
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685
+    name: Disable or Modify Tools
+  platforms:
+    darwin:
+      sh:
+        command: sudo launchctl unload /Library/LaunchDaemons/com.opendns.osx.RoamingClientConfigUpdater.plist
+        payloads: []
+        cleanup: sudo launchctl load -w /Library/LaunchDaemons/com.opendns.osx.RoamingClientConfigUpdater.plist

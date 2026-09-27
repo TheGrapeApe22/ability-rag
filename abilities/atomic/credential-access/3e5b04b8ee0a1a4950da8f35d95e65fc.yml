@@ -1,0 +1,18 @@
+---
+- id: 3e5b04b8ee0a1a4950da8f35d95e65fc
+  name: Enumeration for Credentials in Registry
+  description: 'Queries to enumerate for credentials in the Registry. Upon execution,
+    any registry key containing the word "password" will be displayed.
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1552.002
+    name: 'Unsecured Credentials: Credentials in Registry'
+  platforms:
+    windows:
+      cmd:
+        command: reg query HKLM /f password /t REG_SZ /s && reg query HKCU /f password
+          /t REG_SZ /s
+        payloads: []
+        cleanup: ''

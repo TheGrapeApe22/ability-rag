@@ -1,0 +1,21 @@
+---
+- id: fe3840e48a28eda88466867b6bb7dbea
+  name: Auditing Configuration Changes on Linux Host
+  description: 'Emulates modification of auditd configuration files
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685
+    name: Disable or Modify Tools
+  platforms:
+    linux:
+      sh:
+        command: 'sed -i ''$ a #art_test_1562_006_1'' /etc/audisp/audispd.conf; if
+          [ -f "/etc/auditd.conf" ]; then sed -i ''$ a #art_test_1562_006_1'' /etc/auditd.conf;
+          else sed -i ''$ a #art_test_1562_006_1'' /etc/audit/auditd.conf; fi ; sed
+          -i ''$ a #art_test_1562_006_1'' /etc/libaudit.conf'
+        payloads: []
+        cleanup: sed -i '$ d' /etc/audisp/audispd.conf; if [ -f "/etc/auditd.conf"
+          ]; then sed -i '$ d' /etc/auditd.conf; else sed -i '$ d' /etc/audit/auditd.conf;
+          fi; sed -i '$ d' /etc/libaudit.conf

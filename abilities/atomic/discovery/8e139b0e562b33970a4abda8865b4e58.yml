@@ -1,0 +1,19 @@
+---
+- id: 8e139b0e562b33970a4abda8865b4e58
+  name: Network Share Discovery via dir command
+  description: 'Network Share Discovery utilizing the dir command prompt. The computer
+    ip variable may need to be modified to point to a different host ip
+
+    Upon execution available network shares will be displayed in the commandline session
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1135
+    name: Network Share Discovery
+  platforms:
+    windows:
+      cmd:
+        command: dir \\127.0.0.1\c$ && dir \\127.0.0.1\admin$ && dir \\127.0.0.1\IPC$
+        payloads: []
+        cleanup: ''

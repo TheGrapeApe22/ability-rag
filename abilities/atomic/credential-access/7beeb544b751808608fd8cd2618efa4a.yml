@@ -1,0 +1,18 @@
+---
+- id: 7beeb544b751808608fd8cd2618efa4a
+  name: List Credential Files via Command Prompt
+  description: 'Via Command Prompt,list files where credentials are stored in Windows
+    Credential Manager
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1552.001
+    name: 'Unsecured Credentials: Credentials In Files'
+  platforms:
+    windows:
+      cmd:
+        command: dir /a:h C:\Users\%USERNAME%\AppData\Local\Microsoft\Credentials\
+          && dir /a:h C:\Users\%USERNAME%\AppData\Roaming\Microsoft\Credentials\
+        payloads: []
+        cleanup: ''

@@ -1,0 +1,19 @@
+---
+- id: 06e1923342d91780242d381665234d16
+  name: Check computer location
+  description: 'Looks up country code configured in the registry, likely geofence.
+    Upon execution, country code info will be displayed.
+
+    - https://tria.ge/210111-eaz8mqhgh6/behavioral1
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1082
+    name: System Information Discovery
+  platforms:
+    windows:
+      cmd:
+        command: reg query "HKEY_CURRENT_USER\Control Panel\International\Geo"
+        payloads: []
+        cleanup: ''

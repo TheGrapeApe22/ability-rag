@@ -1,0 +1,21 @@
+---
+- id: f0920f2c89c592153ee7d71bfd7fae06
+  name: Delete system log files using srm utility
+  description: 'This test securely deletes the system log files individually and recursively
+    using the srm utility.
+
+    Install srm using Homebrew with the command: brew install khell/homebrew-srm/srm
+
+    Refer: https://github.com/khell/homebrew-srm/issues/1 for installation
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685.006
+    name: 'Disable or Modify Tools: Clear Linux or Mac System Logs'
+  platforms:
+    darwin:
+      sh:
+        command: sudo srm /var/log/system.log; sudo srm -r /var/log/
+        payloads: []
+        cleanup: ''

@@ -1,0 +1,20 @@
+---
+- id: 4662b903bc6cd234d6b9a111a6996d05
+  name: Compile After Delivery using csc.exe
+  description: 'Compile C# code using csc.exe binary used by .NET
+
+    Upon execution an exe named T1027.004.exe will be placed in the temp folder
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1027.004
+    name: 'Obfuscated Files or Information: Compile After Delivery'
+  platforms:
+    windows:
+      cmd:
+        command: C:\Windows\Microsoft.NET\Framework64\v4.0.30319\csc.exe /out:C:\Windows\Temp\T1027.004.exe
+          "af2f1c_calc.cs"
+        payloads:
+        - af2f1c_calc.cs
+        cleanup: del C:\Windows\Temp\T1027.004.exe >nul 2>&1

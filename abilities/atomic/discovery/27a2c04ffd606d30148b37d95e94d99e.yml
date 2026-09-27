@@ -1,0 +1,23 @@
+---
+- id: 27a2c04ffd606d30148b37d95e94d99e
+  name: Extract Edge Browsing History
+  description: 'This test will extract Microsoft Edge browser''s history of current
+    user
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1217
+    name: Browser Bookmark Discovery
+  platforms:
+    windows:
+      psh:
+        command: $URL_Regex = '(htt(p|s))://([\w-]+\.)+[\w-]+(/[\w- ./?%&=]*)*?';
+          $History = Get-Content -Path "$Env:LOCALAPPDATA\Microsoft\Edge\User Data\Default\History"
+          | Select-String -AllMatches $URL_Regex | ForEach-Object { $_.Matches.Value
+          } | Sort -Unique; $History | Out-File -FilePath "$Env:USERPROFILE\Downloads\edgebrowsinghistory.txt"
+        payloads: []
+        cleanup: Remove-Item -Path "$Env:USERPROFILE\Downloads\edgebrowsinghistory.txt"
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

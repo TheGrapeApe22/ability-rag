@@ -1,0 +1,24 @@
+---
+- id: 1f2da2639fcd636ef1c7ead72de4469f
+  name: Windows - Modify file creation timestamp with PowerShell
+  description: 'Modifies the file creation timestamp of a specified file. This technique
+    was seen in use by the Stitch RAT.
+
+    To verify execution, use File Explorer to view the Properties of the file and
+    observe that the Created time is the year 1970.
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1070.006
+    name: 'Indicator Removal on Host: Timestomp'
+  platforms:
+    windows:
+      psh:
+        command: Get-ChildItem "PathToAtomicsFolder\..\ExternalPayloads\T1551.006_timestomp.txt"
+          | % { $_.CreationTime = "01/01/1970 00:00:00" }
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

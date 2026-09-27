@@ -1,0 +1,23 @@
+---
+- id: b75167c93041f3e37b246961277b128a
+  name: Set a SetGID flag on file
+  description: 'This test sets the SetGID flag on a file in Linux and macOS.
+
+    '
+  tactic: privilege-escalation
+  technique:
+    attack_id: T1548.001
+    name: 'Abuse Elevation Control Mechanism: Setuid and Setgid'
+  platforms:
+    darwin:
+      sh:
+        command: sudo touch /tmp/evilBinary; sudo chown root /tmp/evilBinary; sudo
+          chmod g+xs /tmp/evilBinary
+        payloads: []
+        cleanup: sudo rm /tmp/evilBinary
+    linux:
+      sh:
+        command: sudo touch /tmp/evilBinary; sudo chown root /tmp/evilBinary; sudo
+          chmod g+xs /tmp/evilBinary
+        payloads: []
+        cleanup: sudo rm /tmp/evilBinary

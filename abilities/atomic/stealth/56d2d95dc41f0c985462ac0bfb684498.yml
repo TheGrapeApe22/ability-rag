@@ -1,0 +1,18 @@
+---
+- id: 56d2d95dc41f0c985462ac0bfb684498
+  name: Linux File Type Masquerading via Extension Change
+  description: 'Executes a shell script that has been disguised with a harmless image
+    extension (.png).
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1036.008
+    name: 'Masquerading: Masquerade File Type'
+  platforms:
+    linux:
+      sh:
+        command: echo '#!/bin/sh' > /tmp/image.png; echo 'echo "Running script masked
+          as PNG"' >> /tmp/image.png; sh /tmp/image.png
+        payloads: []
+        cleanup: rm -f /tmp/image.png

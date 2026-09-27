@@ -1,0 +1,16 @@
+---
+- id: 16481dec717301784f90d52477f685a2
+  name: Examine password policy - macOS
+  description: 'Lists the password policy to console on macOS.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1201
+    name: Password Policy Discovery
+  platforms:
+    darwin:
+      sh:
+        command: pwpolicy getaccountpolicies
+        payloads: []
+        cleanup: ''

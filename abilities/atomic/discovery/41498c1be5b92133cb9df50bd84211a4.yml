@@ -1,0 +1,21 @@
+---
+- id: 41498c1be5b92133cb9df50bd84211a4
+  name: Windows - Discover domain trusts with nltest
+  description: 'Uses the nltest command to discover domain trusts.
+
+    Requires the installation of nltest via Windows RSAT or the Windows Server AD
+    DS role.
+
+    This technique has been used by the Trickbot malware family.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1482
+    name: Domain Trust Discovery
+  platforms:
+    windows:
+      cmd:
+        command: nltest /domain_trusts && nltest /trusted_domains
+        payloads: []
+        cleanup: ''

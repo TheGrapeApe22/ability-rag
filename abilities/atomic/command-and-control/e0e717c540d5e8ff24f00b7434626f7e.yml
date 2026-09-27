@@ -1,0 +1,30 @@
+---
+- id: e0e717c540d5e8ff24f00b7434626f7e
+  name: RemotePC Software Execution
+  description: "An adversary may attempt to trick the user into downloading RemotePC\
+    \ Software for use as a C2 channel. \nUpon successful execution, RemotePC will\
+    \ be executed. \n"
+  tactic: command-and-control
+  technique:
+    attack_id: T1219
+    name: Remote Access Software
+  platforms:
+    windows:
+      psh:
+        command: Start-Process "PathToAtomicsFolder\..\ExternalPayloads\RemotePC.exe"
+        payloads: []
+        cleanup: Unregister-ScheduledTask -TaskName "RemotePC" -Confirm:$False -ErrorAction
+          SilentlyContinue; Unregister-ScheduledTask -TaskName "RPCServiceHealthCheck"
+          -Confirm:$False -ErrorAction SilentlyContinue; Unregister-ScheduledTask
+          -TaskName "ServiceMonitor" -Confirm:$False -ErrorAction SilentlyContinue;
+          Unregister-ScheduledTask -TaskName "StartRPCService" -Confirm:$False -ErrorAction
+          SilentlyContinue      ; Stop-Process -Name "RemotePCPerformance" -force
+          -erroraction silentlycontinue; Stop-Process -Name "RPCPerformanceService"
+          -force -erroraction silentlycontinue; Stop-Process -Name "RemotePCUIU" -force
+          -erroraction silentlycontinue; Stop-Process -Name "RPCDownloader" -force
+          -erroraction silentlycontinue; Stop-Process -Name "RemotePCService" -force
+          -erroraction silentlycontinue; Stop-Process -Name "RPCService" -force -erroraction
+          silentlycontinue
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

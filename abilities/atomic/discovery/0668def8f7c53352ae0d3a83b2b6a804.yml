@@ -1,0 +1,20 @@
+---
+- id: 0668def8f7c53352ae0d3a83b2b6a804
+  name: Identifying Network Shares - Linux
+  description: 'If the system uses network file systems (e.g., NFS, CIFS), findmnt
+    can help locate paths to remote shares.
+
+    Attackers may then attempt to access these shares for lateral movement or data
+    exfiltration.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1083
+    name: File and Directory Discovery
+  platforms:
+    linux:
+      sh:
+        command: findmnt -t nfs
+        payloads: []
+        cleanup: ''

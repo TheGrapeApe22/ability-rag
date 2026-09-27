@@ -1,0 +1,16 @@
+---
+- id: 8c47e4a4fe7c3e255b062ca1339d11ed
+  name: Create Hidden User using IsHidden option
+  description: 'Add a hidden user on macOS using IsHidden optoin
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1564.002
+    name: 'Hide Artifacts: Hidden Users'
+  platforms:
+    darwin:
+      sh:
+        command: sudo dscl . -create /Users/APT IsHidden 1
+        payloads: []
+        cleanup: sudo dscl . -delete /Users/APT

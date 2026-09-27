@@ -1,0 +1,23 @@
+---
+- id: 43f15cc3341140cd5a9d635d456593f5
+  name: chmod - Change file or folder mode (symbolic mode)
+  description: 'Changes a file or folder''s permissions using chmod and a specified
+    symbolic mode.
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1222.002
+    name: 'File and Directory Permissions Modification: FreeBSD, Linux and Mac File
+      and Directory Permissions Modification'
+  platforms:
+    linux:
+      sh:
+        command: chmod a+w /tmp/AtomicRedTeam/atomics/T1222.002
+        payloads: []
+        cleanup: ''
+    darwin:
+      sh:
+        command: chmod a+w /tmp/AtomicRedTeam/atomics/T1222.002
+        payloads: []
+        cleanup: ''

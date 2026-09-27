@@ -1,0 +1,17 @@
+---
+- id: 1b59c4489720e2e6732baf69539292f6
+  name: Copy Keychain using cat utility
+  description: 'This command will copy the keychain using the cat utility in a manner
+    similar to Atomic Stealer.
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1555.001
+    name: 'Credentials from Password Stores: Keychain'
+  platforms:
+    darwin:
+      sh:
+        command: cat ~/Library/Keychains/login.keychain-db > /tmp/keychain
+        payloads: []
+        cleanup: rm /tmp/keychain

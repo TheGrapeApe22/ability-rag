@@ -1,0 +1,16 @@
+- id: cb53b600-783b-4cb3-92de-c58a7f563ce8
+  name: Nmap host scan (T2)
+  description: Run T2 Nmap host scan to detect other machines in given IP range
+  tactic: recon_ips
+  technique:
+    attack_id: T1595
+    name: Active Scanning
+  platforms:
+    linux:
+      sh:
+        command: 'nmap -sn -T2 #{bountyhunter.ip_range}'
+        parsers:
+          plugins.bountyhunter.app.parsers.nmap_host_scan:
+          - edge: has_ip
+            source: bountyhunter.ip_range
+            target: bountyhunter.network.ip

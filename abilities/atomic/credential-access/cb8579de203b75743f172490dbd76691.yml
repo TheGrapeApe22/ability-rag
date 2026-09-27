@@ -1,0 +1,16 @@
+---
+- id: cb8579de203b75743f172490dbd76691
+  name: Import Certificate Item(s) into Keychain
+  description: 'This command will import a certificate pem file into a keychain.
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1555.001
+    name: 'Credentials from Password Stores: Keychain'
+  platforms:
+    darwin:
+      sh:
+        command: security import /tmp/certs.pem -k
+        payloads: []
+        cleanup: ''

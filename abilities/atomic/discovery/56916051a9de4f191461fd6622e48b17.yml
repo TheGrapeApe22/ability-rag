@@ -1,0 +1,21 @@
+---
+- id: 56916051a9de4f191461fd6622e48b17
+  name: Check internet connection using Test-NetConnection in PowerShell (TCP-SMB)
+  description: 'Check internet connection using PowerShell''s Test-NetConnection cmdlet
+    and the TCP protocol to check for outbound SMB (Port 445) access. The default
+    target is 8.8.8.8.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1016.001
+    name: 'System Network Configuration Discovery: Internet Connection Discovery'
+  platforms:
+    windows:
+      psh:
+        command: Test-NetConnection -CommonTCPPort SMB -ComputerName 8.8.8.8
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

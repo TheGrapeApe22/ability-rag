@@ -1,0 +1,20 @@
+---
+- id: 11896cddea2c3648e74d64493a0206c6
+  name: System Time Discovery in FreeBSD/macOS
+  description: "Identify system time. Upon execution, the local computer system time\
+    \ and timezone will be displayed. \n"
+  tactic: discovery
+  technique:
+    attack_id: T1124
+    name: System Time Discovery
+  platforms:
+    linux:
+      sh:
+        command: date
+        payloads: []
+        cleanup: ''
+    darwin:
+      sh:
+        command: date
+        payloads: []
+        cleanup: ''

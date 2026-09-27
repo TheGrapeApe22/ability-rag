@@ -1,0 +1,23 @@
+---
+- id: 9d3edb94f179ac6e4325299abeba1c38
+  name: System Network Connections Discovery via PowerShell (Process Mapping)
+  description: 'Enumerate TCP connections and map to owning process names via PowerShell.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1049
+    name: System Network Connections Discovery
+  platforms:
+    windows:
+      psh:
+        command: Get-NetTCPConnection | ForEach-Object {;   $p = Get-Process -Id $_.OwningProcess
+          -ErrorAction SilentlyContinue;   [pscustomobject]@{;     Local   = "$($_.LocalAddress):$($_.LocalPort)";     Remote  =
+          "$($_.RemoteAddress):$($_.RemotePort)";     State   = $_.State;     PID     =
+          $_.OwningProcess;     Process = if ($p) { $p.ProcessName } else { $null
+          };   }; } | Sort-Object State,Process | Format-Table -AutoSize
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

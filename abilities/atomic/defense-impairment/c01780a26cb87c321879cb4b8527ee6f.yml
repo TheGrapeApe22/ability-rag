@@ -1,0 +1,14 @@
+---
+- id: c01780a26cb87c321879cb4b8527ee6f
+  name: Turn off UFW logging
+  description: "Turn off the Uncomplicated Firewall (UFW) logging. \n"
+  tactic: defense-impairment
+  technique:
+    attack_id: T1686
+    name: Disable or Modify System Firewall
+  platforms:
+    linux:
+      sh:
+        command: ufw logging off
+        payloads: []
+        cleanup: ufw logging low; ufw status verbose

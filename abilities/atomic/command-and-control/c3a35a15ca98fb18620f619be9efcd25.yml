@@ -1,0 +1,38 @@
+---
+- id: c3a35a15ca98fb18620f619be9efcd25
+  name: Connection Proxy
+  description: 'Enable traffic redirection.
+
+
+    Note that this test may conflict with pre-existing system configuration.
+
+    '
+  tactic: command-and-control
+  technique:
+    attack_id: T1090.001
+    name: 'Proxy: Internal Proxy'
+  platforms:
+    linux:
+      sh:
+        command: 'if ([ "#{run_squid}" = "false" ] || ([ -x "$(command -v squid --version)"
+          ] && (ps aux | grep "squid -N" | grep -v "grep"))); then : ; else [ "#{run_squid}"
+          = "true" ] && ([ -x "$(command -v squid --version)" ] || sudo DEBIAN_FRONTEND=noninteractive
+          apt-get -y install squid curl || sudo yum install -y squid curl || sudo
+          dnf install -y squid curl || brew install curl squid) && (squid -N -d 1
+          &) && exit 0; echo "Value #{run_squid} for variable "run_squid" is not valid"
+          && exit 1; fi;  export; curl'
+        payloads: []
+        cleanup: unset http_proxy; [ "false" == "true" ] && (kill -9 $(ps aux | grep
+          "squid -N" | grep -v "grep" | awk '{print $2}'))
+    darwin:
+      sh:
+        command: 'if ([ "#{run_squid}" = "false" ] || ([ -x "$(command -v squid --version)"
+          ] && (ps aux | grep "squid -N" | grep -v "grep"))); then : ; else [ "#{run_squid}"
+          = "true" ] && ([ -x "$(command -v squid --version)" ] || sudo DEBIAN_FRONTEND=noninteractive
+          apt-get -y install squid curl || sudo yum install -y squid curl || sudo
+          dnf install -y squid curl || brew install curl squid) && (squid -N -d 1
+          &) && exit 0; echo "Value #{run_squid} for variable "run_squid" is not valid"
+          && exit 1; fi;  export; curl'
+        payloads: []
+        cleanup: unset http_proxy; [ "false" == "true" ] && (kill -9 $(ps aux | grep
+          "squid -N" | grep -v "grep" | awk '{print $2}'))

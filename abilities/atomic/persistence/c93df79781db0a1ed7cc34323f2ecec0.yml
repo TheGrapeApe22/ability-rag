@@ -1,0 +1,20 @@
+---
+- id: c93df79781db0a1ed7cc34323f2ecec0
+  name: Create a new user in a command prompt
+  description: 'Creates a new user in a command prompt. Upon execution, "The command
+    completed successfully." will be displayed. To verify the
+
+    new account, run "net user" in powershell or CMD and observe that there is a new
+    user named "T1136.001_CMD"
+
+    '
+  tactic: persistence
+  technique:
+    attack_id: T1136.001
+    name: 'Create Account: Local Account'
+  platforms:
+    windows:
+      cmd:
+        command: net user /add "T1136.001_CMD" "T1136.001_CMD!"
+        payloads: []
+        cleanup: net user /del "T1136.001_CMD" >nul 2>&1

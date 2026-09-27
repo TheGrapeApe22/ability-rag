@@ -1,0 +1,22 @@
+---
+- id: 73fed1f32224461748c3630217b7d300
+  name: Copy a sensitive File over Administrative share with Powershell
+  description: 'Copy from sensitive File from the c$ of another LAN computer with
+    powershell
+
+    https://twitter.com/SBousseaden/status/1211636381086339073'
+  tactic: collection
+  technique:
+    attack_id: T1039
+    name: Data from Network Shared Drive
+  platforms:
+    windows:
+      psh:
+        command: copy-item -Path "\\127.0.0.1\C$\Windows\temp\Easter_Bunny.password"
+          -Destination "$Env:TEMP\Easter_egg.password"
+        payloads: []
+        cleanup: Remove-Item -Path "\\127.0.0.1\C$\Windows\temp\Easter_Bunny.password";
+          Remove-Item -Path "$Env:TEMP\Easter_egg.password"
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

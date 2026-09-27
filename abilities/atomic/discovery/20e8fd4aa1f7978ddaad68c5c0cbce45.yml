@@ -1,0 +1,24 @@
+---
+- id: 20e8fd4aa1f7978ddaad68c5c0cbce45
+  name: Get geolocation info through IP-Lookup services using curl freebsd, linux
+    or macos
+  description: 'Get geolocation info through IP-Lookup services using curl Windows.
+    The default URL of the IP-Lookup service is https://ipinfo.io/. References: https://securelist.com/transparent-tribe-part-1/98127/
+    and https://news.sophos.com/en-us/2016/05/03/location-based-ransomware-threat-research/
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1614
+    name: System Location Discovery
+  platforms:
+    darwin:
+      sh:
+        command: curl -k https://ipinfo.io/
+        payloads: []
+        cleanup: ''
+    linux:
+      sh:
+        command: curl -k https://ipinfo.io/
+        payloads: []
+        cleanup: ''

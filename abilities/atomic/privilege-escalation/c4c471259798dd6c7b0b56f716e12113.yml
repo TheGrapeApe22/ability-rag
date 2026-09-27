@@ -1,0 +1,25 @@
+---
+- id: c4c471259798dd6c7b0b56f716e12113
+  name: Disable UAC - Switch to the secure desktop when prompting for elevation via
+    registry key
+  description: "User Account Control (UAC) is a security mechanism for limiting the\
+    \ elevation of privileges, including administrative accounts, unless authorized.\
+    \ \nThis setting ensures that the elevation prompt is only used in secure desktop\
+    \ mode.\nDisable User Account Conrol (UAC) for secure desktop by setting the registry\
+    \ key HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System\\PromptOnSecureDesktop\
+    \ to 0.\n"
+  tactic: privilege-escalation
+  technique:
+    attack_id: T1548.002
+    name: 'Abuse Elevation Control Mechanism: Bypass User Account Control'
+  platforms:
+    windows:
+      psh:
+        command: Set-ItemProperty HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
+          -Name PromptOnSecureDesktop -Value 0 -Type Dword -Force
+        payloads: []
+        cleanup: Set-ItemProperty HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
+          -Name PromptOnSecureDesktop -Value 1 -Type Dword -Force
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

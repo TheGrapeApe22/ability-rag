@@ -1,0 +1,30 @@
+---
+- id: 55e14d8b479b905a13976c8d94016a7b
+  name: HKLM - Append Command to Winlogon Userinit KEY Value
+  description: 'This test will append a command to the  HKEY_LOCAL_MACHINE\Software\Microsoft\Windows
+    NT\CurrentVersion\Winlogon\Userinit value to launch calc.exe on boot.
+
+    * Requires reboot
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1547.001
+    name: 'Boot or Logon Autostart Execution: Registry Run Keys / Startup Folder'
+  platforms:
+    windows:
+      psh:
+        command: '$oldvalue = $(Get-ItemPropertyValue -Path  "HKLM:\Software\Microsoft\Windows
+          NT\CurrentVersion\Winlogon" -Name "Userinit"); Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows
+          NT\CurrentVersion\Winlogon" -Name "Userinit-backup" -Value "$oldvalue";
+          $newvalue = $oldvalue + " #{payload}"; Set-ItemProperty -Path  "HKLM:\Software\Microsoft\Windows
+          NT\CurrentVersion\Winlogon" -Name "Userinit" -Value "$newvalue"'
+        payloads: []
+        cleanup: $oldvalue = $(Get-ItemPropertyValue -Path  "HKLM:\Software\Microsoft\Windows
+          NT\CurrentVersion\Winlogon" -Name 'Userinit-backup'); Set-ItemProperty -Path
+          "HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name "Userinit"
+          -Value "$oldvalue"; Remove-ItemProperty -Path  "HKLM:\Software\Microsoft\Windows
+          NT\CurrentVersion\Winlogon" -Name 'Userinit-backup'
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

@@ -1,0 +1,20 @@
+---
+- id: 6c35402f56f69f6eaf8c0cbe36fa1638
+  name: Lolbin Gpscript logon option
+  description: 'Executes logon scripts configured in Group Policy.
+
+    https://lolbas-project.github.io/lolbas/Binaries/Gpscript/
+
+    https://oddvar.moe/2018/04/27/gpscript-exe-another-lolbin-to-the-list/
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1218
+    name: Signed Binary Proxy Execution
+  platforms:
+    windows:
+      cmd:
+        command: Gpscript /logon
+        payloads: []
+        cleanup: ''

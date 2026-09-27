@@ -1,0 +1,18 @@
+---
+- id: 8af540e33bedd20ad6122751d2c996a2
+  name: Windows - wbadmin Delete systemstatebackup
+  description: 'Deletes the Windows systemstatebackup using wbadmin.exe. This technique
+    is used by numerous ransomware families. This may only be successful on server
+    platforms that have Windows Backup enabled.
+
+    '
+  tactic: impact
+  technique:
+    attack_id: T1490
+    name: Inhibit System Recovery
+  platforms:
+    windows:
+      cmd:
+        command: wbadmin delete systemstatebackup -keepVersions:0
+        payloads: []
+        cleanup: ''

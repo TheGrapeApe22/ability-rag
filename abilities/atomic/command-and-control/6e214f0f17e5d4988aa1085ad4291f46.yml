@@ -1,0 +1,28 @@
+---
+- id: 6e214f0f17e5d4988aa1085ad4291f46
+  name: DNS over HTTPS Regular Beaconing
+  description: 'This test simulates an infected host beaconing via DoH queries to
+    a command and control server at regular intervals over time.
+
+    This behaviour is typical of implants either in an idle state waiting for instructions
+    or configured to use a low query volume over time to evade threshold based detection.
+
+    A custom domain and sub-domain will need to be passed as input parameters for
+    this test to work. Upon execution, DNS information about the domain will be displayed
+    for each callout in a JSON format.
+
+    '
+  tactic: command-and-control
+  technique:
+    attack_id: T1572
+    name: Protocol Tunneling
+  platforms:
+    windows:
+      psh:
+        command: Set-Location "PathToAtomicsFolder"; .\T1572\src\T1572-doh-beacon.ps1
+          -DohServer
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

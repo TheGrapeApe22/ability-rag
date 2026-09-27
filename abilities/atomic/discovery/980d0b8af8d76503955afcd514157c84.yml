@@ -1,0 +1,16 @@
+---
+- id: 980d0b8af8d76503955afcd514157c84
+  name: AWS S3 Enumeration
+  description: "This test will enumerate all the S3 buckets in the user account and\
+    \ lists all the files in each bucket. \n"
+  tactic: discovery
+  technique:
+    attack_id: T1619
+    name: Cloud Storage Object Discovery
+  platforms:
+    unknown:
+      sh:
+        command: for bucket in "$(aws s3 ls | cut -d " " -f3)"; do aws s3api list-objects-v2
+          --bucket $bucket --output text; done
+        payloads: []
+        cleanup: ''

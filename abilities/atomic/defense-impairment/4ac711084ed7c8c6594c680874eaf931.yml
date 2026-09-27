@@ -1,0 +1,20 @@
+---
+- id: 4ac711084ed7c8c6594c680874eaf931
+  name: Disable journal logging via sed utility
+  description: 'The atomic test disables the journal logging by searching and replacing
+    the "Storage" parameter to "none" within the journald.conf file, thus any new
+    journal entries will only be temporarily available in memory and not written to
+    disk
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685
+    name: Disable or Modify Tools
+  platforms:
+    linux:
+      sh:
+        command: sudo sed -i 's/Storage=auto/Storage=none/' /etc/systemd/journald.conf
+        payloads: []
+        cleanup: sudo sed -i 's/Storage=none/Storage=auto/' /etc/systemd/journald.conf;
+          sudo systemctl restart systemd-journald

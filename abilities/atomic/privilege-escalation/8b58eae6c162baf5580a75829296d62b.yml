@@ -1,0 +1,18 @@
+---
+- id: 8b58eae6c162baf5580a75829296d62b
+  name: Make and modify binary from C source (freebsd)
+  description: 'Make, change owner, and change file attributes on a C source code
+    file
+
+    '
+  tactic: privilege-escalation
+  technique:
+    attack_id: T1548.001
+    name: 'Abuse Elevation Control Mechanism: Setuid and Setgid'
+  platforms:
+    linux:
+      sh:
+        command: cp; chown root /tmp/hello.c; make /tmp/hello; chown root /tmp/hello;
+          chmod u+s /tmp/hello; /tmp/hello
+        payloads: []
+        cleanup: rm /tmp/hello; rm /tmp/hello.c

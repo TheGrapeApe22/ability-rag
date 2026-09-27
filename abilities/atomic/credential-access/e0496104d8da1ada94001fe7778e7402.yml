@@ -1,0 +1,16 @@
+---
+- id: e0496104d8da1ada94001fe7778e7402
+  name: Extract all accounts in use as SPN using setspn
+  description: "The following test will utilize setspn to extract the Service Principal\
+    \ Names. This behavior is typically used during a kerberos or silver ticket attack.\
+    \ \nA successful execution will output all the SPNs for the related domain. \n"
+  tactic: credential-access
+  technique:
+    attack_id: T1558.003
+    name: 'Steal or Forge Kerberos Tickets: Kerberoasting'
+  platforms:
+    windows:
+      cmd:
+        command: setspn -T %USERDNSDOMAIN% -Q */*
+        payloads: []
+        cleanup: ''

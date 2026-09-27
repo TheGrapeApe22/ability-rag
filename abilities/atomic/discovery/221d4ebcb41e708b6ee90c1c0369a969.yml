@@ -1,0 +1,19 @@
+---
+- id: 221d4ebcb41e708b6ee90c1c0369a969
+  name: GetCurrent User with PowerShell Script
+  description: Use the PowerShell "GetCurrent" method of the WindowsIdentity .NET
+    class to identify the logged user.
+  tactic: discovery
+  technique:
+    attack_id: T1033
+    name: System Owner/User Discovery
+  platforms:
+    windows:
+      psh:
+        command: '[System.Security.Principal.WindowsIdentity]::GetCurrent() | Out-File
+          -FilePath .\CurrentUserObject.txt'
+        payloads: []
+        cleanup: Remove-Item -Path .\CurrentUserObject.txt -Force
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

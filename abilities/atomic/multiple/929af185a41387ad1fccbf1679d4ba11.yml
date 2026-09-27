@@ -1,0 +1,23 @@
+---
+- id: 929af185a41387ad1fccbf1679d4ba11
+  name: Service Installation CMD
+  description: 'Download an executable from github and start it as a service.
+
+    Upon successful execution, powershell will download `AtomicService.exe` from github.
+    cmd.exe will spawn sc.exe which will create and start the service. Results will
+    output via stdout.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1543.003
+    name: 'Create or Modify System Process: Windows Service'
+  platforms:
+    windows:
+      cmd:
+        command: sc.exe create AtomicTestService_CMD binPath= "411da5_AtomicService.exe"
+          start=auto  type=Own && sc.exe start AtomicTestService_CMD
+        payloads:
+        - 411da5_AtomicService.exe
+        cleanup: sc.exe stop AtomicTestService_CMD >nul 2>&1 && sc.exe delete AtomicTestService_CMD
+          >nul 2>&1

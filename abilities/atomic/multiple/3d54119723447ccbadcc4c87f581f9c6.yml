@@ -1,0 +1,31 @@
+---
+- id: 3d54119723447ccbadcc4c87f581f9c6
+  name: MITM Proxy Injection
+  description: Start mitmdump and verify injected header and HTML content.
+  tactic: multiple
+  technique:
+    attack_id: T1659
+    name: Content Injection
+  platforms:
+    darwin:
+      sh:
+        command: curl -skI --proxy http://127.0.0.1:8080 http://example.com > /tmp/curl_out.txt;
+          grep "X-Atomic" /tmp/curl_out.txt || (cat /tmp/curl_out.txt && exit 1);
+          curl -sk --proxy http://127.0.0.1:8080 http://example.com > /tmp/atomic_t1659_page.html;
+          grep -q "Atomic T1659 Injection" /tmp/atomic_t1659_page.html || (head -20
+          /tmp/atomic_t1659_page.html; exit 1)
+        payloads: []
+        cleanup: rm -rf /tmp/atomic_t1659_inject.py; rm -rf /tmp/atomic_t1659.log;
+          rm -rf /tmp/curl_out.txt; rm -rf /tmp/atomic_t1659_page.html; pkill -f mitmdump
+          || true
+    linux:
+      sh:
+        command: curl -skI --proxy http://127.0.0.1:8080 http://example.com > /tmp/curl_out.txt;
+          grep "X-Atomic" /tmp/curl_out.txt || (cat /tmp/curl_out.txt && exit 1);
+          curl -sk --proxy http://127.0.0.1:8080 http://example.com > /tmp/atomic_t1659_page.html;
+          grep -q "Atomic T1659 Injection" /tmp/atomic_t1659_page.html || (head -20
+          /tmp/atomic_t1659_page.html; exit 1)
+        payloads: []
+        cleanup: rm -rf /tmp/atomic_t1659_inject.py; rm -rf /tmp/atomic_t1659.log;
+          rm -rf /tmp/curl_out.txt; rm -rf /tmp/atomic_t1659_page.html; pkill -f mitmdump
+          || true

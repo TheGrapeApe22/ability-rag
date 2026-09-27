@@ -1,0 +1,18 @@
+---
+- id: 4a2dd0eceebc5e00fbcefce0f03bf004
+  name: Delete system journal logs via rm and journalctl utilities
+  description: 'The first sub-test deletes the journal files using rm utility in the
+    "/var/log/journal/" directory and the second sub-test clears the journal by modifiying
+    time period of logs that should be retained to zero.
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685.006
+    name: 'Disable or Modify Tools: Clear Linux or Mac System Logs'
+  platforms:
+    linux:
+      sh:
+        command: sudo rm /var/log/journal/*; sudo journalctl --vacuum-time=0
+        payloads: []
+        cleanup: ''

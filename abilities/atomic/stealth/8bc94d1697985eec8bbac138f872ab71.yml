@@ -1,0 +1,16 @@
+---
+- id: 8bc94d1697985eec8bbac138f872ab71
+  name: Msiexec.exe - Execute Local MSI file with an embedded EXE
+  description: 'Executes an MSI containing an embedded EXE using msiexec.exe
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1218.007
+    name: 'Signed Binary Proxy Execution: Msiexec'
+  platforms:
+    windows:
+      cmd:
+        command: '#{msi_exe} /q /#{action} "#{msi_payload}"'
+        payloads: []
+        cleanup: ''

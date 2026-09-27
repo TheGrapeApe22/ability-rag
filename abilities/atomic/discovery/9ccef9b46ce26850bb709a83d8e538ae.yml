@@ -1,0 +1,24 @@
+---
+- id: 9ccef9b46ce26850bb709a83d8e538ae
+  name: Automated AD Recon (ADRecon)
+  description: 'ADRecon extracts and combines information about an AD environement
+    into a report. Upon execution, an Excel file with all of the data will be generated
+    and its
+
+    path will be displayed.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1087.002
+    name: 'Account Discovery: Domain Account'
+  platforms:
+    windows:
+      psh:
+        command: Invoke-Expression "PathToAtomicsFolder\..\ExternalPayloads\ADRecon.ps1"
+        payloads: []
+        cleanup: Get-ChildItem "PathToAtomicsFolder\..\ExternalPayloads" -Recurse
+          -Force | Where{$_.Name -Match "^ADRecon-Report-"} | Remove-Item -Force -Recurse
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

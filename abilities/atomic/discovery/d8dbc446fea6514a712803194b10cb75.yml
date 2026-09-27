@@ -1,0 +1,22 @@
+---
+- id: d8dbc446fea6514a712803194b10cb75
+  name: Security Software Discovery - Windows Defender Enumeration
+  description: 'Windows Defender Enumeration via different built-in windows native
+    tools.
+
+    when sucessfully executed, information about windows defender is displayed.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1518.001
+    name: 'Software Discovery: Security Software Discovery'
+  platforms:
+    windows:
+      psh:
+        command: Get-Service WinDefend; Get-MpComputerStatus; Get-MpThreat
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

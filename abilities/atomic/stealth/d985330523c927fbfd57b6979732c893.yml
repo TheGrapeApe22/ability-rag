@@ -1,0 +1,21 @@
+---
+- id: d985330523c927fbfd57b6979732c893
+  name: Rundll32 advpack.dll Execution
+  description: 'Test execution of a command using rundll32.exe with advpack.dll.
+
+    Reference: https://github.com/LOLBAS-Project/LOLBAS/blob/master/yml/OSLibraries/Advpack.yml
+
+    Upon execution calc.exe will be launched
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1218.011
+    name: 'Signed Binary Proxy Execution: Rundll32'
+  platforms:
+    windows:
+      cmd:
+        command: rundll32.exe advpack.dll,LaunchINFSection "80d0e0_T1218.011.inf",DefaultInstall_SingleUser,1,
+        payloads:
+        - 80d0e0_T1218.011.inf
+        cleanup: ''

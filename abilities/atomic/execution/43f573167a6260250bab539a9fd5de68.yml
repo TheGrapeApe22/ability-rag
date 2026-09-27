@@ -1,0 +1,19 @@
+---
+- id: 43f573167a6260250bab539a9fd5de68
+  name: ExecIntoContainer
+  description: "Attackers who have permissions, can run malicious commands in containers\
+    \ in the cluster using exec command (\u201Ckubectl exec\u201D). In this method,\
+    \ attackers can use legitimate images, such as an OS image (e.g., Ubuntu) as a\
+    \ backdoor container, and run their malicious code remotely by using \u201Ckubectl\
+    \ exec\u201D.\n"
+  tactic: execution
+  technique:
+    attack_id: T1609
+    name: Kubernetes Exec Into Container
+  platforms:
+    unknown:
+      sh:
+        command: kubectl create -f $PathtoAtomicsFolder/T1609/src/busybox.yaml -n
+          default; sleep 3; kubectl exec -n default busybox -- uname
+        payloads: []
+        cleanup: kubectl delete pod busybox -n default

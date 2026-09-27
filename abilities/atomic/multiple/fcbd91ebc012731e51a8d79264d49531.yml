@@ -1,0 +1,21 @@
+---
+- id: fcbd91ebc012731e51a8d79264d49531
+  name: Scheduled task Remote
+  description: 'Create a task on a remote system.
+
+    Upon successful execution, cmd.exe will create a scheduled task to spawn cmd.exe
+    at 20:10 on a remote endpoint.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1053.005
+    name: 'Scheduled Task/Job: Scheduled Task'
+  platforms:
+    windows:
+      cmd:
+        command: SCHTASKS /Create /S localhost /RU DOMAIN\user /RP At0micStrong /TN
+          "Atomic task" /TR "C:\windows\system32\cmd.exe" /SC daily /ST 20:10
+        payloads: []
+        cleanup: SCHTASKS /Delete /S localhost /U DOMAIN\user /P At0micStrong /TN
+          "Atomic task" /F >nul 2>&1

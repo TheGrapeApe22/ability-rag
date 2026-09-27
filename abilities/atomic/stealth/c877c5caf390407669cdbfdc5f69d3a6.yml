@@ -1,0 +1,16 @@
+---
+- id: c877c5caf390407669cdbfdc5f69d3a6
+  name: Regsvr32 Silent DLL Install Call DllRegisterServer
+  description: Regsvr32.exe is a command-line program used to register and unregister
+    OLE controls. Normally, an install is executed with /n to prevent calling DllRegisterServer.
+  tactic: stealth
+  technique:
+    attack_id: T1218.010
+    name: 'Signed Binary Proxy Execution: Regsvr32'
+  platforms:
+    windows:
+      cmd:
+        command: C:\Windows\system32\regsvr32.exe /s /i "bafdf3_AllTheThingsx86.dll"
+        payloads:
+        - bafdf3_AllTheThingsx86.dll
+        cleanup: ''

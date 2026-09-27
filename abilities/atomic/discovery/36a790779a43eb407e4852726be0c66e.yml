@@ -1,0 +1,24 @@
+---
+- id: 36a790779a43eb407e4852726be0c66e
+  name: Security Software Discovery - Windows Firewall Enumeration
+  description: 'Enumerates windows firewall to retrieves firewall rules from the target
+    computer.
+
+
+    when sucessfully executed, details of windows firewall is displayed.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1518.001
+    name: 'Software Discovery: Security Software Discovery'
+  platforms:
+    windows:
+      psh:
+        command: Get-NetFirewallProfile | Format-Table Name, Enabled; Get-NetFirewallSetting;
+          Get-NetFirewallRule | select DisplayName, Enabled, Description
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

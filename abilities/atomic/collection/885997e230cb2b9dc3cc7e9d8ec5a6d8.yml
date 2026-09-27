@@ -1,0 +1,24 @@
+---
+- id: 885997e230cb2b9dc3cc7e9d8ec5a6d8
+  name: Zip a Folder with PowerShell for Staging in Temp
+  description: 'Use living off the land tools to zip a file and stage it in the Windows
+    temporary folder for later exfiltration. Upon execution, Verify that a zipped
+    folder named Folder_to_zip.zip
+
+    was placed in the temp directory.
+
+    '
+  tactic: collection
+  technique:
+    attack_id: T1074.001
+    name: 'Data Staged: Local Data Staging'
+  platforms:
+    windows:
+      psh:
+        command: Compress-Archive -Path "PathToAtomicsFolder\T1074.001\bin\Folder_to_zip"
+          -DestinationPath $env:TEMP\Folder_to_zip.zip -Force
+        payloads: []
+        cleanup: Remove-Item -Path $env:TEMP\Folder_to_zip.zip -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

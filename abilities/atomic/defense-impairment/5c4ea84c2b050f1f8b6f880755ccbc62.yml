@@ -1,0 +1,20 @@
+---
+- id: 5c4ea84c2b050f1f8b6f880755ccbc62
+  name: Tamper with Windows Defender Evade Scanning -Folder
+  description: "Malware can exclude a specific path from being scanned and evading\
+    \ detection. \nUpon successul execution, the file provided should be on the list\
+    \ of excluded path. \nTo check the exclusion list using poweshell (Get-MpPreference).ExclusionPath\
+    \ \n"
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685
+    name: Disable or Modify Tools
+  platforms:
+    windows:
+      psh:
+        command: $excludedpath= "C:\Temp"; Add-MpPreference -ExclusionPath $excludedpath
+        payloads: []
+        cleanup: $excludedpath= "C:\Temp"; Remove-MpPreference -ExclusionPath $excludedpath
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

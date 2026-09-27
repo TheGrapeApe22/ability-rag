@@ -1,0 +1,22 @@
+---
+- id: 2cdcf1010a524231a26b5f3c6025eb91
+  name: Install root CA on Windows with certutil
+  description: 'Creates a root CA with certutil
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1553.004
+    name: 'Subvert Trust Controls: Install Root Certificate'
+  platforms:
+    windows:
+      psh:
+        command: certutil -addstore my $env:Temp\rootCA2.cer
+        payloads: []
+        cleanup: try {; $cert = Import-Certificate -FilePath $env:Temp\rootCA2.cer
+          -CertStoreLocation Cert:\LocalMachine\My; Get-ChildItem Cert:\LocalMachine\My\$($cert.Thumbprint)
+          -ErrorAction Ignore | Remove-Item -ErrorAction Ignore; Get-ChildItem Cert:\LocalMachine\Root\$($cert.Thumbprint)
+          -ErrorAction Ignore | Remove-Item -ErrorAction Ignore; } catch { }
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

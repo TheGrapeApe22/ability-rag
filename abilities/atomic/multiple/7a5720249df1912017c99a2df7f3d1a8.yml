@@ -1,0 +1,28 @@
+---
+- id: 7a5720249df1912017c99a2df7f3d1a8
+  name: Append to existing loginwindow for Re-Opened Applications
+  description: 'Appends an entry to launch Calculator hidden loginwindow.*.plist for
+    next login.
+
+    Note that the change may not result in the added Calculator program launching
+    on next user login.
+
+    It may depend on which version of macOS you are running on.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1547.007
+    name: 'Boot or Logon Autostart Execution: Re-opened Applications'
+  platforms:
+    darwin:
+      sh:
+        command: FILE=`find ~/Library/Preferences/ByHost/com.apple.loginwindow.*.plist
+          -type f | head -1`; if [ -z "${FILE}" ] ; then echo "No loginwindow plist
+          file found" && exit 1 ; fi; echo save backup copy to /tmp/; cp ${FILE} /tmp/t1547007_loginwindow-backup.plist;
+          echo before; plutil -p ${FILE}; echo overwriting...; /tmp/t1547007_append_exe
+          ${FILE} && echo after && plutil -p ${FILE}
+        payloads: []
+        cleanup: rm -f /tmp/t1547007_append_exe; FILE=`find ~/Library/Preferences/ByHost/com.apple.loginwindow.*.plist
+          -type f | head -1`; if [ -z "${FILE}" ] ; then    exit 0; fi; mv /tmp/t1547007_loginwindow-backup.plist
+          ${FILE}

@@ -1,0 +1,37 @@
+---
+- id: 6fb0cdea444d58a340896d606baf281a
+  name: WMI Invoke-CimMethod Start Process
+  description: 'The following Atomic will create a New-CimSession on a remote endpoint
+    and start a process usnig Invoke-CimMethod.
+
+    This is a novel way to perform lateral movement or to start a remote process.
+
+    This does require WinRM to be enabled. The account performing the run will also
+    need to be elevated.
+
+    A successful execution will stdout that the process started. On the remote endpoint,
+    wmiprvse.exe will spawn the given process.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1546
+    name: Event Triggered Execution
+  platforms:
+    windows:
+      psh:
+        command: ' $RemoteComputer = "localhost";  $PWord = ConvertTo-SecureString
+          -String "P@ssword1" -AsPlainText -Force;  $Credential = New-Object -TypeName
+          System.Management.Automation.PSCredential -ArgumentList "Administrator",
+          $Pword;  $CimSession = New-CimSession -ComputerName $RemoteComputer -Credential
+          $Credential;  $ProcessToStart = "calc.exe";  $Result = Invoke-CimMethod
+          -CimSession $CimSession -ClassName Win32_Process -MethodName Create -Arguments
+          @{CommandLine = $ProcessToStart};  if ($Result.ReturnValue -eq 0) {;      Write-Host
+          "Process started successfully with Process ID: $($Result.ProcessId)";  }
+          else {;      Write-Host "Failed to start the process. Error code: $($Result.ReturnValue)";  };  Remove-CimSession
+          -CimSession $CimSession'
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

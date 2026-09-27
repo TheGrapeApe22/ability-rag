@@ -1,0 +1,16 @@
+---
+- id: b0255b5120cbabc062d8d4510a142c3b
+  name: WMI Reconnaissance Users
+  description: "An adversary might use WMI to list all local User Accounts. \nWhen\
+    \ the test completes , there should be local user accounts information displayed\
+    \ on the command line.\n"
+  tactic: execution
+  technique:
+    attack_id: T1047
+    name: Windows Management Instrumentation
+  platforms:
+    windows:
+      cmd:
+        command: wmic useraccount get /ALL /format:csv
+        payloads: []
+        cleanup: ''

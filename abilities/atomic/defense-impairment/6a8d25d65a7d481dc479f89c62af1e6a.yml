@@ -1,0 +1,17 @@
+---
+- id: 6a8d25d65a7d481dc479f89c62af1e6a
+  name: Clear Windows Audit Policy Config
+  description: Clear the Windows audit policy using auditpol utility. This action
+    would stop certain audit events from being recorded in the security log.
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685.001
+    name: 'Disable or Modify Tools: Disable or Modify Windows Event Log'
+  platforms:
+    windows:
+      cmd:
+        command: auditpol /clear /y && auditpol /remove /allusers
+        payloads: []
+        cleanup: auditpol /set /category:"Account Logon" /success:enable /failure:enable
+          && auditpol /set /category:"Detailed Tracking" /success:enable && auditpol
+          /set /category:"Logon/Logoff" /success:enable /failure:enable

@@ -1,0 +1,17 @@
+---
+- id: 6ce67a4a6b442898b7512f4939cc3a64
+  name: Modify UseTPM Registry entry
+  description: 'Use Trusted Platform Module (TPM) for Bitlocker tool
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1112
+    name: Modify Registry
+  platforms:
+    windows:
+      cmd:
+        command: reg add "HKLM\SOFTWARE\Policies\Microsoft\FVE" /v UseTPM /t REG_DWORD
+          /d 2 /f
+        payloads: []
+        cleanup: reg delete ""HKLM\SOFTWARE\Policies\Microsoft\FVE"" /v UseTPM /f

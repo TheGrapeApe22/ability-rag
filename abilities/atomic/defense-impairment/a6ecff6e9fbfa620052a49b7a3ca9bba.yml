@@ -1,0 +1,21 @@
+---
+- id: a6ecff6e9fbfa620052a49b7a3ca9bba
+  name: chflags - Remove immutable file attribute
+  description: 'Remove''s a file''s `immutable` attribute using `chflags`.
+
+    This technique was used by the threat actor Rocke during the compromise of Linux
+    web servers.
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1222.002
+    name: 'File and Directory Permissions Modification: FreeBSD, Linux and Mac File
+      and Directory Permissions Modification'
+  platforms:
+    linux:
+      sh:
+        command: touch /tmp/T1222.002.txt; chflags simmutable /tmp/T1222.002.txt;
+          chflags nosimmutable /tmp/T1222.002.txt
+        payloads: []
+        cleanup: ''

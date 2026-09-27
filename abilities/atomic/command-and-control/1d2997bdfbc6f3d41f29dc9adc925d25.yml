@@ -1,0 +1,21 @@
+---
+- id: 1d2997bdfbc6f3d41f29dc9adc925d25
+  name: Telnet C2
+  description: 'An adversary may establish Telnet communication from a compromised
+    endpoint to a command and control (C2) server in order to carry out additional
+    attacks on objectives.
+
+    '
+  tactic: command-and-control
+  technique:
+    attack_id: T1071
+    name: Application Layer Protocol
+  platforms:
+    windows:
+      psh:
+        command: ''
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

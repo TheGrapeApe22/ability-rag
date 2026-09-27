@@ -1,0 +1,17 @@
+---
+- id: 517a9812e947710b6153fc97fd240743
+  name: Compressing data using bz2 in Python (FreeBSD/Linux)
+  description: 'Uses bz2 from Python to compress files
+
+    '
+  tactic: collection
+  technique:
+    attack_id: T1560.002
+    name: 'Archive Collected Data: Archive via Library'
+  platforms:
+    linux:
+      sh:
+        command: which_python=`which python || which python3`; $which_python -c "import
+          bz2;input_file=open('/etc/passwd','rb');content=input_file.read();input_file.close();bz2content=bz2.compress(content,compresslevel=9);output_file=open('/tmp/passwd.bz2','w+');output_file.write(str(bz2content));output_file.close();"
+        payloads: []
+        cleanup: rm /tmp/passwd.bz2

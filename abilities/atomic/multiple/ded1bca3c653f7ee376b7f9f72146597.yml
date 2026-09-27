@@ -1,0 +1,20 @@
+---
+- id: ded1bca3c653f7ee376b7f9f72146597
+  name: CreateCronjob
+  description: 'Kubernetes Job is a controller that creates one or more pods and ensures
+    that a specified number of them successfully terminate. Kubernetes Job can be
+    used to run containers that perform finite tasks for batch jobs. Kubernetes CronJob
+    is used to schedule Jobs. Attackers may use Kubernetes CronJob for scheduling
+    execution of malicious code that would run as a container in the cluster.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1053.007
+    name: Kubernetes Cronjob
+  platforms:
+    unknown:
+      sh:
+        command: kubectl create -f src/cronjob.yaml -n default
+        payloads: []
+        cleanup: kubectl delete cronjob art -n default

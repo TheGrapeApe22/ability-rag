@@ -1,0 +1,24 @@
+---
+- id: 40e77f5ee2d3d426ec1a7eb624df6f2f
+  name: Discover System Language by locale file
+  description: 'Identify System language with the by reading the locale configuration
+    file.
+
+
+    The locale configuration file contains the `LANG` environment variable which
+
+    will contain the 5 character locale that can be looked up to correlate the
+
+    language and territory.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1614.001
+    name: 'System Location Discovery: System Language Discovery'
+  platforms:
+    linux:
+      sh:
+        command: '[ -f /etc/locale.conf ] && cat /etc/locale.conf || cat /etc/default/locale'
+        payloads: []
+        cleanup: ''

@@ -1,0 +1,16 @@
+---
+- id: 4f978da47c3dfb3fbf98ecc3cc99c92b
+  name: Discover System Language by Registry Query
+  description: "Identify System language by querying the registry on an endpoint.\
+    \ \n\nUpon successful execution, result in number format can be looked up to correlate\
+    \ the language.\n"
+  tactic: discovery
+  technique:
+    attack_id: T1614.001
+    name: 'System Location Discovery: System Language Discovery'
+  platforms:
+    windows:
+      cmd:
+        command: reg query HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Nls\Language
+        payloads: []
+        cleanup: ''

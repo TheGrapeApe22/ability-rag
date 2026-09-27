@@ -1,0 +1,20 @@
+---
+- id: 352851ddcae72ca79cda4ca4124147a7
+  name: Enumerate Windows Security Log via WevtUtil
+  description: "WevtUtil is a command line tool that can be utilised by adversaries\
+    \ to gather intelligence on a targeted Windows system's logging infrastructure.\
+    \ \n\nBy executing this command, malicious actors can enumerate all available\
+    \ event logs, including both default logs such as Application, Security, and System\n\
+    as well as any custom logs created by administrators. \n\nThis information provides\
+    \ valuable insight into the system's logging mechanisms, potentially allowing\
+    \ attackers to identify gaps or weaknesses in the logging configuration"
+  tactic: discovery
+  technique:
+    attack_id: T1654
+    name: Log Enumeration
+  platforms:
+    windows:
+      cmd:
+        command: wevtutil enum-logs
+        payloads: []
+        cleanup: ''

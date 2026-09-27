@@ -1,0 +1,16 @@
+---
+- id: a451d8bc80be22b1ab53dc99663636b3
+  name: At - Schedule a job
+  description: 'This test submits a command to be run in the future by the `at` daemon.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1053.002
+    name: 'Scheduled Task/Job: At'
+  platforms:
+    linux:
+      sh:
+        command: echo "echo Hello from Atomic Red Team" | at now + 1 minute
+        payloads: []
+        cleanup: ''

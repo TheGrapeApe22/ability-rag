@@ -1,0 +1,22 @@
+---
+- id: b87adfc0c92e77845da477f44a4d1944
+  name: Data Compressed - nix - tar Folder or File
+  description: 'An adversary may compress data (e.g., sensitive documents) that is
+    collected prior to exfiltration. This test uses standard gzip compression.
+
+    '
+  tactic: collection
+  technique:
+    attack_id: T1560.001
+    name: 'Archive Collected Data: Archive via Utility'
+  platforms:
+    linux:
+      sh:
+        command: tar -cvzf $HOME/data.tar.gz $HOME/$USERNAME
+        payloads: []
+        cleanup: rm -f $HOME/data.tar.gz
+    darwin:
+      sh:
+        command: tar -cvzf $HOME/data.tar.gz $HOME/$USERNAME
+        payloads: []
+        cleanup: rm -f $HOME/data.tar.gz

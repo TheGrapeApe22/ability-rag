@@ -1,0 +1,19 @@
+---
+- id: 9712e4aabe914d8a978ceb8c787f93a7
+  name: WMI Execute Local Process
+  description: 'This test uses wmic.exe to execute a process on the local host.
+
+    When the test completes , a new process will be started locally .A notepad application
+    will be started when input is left on default.
+
+    '
+  tactic: execution
+  technique:
+    attack_id: T1047
+    name: Windows Management Instrumentation
+  platforms:
+    windows:
+      cmd:
+        command: wmic process call create notepad.exe
+        payloads: []
+        cleanup: wmic process where name='notepad.exe' delete >nul 2>&1

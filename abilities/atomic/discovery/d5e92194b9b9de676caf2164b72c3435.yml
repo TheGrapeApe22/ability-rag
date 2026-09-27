@@ -1,0 +1,23 @@
+---
+- id: d5e92194b9b9de676caf2164b72c3435
+  name: View accounts with UID 0
+  description: 'View accounts with UID 0
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1087.001
+    name: 'Account Discovery: Local Account'
+  platforms:
+    linux:
+      sh:
+        command: grep 'x:0:' /etc/passwd > /tmp/T1087.001.txt; grep '*:0:' /etc/passwd
+          >> /tmp/T1087.001.txt; cat /tmp/T1087.001.txt 2>/dev/null
+        payloads: []
+        cleanup: rm -f /tmp/T1087.001.txt 2>/dev/null
+    darwin:
+      sh:
+        command: grep 'x:0:' /etc/passwd > /tmp/T1087.001.txt; grep '*:0:' /etc/passwd
+          >> /tmp/T1087.001.txt; cat /tmp/T1087.001.txt 2>/dev/null
+        payloads: []
+        cleanup: rm -f /tmp/T1087.001.txt 2>/dev/null

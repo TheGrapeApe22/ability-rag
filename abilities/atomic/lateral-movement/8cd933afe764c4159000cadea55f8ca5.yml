@@ -1,0 +1,21 @@
+---
+- id: 8cd933afe764c4159000cadea55f8ca5
+  name: Changing RDP Port to Non Standard Port via Command_Prompt
+  description: 'Changing RDP Port to Non Standard Port via Command_Prompt
+
+    '
+  tactic: lateral-movement
+  technique:
+    attack_id: T1021.001
+    name: 'Remote Services: Remote Desktop Protocol'
+  platforms:
+    windows:
+      cmd:
+        command: reg add "HKLM\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp"
+          /v PortNumber /t REG_DWORD /d 4489 /f && netsh advfirewall firewall add
+          rule name="RDPPORTLatest-TCP-In" dir=in action=allow protocol=TCP localport=4489
+        payloads: []
+        cleanup: reg add "HKLM\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp"
+          /v PortNumber /t REG_DWORD /d 3389 /f >nul 2>&1 && netsh advfirewall firewall
+          delete rule name="RDPPORTLatest-TCP-In" >nul 2>&1 && net stop TermService
+          /y >nul 2>&1 && net start TermService >nul 2>&1

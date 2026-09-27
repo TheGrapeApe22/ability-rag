@@ -1,0 +1,16 @@
+---
+- id: 8d46a2db1a71f9c3451d55fa9bc3a2ce
+  name: Encrypt files using 7z utility - macOS
+  description: 'This test encrypts the file(s) using the 7z utility
+
+    '
+  tactic: impact
+  technique:
+    attack_id: T1486
+    name: Data Encrypted for Impact
+  platforms:
+    darwin:
+      sh:
+        command: 7z a -p ARTPass -mhe=on ARTArchive.7z ~/test.txt
+        payloads: []
+        cleanup: rm ARTArchive.7z

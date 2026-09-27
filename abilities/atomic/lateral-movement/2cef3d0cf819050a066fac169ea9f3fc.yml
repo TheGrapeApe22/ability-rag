@@ -1,0 +1,21 @@
+---
+- id: 2cef3d0cf819050a066fac169ea9f3fc
+  name: ESXi - Enable SSH via VIM-CMD
+  description: 'An adversary enables SSH on an ESXi host to maintain persistence and
+    creeate another command execution interface.
+
+    [Reference](https://lolesxi-project.github.io/LOLESXi/lolesxi/Binaries/vim-cmd/#enable%20service)
+
+    '
+  tactic: lateral-movement
+  technique:
+    attack_id: T1021.004
+    name: 'Remote Services: SSH'
+  platforms:
+    windows:
+      cmd:
+        command: echo "" | "PathToAtomicsFolder\..\ExternalPayloads\plink.exe" -batch
+          "atomic.local" -ssh -l root -pw "password" "vim-cmd hostsvc/enable_ssh"
+        payloads: []
+        cleanup: echo "" | "PathToAtomicsFolder\..\ExternalPayloads\plink.exe" -batch
+          "atomic.local" -ssh -l root -pw "password" "vim-cmd hostsvc/disable_ssh"

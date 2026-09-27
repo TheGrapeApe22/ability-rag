@@ -1,0 +1,18 @@
+---
+- id: 28f4b7b1d696470a2b6c8f87faed97ef
+  name: Check if System Integrity Protection is enabled
+  description: "The latest versions of macOS have the System Integrity Protection\
+    \ feature (SIP). If a sandbox uses a non-signed \nkernel extension for monitoring\
+    \ purposes the, SIP feature must be disabled to load this kind of kernel extension.\n\
+    Malware may check if the SIP is enabled.\nReference: https://evasions.checkpoint.com/src/MacOS/macos.html#sip\n"
+  tactic: multiple
+  technique:
+    attack_id: T1497.001
+    name: 'Virtualization/Sandbox Evasion: System Checks'
+  platforms:
+    darwin:
+      sh:
+        command: 'if [ "$(csrutil status | grep -v ''enabled'')" != "" ]; then echo
+          ''Possible Virtualization Environment detected''; fi; '
+        payloads: []
+        cleanup: ''

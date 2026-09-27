@@ -1,0 +1,17 @@
+---
+- id: 5c11aa09ab67ec1d8173e07e1d798b38
+  name: Auditd keylogger
+  description: "The linux audit tool auditd can be used to capture 32 and 64 bit command\
+    \ execution and place the command in the /var/log/audit/audit.log audit log. \n"
+  tactic: multiple
+  technique:
+    attack_id: T1056.001
+    name: 'Input Capture: Keylogging'
+  platforms:
+    linux:
+      sh:
+        command: auditctl -a always,exit -F arch=b64 -S execve -k CMDS ; auditctl
+          -a always,exit -F arch=b32 -S execve -k CMDS; whoami; ausearch -i --start
+          now
+        payloads: []
+        cleanup: systemctl restart auditd

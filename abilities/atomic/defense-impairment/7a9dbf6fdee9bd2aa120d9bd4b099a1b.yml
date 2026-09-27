@@ -1,0 +1,20 @@
+---
+- id: 7a9dbf6fdee9bd2aa120d9bd4b099a1b
+  name: GCP - Delete Activity Event Log
+  description: "GCP provides 4 types of Cloud Audit Logs: Admin Activity, Data Access,\
+    \ System Events, and Policy Denied.\nAn adversary may attempt to delete logs in\
+    \ order to hide their activity. However, Admin Activity, System Events, and Policy\
+    \ Deny events logs cannot be deleted. \n\nThis Atomic attempts to delete the Activity\
+    \ Event log. An event is generated under the method name of `google.logging.v2.LoggingServiceV2.DeleteLog`\
+    \ with a Serverity of `ERROR`.\n"
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685.002
+    name: 'Disable or Modify Tools: Disable or Modify Cloud Log'
+  platforms:
+    unknown:
+      sh:
+        command: gcloud config set project atomic-project-1; gcloud logging logs delete
+          projects/atomic-project-1/logs/cloudaudit.googleapis.com%2Factivity --quiet
+        payloads: []
+        cleanup: ''

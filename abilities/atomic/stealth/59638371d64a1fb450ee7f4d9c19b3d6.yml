@@ -1,0 +1,22 @@
+---
+- id: 59638371d64a1fb450ee7f4d9c19b3d6
+  name: Command Execution with NirCmd
+  description: 'NirCmd is used by threat actors to execute commands, which can include
+    recon and privilege escalation via running commands via the SYSTEM account
+
+    See https://www.kroll.com/en/insights/publications/cyber/black-basta-technical-analysis
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1564
+    name: Hide Artifacts
+  platforms:
+    windows:
+      psh:
+        command: cmd /c "#{nircmd_location}"
+        payloads: []
+        cleanup: cmd /c "#{nircmd_location}"
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

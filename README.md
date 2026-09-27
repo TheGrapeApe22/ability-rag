@@ -7,7 +7,9 @@ truth, and their directory layout is ignored.
 ## Setup
 
 ```bash
-uv pip install --python .venv/bin/python -r requirements.txt
+uv venv
+source .venv/bin/activate
+uv pip install -r requirements.txt
 ```
 
 ## Index
@@ -20,7 +22,9 @@ Synchronize the SQLite index with every `.yml` and `.yaml` file beneath
 ```
 
 New and changed records are indexed, and records whose YAML was deleted are
-removed. Ability IDs must be unique across the corpus.
+removed. Identical YAML records sharing an ability ID are indexed once; search
+results list every source path in `sources`. Same-ID records with different YAML
+content stop indexing with a conflict error.
 
 ## Search
 

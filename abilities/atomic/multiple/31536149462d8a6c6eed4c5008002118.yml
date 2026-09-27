@@ -1,0 +1,18 @@
+---
+- id: 31536149462d8a6c6eed4c5008002118
+  name: RDP Authentication Level Override
+  description: 'A modification registry to override RDP Authentication Level. This
+    technique was seen in DarkGate malware as part of its installation.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1112
+    name: Modify Registry
+  platforms:
+    windows:
+      cmd:
+        command: reg add "HKCU\Software\Microsoft\Terminal Server Client" /v AuthenticationLevelOverride
+          /t REG_DWORD /d 0 /f
+        payloads: []
+        cleanup: reg delete "HKCU\Software\Microsoft\Terminal Server Client" /v AuthenticationLevelOverride

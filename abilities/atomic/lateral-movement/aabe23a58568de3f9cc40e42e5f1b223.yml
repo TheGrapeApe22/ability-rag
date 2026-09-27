@@ -1,0 +1,25 @@
+---
+- id: aabe23a58568de3f9cc40e42e5f1b223
+  name: Changing RDP Port to Non Standard Port via Powershell
+  description: 'Changing RDP Port to Non Standard Port via Powershell
+
+    '
+  tactic: lateral-movement
+  technique:
+    attack_id: T1021.001
+    name: 'Remote Services: Remote Desktop Protocol'
+  platforms:
+    windows:
+      psh:
+        command: Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Terminal
+          Server\WinStations\RDP-Tcp' -name "PortNumber" -Value 4489; New-NetFirewallRule
+          -DisplayName 'RDPPORTLatest-TCP-In' -Profile 'Public' -Direction Inbound
+          -Action Allow -Protocol TCP -LocalPort 4489
+        payloads: []
+        cleanup: Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Terminal
+          Server\WinStations\RDP-Tcp' -name "PortNumber" -Value 3389; Remove-NetFirewallRule
+          -DisplayName "RDPPORTLatest-TCP-In" -ErrorAction Ignore ; Get-Service TermService
+          | Restart-Service -Force -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

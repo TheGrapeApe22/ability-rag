@@ -1,0 +1,17 @@
+---
+- id: 893469bfa0dec66c28f0e7ac87ed92b2
+  name: Chmod through c script (freebsd)
+  description: 'chmods a file using a c script
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1222.002
+    name: 'File and Directory Permissions Modification: FreeBSD, Linux and Mac File
+      and Directory Permissions Modification'
+  platforms:
+    linux:
+      sh:
+        command: /tmp/T1222002 /tmp/ T1222002
+        payloads: []
+        cleanup: ''

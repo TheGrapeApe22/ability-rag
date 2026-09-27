@@ -1,0 +1,16 @@
+---
+- id: 8a60db80ab6f4a6b1db758c95bacfafa
+  name: Edit UFW firewall ufw.conf file
+  description: "Edit the Uncomplicated Firewall (UFW) configuration file /etc/ufw/ufw.conf\
+    \ \nwhich controls if the firewall starts on boot and its logging level.\n"
+  tactic: defense-impairment
+  technique:
+    attack_id: T1686
+    name: Disable or Modify System Firewall
+  platforms:
+    linux:
+      sh:
+        command: echo "# THIS IS A COMMENT" >> /etc/ufw/ufw.conf; grep "# THIS IS
+          A COMMENT" /etc/ufw/ufw.conf
+        payloads: []
+        cleanup: sed -i 's/# THIS IS A COMMENT//g' /etc/ufw/ufw.conf; cat /etc/ufw/ufw.conf

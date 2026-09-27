@@ -1,0 +1,15 @@
+---
+- id: e7be8d0d161aba0941090789775c9721
+  name: Peripheral Device Discovery via fsutil
+  description: Performs pheripheral device discovery utilizing fsutil to list all
+    drives.
+  tactic: discovery
+  technique:
+    attack_id: T1120
+    name: Peripheral Device Discovery
+  platforms:
+    windows:
+      cmd:
+        command: fsutil fsinfo drives
+        payloads: []
+        cleanup: ''

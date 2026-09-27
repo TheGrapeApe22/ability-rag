@@ -1,0 +1,32 @@
+---
+- id: 5cf8270fb03a94b5ad786032a625b1ac
+  name: Create Systemd Service
+  description: 'This test creates a Systemd service unit file and enables it as a
+    service.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1543.002
+    name: 'Create or Modify System Process: SysV/Systemd Service'
+  platforms:
+    linux:
+      sh:
+        command: echo "[Unit]" > /etc/systemd/system/art-systemd-service.service;
+          echo "Description=Atomic Red Team Systemd Service" >> /etc/systemd/system/art-systemd-service.service;
+          echo "" >> /etc/systemd/system/art-systemd-service.service; echo "[Service]"
+          >> /etc/systemd/system/art-systemd-service.service; echo "Type=simple";
+          echo "ExecStart=/bin/touch /tmp/art-systemd-execstart-marker" >> /etc/systemd/system/art-systemd-service.service;
+          echo "ExecStartPre=/bin/touch /tmp/art-systemd-execstartpre-marker" >> /etc/systemd/system/art-systemd-service.service;
+          echo "ExecStartPost=/bin/touch /tmp/art-systemd-execstartpost-marker" >>
+          /etc/systemd/system/art-systemd-service.service; echo "ExecReload=/bin/touch
+          /tmp/art-systemd-execreload-marker" >> /etc/systemd/system/art-systemd-service.service;
+          echo "ExecStop=/bin/touch /tmp/art-systemd-execstop-marker" >> /etc/systemd/system/art-systemd-service.service;
+          echo "ExecStopPost=/bin/touch /tmp/art-systemd-execstoppost-marker" >> /etc/systemd/system/art-systemd-service.service;
+          echo "" >> /etc/systemd/system/art-systemd-service.service; echo "[Install]"
+          >> /etc/systemd/system/art-systemd-service.service; echo "WantedBy=default.target"
+          >> /etc/systemd/system/art-systemd-service.service; systemctl daemon-reload;
+          systemctl enable art-systemd-service.service; systemctl start art-systemd-service.service
+        payloads: []
+        cleanup: systemctl stop art-systemd-service.service; systemctl disable art-systemd-service.service;
+          rm -rf /etc/systemd/system/art-systemd-service.service; systemctl daemon-reload

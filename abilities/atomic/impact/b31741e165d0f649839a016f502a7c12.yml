@@ -1,0 +1,29 @@
+---
+- id: b31741e165d0f649839a016f502a7c12
+  name: Data Encrypted with GPG4Win
+  description: Gpg4win is a Windows tool (also called Kleopatra which is the preferred
+    certificate manager) that uses email and file encryption packages for symmetric
+    encryption. It is used by attackers to encrypt disks. User will need to add pass
+    phrase to encrypt file as automation is not allowed under newer versions.
+  tactic: impact
+  technique:
+    attack_id: T1486
+    name: Data Encrypted for Impact
+  platforms:
+    windows:
+      psh:
+        command: if (test-path 'C:\Program Files (x86)\GnuPG\bin\gpg.exe') { ; } else
+          {Set-Content -Path "$env:temp\test.txt" -Value "populating this file with
+          some text"; New-Item -Type Directory "PathToAtomicsFolder\..\ExternalPayloads\"
+          -ErrorAction Ignore -Force | Out-Null; invoke-webrequest "https://files.gpg4win.org/gpg4win-4.1.0.exe"
+          -outfile "PathToAtomicsFolder\..\ExternalPayloads\gpginstall.exe"; cmd /c
+          "PathToAtomicsFolder\..\ExternalPayloads\gpginstall.exe" /S};  Set-Content
+          -Path "$env:temp\test.txt" -Value "populating this file with some text";
+          cmd /c "`"C:\Program Files (x86)\GnuPG\bin\gpg.exe`" --passphrase 'SomeParaphraseBlah'
+          --batch --yes -c `"$env:temp\test.txt`""
+        payloads: []
+        cleanup: Remove-Item -Path "$env:temp\test.txt" -Force -ErrorAction SilentlyContinue;
+          Remove-Item -Path "$env:temp\test.txt.gpg" -Force -ErrorAction SilentlyContinue
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

@@ -1,0 +1,17 @@
+---
+- id: f0593d189f63ceffcfed6e6d52af241b
+  name: Export Certificate Item(s)
+  description: 'This command finds all certificate items and sends the output to local
+    file in pem format.
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1555.001
+    name: 'Credentials from Password Stores: Keychain'
+  platforms:
+    darwin:
+      sh:
+        command: security find-certificate -a -p > /tmp/certs.pem
+        payloads: []
+        cleanup: rm /tmp/certs.pem

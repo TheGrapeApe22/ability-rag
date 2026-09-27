@@ -1,0 +1,43 @@
+---
+- id: 5207d36f2752f15a59ddfc6cecf786e3
+  name: Create EC2 Instance from Launch Template
+  description: 'Creating and launching an instance using RunInstances, with a launch
+    template.
+
+    This launch template will contain all the necessary parameters for the instance.
+
+
+    Reference for the launch templates
+
+    https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/create-launch-template.html
+
+    https://docs.aws.amazon.com/cli/latest/reference/ec2/run-instances.html#examples
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1578.002
+    name: Create Cloud Instance
+  platforms:
+    unknown:
+      sh:
+        command: aws ec2 create-launch-template \;   --launch-template-name fb6145_template.json
+          \;   --version-description 1 \;   --tag-specifications 'ResourceType=launch-template,Tags=[{Key=purpose,Value=production}]'
+          \;   --launch-template-data file://template.json; aws ec2 run-instances
+          --image-id ami-12345678 --instance-type tg4.nano \;   --region us-east-1
+          --profile default
+        payloads:
+        - fb6145_template.json
+        cleanup: aws ec2 terminate-instances  --instance-ids i-1234567890abcdef0 \;   --region  us-east-1
+          --profile default
+    linux:
+      sh:
+        command: aws ec2 create-launch-template \;   --launch-template-name fb6145_template.json
+          \;   --version-description 1 \;   --tag-specifications 'ResourceType=launch-template,Tags=[{Key=purpose,Value=production}]'
+          \;   --launch-template-data file://template.json; aws ec2 run-instances
+          --image-id ami-12345678 --instance-type tg4.nano \;   --region us-east-1
+          --profile default
+        payloads:
+        - fb6145_template.json
+        cleanup: aws ec2 terminate-instances  --instance-ids i-1234567890abcdef0 \;   --region  us-east-1
+          --profile default

@@ -1,0 +1,24 @@
+---
+- id: f78a4fcf283c184f7345856deeea680f
+  name: Setting the HISTFILE environment variable (freebsd)
+  description: 'An Adversary may clear, unset or redirect the history environment
+    variable HISTFILE to prevent logging of commands to the history file after they
+    log out of the system.
+
+
+    Note: we don''t wish to log out, so we are just confirming the value of HISTFILE.
+    In this test we 1. echo HISTFILE 2. set it to /dev/null 3. confirm that HISTFILE
+    is set to /dev/null.
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1690
+    name: Prevent Command History Logging
+  platforms:
+    linux:
+      sh:
+        command: echo $HISTFILE; export HISTFILE="/dev/null"; if [ $(echo $HISTFILE)
+          == "/dev/null" ]; then echo "\$HISTFILE is /dev/null"; fi
+        payloads: []
+        cleanup: export HISTFILE=~/.sh_history

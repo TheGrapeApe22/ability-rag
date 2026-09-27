@@ -1,0 +1,21 @@
+---
+- id: 8a3763d7c08e9865d77f96d033716d1c
+  name: Search macOS Safari Cookies
+  description: 'This test uses `grep` to search a macOS Safari binaryCookies file
+    for specified values. This was used by CookieMiner malware.
+
+
+    Upon successful execution, MacOS shell will cd to `~/Libraries/Cookies` and grep
+    for `Cookies.binarycookies`.
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1555.003
+    name: 'Credentials from Password Stores: Credentials from Web Browsers'
+  platforms:
+    darwin:
+      sh:
+        command: cd ~/Library/Cookies; grep -q "coinbase" "Cookies.binarycookies"
+        payloads: []
+        cleanup: ''

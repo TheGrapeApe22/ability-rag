@@ -1,0 +1,22 @@
+---
+- id: 8bb400c4a8398ff27df5fff189aca59b
+  name: NetWire RAT Registry Key Creation
+  description: "NetWire continues to create its home key (HKCU\\SOFTWARE\\NetWire)\
+    \ as well as adding it into the auto-run group in the victim\u2019s registry.\n\
+    See how NetWire malware - https://app.any.run/tasks/41ecdbde-4997-4301-a350-0270448b4c8f/\n"
+  tactic: multiple
+  technique:
+    attack_id: T1112
+    name: Modify Registry
+  platforms:
+    windows:
+      cmd:
+        command: reg add HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v NetWire
+          /t REG_SZ  /d "C:\Users\admin\AppData\Roaming\Install\Host.exe" /f && reg
+          add HKCU\SOFTWARE\NetWire /v HostId /t REG_SZ /d HostId-kai6Ci /f && reg
+          add HKCU\SOFTWARE\NetWire /v "Install Date" /t REG_SZ /d "2021-08-30 07:17:27"
+          /f
+        payloads: []
+        cleanup: reg delete HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v
+          NetWire /f >nul 2>&1 && reg delete HKCU\SOFTWARE\NetWire /va /f >nul 2>&1
+          && reg delete HKCU\SOFTWARE\NetWire /f >nul 2>&1

@@ -1,0 +1,16 @@
+---
+- id: 552764b3178c11896543fea2c7117f87
+  name: Dylib Injection via DYLD_INSERT_LIBRARIES
+  description: 'injects a dylib that opens calculator via env variable
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1574.006
+    name: 'Hijack Execution Flow: LD_PRELOAD'
+  platforms:
+    darwin:
+      sh:
+        command: DYLD_INSERT_LIBRARIES=/tmp/T1574006MOS.dylib /Applications/Firefox.app/Contents/MacOS/firefox
+        payloads: []
+        cleanup: kill `pgrep Calculator`; kill `pgrep firefox`

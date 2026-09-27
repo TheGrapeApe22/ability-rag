@@ -1,0 +1,21 @@
+---
+- id: 3ebe95e3b0b0694fef760458e7a8fd8c
+  name: Register Portable Virtualbox
+  description: "ransomware payloads via virtual machines (VM). \n[Maze ransomware](https://threatpost.com/maze-ransomware-ragnar-locker-virtual-machine/159350/)\n"
+  tactic: stealth
+  technique:
+    attack_id: T1564.006
+    name: Run Virtual Instance
+  platforms:
+    windows:
+      cmd:
+        command: '"C:\Program Files\Oracle\VirtualBox\VBoxSVC.exe" /reregserver &&
+          regsvr32 /S "C:\Program Files\Oracle\VirtualBox\VboxC.dll" && rundll32 "C:\Program
+          Files\Oracle\VirtualBox\VBoxRT.dll,RTR3Init" && sc create VBoxDRV binpath=
+          "C:\Program Files\Oracle\VirtualBox\drivers\VboxDrv.sys" type= kernel start=
+          auto error= normal displayname= PortableVBoxDRV && sc start VBoxDRV'
+        payloads:
+        - 8af345_Virtualbox_52.msi
+        cleanup: sc stop VBoxDRV && sc delete VBoxDRV && regsvr32 /u /S "C:\Program
+          Files\Oracle\VirtualBox\VboxC.dll" && msiexec /x "8af345_Virtualbox_52.msi"
+          /qn

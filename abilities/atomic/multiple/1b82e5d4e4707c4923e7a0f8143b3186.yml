@@ -1,0 +1,22 @@
+---
+- id: 1b82e5d4e4707c4923e7a0f8143b3186
+  name: At.exe Scheduled task
+  description: 'Executes cmd.exe
+
+    Note: deprecated in Windows 8+
+
+
+    Upon successful execution, cmd.exe will spawn at.exe and create a scheduled task
+    that will spawn cmd at a specific time.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1053.002
+    name: 'Scheduled Task/Job: At'
+  platforms:
+    windows:
+      cmd:
+        command: at 13:20 /interactive cmd
+        payloads: []
+        cleanup: ''

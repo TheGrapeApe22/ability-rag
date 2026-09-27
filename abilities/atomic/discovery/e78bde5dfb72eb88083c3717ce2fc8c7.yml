@@ -1,0 +1,26 @@
+---
+- id: e78bde5dfb72eb88083c3717ce2fc8c7
+  name: Azure - Dump Subscription Data with MicroBurst
+  description: "Upon successful execution, this test will enumerate all resources\
+    \ that are contained within a valid Azure subscription. \nThe resources enumerated\
+    \ will display on screen, as well as several csv files and folders will be output\
+    \ to a specified directory, listing what resources were discovered by the script.\
+    \ \nSee https://dev.to/cheahengsoon/enumerating-subscription-information-with-microburst-35a1\n"
+  tactic: discovery
+  technique:
+    attack_id: T1526
+    name: Cloud Service Discovery
+  platforms:
+    unknown:
+      psh:
+        command: import-module "PathToAtomicsFolder\..\ExternalPayloads\Get-AzDomainInfo.ps1";
+          $Password = ConvertTo-SecureString -String "T1082Az" -AsPlainText -Force;
+          $Credential = New-Object -TypeName System.Management.Automation.PSCredential
+          -ArgumentList "None", $Password; Connect-AzAccount -Credential $Credential
+          | out-null; Get-AzDomainInfo -folder $env:temp\T1526Test1 -subscription
+          "None" -verbose
+        payloads: []
+        cleanup: remove-item $env:temp\T1526Test1 -recurse -force -erroraction silentlycontinue
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

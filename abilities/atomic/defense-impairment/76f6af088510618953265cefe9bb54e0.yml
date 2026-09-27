@@ -1,0 +1,18 @@
+---
+- id: 76f6af088510618953265cefe9bb54e0
+  name: Disable iptables
+  description: "Some Linux systems may not activate ufw, but use iptables for firewall\
+    \ rules instead. (ufw works on top of iptables.) \nAttackers cannot directly disable\
+    \ iptables, as it is not implemented as a service like ufw. But they can flush\
+    \ all iptables \nrules, which in fact \"disable\" iptables. \n"
+  tactic: defense-impairment
+  technique:
+    attack_id: T1686
+    name: Disable or Modify System Firewall
+  platforms:
+    linux:
+      sh:
+        command: 'if [ ! -x "$(command -v iptables)" ]; then : ; else sudo apt-get
+          install iptables; fi;  iptables-save > /tmp/iptables.rules; iptables -F'
+        payloads: []
+        cleanup: iptables-restore < /tmp/iptables.rules

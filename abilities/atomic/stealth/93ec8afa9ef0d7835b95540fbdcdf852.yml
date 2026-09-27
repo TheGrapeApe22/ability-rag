@@ -1,0 +1,25 @@
+---
+- id: 93ec8afa9ef0d7835b95540fbdcdf852
+  name: Delete Prefetch File
+  description: 'Delete a single prefetch file.  Deletion of prefetch files is a known
+    anti-forensic technique. To verify execution, Run `(Get-ChildItem -Path "$Env:SystemRoot\prefetch\*.pf"
+    | Measure-Object).Count`
+
+    before and after the test to verify that the number of prefetch files decreases
+    by 1.
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1070.004
+    name: 'Indicator Removal on Host: File Deletion'
+  platforms:
+    windows:
+      psh:
+        command: Remove-Item -Path (Join-Path "$Env:SystemRoot\prefetch\" (Get-ChildItem
+          -Path "$Env:SystemRoot\prefetch\*.pf" -Name)[0])
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

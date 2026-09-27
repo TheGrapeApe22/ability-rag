@@ -1,0 +1,45 @@
+---
+- id: ae8bd61cb6d10568145c87134e95c96f
+  name: Azure AD - adding user to Azure AD role
+  description: "The adversaries want to add user to some Azure AD role. Threat actor\
+    \ \nmay be interested primarily in highly privileged roles, e.g. Global Administrator,\
+    \ Application Administrator, \nPrivileged Authentication Administrator (this role\
+    \ can reset Global Administrator password!).\nBy default, the role Global Reader\
+    \ is assigned to the user principal in this test.\n\nThe account you use to run\
+    \ the PowerShell command should have Privileged Role Administrator or Global Administrator\
+    \ role in your Azure AD.\n\nDetection hint - check Activity \"Add member to role\"\
+    \ in Azure AD Audit Logs. In targer you will also see User as a type.\n"
+  tactic: multiple
+  technique:
+    attack_id: T1098
+    name: Account Manipulation
+  platforms:
+    unknown:
+      psh:
+        command: try {if (Get-InstalledModule -Name AzureAD -ErrorAction SilentlyContinue)
+          { ; } else {Install-Module -Name AzureAD -Force};  Import-Module -Name AzureAD;
+          $PWord = ConvertTo-SecureString -String "p4sswd" -AsPlainText -Force; $Credential
+          = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList
+          "jonh@contoso.com", $Pword; Connect-AzureAD -Credential $Credential; $user
+          = Get-AzureADUser -Filter "DisplayName eq 'SuperUser' or UserPrincipalName
+          eq 'SuperUser'"; if ($user -eq $null) { Write-Warning "User not found";
+          exit }; $role = Get-AzureADDirectoryRole -Filter "DisplayName eq 'Global
+          Reader'"; if ($role -eq $null) { Write-Warning "Role not found"; exit };
+          Add-AzureADDirectoryRoleMember -ObjectId $role.ObjectId -RefObjectId $user.ObjectId;
+          Write-Host "User $($user.DisplayName) was added to $($role.DisplayName)
+          role"
+        payloads: []
+        cleanup: Import-Module -Name AzureAD -ErrorAction Ignore; $PWord = ConvertTo-SecureString
+          -String "p4sswd" -AsPlainText -Force; $Credential = New-Object -TypeName
+          System.Management.Automation.PSCredential -ArgumentList "jonh@contoso.com",
+          $Pword; Connect-AzureAD -Credential $Credential -ErrorAction Ignore; $user
+          = Get-AzureADUser -Filter "DisplayName eq 'SuperUser' or UserPrincipalName
+          eq 'SuperUser'"; if ($user -eq $null) { Write-Warning "User not found";
+          exit }; $role = Get-AzureADDirectoryRole -Filter "DisplayName eq 'Global
+          Reader'"; if ($role -eq $null) { Write-Warning "Role not found"; exit };
+          Remove-AzureADDirectoryRoleMember -ObjectId $role.ObjectId -MemberId $user.ObjectId;
+          Write-Host "User $($user.DisplayName) was removed from $($role.DisplayName)
+          role"
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

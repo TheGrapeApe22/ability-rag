@@ -1,0 +1,23 @@
+---
+- id: 12ba4650b2b42fb4b58989faacc03061
+  name: chown - Change file or folder ownership and group recursively
+  description: 'Changes a file or folder''s ownership and group information recursively
+    using chown.
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1222.002
+    name: 'File and Directory Permissions Modification: FreeBSD, Linux and Mac File
+      and Directory Permissions Modification'
+  platforms:
+    darwin:
+      sh:
+        command: chown -R
+        payloads: []
+        cleanup: ''
+    linux:
+      sh:
+        command: chown -R
+        payloads: []
+        cleanup: ''

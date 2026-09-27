@@ -1,0 +1,20 @@
+---
+- id: f7e779369b3f0cff24152d7dd94eca98
+  name: Change User Password - Windows
+  description: 'Changes the user password to hinder access attempts. Seen in use by
+    LockerGoga. Upon execution, log into the user account "AtomicAdministrator" with
+
+    the password "HuHuHUHoHo283283".
+
+    '
+  tactic: impact
+  technique:
+    attack_id: T1531
+    name: Account Access Removal
+  platforms:
+    windows:
+      cmd:
+        command: net user AtomicAdministrator User2ChangePW! /add && net.exe user
+          AtomicAdministrator HuHuHUHoHo283283@dJD
+        payloads: []
+        cleanup: net.exe user AtomicAdministrator /delete >nul 2>&1

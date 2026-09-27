@@ -1,0 +1,22 @@
+---
+- id: 0e5730f670555b9dba829f3d90cbd445
+  name: Change User Password via passwd
+  description: 'This test changes the user password to hinder access to the account
+    using passwd utility.
+
+    '
+  tactic: impact
+  technique:
+    attack_id: T1531
+    name: Account Access Removal
+  platforms:
+    darwin:
+      sh:
+        command: passwd ARTUser
+        payloads: []
+        cleanup: ''
+    linux:
+      sh:
+        command: passwd ARTUser
+        payloads: []
+        cleanup: ''

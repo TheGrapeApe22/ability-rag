@@ -1,0 +1,21 @@
+---
+- id: 4af698f6162f50156ee1c718cc810ca0
+  name: Tor Proxy Usage - Debian/Ubuntu/FreeBSD
+  description: "This test is designed to launch the tor proxy service, which is what\
+    \ is utilized in the background by the Tor Browser and other applications with\
+    \ add-ons in order to provide onion routing functionality.\nUpon successful execution,\
+    \ the tor proxy service will be launched. \n"
+  tactic: command-and-control
+  technique:
+    attack_id: T1090.003
+    name: 'Proxy: Multi-hop Proxy'
+  platforms:
+    linux:
+      sh:
+        command: 'if [ -x "$(command -v tor --version)" ]; then : ; else (which apt
+          && sudo apt-get -y install tor) || (which pkg && pkg install -y tor); fi;  [
+          "$(uname)" = ''FreeBSD'' ] && sysrc tor_enable="YES" && service tor start
+          || sudo systemctl start tor'
+        payloads: []
+        cleanup: '[ "$(uname)" = ''FreeBSD'' ] && service tor stop && sysrc -x tor_enable
+          || sudo systemctl stop tor'

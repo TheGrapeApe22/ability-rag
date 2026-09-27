@@ -1,0 +1,21 @@
+---
+- id: 42649a01dd24569b2d905559ee18181c
+  name: UACME Bypass Method 56
+  description: "Executes User Account Control Bypass according to the methods listed\
+    \ below. Upon successful execution you should see event viewer load and two administrative\
+    \ command prompts.\nNote: The cleanup_command's which kill the spawned cmd and\
+    \ event viewer processes only work if run as admin.\n\nAuthor: Hashim Jawad\n\n\
+    Type:\tShell API\n\nMethod: Registry key manipulation\n\nTarget:\t\\system32\\\
+    WSReset.exe\n\nComponent:\tAttacker defined\n\nImplementation:\tucmShellRegModMethod\n\
+    \nUCM Method:\tUacMethodShellWSReset\n\nhttps://github.com/hfiref0x/UACME\n"
+  tactic: privilege-escalation
+  technique:
+    attack_id: T1548.002
+    name: 'Abuse Elevation Control Mechanism: Bypass User Account Control'
+  platforms:
+    windows:
+      cmd:
+        command: '"PathToAtomicsFolder\..\ExternalPayloads\uacme\56 Akagi64.exe"'
+        payloads: []
+        cleanup: powershell Stop-Process -Name cmd -Force -ErrorAction Ignore && powershell
+          Stop-Process -Name mmc -Force -ErrorAction Ignore

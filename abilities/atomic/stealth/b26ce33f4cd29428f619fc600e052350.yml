@@ -1,0 +1,37 @@
+---
+- id: b26ce33f4cd29428f619fc600e052350
+  name: InstallUtil HelpText method call
+  description: 'Executes the Uninstall Method. Upon execution, help information will
+    be displayed for InstallUtil.
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1218.004
+    name: 'Signed Binary Proxy Execution: InstallUtil'
+  platforms:
+    windows:
+      psh:
+        command: 'if (Test-Path "eaecbe_InstallUtilTestHarness.ps1") { ; } else {New-Item
+          -Type Directory (split-path "eaecbe_InstallUtilTestHarness.ps1") -ErrorAction
+          ignore | Out-Null; Invoke-WebRequest ''https://github.com/redcanaryco/atomic-red-team/raw/master/atomics/T1218.004/src/InstallUtilTestHarness.ps1''
+          -OutFile "eaecbe_InstallUtilTestHarness.ps1"}; . "eaecbe_InstallUtilTestHarness.ps1";
+          $InstallerAssemblyDir = "$Env:TEMP\"; $InstallerAssemblyFileName = "T1218.004.dll";
+          $InstallerAssemblyFullPath = Join-Path -Path $InstallerAssemblyDir -ChildPath
+          $InstallerAssemblyFileName; $CommandLine = "/? `"$InstallerAssemblyFullPath`"";
+          $ExpectedOutput = ''Constructor_HelpText_''; $TestArgs = @{;     OutputAssemblyDirectory
+          = $InstallerAssemblyDir;     OutputAssemblyFileName = $InstallerAssemblyFileName;     InvocationMethod
+          = ''Executable'';     CommandLine = $CommandLine; }; $ActualOutput = Invoke-BuildAndInvokeInstallUtilAssembly
+          @TestArgs; if ($ActualOutput -ne $ExpectedOutput) {;     throw @"; InstallUtil
+          HelpText property execution test failure. Installer assembly execution output
+          did not match the expected output.; Expected: $ExpectedOutput; Actual: $ActualOutput;
+          "@; }'
+        payloads:
+        - eaecbe_InstallUtilTestHarness.ps1
+        cleanup: $InstallerAssemblyDir = "$Env:TEMP\"; $InstallerAssemblyFileName
+          = "T1218.004.dll"; $InstallerAssemblyFullPath = Join-Path -Path $InstallerAssemblyDir
+          -ChildPath $InstallerAssemblyFileName; Remove-Item -Path $InstallerAssemblyFullPath
+          -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

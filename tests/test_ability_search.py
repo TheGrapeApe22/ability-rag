@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import tempfile
 import unittest
+import sqlite3
 from pathlib import Path
 
 import yaml
@@ -139,8 +140,40 @@ class AbilitySearchTests(unittest.TestCase):
             technique_id="T0000",
             technique_name="Duplicate",
         )
-        with self.assertRaisesRegex(ValueError, "Duplicate ability id"):
+        with self.assertRaisesRegex(ValueError, "Conflicting ability id"):
             load_abilities(self.abilities)
+
+    def test_identical_duplicates_collapse_and_track_all_sources(self) -> None:
+        original = self.abilities / "folders-do-not-matter" / "one.yml"
+        duplicate = self.abilities / "another-source" / "one.yml"
+        duplicate.parent.mkdir(parents=True)
+        duplicate.write_text(original.read_text(encoding="utf-8"), encoding="utf-8")
+
+        summary = self.search.index(self.abilities)
+        self.assertEqual(summary["total"], 2)
+        self.assertEqual(summary["duplicates_collapsed"], 1)
+        matches = self.search.search("phishing")
+        self.assertEqual(len(matches), 1)
+        self.assertEqual(set(matches[0]["sources"]), {original.as_posix(), duplicate.as_posix()})
+
+        duplicate.unlink()
+        summary = self.search.index(self.abilities)
+        self.assertEqual(summary["updated"], 1)
+        self.assertEqual(summary["duplicates_collapsed"], 0)
+        self.assertEqual(self.search.search("phishing")[0]["sources"], [original.as_posix()])
+
+    def test_existing_index_migrates_to_source_paths(self) -> None:
+        self.search.index(self.abilities)
+        with sqlite3.connect(self.database) as connection:
+            connection.execute("ALTER TABLE abilities DROP COLUMN source_paths")
+            connection.execute(
+                "UPDATE metadata SET value = '1' WHERE key = 'schema_version'"
+            )
+
+        summary = self.search.index(self.abilities)
+        self.assertEqual(summary["unchanged"], 2)
+        result = self.search.search("phishing")[0]
+        self.assertEqual(result["sources"], [result["source"]])
 
 
 if __name__ == "__main__":

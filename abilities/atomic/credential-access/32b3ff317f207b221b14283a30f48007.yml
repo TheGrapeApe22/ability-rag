@@ -1,0 +1,16 @@
+---
+- id: 32b3ff317f207b221b14283a30f48007
+  name: Extract Browser and System credentials with LaZagne
+  description: '[LaZagne Source](https://github.com/AlessandroZ/LaZagne)
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1552.001
+    name: 'Unsecured Credentials: Credentials In Files'
+  platforms:
+    darwin:
+      sh:
+        command: python2 laZagne.py all
+        payloads: []
+        cleanup: ''

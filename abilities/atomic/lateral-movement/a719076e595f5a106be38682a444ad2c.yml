@@ -1,0 +1,16 @@
+---
+- id: a719076e595f5a106be38682a444ad2c
+  name: Map admin share
+  description: 'Connecting To Remote Shares
+
+    '
+  tactic: lateral-movement
+  technique:
+    attack_id: T1021.002
+    name: 'Remote Services: SMB/Windows Admin Shares'
+  platforms:
+    windows:
+      cmd:
+        command: cmd.exe /c "net use \\Target\C$ P@ssw0rd1 /u:DOMAIN\Administrator"
+        payloads: []
+        cleanup: ''

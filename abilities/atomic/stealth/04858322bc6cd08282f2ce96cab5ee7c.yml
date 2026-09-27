@@ -1,0 +1,21 @@
+---
+- id: 04858322bc6cd08282f2ce96cab5ee7c
+  name: Delete a single file - Windows PowerShell
+  description: 'Delete a single file from the temporary directory using Powershell.
+    Upon execution, no output will be displayed. Use File Explorer to verify the file
+    was deleted.
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1070.004
+    name: 'Indicator Removal on Host: File Deletion'
+  platforms:
+    windows:
+      psh:
+        command: Remove-Item -path $env:TEMP\deleteme_T1551.004
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

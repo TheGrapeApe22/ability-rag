@@ -1,0 +1,17 @@
+---
+- id: b66f4c031449e5257eb8b08d186af105
+  name: System Network Connections Discovery via sockstat (Linux, FreeBSD)
+  description: 'Enumerate IPv4/IPv6 network endpoints on FreeBSD using sockstat.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1049
+    name: System Network Connections Discovery
+  platforms:
+    linux:
+      sh:
+        command: sockstat -4; sockstat -6 2>/dev/null || true; sockstat -l 2>/dev/null
+          || true
+        payloads: []
+        cleanup: ''

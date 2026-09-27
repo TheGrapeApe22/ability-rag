@@ -1,0 +1,17 @@
+---
+- id: 17be2b5f2b1dd2d7dd2eb1a63aecdeee
+  name: Logoff System - Windows
+  description: 'This test performs a Windows system logoff as seen in [dcrat backdoor
+    capabilities](https://www.mandiant.com/resources/analyzing-dark-crystal-rat-backdoor)
+
+    '
+  tactic: impact
+  technique:
+    attack_id: T1529
+    name: System Shutdown/Reboot
+  platforms:
+    windows:
+      cmd:
+        command: shutdown /l
+        payloads: []
+        cleanup: ''

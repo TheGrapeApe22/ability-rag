@@ -1,0 +1,20 @@
+---
+- id: 6efe9aca2e26bf85807bd3e22619055d
+  name: Copy and Delete Mailbox Data on Linux
+  description: 'Copies and deletes mail data on Linux
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1070.008
+    name: 'Email Collection: Mailbox Manipulation'
+  platforms:
+    linux:
+      sh:
+        command: if [ -z "$(ls -A /var/spool/mail/)" ]; then if [ -z "$(ls -A /var/spool/mail/)"
+          ]; then touch /var/spool/mail/temp; fi; fi;  mkdir -p /var/spool/mail/copy
+          && for file in /var/spool/mail/*; do if [ "$(basename "$file")" != "copy"
+          ]; then cp -R "$file" /var/spool/mail/copy/; fi; done && rm -rf /var/spool/mail/copy/*
+        payloads: []
+        cleanup: rm -rf /var/spool/mail/copy; if [ -f "$(ls -A /var/spool/mail/temp)"
+          ]; then rm /var/spool/mail/temp; fi

@@ -1,0 +1,18 @@
+---
+- id: c1bc47341136e6562c6f5c321a893374
+  name: Delete User via dscl utility
+  description: 'This test deletes the user account using the dscl utility.
+
+    '
+  tactic: impact
+  technique:
+    attack_id: T1531
+    name: Account Access Removal
+  platforms:
+    darwin:
+      sh:
+        command: dscl . -delete /Users/ARTUser
+        payloads: []
+        cleanup: dscl . -create /Users/ARTUser; dscl . -create /Users/ARTUser UserShell
+          /bin/bash; dscl . -create /Users/ARTUser UniqueID 503; dscl . -create /Users/ARTUser
+          NFSHomeDirectory /Users/ARTUser; dscl . -passwd /Users/ARTUser ARTPassword

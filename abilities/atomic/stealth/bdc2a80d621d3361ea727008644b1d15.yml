@@ -1,0 +1,26 @@
+---
+- id: bdc2a80d621d3361ea727008644b1d15
+  name: Copy and Modify Mailbox Data on Windows
+  description: 'Copies and modifies mail data on Windows
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1070.008
+    name: 'Email Collection: Mailbox Manipulation'
+  platforms:
+    windows:
+      psh:
+        command: New-Item -Path "C:\Users\$env:USERNAME\AppData\Local\Comms\Unistore\data\copy"
+          -ItemType Directory -ErrorAction Ignore; Get-ChildItem -Path "C:\Users\$env:USERNAME\AppData\Local\Comms\Unistore\data"
+          -Exclude copy | ForEach-Object { Copy-Item -Path $_.FullName -Destination
+          "C:\Users\$env:USERNAME\AppData\Local\Comms\Unistore\data\copy" -Recurse
+          -Force -ErrorAction Ignore }; Get-ChildItem -Path "C:\Users\$env:USERNAME\AppData\Local\Comms\Unistore\data\copy"
+          -File | ForEach-Object { Add-Content -Path $_.FullName -Value "Modification
+          for Atomic Red Test" -ErrorAction Ignore }
+        payloads: []
+        cleanup: Remove-Item -Path "C:\Users\$env:USERNAME\AppData\Local\Comms\Unistore\data\copy"
+          -Recurse -Force -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

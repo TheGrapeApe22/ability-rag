@@ -1,0 +1,20 @@
+---
+- id: 748c4b38c6c6cad159cfe77906bfe2e1
+  name: Launch Agent - Root Directory
+  description: 'Create a plist and execute it
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1543.001
+    name: 'Create or Modify System Process: Launch Agent'
+  platforms:
+    darwin:
+      sh:
+        command: sudo cp a42d6f_atomicredteam_T1543_001.plist /Library/LaunchAgents/com.atomicredteam.T1543.001.plist;
+          launchctl load -w /Library/LaunchAgents/com.atomicredteam.T1543.001.plist
+        payloads:
+        - a42d6f_atomicredteam_T1543_001.plist
+        cleanup: launchctl unload /Library/LaunchAgents/com.atomicredteam.T1543.001.plist;
+          sudo rm /Library/LaunchAgents/com.atomicredteam.T1543.001.plist; sudo rm
+          /tmp/T1543_001_atomicredteam.txt

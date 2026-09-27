@@ -1,0 +1,17 @@
+---
+- id: 5fdd4748922e4f839b6eaf4a4f02a0df
+  name: WMIC bypass using local XSL file
+  description: 'Executes the code specified within a XSL script using a local payload.
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1220
+    name: XSL Script Processing
+  platforms:
+    windows:
+      cmd:
+        command: wmic process list /FORMAT:"e3e9ba_wmicscript.xsl"
+        payloads:
+        - e3e9ba_wmicscript.xsl
+        cleanup: ''

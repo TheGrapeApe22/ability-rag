@@ -1,0 +1,22 @@
+---
+- id: 8fe59e288f10a486dc8b44bc872019ff
+  name: Disable Microsoft Defender Firewall via Registry
+  description: 'Disables the Microsoft Defender Firewall for the public profile via
+    registry
+
+    Caution if you access remotely the host where the test runs! Especially with the
+    cleanup command which will re-enable firewall for the current profile...
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1686
+    name: Disable or Modify System Firewall
+  platforms:
+    windows:
+      cmd:
+        command: reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\PublicProfile"
+          /v "EnableFirewall" /t REG_DWORD /d 0 /f
+        payloads: []
+        cleanup: reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\PublicProfile"
+          /v "EnableFirewall" /t REG_DWORD /d 1 /f

@@ -1,0 +1,22 @@
+---
+- id: 89efbbfa405e4aacfd8690abc4e77f2e
+  name: Rundll32 syssetup.dll Execution
+  description: 'Test execution of a command using rundll32.exe with syssetup.dll.
+    Upon execution, a window saying "installation failed" will be opened
+
+
+    Reference: https://github.com/LOLBAS-Project/LOLBAS/blob/master/yml/OSLibraries/Syssetup.yml
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1218.011
+    name: 'Signed Binary Proxy Execution: Rundll32'
+  platforms:
+    windows:
+      cmd:
+        command: rundll32.exe syssetup.dll,SetupInfObjectInstallAction DefaultInstall
+          128 "4c870d_T1218.011_DefaultInstall.inf"
+        payloads:
+        - 4c870d_T1218.011_DefaultInstall.inf
+        cleanup: ''

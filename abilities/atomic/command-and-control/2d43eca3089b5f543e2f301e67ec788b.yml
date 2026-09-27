@@ -1,0 +1,20 @@
+---
+- id: 2d43eca3089b5f543e2f301e67ec788b
+  name: Splashtop Streamer Execution
+  description: An adversary may attempt to use Splashtop Streamer to gain unattended
+    remote interactive access. Upon successful execution, Splashtop streamer will
+    be executed.
+  tactic: command-and-control
+  technique:
+    attack_id: T1219
+    name: Remote Access Software
+  platforms:
+    windows:
+      psh:
+        command: Start-Process -FilePath "C:Program Files (x86)\Splashtop\Splashtop
+          Remote\Server\#{srserver_exe}"
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

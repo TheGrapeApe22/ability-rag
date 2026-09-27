@@ -1,0 +1,19 @@
+---
+- id: 1ddf2b8ee6a56ce9f9132a168947653e
+  name: Process Discovery - get-wmiObject
+  description: "Utilize get-wmiObject PowerShell cmdlet to identify processes.\n\n\
+    Upon successful execution, powershell.exe will execute get-wmiObject to list processes.\
+    \ Output will be via stdout. \n"
+  tactic: discovery
+  technique:
+    attack_id: T1057
+    name: Process Discovery
+  platforms:
+    windows:
+      psh:
+        command: get-wmiObject -class Win32_Process
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

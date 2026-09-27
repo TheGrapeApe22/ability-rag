@@ -1,0 +1,21 @@
+---
+- id: 3b2764c4c99a4adec2c68dc264d9e6c4
+  name: Packet Capture Linux using tshark or tcpdump
+  description: 'Perform a PCAP. Wireshark will be required for tshark. TCPdump may
+    already be installed.
+
+
+    Upon successful execution, tshark or tcpdump will execute and capture 5 packets
+    on interface ens33.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1040
+    name: Network Sniffing
+  platforms:
+    linux:
+      sh:
+        command: tcpdump -c 5 -nnni ens33; tshark -c 5 -i ens33
+        payloads: []
+        cleanup: ''

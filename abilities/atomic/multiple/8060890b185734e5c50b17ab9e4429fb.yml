@@ -1,0 +1,22 @@
+---
+- id: 8060890b185734e5c50b17ab9e4429fb
+  name: At - Schedule a job via kubectl in a Pod
+  description: 'Launches a short-lived Ubuntu pod, installs the `at` utility, starts
+    the `atd` daemon,
+
+    and submits a job with `at`. The pod is deleted after execution.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1053.002
+    name: 'Scheduled Task/Job: At'
+  platforms:
+    unknown:
+      sh:
+        command: kubectl run atomic-at-schedule --image=ubuntu --restart=Never --attach
+          --rm -i -- bash -lc "apt-get update -y >/dev/null 2>&1 && apt-get install
+          -y at >/dev/null 2>&1 && (atd || /usr/sbin/atd) && echo 'echo Hello from
+          Atomic Red Team' | at now + 1 minute && at -l"
+        payloads: []
+        cleanup: ''

@@ -1,0 +1,15 @@
+---
+- id: d82ceb9939d3d920ee550187ad8235c8
+  name: PureLocker Ransom Note
+  description: "building the IOC (YOUR_FILES.txt) for the PureLocker ransomware \n\
+    https://www.bleepingcomputer.com/news/security/purelocker-ransomware-can-lock-files-on-windows-linux-and-macos/\n"
+  tactic: impact
+  technique:
+    attack_id: T1486
+    name: Data Encrypted for Impact
+  platforms:
+    windows:
+      cmd:
+        command: echo T1486 - Purelocker Ransom Note > %USERPROFILE%\Desktop\YOUR_FILES.txt
+        payloads: []
+        cleanup: del %USERPROFILE%\Desktop\YOUR_FILES.txt >nul 2>&1

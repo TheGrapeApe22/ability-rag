@@ -1,0 +1,24 @@
+---
+- id: fcc9496cb4228dd4221f3562da1b49a4
+  name: Binary packed by UPX, with modified headers (linux)
+  description: 'Copies and then runs a simple binary (just outputting "the cake is
+    a lie"), that was packed by UPX.
+
+
+    The UPX magic number (`0x55505821`, "`UPX!`") was changed to (`0x4c4f5452`, "`LOTR`").
+    This prevents the binary from being detected
+
+    by some methods, and especially UPX is not able to uncompress it any more.
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1027.002
+    name: 'Obfuscated Files or Information: Software Packing'
+  platforms:
+    linux:
+      sh:
+        command: cp cc5b6f_test_upx_header_changed /tmp/packed_bin && /tmp/packed_bin
+        payloads:
+        - cc5b6f_test_upx_header_changed
+        cleanup: rm /tmp/packed_bin

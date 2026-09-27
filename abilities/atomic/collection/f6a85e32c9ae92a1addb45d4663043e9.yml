@@ -1,0 +1,22 @@
+---
+- id: f6a85e32c9ae92a1addb45d4663043e9
+  name: Compress Data and lock with password for Exfiltration with 7zip
+  description: 'Note: This test requires 7zip installation
+
+    '
+  tactic: collection
+  technique:
+    attack_id: T1560.001
+    name: 'Archive Collected Data: Archive via Utility'
+  platforms:
+    windows:
+      cmd:
+        command: if not exist "%ProgramFiles%\7-zip\7z.exe"  ( call ) ELSE ( echo
+          Downloading 7-zip installer && bitsadmin /transfer myDownloadJob /download
+          /priority normal "https://www.7-zip.org/a/7z2301-x64.exe" %TEMP%\7zip.exe
+          && %TEMP%\7zip.exe /S ) &&   &&  mkdir $PathToAtomicsFolder\T1560.001\victim-files
+          && cd $PathToAtomicsFolder\T1560.001\victim-files && echo "This file will
+          be encrypted" > .\encrypted_file.txt && "%ProgramFiles%\7-zip\7z.exe" u
+          archive.7z *txt -pblue && dir
+        payloads: []
+        cleanup: rmdir /s /Q $PathToAtomicsFolder\T1560.001\victim-files >nul 2>&1

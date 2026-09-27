@@ -1,0 +1,19 @@
+---
+- id: e16297dffb68b5ffa5b243243233cd1c
+  name: Private Keys
+  description: 'Find private keys on the Windows file system.
+
+    File extensions include: .key, .pgp, .gpg, .ppk., .p12, .pem, pfx, .cer, .p7b,
+    .asc
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1552.004
+    name: 'Unsecured Credentials: Private Keys'
+  platforms:
+    windows:
+      cmd:
+        command: dir c:\ /b /s .key | findstr /e .key
+        payloads: []
+        cleanup: ''

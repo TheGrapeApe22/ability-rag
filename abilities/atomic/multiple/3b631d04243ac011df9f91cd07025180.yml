@@ -1,0 +1,27 @@
+---
+- id: 3b631d04243ac011df9f91cd07025180
+  name: Suspicious vbs file run from startup Folder
+  description: "vbs files can be placed in and ran from the startup folder to maintain\
+    \ persistance. Upon execution, \"T1547.001 Hello, World VBS!\" will be displayed\
+    \ twice. \nAdditionally, the new files can be viewed in the \"$env:APPDATA\\Microsoft\\\
+    Windows\\Start Menu\\Programs\\Startup\"\nfolder and will also run when the computer\
+    \ is restarted and the user logs in.\n"
+  tactic: multiple
+  technique:
+    attack_id: T1547.001
+    name: 'Boot or Logon Autostart Execution: Registry Run Keys / Startup Folder'
+  platforms:
+    windows:
+      psh:
+        command: Copy-Item "$PathToAtomicsFolder\T1547.001\src\vbsstartup.vbs" "$env:APPDATA\Microsoft\Windows\Start
+          Menu\Programs\Startup\vbsstartup.vbs"; Copy-Item "$PathToAtomicsFolder\T1547.001\src\vbsstartup.vbs"
+          "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\vbsstartup.vbs";
+          cscript.exe "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup\vbsstartup.vbs";
+          cscript.exe "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\vbsstartup.vbs"
+        payloads: []
+        cleanup: Remove-Item "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup\vbsstartup.vbs"
+          -ErrorAction Ignore; Remove-Item "C:\ProgramData\Microsoft\Windows\Start
+          Menu\Programs\StartUp\vbsstartup.vbs" -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

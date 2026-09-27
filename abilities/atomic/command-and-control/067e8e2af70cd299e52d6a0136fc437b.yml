@@ -1,0 +1,31 @@
+---
+- id: 067e8e2af70cd299e52d6a0136fc437b
+  name: VSCode tunnels (Linux/macOS)
+  description: 'Visual Studio Code Remote Tunnels can be used for exposing local development
+    environment/services/files over the internet.
+
+    This atomic will generate a dev tunnel binding it to the local service running
+    on the provided port.
+
+    Reference:
+
+    - [Microsoft Docs](https://code.visualstudio.com/docs/remote/tunnels)
+
+    - [LOT Tunnels](https://lottunnels.github.io/lottunnels/Binaries/vscode-server/)
+
+    '
+  tactic: command-and-control
+  technique:
+    attack_id: T1572
+    name: Protocol Tunneling
+  platforms:
+    linux:
+      sh:
+        command: nohup code tunnel --accept-server-license-terms
+        payloads: []
+        cleanup: pkill -9 tunnel; code tunnel unregister; code tunnel user logout
+    darwin:
+      sh:
+        command: nohup code tunnel --accept-server-license-terms
+        payloads: []
+        cleanup: pkill -9 tunnel; code tunnel unregister; code tunnel user logout

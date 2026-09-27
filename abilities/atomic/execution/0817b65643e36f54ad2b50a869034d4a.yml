@@ -1,0 +1,44 @@
+---
+- id: 0817b65643e36f54ad2b50a869034d4a
+  name: Create and Enable a Malicious systemd Service Unit
+  description: 'Creates a new systemd service unit file in /etc/systemd/system/ and
+    enables it using
+
+    systemctl enable followed by systemctl start. Adversaries commonly abuse this
+    workflow
+
+    to establish persistence or execute arbitrary commands under the context of systemd.
+
+
+    This simulates the full attacker workflow: writing the unit file, reloading the
+    systemd
+
+    daemon, enabling the service to survive reboots, and starting it immediately.
+    This is
+
+    consistent with techniques observed in ransomware precursor activity and post-exploitation
+
+    frameworks targeting Linux infrastructure.
+
+    '
+  tactic: execution
+  technique:
+    attack_id: T1569.003
+    name: 'System Services: Systemctl'
+  platforms:
+    linux:
+      sh:
+        command: echo "[Unit]" > /etc/systemd/system/atomic-test.service; echo "Description=Atomic
+          Test Service" >> /etc/systemd/system/atomic-test.service; echo "After=network.target"
+          >> /etc/systemd/system/atomic-test.service; echo "" >> /etc/systemd/system/atomic-test.service;
+          echo "[Service]" >> /etc/systemd/system/atomic-test.service; echo "ExecStart=/bin/bash
+          -c "echo atomictest > /tmp/atomic_service_output.txt"" >> /etc/systemd/system/atomic-test.service;
+          echo "Restart=on-failure" >> /etc/systemd/system/atomic-test.service; echo
+          "" >> /etc/systemd/system/atomic-test.service; echo "[Install]" >> /etc/systemd/system/atomic-test.service;
+          echo "WantedBy=multi-user.target" >> /etc/systemd/system/atomic-test.service;
+          systemctl daemon-reload; systemctl enable atomic-test.service; systemctl
+          start atomic-test.service; systemctl status atomic-test.service
+        payloads: []
+        cleanup: systemctl stop atomic-test.service 2>/dev/null || true; systemctl
+          disable atomic-test.service 2>/dev/null || true; rm -f /etc/systemd/system/atomic-test.service;
+          systemctl daemon-reload; rm -f /tmp/atomic_service_output.txt

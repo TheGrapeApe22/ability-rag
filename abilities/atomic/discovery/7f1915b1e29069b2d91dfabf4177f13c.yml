@@ -1,0 +1,18 @@
+---
+- id: 7f1915b1e29069b2d91dfabf4177f13c
+  name: List Mozilla Firefox Bookmark Database Files on macOS
+  description: 'Searches for Mozilla Firefox''s places.sqlite file (on macOS) that
+    contains bookmarks and lists any found instances to a text file.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1217
+    name: Browser Bookmark Discovery
+  platforms:
+    darwin:
+      sh:
+        command: find / -path "*/Firefox/Profiles/*/places.sqlite" -exec echo {} >>
+          /tmp/T1217_Firefox.txt \; cat /tmp/T1217_Firefox.txt 2>/dev/null
+        payloads: []
+        cleanup: rm -f /tmp/T1217_Firefox.txt 2>/dev/null

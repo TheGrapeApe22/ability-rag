@@ -1,0 +1,22 @@
+---
+- id: 9c251c2eca05c93dbe27d68c2d6a3a6f
+  name: Active Directory Create User Account (Non-elevated)
+  description: 'Use Admin Credentials to Create A Normal Account (as means of entry)
+
+    '
+  tactic: persistence
+  technique:
+    attack_id: T1136.002
+    name: 'Create Account: Domain Account'
+  platforms:
+    linux:
+      sh:
+        command: 'echo "dn: cn=Atomic User, cn=Users,dc=example,dc=test\nobjectClass:
+          person\ncn: Atomic User\nsn: User" > tempadmin.ldif; echo ldapadd -H ldap://example.test:389
+          -x -D user@example.test -w s3CurePssw0rD! -f tempadmin.ldif; ldapadd -H
+          ldap://example.test:389 -x -D user@example.test -w s3CurePssw0rD! -f tempadmin.ldif'
+        payloads: []
+        cleanup: 'echo removing Atomic User (temporary user); echo "dn: cn=Atomic
+          User,cn=Users,dc=scwxscratch,dc=dev\nchangetype: delete" > deleteuser.ldif;
+          ldapmodify -H ldap://adVM:389 -x -D user@example.test -w s3CurePssw0rD!
+          -f deleteuser.ldif; rm deleteuser.ldif; rm tempadmin.ldif'

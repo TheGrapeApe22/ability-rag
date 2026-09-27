@@ -1,0 +1,19 @@
+---
+- id: 1d084cda9ddd1d77658c954635c80c3b
+  name: MSBuild Bypass Using Inline Tasks (C#)
+  description: 'Executes the code in a project file using msbuild.exe. The default
+    C# project example file (T1127.001.csproj) will simply print "Hello From a Code
+    Fragment" and "Hello From a Class." to the screen.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1127.001
+    name: 'Trusted Developer Utilities Proxy Execution: MSBuild'
+  platforms:
+    windows:
+      cmd:
+        command: C:\Windows\Microsoft.NET\Framework\v4.0.30319\msbuild.exe "e93bc3_T1127.001.csproj"
+        payloads:
+        - e93bc3_T1127.001.csproj
+        cleanup: ''

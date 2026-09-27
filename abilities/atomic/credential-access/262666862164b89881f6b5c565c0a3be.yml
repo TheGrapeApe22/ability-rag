@@ -1,0 +1,19 @@
+---
+- id: 262666862164b89881f6b5c565c0a3be
+  name: Enumeration for PuTTY Credentials in Registry
+  description: 'Queries to enumerate for PuTTY credentials in the Registry. PuTTY
+    must be installed for this test to work. If any registry
+
+    entries are found, they will be displayed.
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1552.002
+    name: 'Unsecured Credentials: Credentials in Registry'
+  platforms:
+    windows:
+      cmd:
+        command: reg query HKCU\Software\SimonTatham\PuTTY\Sessions /t REG_SZ /s
+        payloads: []
+        cleanup: ''

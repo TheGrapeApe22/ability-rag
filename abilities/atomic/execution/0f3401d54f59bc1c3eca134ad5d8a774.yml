@@ -1,0 +1,28 @@
+---
+- id: 0f3401d54f59bc1c3eca134ad5d8a774
+  name: Run BloodHound from local disk
+  description: 'Upon execution SharpHound will be downloaded to disk, imported and
+    executed. It will set up collection methods, run and then compress and store the
+    data to the temp directory on the machine. If system is unable to contact a domain,
+    proper execution will not occur.
+
+
+    Successful execution will produce stdout message stating "SharpHound Enumeration
+    Completed". Upon completion, final output will be a *BloodHound.zip file.
+
+    '
+  tactic: execution
+  technique:
+    attack_id: T1059.001
+    name: 'Command and Scripting Interpreter: PowerShell'
+  platforms:
+    windows:
+      psh:
+        command: import-module "PathToAtomicsFolder\..\ExternalPayloads\SharpHound.ps1";
+          try { Invoke-BloodHound -OutputDirectory $env:Temp }; catch { $_; exit $_.Exception.HResult};
+          Start-Sleep 5
+        payloads: []
+        cleanup: Remove-Item $env:Temp\*BloodHound.zip -Force
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

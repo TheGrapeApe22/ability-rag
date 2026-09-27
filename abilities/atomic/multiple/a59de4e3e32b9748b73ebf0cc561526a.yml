@@ -1,0 +1,42 @@
+---
+- id: a59de4e3e32b9748b73ebf0cc561526a
+  name: ROP chain Mprotect Return Address Overwrite
+  description: "This technique performs control-flow hijacking via Targeted Stack\
+    \ Pivoting\nand Return Address Overwriting.\nIt first identifies a safe, zero-filled\
+    \ writable (rw-) memory region (a \"Zero Cave\")\nby scanning /proc/<pid>/maps\
+    \ and /proc/<pid>/mem to avoid corrupting vital process data.\nIt writes the shellcode\
+    \ into this cave and immediately follows it with a dynamically \nconstructed ROP\
+    \ chain, effectively creating a \"Fake Stack\".\nThis ROP chain is built to invoke\
+    \ mprotect (granting execution permissions) and dynamically\nadapts to modern\
+    \ glibc constraints by padding multi-pop 'rdx' gadgets with dummy values.\n\n\
+    After setting up the Fake Stack, it inspects the process stack (from the RSP register)\n\
+    to locate potential saved return addresses. Instead of writing the full ROP chain\
+    \ directly\nonto the target's stack, it overwrites these candidates with a minimal\
+    \ 16-byte \"Trampoline\"\nconsisting of a stack pivot gadget (pop rsp; ret) and\
+    \ the address of the Fake Stack.\nThe moment the CPU executes the next RET instruction,\
+    \ the stack pointer is pivoted,\nexecution is safely redirected into the ROP chain,\
+    \ and from there to the payload.\n\nCompared to a standard \"ROP chain + return\
+    \ address overwrite\" variant,\nthis pivoting technique prevents catastrophic\
+    \ stack corruption caused by overlapping \npayloads when multiple return addresses\
+    \ are clustered together. \nFurthermore, by writing into a verified Zero Cave\
+    \ instead of arbitrary writable memory, \nit guarantees that no active program\
+    \ variables are destroyed before the payload triggers.\nThis makes the injection\
+    \ highly reliable, stealthy, and capable of bypassing NX/DEP \nprotections without\
+    \ risking immediate segmentation faults.\n\nNote: this test forks a child process\
+    \ to use as the injection target.\nThis allows the test to run on systems where\
+    \ ptrace_scope=1 (default on most Linux distributions),\nwhere a process can only\
+    \ modify the memory of its own descendants.\nThis may differ from a real-world\
+    \ scenario where the attacker targets an arbitrary process,\nbut for the purpose\
+    \ of this test it preserves the detection-relevant behavior: the same syscalls\
+    \ and /proc/<pid>/mem\naccess patterns are generated regardless of the relationship\
+    \ between injector and target.\n"
+  tactic: multiple
+  technique:
+    attack_id: T1055.009
+    name: 'Process Injection: Proc Memory'
+  platforms:
+    linux:
+      sh:
+        command: PathToAtomicsFolder/T1055.009/bin/rop_mprotect_return_address_overwrite
+        payloads: []
+        cleanup: rm -f /tmp/pwned

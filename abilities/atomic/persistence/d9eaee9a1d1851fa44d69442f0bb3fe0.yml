@@ -1,0 +1,16 @@
+---
+- id: d9eaee9a1d1851fa44d69442f0bb3fe0
+  name: Create a user account on a Linux system
+  description: 'Create a user via useradd
+
+    '
+  tactic: persistence
+  technique:
+    attack_id: T1136.001
+    name: 'Create Account: Local Account'
+  platforms:
+    linux:
+      sh:
+        command: useradd -M -N -r -s /bin/bash -c evil_account evil_user
+        payloads: []
+        cleanup: userdel evil_user

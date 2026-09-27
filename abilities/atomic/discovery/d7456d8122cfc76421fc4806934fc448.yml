@@ -1,0 +1,18 @@
+---
+- id: d7456d8122cfc76421fc4806934fc448
+  name: Linux List Kernel Modules
+  description: 'Enumerate kernel modules installed 3 different ways. Upon successful
+    execution stdout will display kernel modules installed on host 2 times, followed
+    by list of modules matching ''vmw'' if present.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1082
+    name: System Information Discovery
+  platforms:
+    linux:
+      sh:
+        command: lsmod; kmod list; grep vmw /proc/modules
+        payloads: []
+        cleanup: ''

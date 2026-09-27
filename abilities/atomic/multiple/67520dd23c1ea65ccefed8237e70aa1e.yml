@@ -1,0 +1,27 @@
+---
+- id: 67520dd23c1ea65ccefed8237e70aa1e
+  name: Python Startup Hook - atomic_hook.pth (macOS)
+  description: 'Creates a Python startup hook using a .pth file inside a virtual environment
+    on macOS.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1546.018
+    name: 'Event Triggered Execution: Python Startup Hooks'
+  platforms:
+    darwin:
+      sh:
+        command: PYTHON_EXE=$(command -v; TEMPDIR=$(mktemp -d /tmp/atomic_python_hook_XX);
+          echo "$TEMPDIR" > /tmp/atomic_python_hook_path.txt; $PYTHON_EXE -m venv
+          "$TEMPDIR/env"; SITE_PACKAGES=$("$TEMPDIR/env/bin/#{python_exe}" -c "import
+          site; print(site.getsitepackages()[0])"); echo "import subprocess; subprocess.Popen(['open',
+          '-a', '#{exe_name}'])" > "$SITE_PACKAGES/atomic_hook.pth"; "$TEMPDIR/env/bin/python"
+          -c "print('Triggering Hook via atomic_hook...')"
+        payloads: []
+        cleanup: "if [ ! -f /tmp/atomic_python_hook_path.txt ] || [ ! -d $(cat /tmp/atomic_python_hook_path.txt)\
+          \ ]; then echo \"[!] Artifact missing: /tmp/atomic_python_hook_path.txt\
+          \ \u2014 [-] Please Run : Invoke-AtomicTest T1546.018\"; exit 0; fi; pkill\
+          \ \"#{exe_name}\" || true; [ -f /tmp/atomic_python_hook_path.txt ] && rm\
+          \ -rf $(cat /tmp/atomic_python_hook_path.txt) && rm -f /tmp/atomic_python_hook_path.txt;\
+          \ echo \"[+] Successful Removed atomic_hook.pth and terminated #{exe_name}\""

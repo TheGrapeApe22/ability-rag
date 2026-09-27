@@ -1,0 +1,24 @@
+---
+- id: d46a661387d0060563351848360cb3e5
+  name: Connection Proxy for macOS UI
+  description: 'Enable traffic redirection on macOS UI (not terminal).
+
+    The test will modify and enable the "Web Proxy" and "Secure Web Proxy" settings  in
+    System Preferences => Network => Advanced => Proxies for the specified network
+    interface.
+
+
+    Note that this test may conflict with pre-existing system configuration.
+
+    '
+  tactic: command-and-control
+  technique:
+    attack_id: T1090.001
+    name: 'Proxy: Internal Proxy'
+  platforms:
+    darwin:
+      sh:
+        command: networksetup -setwebproxy; networksetup -setsecurewebproxy
+        payloads: []
+        cleanup: networksetup -setwebproxystate Wi-Fi off; networksetup -setsecurewebproxystate
+          Wi-Fi off

@@ -1,0 +1,16 @@
+---
+- id: d1c75dfdeefae934f0693af8ef8c20f4
+  name: Encrypt files using 7z (FreeBSD/Linux)
+  description: 'Uses 7z to encrypt a file
+
+    '
+  tactic: impact
+  technique:
+    attack_id: T1486
+    name: Data Encrypted for Impact
+  platforms:
+    linux:
+      sh:
+        command: $which_7z a -ppasswd /tmp/passwd.zip /etc/passwd
+        payloads: []
+        cleanup: $which_7z e /tmp/passwd.zip; rm /tmp/passwd.zip

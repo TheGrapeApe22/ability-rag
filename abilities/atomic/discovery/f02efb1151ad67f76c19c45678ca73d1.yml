@@ -1,0 +1,20 @@
+---
+- id: f02efb1151ad67f76c19c45678ca73d1
+  name: Process Discovery - PC Hunter
+  description: PC Hunter is a toolkit with access to hundreds of settings including
+    kernels, kernel modules, processes, network, startup, and more. When abused, this
+    tool can allow threat actors to effectively access sensitive processes, collect
+    system information, and terminate security software.
+  tactic: discovery
+  technique:
+    attack_id: T1057
+    name: Process Discovery
+  platforms:
+    windows:
+      psh:
+        command: Start-Process -FilePath "C:\Temp\ExternalPayloads\PCHunter_free\PChunter64.exe"
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

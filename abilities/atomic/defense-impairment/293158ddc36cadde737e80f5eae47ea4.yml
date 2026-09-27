@@ -1,0 +1,17 @@
+---
+- id: 293158ddc36cadde737e80f5eae47ea4
+  name: Overwrite macOS system log via echo utility
+  description: 'This test overwrites the contents of system log file with an empty
+    string using echo utility
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685.006
+    name: 'Disable or Modify Tools: Clear Linux or Mac System Logs'
+  platforms:
+    darwin:
+      sh:
+        command: sudo echo '' > /var/log/system.log
+        payloads: []
+        cleanup: ''

@@ -1,0 +1,18 @@
+---
+- id: 8429e707230a826e7213a51acd219a51
+  name: Delete User - Windows
+  description: 'Deletes a user account to prevent access. Upon execution, run the
+    command "net user" to verify that the new "AtomicUser" account was deleted.
+
+    '
+  tactic: impact
+  technique:
+    attack_id: T1531
+    name: Account Access Removal
+  platforms:
+    windows:
+      cmd:
+        command: net user AtomicUser User2DeletePW! /add && net.exe user AtomicUser
+          /delete
+        payloads: []
+        cleanup: ''

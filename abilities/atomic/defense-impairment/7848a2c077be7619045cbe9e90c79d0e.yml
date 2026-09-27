@@ -1,0 +1,20 @@
+---
+- id: 7848a2c077be7619045cbe9e90c79d0e
+  name: Install root CA on Debian/Ubuntu
+  description: 'Creates a root CA with openssl
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1553.004
+    name: 'Subvert Trust Controls: Install Root Certificate'
+  platforms:
+    linux:
+      sh:
+        command: 'if [ -f rootCA.crt ]; then : ; else if [ ! -f rootCA.key ]; then
+          openssl genrsa -out rootCA.key 4096; fi; openssl req -x509 -new -nodes -key
+          rootCA.key -sha256 -days 365 -subj "/C=US/ST=Denial/L=Springfield/O=Dis/CN=www.example.com"
+          -out rootCA.crt; fi;  mv rootCA.crt /usr/local/share/ca-certificates; sudo
+          update-ca-certificates'
+        payloads: []
+        cleanup: ''

@@ -1,0 +1,21 @@
+---
+- id: 269e048f3b7bb4aa3f21887eda654292
+  name: Rundll32 execute command via FileProtocolHandler
+  description: 'Test execution of a command using rundll32.exe and the FileProtocolHandler
+    technique.
+
+    Upon execution, calc.exe will be launched.
+
+    This technique is documented by Levan Abesadze - https://medium.com/@Wolverineisstillalive/system-binary-proxy-execution-rundll32-bypass-method-790871e1f2b7
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1218.011
+    name: 'Signed Binary Proxy Execution: Rundll32'
+  platforms:
+    windows:
+      cmd:
+        command: rundll32.exe url.dll,FileProtocolHandler calc.exe
+        payloads: []
+        cleanup: ''

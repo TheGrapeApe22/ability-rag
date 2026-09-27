@@ -1,0 +1,21 @@
+---
+- id: 4712f45e41760276d20885bbc885a2ef
+  name: Enumerate all accounts via PowerShell (Domain)
+  description: 'Enumerate all accounts via PowerShell. Upon execution, lots of user
+    account and group information will be displayed.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1087.002
+    name: 'Account Discovery: Domain Account'
+  platforms:
+    windows:
+      psh:
+        command: net user /domain; get-localgroupmember -group Users; get-aduser -filter
+          *
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

@@ -1,0 +1,17 @@
+---
+- id: 01a25d2158c216cd645bbadf09015abf
+  name: System Time Discovery
+  description: 'Identify the system time. Upon execution, the local computer system
+    time and timezone will be displayed.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1124
+    name: System Time Discovery
+  platforms:
+    windows:
+      cmd:
+        command: net time \\localhost && w32tm /tz
+        payloads: []
+        cleanup: ''

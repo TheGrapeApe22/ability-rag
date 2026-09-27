@@ -1,0 +1,21 @@
+---
+- id: b7d7aa0e76d2f5daeec9ea7c36cbab69
+  name: ESXi - vim-cmd Used to Power Off VMs
+  description: 'Adversaries may power off VMs to facilitate the deployment of ransomware
+    payloads.
+
+    [Reference](https://lolesxi-project.github.io/LOLESXi/lolesxi/Binaries/vim-cmd/#power%20off%20vm)
+
+    '
+  tactic: impact
+  technique:
+    attack_id: T1529
+    name: System Shutdown/Reboot
+  platforms:
+    windows:
+      cmd:
+        command: echo "" | "PathToAtomicsFolder\..\ExternalPayloads\plink.exe" -batch
+          "atomic.local" -ssh -l root -pw "password" "for i in `vim-cmd vmsvc/getallvms
+          | awk 'NR>1 {print $1}'`; do vim-cmd vmsvc/power.off $i & done"
+        payloads: []
+        cleanup: ''

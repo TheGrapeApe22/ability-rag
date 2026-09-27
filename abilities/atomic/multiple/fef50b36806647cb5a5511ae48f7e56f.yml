@@ -1,0 +1,27 @@
+---
+- id: fef50b36806647cb5a5511ae48f7e56f
+  name: Suspicious jse file run from startup Folder
+  description: "jse files can be placed in and ran from the startup folder to maintain\
+    \ persistance.\nUpon execution, \"T1547.001 Hello, World JSE!\" will be displayed\
+    \ twice. \nAdditionally, the new files can be viewed in the \"$env:APPDATA\\Microsoft\\\
+    Windows\\Start Menu\\Programs\\Startup\"\nfolder and will also run when the computer\
+    \ is restarted and the user logs in.\n"
+  tactic: multiple
+  technique:
+    attack_id: T1547.001
+    name: 'Boot or Logon Autostart Execution: Registry Run Keys / Startup Folder'
+  platforms:
+    windows:
+      psh:
+        command: Copy-Item "$PathToAtomicsFolder\T1547.001\src\jsestartup.jse" "$env:APPDATA\Microsoft\Windows\Start
+          Menu\Programs\Startup\jsestartup.jse"; Copy-Item "$PathToAtomicsFolder\T1547.001\src\jsestartup.jse"
+          "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\jsestartup.jse";
+          cscript.exe /E:Jscript "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup\jsestartup.jse";
+          cscript.exe /E:Jscript "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\jsestartup.jse"
+        payloads: []
+        cleanup: Remove-Item "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup\jsestartup.jse"
+          -ErrorAction Ignore; Remove-Item "C:\ProgramData\Microsoft\Windows\Start
+          Menu\Programs\StartUp\jsestartup.jse" -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

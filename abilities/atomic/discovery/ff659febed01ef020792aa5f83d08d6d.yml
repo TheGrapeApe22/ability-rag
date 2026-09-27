@@ -1,0 +1,24 @@
+---
+- id: ff659febed01ef020792aa5f83d08d6d
+  name: Powershell enumerate domains and forests
+  description: 'Use powershell to enumerate AD information.
+
+    Requires the installation of PowerShell AD admin cmdlets via Windows RSAT or the
+    Windows Server AD DS role.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1482
+    name: Domain Trust Discovery
+  platforms:
+    windows:
+      psh:
+        command: Import-Module "PathToAtomicsFolder\..\ExternalPayloads\PowerView.ps1";
+          Get-NetDomainTrust; Get-NetForestTrust; Get-ADDomain; Get-ADGroupMember
+          Administrators -Recursive; ([System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain()).GetAllTrustRelationships()
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

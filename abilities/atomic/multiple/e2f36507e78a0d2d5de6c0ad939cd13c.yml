@@ -1,0 +1,20 @@
+---
+- id: e2f36507e78a0d2d5de6c0ad939cd13c
+  name: AWS - Create Access Key and Secret Key
+  description: 'Adversaries create their own new access and secret keys to programatically
+    interact with AWS environment, which is already compromised
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1098.001
+    name: 'Account Manipulation: Additional Cloud Credentials'
+  platforms:
+    unknown:
+      sh:
+        command: aws iam create-access-key --user-name atomicredteam > "$PathToAtomicsFolder/T1098.001/bin/aws_secret.creds";
+          cd "$PathToAtomicsFolder/T1098.001/bin/"; ./aws_secret.sh
+        payloads: []
+        cleanup: access_key=`cat "$PathToAtomicsFolder/T1098.001/bin/aws_secret.creds"
+          | jq -r '.AccessKey.AccessKeyId'`; aws iam delete-access-key --access-key-id
+          $access_key --user-name atomicredteam; rm "$PathToAtomicsFolder/T1098.001/bin/aws_secret.creds"

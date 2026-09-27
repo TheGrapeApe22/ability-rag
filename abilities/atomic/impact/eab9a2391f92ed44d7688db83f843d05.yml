@@ -1,0 +1,16 @@
+---
+- id: eab9a2391f92ed44d7688db83f843d05
+  name: Encrypt files using openssl utility - macOS
+  description: 'This test encrypts the file(s) using the openssl utility
+
+    '
+  tactic: impact
+  technique:
+    attack_id: T1486
+    name: Data Encrypted for Impact
+  platforms:
+    darwin:
+      sh:
+        command: openssl enc -pbkdf2 -in ~/test.txt -out ARTFile
+        payloads: []
+        cleanup: rm ARTFile

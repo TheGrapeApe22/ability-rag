@@ -1,0 +1,17 @@
+---
+- id: 5ceb5fd63b2cea41b66395f610aed024
+  name: Create a new Windows admin user
+  description: 'Creates a new admin user in a command prompt.
+
+    '
+  tactic: persistence
+  technique:
+    attack_id: T1136.001
+    name: 'Create Account: Local Account'
+  platforms:
+    windows:
+      cmd:
+        command: net user /add "#{username}" "#{password}" && net localgroup administrators
+          "#{username}" /add
+        payloads: []
+        cleanup: net user /del "T1136.001_Admin" >nul 2>&1

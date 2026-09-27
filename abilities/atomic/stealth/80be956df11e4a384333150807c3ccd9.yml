@@ -1,0 +1,30 @@
+---
+- id: 80be956df11e4a384333150807c3ccd9
+  name: Decode base64 Data into Script
+  description: "Creates a base64-encoded data file and decodes it into an executable\
+    \ shell script\n\nUpon successful execution, sh will execute art.sh, which is\
+    \ a base64 encoded command, that echoes `Hello from the Atomic Red Team` \nand\
+    \ uname -v\n"
+  tactic: stealth
+  technique:
+    attack_id: T1027
+    name: Obfuscated Files or Information
+  platforms:
+    darwin:
+      sh:
+        command: 'if [ -e "/tmp/encoded.dat" ]; then : ; else if [ "$(uname)" = ''FreeBSD''
+          ]; then cmd="b64encode -r -"; else cmd="base64"; fi; echo "echo Hello from
+          the Atomic Red Team && uname -v" | $cmd > /tmp/encoded.dat; fi;  if [ "$(uname)"
+          = ''FreeBSD'' ]; then cmd="b64decode -r"; else cmd="base64 -d"; fi; cat
+          /tmp/encoded.dat | $cmd > /tmp/art.sh; chmod +x /tmp/art.sh; /tmp/art.sh'
+        payloads: []
+        cleanup: rm /tmp/encoded.dat ; rm /tmp/art.sh
+    linux:
+      sh:
+        command: 'if [ -e "/tmp/encoded.dat" ]; then : ; else if [ "$(uname)" = ''FreeBSD''
+          ]; then cmd="b64encode -r -"; else cmd="base64"; fi; echo "echo Hello from
+          the Atomic Red Team && uname -v" | $cmd > /tmp/encoded.dat; fi;  if [ "$(uname)"
+          = ''FreeBSD'' ]; then cmd="b64decode -r"; else cmd="base64 -d"; fi; cat
+          /tmp/encoded.dat | $cmd > /tmp/art.sh; chmod +x /tmp/art.sh; /tmp/art.sh'
+        payloads: []
+        cleanup: rm /tmp/encoded.dat ; rm /tmp/art.sh

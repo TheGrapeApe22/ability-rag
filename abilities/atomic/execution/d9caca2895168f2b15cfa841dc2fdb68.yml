@@ -1,0 +1,30 @@
+---
+- id: d9caca2895168f2b15cfa841dc2fdb68
+  name: AWS Run Command (and Control)
+  description: 'This test simulates an adversary using the AWS Run Command service
+    to execute commands on EC2 instances.
+
+    '
+  tactic: execution
+  technique:
+    attack_id: T1651
+    name: Cloud Administration Command
+  platforms:
+    unknown:
+      psh:
+        command: Import-Module "PathToAtomicsFolder/T1651/src/T1651-1/AWSSSMAttack.ps1"
+          -Force; $access_key = ""; $secret_key = ""; $session_token = ""; $aws_profile
+          = ""; $region = "us-east-2"; Set-AWSAuthentication -AccessKey $access_key
+          -SecretKey $secret_key -SessionToken $session_token -AWSProfile $aws_profile
+          -AWSRegion $region; Invoke-Terraform -TerraformCommand init -TerraformDirectory
+          "PathToAtomicsFolder/T1651/src/T1651-1"; Invoke-Terraform -TerraformCommand
+          apply -TerraformDirectory "PathToAtomicsFolder/T1651/src/T1651-1" -TerraformVariables
+          @("profile=T1651-1", "region=$region"); Invoke-SSMAttack -AWSProfile "T1651-1"
+          -TerraformDirectory "PathToAtomicsFolder/T1651/src/T1651-1"; Invoke-Terraform
+          -TerraformCommand destroy -TerraformDirectory "PathToAtomicsFolder/T1651/src/T1651-1"
+          -TerraformVariables @("profile=T1651-1", "region=$region")
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

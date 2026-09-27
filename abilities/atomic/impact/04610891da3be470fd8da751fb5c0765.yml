@@ -1,0 +1,22 @@
+---
+- id: 04610891da3be470fd8da751fb5c0765
+  name: ESXi - Terminates VMs using pkill
+  description: 'In VMWARE ESXi, process names starting with vmx are associated with
+    running VMs. An adversary can use the pkill command to kill all processes with
+    a prefix vmx.
+
+    [Reference](https://www.crowdstrike.com/blog/hypervisor-jackpotting-ecrime-actors-increase-targeting-of-esxi-servers/)
+
+    '
+  tactic: impact
+  technique:
+    attack_id: T1529
+    name: System Shutdown/Reboot
+  platforms:
+    windows:
+      cmd:
+        command: echo "" | "PathToAtomicsFolder\..\ExternalPayloads\plink.exe" "atomic.local"
+          -ssh  -l "root" -pw "pass" -m "84dba1_esx_pkill.txt"
+        payloads:
+        - 84dba1_esx_pkill.txt
+        cleanup: ''

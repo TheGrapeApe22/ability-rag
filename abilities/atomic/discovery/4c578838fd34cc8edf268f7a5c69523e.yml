@@ -1,0 +1,23 @@
+---
+- id: 4c578838fd34cc8edf268f7a5c69523e
+  name: Remote System Discovery - adidnsdump
+  description: 'This tool enables enumeration and exporting of all DNS records in
+    the zone for recon purposes of internal networks
+
+    Python 3 and adidnsdump must be installed, use the get_prereq_command''s to meet
+    the prerequisites for this test.
+
+    Successful execution of this test will list dns zones in the terminal.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1018
+    name: Remote System Discovery
+  platforms:
+    windows:
+      cmd:
+        command: '"PathToAtomicsFolder\..\ExternalPayloads\venv_t1018\Scripts\adidnsdump"
+          -u domain\user -p password --print-zones 192.168.1.1'
+        payloads: []
+        cleanup: ''

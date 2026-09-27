@@ -1,0 +1,25 @@
+---
+- id: f071213a29669283eeb8ab07ddffdbfb
+  name: Enumerate Active Directory Groups with Get-AdGroup
+  description: 'The following Atomic test will utilize Get-AdGroup to enumerate groups
+    within Active Directory.
+
+    Upon successful execution a listing of groups will output with their paths in
+    AD.
+
+    Reference: https://docs.microsoft.com/en-us/powershell/module/activedirectory/get-adgroup?view=windowsserver2022-ps
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1069.002
+    name: 'Permission Groups Discovery: Domain Groups'
+  platforms:
+    windows:
+      psh:
+        command: Get-AdGroup -Filter *
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

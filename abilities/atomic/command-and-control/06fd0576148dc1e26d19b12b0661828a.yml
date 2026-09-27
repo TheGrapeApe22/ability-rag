@@ -1,0 +1,15 @@
+---
+- id: 06fd0576148dc1e26d19b12b0661828a
+  name: Download a file using wscript
+  description: Use wscript to run a local VisualBasic file to download a remote file
+  tactic: command-and-control
+  technique:
+    attack_id: T1105
+    name: Ingress Tool Transfer
+  platforms:
+    windows:
+      cmd:
+        command: wscript.exe "bf591b_T1105-download-file.vbs"
+        payloads:
+        - bf591b_T1105-download-file.vbs
+        cleanup: del Atomic-License.txt >nul 2>&1

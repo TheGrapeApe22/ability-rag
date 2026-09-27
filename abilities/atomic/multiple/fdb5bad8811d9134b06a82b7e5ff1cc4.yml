@@ -1,0 +1,26 @@
+---
+- id: fdb5bad8811d9134b06a82b7e5ff1cc4
+  name: Trap DEBUG - Log All Shell Commands
+  description: 'Launch bash shell with command arg to create TRAP on DEBUG.
+
+    The trap logs executed commands to /tmp/art-fish.txt, simulating persistent command
+    interception.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1546.005
+    name: 'Event Triggered Execution: Trap'
+  platforms:
+    linux:
+      sh:
+        command: trap 'echo "$BASH_COMMAND" >> /tmp/art-fish.txt' DEBUG; whoami; id;
+          hostname; cat /tmp/art-fish.txt
+        payloads: []
+        cleanup: rm -f /tmp/art-fish.txt
+    darwin:
+      sh:
+        command: trap 'echo "$BASH_COMMAND" >> /tmp/art-fish.txt' DEBUG; whoami; id;
+          hostname; cat /tmp/art-fish.txt
+        payloads: []
+        cleanup: rm -f /tmp/art-fish.txt

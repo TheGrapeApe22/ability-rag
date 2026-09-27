@@ -1,0 +1,18 @@
+---
+- id: 7c47f93997092404947207eade7fe411
+  name: Current kernel information enumeration
+  description: 'An adversary may want to enumerate the kernel information to tailor
+    their attacks for that particular kernel. The following command will enumerate
+    the kernel information.
+
+    '
+  tactic: execution
+  technique:
+    attack_id: T1059.004
+    name: 'Command and Scripting Interpreter: Bash'
+  platforms:
+    linux:
+      sh:
+        command: uname -srm
+        payloads: []
+        cleanup: ''

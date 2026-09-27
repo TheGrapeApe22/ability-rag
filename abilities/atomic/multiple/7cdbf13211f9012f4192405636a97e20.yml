@@ -1,0 +1,14 @@
+---
+- id: 7cdbf13211f9012f4192405636a97e20
+  name: Add a new/existing user to the admin group using dseditgroup utility - macOS
+  description: After execution the current/new user will be added to the Admin group
+  tactic: multiple
+  technique:
+    attack_id: T1078.003
+    name: 'Valid Accounts: Local Accounts'
+  platforms:
+    darwin:
+      sh:
+        command: dseditgroup -o edit -a art-user -t user admin
+        payloads: []
+        cleanup: dseditgroup -o edit -d art-user -t user admin

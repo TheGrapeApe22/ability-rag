@@ -1,0 +1,21 @@
+---
+- id: 8495696b0a75577de442ba54bef343c1
+  name: Automated Collection Command Prompt
+  description: 'Automated Collection. Upon execution, check the users temp directory
+    (%temp%) for the folder T1119_command_prompt_collection
+
+    to see what was collected.
+
+    '
+  tactic: collection
+  technique:
+    attack_id: T1119
+    name: Automated Collection
+  platforms:
+    windows:
+      cmd:
+        command: 'mkdir %temp%\T1119_command_prompt_collection >nul 2>&1 && dir c:
+          /b /s .docx | findstr /e .docx && for /R c:\ %f in (*.docx) do copy /Y %f
+          %temp%\T1119_command_prompt_collection'
+        payloads: []
+        cleanup: del %temp%\T1119_command_prompt_collection /F /Q >nul 2>&1

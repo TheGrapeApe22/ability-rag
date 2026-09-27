@@ -1,0 +1,23 @@
+---
+- id: 253e8dc2d0195de95eae8e9ec7e350a9
+  name: whois file download
+  description: 'Download a remote file using the whois utility
+
+    '
+  tactic: command-and-control
+  technique:
+    attack_id: T1105
+    name: Ingress Tool Transfer
+  platforms:
+    linux:
+      sh:
+        command: timeout --preserve-status 1 whois -h localhost -p 8443 "Hello from
+          Atomic Red Team test T1105" > /tmp/T1105.whois.out
+        payloads: []
+        cleanup: rm -f /tmp/T1105.whois.out
+    darwin:
+      sh:
+        command: timeout --preserve-status 1 whois -h localhost -p 8443 "Hello from
+          Atomic Red Team test T1105" > /tmp/T1105.whois.out
+        payloads: []
+        cleanup: rm -f /tmp/T1105.whois.out

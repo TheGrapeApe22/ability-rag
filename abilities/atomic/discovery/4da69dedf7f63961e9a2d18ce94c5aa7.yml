@@ -1,0 +1,18 @@
+---
+- id: 4da69dedf7f63961e9a2d18ce94c5aa7
+  name: List Google Chromium Bookmark JSON Files on FreeBSD
+  description: 'Searches for Google Chromium''s Bookmark file (on FreeBSD) that contains
+    bookmarks in JSON format and lists any found instances to a text file.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1217
+    name: Browser Bookmark Discovery
+  platforms:
+    linux:
+      sh:
+        command: find / -path "*/.config/chromium/*/Bookmarks" -exec echo {} >> /tmp/T1217-Chrome.txt
+          \; cat /tmp/T1217-Chrome.txt 2>/dev/null
+        payloads: []
+        cleanup: rm -f /tmp/T1217-Chrome.txt 2>/dev/null

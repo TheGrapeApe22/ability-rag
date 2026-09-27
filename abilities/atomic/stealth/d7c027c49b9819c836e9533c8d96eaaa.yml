@@ -1,0 +1,16 @@
+---
+- id: d7c027c49b9819c836e9533c8d96eaaa
+  name: Remove Network Share
+  description: 'Removes a Network Share utilizing the command_prompt
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1070.005
+    name: 'Indicator Removal on Host: Network Share Connection Removal'
+  platforms:
+    windows:
+      cmd:
+        command: net share \\test\share /delete
+        payloads: []
+        cleanup: ''

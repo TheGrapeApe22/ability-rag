@@ -1,0 +1,17 @@
+---
+- id: 96e01493554a30a7ce2d128f9d5b3a41
+  name: Wmic Group Discovery
+  description: 'Utilizing wmic.exe to enumerate groups on the local system. Upon execution,
+    information will be displayed of local groups on system.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1069.001
+    name: 'Permission Groups Discovery: Local Groups'
+  platforms:
+    windows:
+      cmd:
+        command: wmic group get name
+        payloads: []
+        cleanup: ''

@@ -1,0 +1,16 @@
+---
+- id: bd2a23bed5ba963e4e2aba03c6e002b6
+  name: Find Kernel Extensions (macOS)
+  description: 'Searches for kernel extension (kext) files on a macOS system.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1652
+    name: Device Driver Discovery
+  platforms:
+    darwin:
+      sh:
+        command: kextfind
+        payloads: []
+        cleanup: ''

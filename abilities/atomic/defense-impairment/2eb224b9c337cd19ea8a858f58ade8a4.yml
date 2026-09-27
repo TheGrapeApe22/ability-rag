@@ -1,0 +1,18 @@
+---
+- id: 2eb224b9c337cd19ea8a858f58ade8a4
+  name: Logging Configuration Changes on FreeBSD Host
+  description: 'Emulates modification of syslog configuration.
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685
+    name: Disable or Modify Tools
+  platforms:
+    linux:
+      sh:
+        command: if [ -f "/etc/syslog.conf" ]; then echo '#art_test_1562_006_2' >>
+          /etc/syslog.conf; fi
+        payloads: []
+        cleanup: if [ -f "/etc/syslog.conf" ]; then sed -i "" '/#art_test_1562_006_2/d'
+          /etc/syslog.conf; fi

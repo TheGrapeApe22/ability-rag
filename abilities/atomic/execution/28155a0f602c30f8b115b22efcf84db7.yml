@@ -1,0 +1,20 @@
+---
+- id: 28155a0f602c30f8b115b22efcf84db7
+  name: Python pty module and spawn function used to spawn sh or bash
+  description: 'Uses the Python spawn function to spawn a sh shell followed by a bash
+    shell. Per Volexity, this technique was observed in exploitation of Atlassian
+    Confluence [CVE-2022-26134]. Reference: https://www.volexity.com/blog/2022/06/02/zero-day-exploitation-of-atlassian-confluence
+
+    '
+  tactic: execution
+  technique:
+    attack_id: T1059.006
+    name: 'Command and Scripting Interpreter: Python'
+  platforms:
+    linux:
+      sh:
+        command: which_python=$(which python || which python3 || which python3.9 ||
+          which python2); $which_python -c "import pty;pty.spawn('/bin/sh')"; exit;
+          $which_python -c "import pty;pty.spawn('/bin/bash')"; exit
+        payloads: []
+        cleanup: ''

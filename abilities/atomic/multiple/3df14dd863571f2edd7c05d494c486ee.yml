@@ -1,0 +1,20 @@
+---
+- id: 3df14dd863571f2edd7c05d494c486ee
+  name: Driver Installation Using pnputil.exe
+  description: 'pnputil.exe is a native command-line utility in Windows to install
+    drivers, this can be abused by to install malicious drivers. Ref: https://lolbas-project.github.io/lolbas/Binaries/Pnputil/
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1547
+    name: Boot or Logon Autostart Execution
+  platforms:
+    windows:
+      psh:
+        command: pnputil.exe -i -a C:\Windows\INF\acpipmi.inf
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

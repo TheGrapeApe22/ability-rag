@@ -1,0 +1,45 @@
+---
+- id: 90f4c3264bf75ef14a4f18b2821d663a
+  name: Remote Process Injection with Go using CreateRemoteThread WinAPI (Natively)
+  description: 'Leverages the Windows CreateRemoteThread function from Kernel32.dll
+    to execute shellcode in a remote process.
+
+
+    This program loads the DLLs and gets a handle to the used procedures itself instead
+    of using the windows package directly.
+
+
+    1. Get a handle to the target process
+
+    2. Allocate memory for the shellcode with VirtualAllocEx setting the page permissions
+    to Read/Write
+
+    3. Use the WriteProcessMemory to copy the shellcode to the allocated memory space
+    in the remote process
+
+    4. Change the memory page permissions to Execute/Read with VirtualProtectEx
+
+    5. Execute the entrypoint of the shellcode in the remote process with CreateRemoteThread
+
+    6. Close the handle to the remote process
+
+
+    - PoC Credit: (https://github.com/Ne0nd0g/go-shellcode#createremotethreadnative)
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1055
+    name: Process Injection
+  platforms:
+    windows:
+      psh:
+        command: $process = Start-Process C:\Windows\System32\werfault.exe -passthru;
+          ba15e3_CreateRemoteThreadNative.exe -pid $process.Id -debug
+        payloads:
+        - ba15e3_CreateRemoteThreadNative.exe
+        cleanup: Stop-Process -Name CalculatorApp -ErrorAction SilentlyContinue; Stop-Process
+          -Name werfault -ErrorAction SilentlyContinue
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

@@ -1,0 +1,22 @@
+---
+- id: 2e136b3814e4eb292c9234b5830833e1
+  name: Make and modify capabilities of a binary
+  description: 'Make and modify [capabilities](https://man7.org/linux/man-pages/man7/capabilities.7.html)
+    of a C source code file.
+
+    The binary doesn''t have to modify the UID, but the binary is given the capability
+    to arbitrarily modify it at any time with `setuid(0)`.
+
+    Without being owned by root, the binary can set the UID to 0.
+
+    '
+  tactic: privilege-escalation
+  technique:
+    attack_id: T1548.001
+    name: 'Abuse Elevation Control Mechanism: Setuid and Setgid'
+  platforms:
+    linux:
+      sh:
+        command: cp; make /tmp/cap; sudo setcap cap_setuid=ep /tmp/cap; /tmp/cap
+        payloads: []
+        cleanup: rm /tmp/cap; rm /tmp/cap.c

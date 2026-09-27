@@ -1,0 +1,18 @@
+---
+- id: 32e710214d470b283654765d034c1efe
+  name: Delete log files via cat utility by appending /dev/null or /dev/zero (freebsd)
+  description: 'The first sub-test truncates the log file to zero bytes via /dev/null
+    and the second sub-test fills the log file with null bytes(zeroes) via /dev/zero,
+    using cat utility
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685.006
+    name: 'Disable or Modify Tools: Clear Linux or Mac System Logs'
+  platforms:
+    linux:
+      sh:
+        command: cat /dev/null > /var/log/messages; cat /dev/zero > /var/log/messages
+        payloads: []
+        cleanup: ''

@@ -1,0 +1,20 @@
+---
+- id: b6fa88a7247030de0b1a553ac811a619
+  name: Discover System Time Zone via Registry
+  description: 'Identify the Operating System Time Zone via registry with the reg.exe
+    command.
+
+    Upon execution, the system Time Zone will be shown.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1124
+    name: System Time Discovery
+  platforms:
+    windows:
+      cmd:
+        command: reg query "HKLM\SYSTEM\CurrentControlSet\Control\TimeZoneInformation"
+          /v TimeZoneKeyName
+        payloads: []
+        cleanup: ''

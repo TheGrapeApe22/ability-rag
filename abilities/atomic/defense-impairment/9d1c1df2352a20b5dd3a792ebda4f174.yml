@@ -1,0 +1,16 @@
+---
+- id: 9d1c1df2352a20b5dd3a792ebda4f174
+  name: Delete system log files via unlink utility
+  description: 'This test deletes the system log file using unlink utility
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685.006
+    name: 'Disable or Modify Tools: Clear Linux or Mac System Logs'
+  platforms:
+    darwin:
+      sh:
+        command: sudo unlink /var/log/system.log
+        payloads: []
+        cleanup: ''

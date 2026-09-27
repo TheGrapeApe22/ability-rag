@@ -1,0 +1,22 @@
+---
+- id: ce4358e17ec1f1e35917feb160607158
+  name: File Masquerading with Zero-Width Space
+  description: "Creates a file named 'secret.txt' but inserts a Zero-Width Space (U+200B)\
+    \ before the extension. \nThis emulates how adversaries hide malicious files in\
+    \ plain sight, as they appear identical to legitimate files in File Explorer.\n"
+  tactic: stealth
+  technique:
+    attack_id: T1027.018
+    name: 'Obfuscated Files or Information: Invisible Unicode'
+  platforms:
+    windows:
+      psh:
+        command: '$fileName = "secret" + [char]0x200B + ".txt"; New-Item -Path "$env:TEMP\$fileName"
+          -ItemType "file" -Value "Hidden Unicode Content" -Force; Write-Host "Created
+          file: $env:TEMP\$fileName"'
+        payloads: []
+        cleanup: $fileName = "secret" + [char]0x200B + ".txt"; Remove-Item -Path "$env:TEMP\$fileName"
+          -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

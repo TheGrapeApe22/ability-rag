@@ -1,0 +1,16 @@
+---
+- id: af30d8506a8aba7a022b687261d22541
+  name: Access /etc/shadow (Local)
+  description: '/etc/shadow file is accessed in Linux environments
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1003.008
+    name: 'OS Credential Dumping: /etc/passwd, /etc/master.passwd and /etc/shadow'
+  platforms:
+    linux:
+      sh:
+        command: sudo cat /etc/shadow > /tmp/T1003.008.txt; cat /tmp/T1003.008.txt
+        payloads: []
+        cleanup: rm -f /tmp/T1003.008.txt

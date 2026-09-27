@@ -1,0 +1,17 @@
+---
+- id: adb7ea6d32d38c982ed4e8c0f4f261f5
+  name: LaZagne - Credentials from Browser
+  description: "The following Atomic test utilizes [LaZagne](https://github.com/AlessandroZ/LaZagne)\
+    \ to extract passwords from browsers on the Windows operating system.\nLaZagne\
+    \ is an open source application used to retrieve passwords stored on a local computer.\
+    \ \n"
+  tactic: credential-access
+  technique:
+    attack_id: T1555.003
+    name: 'Credentials from Password Stores: Credentials from Web Browsers'
+  platforms:
+    windows:
+      cmd:
+        command: '"PathToAtomicsFolder\T1555.003\bin\LaZagne.exe" browsers'
+        payloads: []
+        cleanup: ''

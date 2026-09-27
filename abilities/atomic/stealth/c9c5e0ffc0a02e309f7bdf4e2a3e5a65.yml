@@ -1,0 +1,22 @@
+---
+- id: c9c5e0ffc0a02e309f7bdf4e2a3e5a65
+  name: Clear history of a bunch of shells
+  description: 'Clears the history of a bunch of different shell types by setting
+    the history size to zero
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1070.003
+    name: 'Indicator Removal on Host: Clear Command History'
+  platforms:
+    linux:
+      sh:
+        command: unset HISTFILE; export HISTFILESIZE=0; history -c
+        payloads: []
+        cleanup: ''
+    darwin:
+      sh:
+        command: unset HISTFILE; export HISTFILESIZE=0; history -c
+        payloads: []
+        cleanup: ''

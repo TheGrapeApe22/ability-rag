@@ -1,0 +1,20 @@
+---
+- id: 20277ce46ffe7d08083f8b5ca524b317
+  name: Create Windows Hidden File with Attrib
+  description: 'Creates a file and marks it as hidden using the attrib.exe utility.Upon
+    execution, open File Epxplorer and enable View > Hidden Items. Then, open Properties
+    > Details on the file
+
+    and observe that the Attributes are "SH" for System and Hidden.
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1564.001
+    name: 'Hide Artifacts: Hidden Files and Directories'
+  platforms:
+    windows:
+      cmd:
+        command: attrib.exe +h %temp%\T1564.001.txt
+        payloads: []
+        cleanup: del /A:H %temp%\T1564.001.txt >nul 2>&1

@@ -1,0 +1,16 @@
+---
+- id: ae6002b8a17487caec6a5101ea9ce75e
+  name: AWS - EC2 Security Group Enumeration
+  description: Simulate an attacker's action to enumerate EC2 Security Groups in a
+    compromised AWS environment.
+  tactic: discovery
+  technique:
+    attack_id: T1580
+    name: Cloud Infrastructure Discovery
+  platforms:
+    unknown:
+      cmd:
+        command: 'aws ec2 describe-security-groups --profile #{aws_profile} --output
+          #{output_format}'
+        payloads: []
+        cleanup: ''

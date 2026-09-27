@@ -1,0 +1,15 @@
+---
+- id: 04d796d18b9f4fb0f28f6ca819c28379
+  name: Code Signing Policy Modification
+  description: Allows adversaries to subvert trust controls by modifying the code
+    signing policy, enabling the execution of unsigned drivers.
+  tactic: defense-impairment
+  technique:
+    attack_id: T1553.006
+    name: 'Subvert Trust Controls: Code Signing Policy Modification'
+  platforms:
+    windows:
+      cmd:
+        command: bcdedit /set testsigning on
+        payloads: []
+        cleanup: bcdedit /set testsigning off

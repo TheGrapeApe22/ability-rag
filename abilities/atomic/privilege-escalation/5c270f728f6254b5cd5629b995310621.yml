@@ -1,0 +1,21 @@
+---
+- id: 5c270f728f6254b5cd5629b995310621
+  name: UACME Bypass Method 31
+  description: "Executes User Account Control Bypass according to the methods listed\
+    \ below. Upon successful execution you should see event viewer load and two administrative\
+    \ command prompts.\nNote: The cleanup_command's which kill the spawned cmd and\
+    \ event viewer processes only work if run as admin.\n\nAuthor: Enigma0x3\n\nType:\t\
+    Shell API\n\nMethod: Registry key manipulation\n\nTarget:\t\\system32\\sdclt.exe\n\
+    \nComponent: Attacker defined\n\nImplementation:\tucmSdcltIsolatedCommandMethod\n\
+    \nUCM Method:\tUacMethodShellSdclt\n\nhttps://github.com/hfiref0x/UACME\n"
+  tactic: privilege-escalation
+  technique:
+    attack_id: T1548.002
+    name: 'Abuse Elevation Control Mechanism: Bypass User Account Control'
+  platforms:
+    windows:
+      cmd:
+        command: '"PathToAtomicsFolder\..\ExternalPayloads\uacme\31 Akagi64.exe"'
+        payloads: []
+        cleanup: powershell Stop-Process -Name cmd -Force -ErrorAction Ignore && powershell
+          Stop-Process -Name mmc -Force -ErrorAction Ignore

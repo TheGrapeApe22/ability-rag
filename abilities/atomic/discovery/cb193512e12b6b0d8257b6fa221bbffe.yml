@@ -1,0 +1,17 @@
+---
+- id: cb193512e12b6b0d8257b6fa221bbffe
+  name: Network Share Discovery - FreeBSD
+  description: 'Network Share Discovery using smbstatus
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1135
+    name: Network Share Discovery
+  platforms:
+    linux:
+      sh:
+        command: 'if (pkg info -x samba &>/dev/null) > /dev/null; then : ; else (which
+          pkg && pkg install -y samba413); fi;  smbstatus --shares'
+        payloads: []
+        cleanup: ''

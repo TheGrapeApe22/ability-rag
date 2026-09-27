@@ -1,0 +1,24 @@
+---
+- id: 2f40b691daf039fa5fc9eb5f99db0c98
+  name: Find Azure credentials
+  description: 'Find local Azure credentials from file, defaults to using / as the
+    look path.
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1552.001
+    name: 'Unsecured Credentials: Credentials In Files'
+  platforms:
+    darwin:
+      sh:
+        command: find //.azure -name "msal_token_cache.json" -o -name "accessTokens.json"
+          -type f 2>/dev/null
+        payloads: []
+        cleanup: ''
+    linux:
+      sh:
+        command: find //.azure -name "msal_token_cache.json" -o -name "accessTokens.json"
+          -type f 2>/dev/null
+        payloads: []
+        cleanup: ''

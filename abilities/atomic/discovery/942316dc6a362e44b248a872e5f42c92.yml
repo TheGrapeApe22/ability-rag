@@ -1,0 +1,23 @@
+---
+- id: 942316dc6a362e44b248a872e5f42c92
+  name: System Owner/User Discovery
+  description: "Identify System owner or users on an endpoint.\n\nUpon successful\
+    \ execution, cmd.exe will spawn multiple commands against a target host to identify\
+    \ usernames. Output will be via stdout. \nAdditionally, two files will be written\
+    \ to disk - computers.txt and usernames.txt.\n"
+  tactic: discovery
+  technique:
+    attack_id: T1033
+    name: System Owner/User Discovery
+  platforms:
+    windows:
+      cmd:
+        command: cmd.exe /C whoami && wmic useraccount get /ALL && quser /SERVER:"#{computer_name}"
+          && quser && qwinsta.exe /server:#{computer_name} && qwinsta.exe && for /F
+          "tokens=1,2" %i in ('qwinsta /server:#{computer_name} ^| findstr "Active
+          Disc"') do @echo %i | find /v "#" | find /v "console" || echo %j > computers.txt
+          && @FOR /F %n in (computers.txt) DO @FOR /F "tokens=1,2" %i in ('qwinsta
+          /server:%n ^| findstr "Active Disc"') do @echo %i | find /v "#" | find /v
+          "console" || echo %j > usernames.txt
+        payloads: []
+        cleanup: ''

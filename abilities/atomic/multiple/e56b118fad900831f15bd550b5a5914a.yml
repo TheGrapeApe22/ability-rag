@@ -1,0 +1,21 @@
+---
+- id: e56b118fad900831f15bd550b5a5914a
+  name: Disable Windows Error Reporting Settings
+  description: "Modify the registry of the currently logged in user using reg.exe\
+    \ via cmd console to disable windows error reporting settings. This Windows feature\
+    \ allow the use to report bug, errors, failure or problems \nencounter in specific\
+    \ application or process.\nSee how azorult malware abuses this technique- https://app.any.run/tasks/a6f2ffe2-e6e2-4396-ae2e-04ea0143f2d8/\n"
+  tactic: multiple
+  technique:
+    attack_id: T1112
+    name: Modify Registry
+  platforms:
+    windows:
+      cmd:
+        command: reg add HKLM64\SOFTWARE\Policies\Microsoft\Windows Defender\Reporting
+          /v DisableEnhancedNotifications /t REG_DWORD /d 1 /f && reg add HKLM\SOFTWARE\Policies\Microsoft\Windows
+          Defender\Reporting /v DisableEnhancedNotifications /t REG_DWORD /d 1 /f
+        payloads: []
+        cleanup: reg delete HKLM64\SOFTWARE\Policies\Microsoft\Windows Defender\Reporting
+          /v DisableEnhancedNotifications /f >nul 2>&1 && reg delete HKLM\SOFTWARE\Policies\Microsoft\Windows
+          Defender\Reporting /v DisableEnhancedNotifications /f >nul 2>&1

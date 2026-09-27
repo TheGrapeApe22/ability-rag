@@ -1,0 +1,28 @@
+---
+- id: 62b88a98e32cac28c744db4fcad3a0dd
+  name: Port Scan
+  description: 'Scan ports to check for listening ports.
+
+
+    Upon successful execution, sh will perform a network connection against a single
+    host (192.168.1.1) and determine what ports are open in the range of 1-65535.
+    Results will be via stdout.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1046
+    name: Network Service Discovery
+  platforms:
+    linux:
+      sh:
+        command: for port in {1..65535}; do (2>/dev/null echo >/dev/tcp/192.168.1.1/$port)
+          && echo port $port is open ; done
+        payloads: []
+        cleanup: ''
+    darwin:
+      sh:
+        command: for port in {1..65535}; do (2>/dev/null echo >/dev/tcp/192.168.1.1/$port)
+          && echo port $port is open ; done
+        payloads: []
+        cleanup: ''

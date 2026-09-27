@@ -1,0 +1,18 @@
+---
+- id: 9399ad5b8b179e188880c74f84c8d76b
+  name: Install root CA on FreeBSD
+  description: 'Creates a root CA with openssl
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1553.004
+    name: 'Subvert Trust Controls: Install Root Certificate'
+  platforms:
+    linux:
+      sh:
+        command: openssl genrsa -out rootCA.key 4096; openssl req -x509 -new -nodes
+          -key rootCA.key -sha256 -days 365 -subj "/C=US/ST=Denial/L=Springfield/O=Dis/CN=www.example.com"
+          -out rootCA.crt; cp rootCA.crt /usr/local/share/certs/; certctl rehash
+        payloads: []
+        cleanup: rm /usr/local/share/certs/rootCA.crt; certctl rehash

@@ -1,0 +1,19 @@
+---
+- id: 77d396b6c029a11722969cb578f591d3
+  name: Delete a single file - Windows cmd
+  description: 'Delete a single file from the temporary directory using cmd.exe.
+
+    Upon execution, no output will be displayed. Use File Explorer to verify the file
+    was deleted.
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1070.004
+    name: 'Indicator Removal on Host: File Deletion'
+  platforms:
+    windows:
+      cmd:
+        command: del /f %temp%\deleteme_T1551.004
+        payloads: []
+        cleanup: ''

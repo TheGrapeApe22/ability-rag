@@ -1,0 +1,25 @@
+---
+- id: 1d87f5f8838a166e5035179c33e3d615
+  name: Discover System Language with localectl
+  description: 'Identify System language with the `localectl` command.
+
+
+    Upon successful execution, the key `System Locale` from the output will contain
+    the
+
+    `LANG` environment variable that has the 5 character locale result that can be
+    looked
+
+    up to correlate the language and territory.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1614.001
+    name: 'System Location Discovery: System Language Discovery'
+  platforms:
+    linux:
+      sh:
+        command: localectl status
+        payloads: []
+        cleanup: ''

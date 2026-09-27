@@ -1,0 +1,14 @@
+---
+- id: 760ad6f5fe8880dae1044a384c514ccd
+  name: Execute commands from clipboard
+  description: Echo a command to clipboard and execute it
+  tactic: collection
+  technique:
+    attack_id: T1115
+    name: Clipboard Data
+  platforms:
+    darwin:
+      sh:
+        command: echo ifconfig | pbcopy; $(pbpaste)
+        payloads: []
+        cleanup: ''

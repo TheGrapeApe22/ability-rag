@@ -1,0 +1,24 @@
+---
+- id: 6d3a92f7fc3d8abeea37531cfba7c79e
+  name: Service Registry Permissions Weakness
+  description: 'Service registry permissions weakness check and then which can lead
+    to privilege escalation with ImagePath. eg.
+
+    reg add "HKLM\SYSTEM\CurrentControlSet\Services\#{weak_service_name}" /f /v ImagePath
+    /d "C:\temp\AtomicRedteam.exe"
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1574.011
+    name: 'Hijack Execution Flow: Services Registry Permissions Weakness'
+  platforms:
+    windows:
+      psh:
+        command: get-acl REGISTRY::HKLM\SYSTEM\CurrentControlSet\Services\* |FL; get-acl
+          REGISTRY::HKLM\SYSTEM\CurrentControlSet\Services\weakservicename |FL
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

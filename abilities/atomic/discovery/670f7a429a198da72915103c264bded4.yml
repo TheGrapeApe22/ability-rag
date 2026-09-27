@@ -1,0 +1,16 @@
+---
+- id: 670f7a429a198da72915103c264bded4
+  name: View available share drives
+  description: View information about all of the resources that are shared on the
+    local computer Upon execution, available share drives will be displayed in the
+    powershell session
+  tactic: discovery
+  technique:
+    attack_id: T1135
+    name: Network Share Discovery
+  platforms:
+    windows:
+      cmd:
+        command: net share
+        payloads: []
+        cleanup: ''

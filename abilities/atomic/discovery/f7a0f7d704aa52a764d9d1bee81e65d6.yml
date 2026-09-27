@@ -1,0 +1,19 @@
+---
+- id: f7a0f7d704aa52a764d9d1bee81e65d6
+  name: List Mozilla Firefox bookmarks on Windows with command prompt
+  description: 'Searches for Mozilla Firefox bookmarks file (on Windows distributions)
+    that contains bookmarks in a SQLITE database.
+
+    Upon execution, paths that contain bookmark files will be displayed.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1217
+    name: Browser Bookmark Discovery
+  platforms:
+    windows:
+      cmd:
+        command: where /R C:\Users\ places.sqlite
+        payloads: []
+        cleanup: ''

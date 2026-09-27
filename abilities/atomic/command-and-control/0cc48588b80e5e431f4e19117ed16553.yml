@@ -1,0 +1,19 @@
+---
+- id: 0cc48588b80e5e431f4e19117ed16553
+  name: Execute Embedded Script in Image via Steganography
+  description: This atomic test demonstrates the execution of an embedded script in
+    an image file using steganography techniques. The script is first encoded in base64
+    and then embedded within the pixels of the image. The modified image is created,
+    and the script is extracted and executed on the target system.
+  tactic: command-and-control
+  technique:
+    attack_id: T1001.002
+    name: Data Obfuscation via Steganography
+  platforms:
+    linux:
+      sh:
+        command: cat "PathToAtomicsFolder/script.sh" | base64 | xxd -p | sed 's/../&
+          /g' | xargs -n1 | xxd -r -p | cat "PathToAtomicsFolder/image.jpg" - > "PathToAtomicsFolder/evil_image.jpg";
+          strings "PathToAtomicsFolder/evil_image.jpg" | tail -n 1 | base64 -d | sh
+        payloads: []
+        cleanup: rm "PathToAtomicsFolder/evil_image.jpg"

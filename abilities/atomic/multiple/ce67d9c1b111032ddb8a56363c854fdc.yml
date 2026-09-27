@@ -1,0 +1,23 @@
+---
+- id: ce67d9c1b111032ddb8a56363c854fdc
+  name: Dirty Vanity process Injection
+  description: "This test used the Windows undocumented remote-fork API RtlCreateProcessReflection\
+    \ to create a cloned process of the parent process\nwith shellcode written in\
+    \ its memory. The shellcode is executed after being forked to the child process.\
+    \ The technique was first presented at \nBlackHat Europe 2022. Shellcode will\
+    \ open a messsage box and a notepad.\n"
+  tactic: multiple
+  technique:
+    attack_id: T1055
+    name: Process Injection
+  platforms:
+    windows:
+      psh:
+        command: Start-Process "$PathToAtomicsFolder\T1055\bin\x64\redVanity.exe"
+          (Start-Process calc.exe -PassThru).Id
+        payloads: []
+        cleanup: Get-Process -Name calc, CalculatorApp -ErrorAction SilentlyContinue
+          | Stop-Process -Force
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

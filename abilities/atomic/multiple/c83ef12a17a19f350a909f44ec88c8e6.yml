@@ -1,0 +1,20 @@
+---
+- id: c83ef12a17a19f350a909f44ec88c8e6
+  name: Deploy 7-Zip Using Chocolatey
+  description: 'An adversary may use Chocolatey to remotely deploy the 7-Zip file
+    archiver utility.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1072
+    name: Software Deployment Tools
+  platforms:
+    windows:
+      psh:
+        command: choco install -y 7zip
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

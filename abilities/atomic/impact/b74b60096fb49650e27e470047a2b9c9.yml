@@ -1,0 +1,25 @@
+---
+- id: b74b60096fb49650e27e470047a2b9c9
+  name: Windows - Overwrite file with SysInternals SDelete
+  description: 'Overwrites and deletes a file using SysInternals SDelete. Upon successful
+    execution, "Files deleted: 1" will be displayed in
+
+    the powershell session along with other information about the file that was deleted.
+
+    '
+  tactic: impact
+  technique:
+    attack_id: T1485
+    name: Data Destruction
+  platforms:
+    windows:
+      psh:
+        command: if (-not (Test-Path "PathToAtomicsFolder\..\ExternalPayloads\T1485.txt"))
+          { New-Item "PathToAtomicsFolder\..\ExternalPayloads\T1485.txt" -Force };
+          & "PathToAtomicsFolder\..\ExternalPayloads\Sdelete\sdelete.exe" -accepteula
+          "PathToAtomicsFolder\..\ExternalPayloads\T1485.txt"
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

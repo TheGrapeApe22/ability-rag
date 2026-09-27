@@ -1,0 +1,19 @@
+---
+- id: 181d6efe03889f7c26073257a90c4a1e
+  name: What shell is running
+  description: 'An adversary will want to discover what shell is running so that they
+    can tailor their attacks accordingly. The following commands will discover what
+    shell is running.
+
+    '
+  tactic: execution
+  technique:
+    attack_id: T1059.004
+    name: 'Command and Scripting Interpreter: Bash'
+  platforms:
+    linux:
+      sh:
+        command: echo $0; if $(env |grep "SHELL" >/dev/null); then env |grep "SHELL";
+          fi; if $(printenv SHELL >/dev/null); then printenv SHELL; fi
+        payloads: []
+        cleanup: ''

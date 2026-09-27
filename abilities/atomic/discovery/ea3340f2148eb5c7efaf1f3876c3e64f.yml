@@ -1,0 +1,21 @@
+---
+- id: ea3340f2148eb5c7efaf1f3876c3e64f
+  name: Hostname Discovery
+  description: 'Identify system hostname for FreeBSD, Linux and macOS systems.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1082
+    name: System Information Discovery
+  platforms:
+    linux:
+      sh:
+        command: hostname
+        payloads: []
+        cleanup: ''
+    darwin:
+      sh:
+        command: hostname
+        payloads: []
+        cleanup: ''

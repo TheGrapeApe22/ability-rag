@@ -1,0 +1,29 @@
+---
+- id: ade7be51b815cbf8908ec931256374b6
+  name: Remote System Discovery - arp nix
+  description: 'Identify remote systems via arp.
+
+
+    Upon successful execution, sh will execute arp to list out the arp cache. Output
+    will be via stdout.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1018
+    name: Remote System Discovery
+  platforms:
+    linux:
+      sh:
+        command: 'if [ -x "$(command -v arp)" ]; then : ; else (which yum && yum -y
+          install net-tools)||(which apt-get && apt-get install -y net-tools); fi;  arp
+          -a | grep -v ''^?'''
+        payloads: []
+        cleanup: ''
+    darwin:
+      sh:
+        command: 'if [ -x "$(command -v arp)" ]; then : ; else (which yum && yum -y
+          install net-tools)||(which apt-get && apt-get install -y net-tools); fi;  arp
+          -a | grep -v ''^?'''
+        payloads: []
+        cleanup: ''

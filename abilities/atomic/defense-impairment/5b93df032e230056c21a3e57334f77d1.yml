@@ -1,0 +1,19 @@
+---
+- id: 5b93df032e230056c21a3e57334f77d1
+  name: Disable Microsoft Defender Firewall
+  description: 'Disables the Microsoft Defender Firewall for the current profile.
+
+    Caution if you access remotely the host where the test runs! Especially with the
+    cleanup command which will re-enable firewall for the current profile...
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1686
+    name: Disable or Modify System Firewall
+  platforms:
+    windows:
+      cmd:
+        command: netsh advfirewall set currentprofile state off
+        payloads: []
+        cleanup: netsh advfirewall set currentprofile state on >nul 2>&1

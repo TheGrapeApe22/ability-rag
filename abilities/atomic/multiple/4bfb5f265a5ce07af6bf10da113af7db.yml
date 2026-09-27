@@ -1,0 +1,19 @@
+---
+- id: 4bfb5f265a5ce07af6bf10da113af7db
+  name: Activate Windows NoTrayContextMenu Group Policy Feature
+  description: "Modify the registry of the currently logged in user using reg.exe\
+    \ via cmd console to Disable context menu for taskbar Group Policy. \nTake note\
+    \ that some Group Policy changes might require a restart to take effect.\nSee\
+    \ how ransomware abuses this technique- https://www.virustotal.com/gui/file/2d7855bf6470aa323edf2949b54ce2a04d9e38770f1322c3d0420c2303178d91/details\n"
+  tactic: multiple
+  technique:
+    attack_id: T1112
+    name: Modify Registry
+  platforms:
+    windows:
+      cmd:
+        command: reg add "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer"
+          /v NoTrayContextMenu /t REG_DWORD /d 1 /f
+        payloads: []
+        cleanup: reg delete "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer"
+          /v NoTrayContextMenu /f >nul 2>&1

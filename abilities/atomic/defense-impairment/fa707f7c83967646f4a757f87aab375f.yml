@@ -1,0 +1,17 @@
+---
+- id: fa707f7c83967646f4a757f87aab375f
+  name: SIP (Subject Interface Package) Hijacking via Custom DLL
+  description: "Registers a DLL that logs signature checks, mimicking SIP hijacking.\
+    \ This test uses a DLL from \nhttps://github.com/gtworek/PSBits/tree/master/SIP\
+    \ and registers it using regsvr32, thereby causing\nthe system to utilize it during\
+    \ signature checks, and logging said checks.\n"
+  tactic: defense-impairment
+  technique:
+    attack_id: T1553.003
+    name: 'Subvert Trust Controls: SIP and Trust Provider Hijacking'
+  platforms:
+    windows:
+      cmd:
+        command: 'regsvr32.exe #{dll_payload}'
+        payloads: []
+        cleanup: 'regsvr32.exe /u #{dll_payload}'

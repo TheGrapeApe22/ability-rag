@@ -1,0 +1,21 @@
+---
+- id: e1ba582a3787829bb7f146009a040c8b
+  name: Azure AD - Delete user via Azure AD PowerShell
+  description: Deletes a user in Azure AD. Adversaries may interrupt availability
+    of system and network resources by inhibiting access to accounts utilized by legitimate
+    users. Accounts may be deleted, locked, or manipulated (excluding changed credentials)
+    to remove access to accounts.
+  tactic: impact
+  technique:
+    attack_id: T1531
+    name: Account Access Removal
+  platforms:
+    unknown:
+      psh:
+        command: Connect-AzureAD; $userprincipalname = "atomicredteam@yourdomain.com";
+          Remove-AzureADUser -ObjectId $userprincipalname
+        payloads: []
+        cleanup: N/A
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

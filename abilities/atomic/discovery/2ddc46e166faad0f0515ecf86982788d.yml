@@ -1,0 +1,17 @@
+---
+- id: 2ddc46e166faad0f0515ecf86982788d
+  name: System Owner/User Discovery Using Command Prompt
+  description: Identify the system owner or current user using native Windows command
+    prompt utilities.
+  tactic: discovery
+  technique:
+    attack_id: T1033
+    name: System Owner/User Discovery
+  platforms:
+    windows:
+      cmd:
+        command: 'set file=$env:temp\user_info_%random%.tmp && echo Username: %USERNAME%
+          > %file% && echo User Domain: %USERDOMAIN% >> %file% && net users >> %file%
+          && query user >> %file%'
+        payloads: []
+        cleanup: del $env:temp\\user_info_*.tmp

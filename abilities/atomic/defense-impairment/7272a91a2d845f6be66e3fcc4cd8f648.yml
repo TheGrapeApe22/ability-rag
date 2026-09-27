@@ -1,0 +1,26 @@
+---
+- id: 7272a91a2d845f6be66e3fcc4cd8f648
+  name: Modify Event Log Access Permissions via Registry - PowerShell
+  description: 'This test simulates an adversary modifying access permissions for
+    a Windows Event Log channel by setting the "CustomSD" registry value. Specifically,
+    it changes the Security Descriptor Definition Language (SDDL) string. These modifications
+    can restrict or grant access to specific users or groups, potentially aiding in
+    defense evasion by controlling who can view or modify a event log channel.
+
+    Upon execution, the user shouldn''t be able to access the event log channel via
+    the event viewer or via utilities such as "Get-EventLog" or "wevtutil".'
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685.001
+    name: 'Disable or Modify Tools: Disable or Modify Windows Event Log'
+  platforms:
+    windows:
+      psh:
+        command: Set-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\EventLog\System
+          -Name "CustomSD" -Value "O:SYG:SYD:(D;;0x1;;;WD)"
+        payloads: []
+        cleanup: Remove-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\EventLog\System
+          -Name "CustomSD"
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

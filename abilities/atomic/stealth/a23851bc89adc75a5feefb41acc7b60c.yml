@@ -1,0 +1,29 @@
+---
+- id: a23851bc89adc75a5feefb41acc7b60c
+  name: Create ADS PowerShell
+  description: 'Create an Alternate Data Stream with PowerShell. Write access is required.
+    To verify execution, run the command "ls -Recurse | %{ gi $_.Fullname -stream
+    *} | where stream -ne '':$Data'' | Select-Object pschildname"
+
+    in the %temp% directory to view all files with hidden data streams. To view the
+    data in the alternate data stream, run "notepad.exe T1564.004_has_ads_powershell.txt:adstest.txt"
+    in the %temp% folder.
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1564.004
+    name: 'Hide Artifacts: NTFS File Attributes'
+  platforms:
+    windows:
+      psh:
+        command: echo "test" > $env:TEMP\T1564.004_has_ads_powershell.txt | set-content
+          -path test.txt -stream adstest.txt -value "test"; set-content -path $env:TEMP\T1564.004_has_ads_powershell.txt
+          -stream adstest.txt -value "test2"; set-content -path . -stream adstest.txt
+          -value "test3"
+        payloads: []
+        cleanup: Remove-Item -Path $env:TEMP\T1564.004_has_ads_powershell.txt -ErrorAction
+          Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

@@ -1,0 +1,21 @@
+---
+- id: dd1eadab4aa421d3a0048c3c85bf60e3
+  name: Sudo usage
+  description: 'Common Sudo enumeration methods.
+
+    '
+  tactic: privilege-escalation
+  technique:
+    attack_id: T1548.003
+    name: 'Abuse Elevation Control Mechanism: Sudo and Sudo Caching'
+  platforms:
+    darwin:
+      sh:
+        command: sudo -l      ; sudo cat /etc/sudoers; sudo vim /etc/sudoers
+        payloads: []
+        cleanup: ''
+    linux:
+      sh:
+        command: sudo -l      ; sudo cat /etc/sudoers; sudo vim /etc/sudoers
+        payloads: []
+        cleanup: ''

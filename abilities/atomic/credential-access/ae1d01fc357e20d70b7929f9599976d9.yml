@@ -1,0 +1,22 @@
+---
+- id: ae1d01fc357e20d70b7929f9599976d9
+  name: Find OCI credentials
+  description: 'Find local Oracle cloud credentials from file, defaults to using /
+    as the look path.
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1552.001
+    name: 'Unsecured Credentials: Credentials In Files'
+  platforms:
+    darwin:
+      sh:
+        command: find //.oci/sessions -name "token" -type f 2>/dev/null
+        payloads: []
+        cleanup: ''
+    linux:
+      sh:
+        command: find //.oci/sessions -name "token" -type f 2>/dev/null
+        payloads: []
+        cleanup: ''

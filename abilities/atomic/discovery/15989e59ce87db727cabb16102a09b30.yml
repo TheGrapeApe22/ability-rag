@@ -1,0 +1,16 @@
+---
+- id: 15989e59ce87db727cabb16102a09b30
+  name: List loaded kernel extensions (macOS)
+  description: 'Displays a list of loaded kernel extensions (kexts) on a macOS system.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1652
+    name: Device Driver Discovery
+  platforms:
+    darwin:
+      sh:
+        command: kextstat
+        payloads: []
+        cleanup: ''

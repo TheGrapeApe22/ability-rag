@@ -12,7 +12,7 @@ import json
 import re
 import sqlite3
 import sys
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 from typing import Any, Iterable, Sequence
 
@@ -20,7 +20,7 @@ import yaml
 
 
 DEFAULT_DATABASE = Path(".ability_search.sqlite")
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2
 SEARCH_COLUMNS = (
     "name",
     "description",
@@ -38,6 +38,7 @@ BM25_WEIGHTS = (10.0, 5.0, 4.0, 8.0, 8.0, 3.0, 1.0)
 class AbilityRecord:
     ability_id: str
     source_path: str
+    source_paths: tuple[str, ...]
     digest: str
     name: str
     description: str
@@ -84,6 +85,7 @@ def _ability_from_mapping(item: dict[str, Any], source: Path) -> AbilityRecord:
     return AbilityRecord(
         ability_id=ability_id,
         source_path=source.as_posix(),
+        source_paths=(source.as_posix(),),
         digest=hashlib.sha256(canonical.encode("utf-8")).hexdigest(),
         name=_text(item.get("name")),
         description=_text(item.get("description")),
@@ -103,7 +105,7 @@ def load_abilities(directory: Path) -> list[AbilityRecord]:
 
     paths = sorted((*directory.rglob("*.yml"), *directory.rglob("*.yaml")))
     records: list[AbilityRecord] = []
-    seen: dict[str, str] = {}
+    seen: dict[str, AbilityRecord] = {}
     for path in paths:
         with path.open("r", encoding="utf-8") as stream:
             document = yaml.safe_load(stream)
@@ -112,14 +114,20 @@ def load_abilities(directory: Path) -> list[AbilityRecord]:
             if not isinstance(item, dict):
                 raise ValueError(f"Expected an ability mapping in {path}")
             record = _ability_from_mapping(item, path)
-            if record.ability_id in seen:
-                raise ValueError(
-                    f"Duplicate ability id {record.ability_id!r} in "
-                    f"{path} and {seen[record.ability_id]}"
+            previous = seen.get(record.ability_id)
+            if previous is not None:
+                if previous.digest != record.digest:
+                    raise ValueError(
+                        f"Conflicting ability id {record.ability_id!r} in "
+                        f"{path} and {previous.source_path}"
+                    )
+                seen[record.ability_id] = replace(
+                    previous,
+                    source_paths=previous.source_paths + (record.source_path,),
                 )
-            seen[record.ability_id] = path.as_posix()
-            records.append(record)
-    return records
+            else:
+                seen[record.ability_id] = record
+    return list(seen.values())
 
 
 def _normalize_filter(value: str) -> str:
@@ -165,6 +173,7 @@ class AbilitySearch:
                 rowid INTEGER PRIMARY KEY,
                 ability_id TEXT NOT NULL UNIQUE,
                 source_path TEXT NOT NULL,
+                source_paths TEXT NOT NULL DEFAULT '[]',
                 digest TEXT NOT NULL,
                 name TEXT NOT NULL,
                 description TEXT NOT NULL,
@@ -241,10 +250,20 @@ class AbilitySearch:
             END;
             """
         )
+        columns = {
+            row["name"] for row in connection.execute("PRAGMA table_info(abilities)")
+        }
+        if "source_paths" not in columns:
+            connection.execute(
+                "ALTER TABLE abilities ADD COLUMN source_paths TEXT NOT NULL DEFAULT '[]'"
+            )
+            connection.execute(
+                "UPDATE abilities SET source_paths = json_array(source_path)"
+            )
         existing = connection.execute(
             "SELECT value FROM metadata WHERE key = 'schema_version'"
         ).fetchone()
-        if existing and int(existing["value"]) != SCHEMA_VERSION:
+        if existing and int(existing["value"]) not in (1, SCHEMA_VERSION):
             raise ValueError(
                 "The search database uses an incompatible schema. Delete it and re-index."
             )
@@ -260,15 +279,18 @@ class AbilitySearch:
         with self._connect(create_parent=True) as connection:
             self._create_schema(connection)
             existing = {
-                row["ability_id"]: (row["digest"], row["source_path"])
+                row["ability_id"]: (
+                    row["digest"],
+                    tuple(json.loads(row["source_paths"])),
+                )
                 for row in connection.execute(
-                    "SELECT ability_id, digest, source_path FROM abilities"
+                    "SELECT ability_id, digest, source_paths FROM abilities"
                 )
             }
             inserted = sum(ability_id not in existing for ability_id in by_id)
             updated = sum(
                 ability_id in existing
-                and existing[ability_id] != (record.digest, record.source_path)
+                and existing[ability_id] != (record.digest, record.source_paths)
                 for ability_id, record in by_id.items()
             )
             unchanged = len(records) - inserted - updated
@@ -277,13 +299,14 @@ class AbilitySearch:
             connection.executemany(
                 """
                 INSERT INTO abilities (
-                    ability_id, source_path, digest, name, description,
+                    ability_id, source_path, source_paths, digest, name, description,
                     tactic, tactic_norm, technique_id, technique_id_norm,
                     technique_name, technique_name_norm, platforms, commands,
                     record_json
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 ON CONFLICT(ability_id) DO UPDATE SET
                     source_path=excluded.source_path,
+                    source_paths=excluded.source_paths,
                     digest=excluded.digest,
                     name=excluded.name,
                     description=excluded.description,
@@ -297,12 +320,13 @@ class AbilitySearch:
                     commands=excluded.commands,
                     record_json=excluded.record_json
                 WHERE abilities.digest != excluded.digest
-                   OR abilities.source_path != excluded.source_path
+                   OR abilities.source_paths != excluded.source_paths
                 """,
                 [
                     (
                         record.ability_id,
                         record.source_path,
+                        json.dumps(record.source_paths),
                         record.digest,
                         record.name,
                         record.description,
@@ -332,6 +356,7 @@ class AbilitySearch:
             "unchanged": unchanged,
             "deleted": len(stale_ids),
             "total": len(records),
+            "duplicates_collapsed": sum(len(record.source_paths) - 1 for record in records),
         }
 
     def _require_index(self) -> None:
@@ -373,7 +398,7 @@ class AbilitySearch:
         if fts_query:
             weights = ", ".join(str(weight) for weight in BM25_WEIGHTS)
             sql = f"""
-                SELECT a.source_path, a.record_json,
+                SELECT a.source_path, a.source_paths, a.record_json,
                        bm25(abilities_fts, {weights}) AS score
                 FROM abilities_fts
                 JOIN abilities AS a ON a.rowid = abilities_fts.rowid
@@ -386,7 +411,7 @@ class AbilitySearch:
             query_parameters.extend(parameters)
             query_parameters.append(top_k)
         else:
-            sql = "SELECT source_path, record_json, NULL AS score FROM abilities AS a"
+            sql = "SELECT source_path, source_paths, record_json, NULL AS score FROM abilities AS a"
             if clauses:
                 sql += " WHERE " + " AND ".join(clauses)
             sql += " ORDER BY a.name COLLATE NOCASE LIMIT ?"
@@ -399,6 +424,7 @@ class AbilitySearch:
                 "rank": rank,
                 "score": None if row["score"] is None else -float(row["score"]),
                 "source": row["source_path"],
+                "sources": json.loads(row["source_paths"]),
                 "ability": json.loads(row["record_json"]),
             }
             for rank, row in enumerate(rows, start=1)

@@ -1,0 +1,18 @@
+---
+- id: 49947b10c66961ad86046f0ab5ec3b8b
+  name: Microsoft App Quick Assist Execution
+  description: "An adversary may attempt to trick a user into executing Microsoft\
+    \ Quick Assist Microsoft Store app and connect to the user's machine. \n"
+  tactic: command-and-control
+  technique:
+    attack_id: T1219
+    name: Remote Access Software
+  platforms:
+    windows:
+      psh:
+        command: Start-Process "shell:AppsFolder\MicrosoftCorporationII.QuickAssist_8wekyb3d8bbwe!App"
+        payloads: []
+        cleanup: Stop-Process -Name quickassist
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

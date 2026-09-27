@@ -1,0 +1,24 @@
+---
+- id: 7f0f5471543a6f188b0fbdc436c49fd9
+  name: Remove the Zone.Identifier alternate data stream
+  description: 'Remove the Zone.Identifier alternate data stream which identifies
+    the file as downloaded from the internet.
+
+    Removing this allows more freedom in executing scripts in PowerShell and avoids
+    opening files in protected view.
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1553.005
+    name: 'Subvert Trust Controls: Mark-of-the-Web Bypass'
+  platforms:
+    windows:
+      psh:
+        command: Unblock-File -Path $env:tmp\ReadMe.md
+        payloads: []
+        cleanup: Set-Content -Path $env:tmp\ReadMe.md -Stream Zone.Identifier -Value
+          '[ZoneTransfer]','ZoneId=3'
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

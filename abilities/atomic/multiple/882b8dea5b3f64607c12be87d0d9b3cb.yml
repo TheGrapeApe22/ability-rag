@@ -1,0 +1,28 @@
+---
+- id: 882b8dea5b3f64607c12be87d0d9b3cb
+  name: GCP - Delete Service Account Key
+  description: "This Atomic will: \n  - Create a service account\n  - Create a service\
+    \ account key, \n  - Store the result of retrieving a single key for that service\
+    \ account as a variable\n  - Pass that variable for deletion\n  - Delete the service\
+    \ account\n\nThe idea for this Atomic came from a Rule published by the Elastic\
+    \ team.\n\nIdentifies the deletion of an Identity and Access Management (IAM)\
+    \ service account key in Google Cloud Platform (GCP).\nEach service account is\
+    \ associated with two sets of public/private RSA key pairs that are used to authenticate.\
+    \ \nIf a key is deleted, the application will no longer be able to access Google\
+    \ Cloud resources using that key. A security best practice is to rotate your service\
+    \ account keys regularly.\n\nReference: https://github.com/elastic/detection-rules/blob/main/rules/integrations/gcp/impact_gcp_storage_bucket_deleted.toml\n"
+  tactic: multiple
+  technique:
+    attack_id: T1098
+    name: Account Manipulation
+  platforms:
+    unknown:
+      sh:
+        command: gcloud config set project atomic-test-1; KEY=`gcloud iam service-accounts
+          keys list --iam-account=atomic-service-account@atomic-test-1.iam.gserviceaccount.com
+          --format="value(KEY_ID)" --limit=1`; gcloud iam service-accounts keys delete
+          $KEY --iam-account=atomic-service-account@atomic-test-1.iam.gserviceaccount.com
+          --quiet
+        payloads: []
+        cleanup: cd "$PathToAtomicsFolder/T1098/src/T1098-17/"; terraform state rm
+          google_service_account_key.key; terraform destroy -auto-approve

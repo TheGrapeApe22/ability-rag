@@ -1,0 +1,21 @@
+---
+- id: 326823989c77587bc52eb84a3dcaabce
+  name: Decompile Local CHM File
+  description: 'Uses hh.exe to decompile a local compiled HTML Help file.
+
+    Upon successful execution the chm file will decompile to disk.
+
+    Reference:https://www.ptsecurity.com/ww-en/analytics/pt-esc-threat-intelligence/higaisa-or-winnti-apt-41-backdoors-old-and-new/
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1218.001
+    name: 'Signed Binary Proxy Execution: Compiled HTML File'
+  platforms:
+    windows:
+      cmd:
+        command: hh.exe -decompile %temp% "9e2e6f_T1218.001.chm"
+        payloads:
+        - 9e2e6f_T1218.001.chm
+        cleanup: del %temp%\T1218.001.html >nul 2>&1

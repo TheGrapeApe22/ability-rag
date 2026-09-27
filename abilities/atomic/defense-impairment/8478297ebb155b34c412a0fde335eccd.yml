@@ -1,0 +1,16 @@
+---
+- id: 8478297ebb155b34c412a0fde335eccd
+  name: Stop/Start UFW firewall
+  description: 'Stop the Uncomplicated Firewall (UFW) if installed.
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1686
+    name: Disable or Modify System Firewall
+  platforms:
+    linux:
+      sh:
+        command: ufw disable
+        payloads: []
+        cleanup: ufw enable; ufw status verbose

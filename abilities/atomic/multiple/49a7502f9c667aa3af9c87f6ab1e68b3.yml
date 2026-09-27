@@ -1,0 +1,23 @@
+---
+- id: 49a7502f9c667aa3af9c87f6ab1e68b3
+  name: Append malicious start-process cmdlet
+  description: 'Appends a start process cmdlet to the current user''s powershell profile
+    pofile that points to a malicious executable. Upon execution, calc.exe will be
+    launched.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1546.013
+    name: 'Event Triggered Execution: PowerShell Profile'
+  platforms:
+    windows:
+      psh:
+        command: Add-Content $profile -Value ""; Add-Content $profile -Value "Start-Process
+          calc.exe"; powershell -Command exit
+        payloads: []
+        cleanup: $oldprofile = cat $profile | Select-Object -skiplast 1; Set-Content
+          $profile -Value $oldprofile
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

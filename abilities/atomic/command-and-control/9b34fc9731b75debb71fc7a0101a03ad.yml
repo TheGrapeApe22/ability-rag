@@ -1,0 +1,19 @@
+---
+- id: 9b34fc9731b75debb71fc7a0101a03ad
+  name: Lolbas replace.exe use to copy UNC file
+  description: 'Copy UNC file to destination
+
+    Reference: https://lolbas-project.github.io/lolbas/Binaries/Replace/
+
+    '
+  tactic: command-and-control
+  technique:
+    attack_id: T1105
+    name: Ingress Tool Transfer
+  platforms:
+    windows:
+      cmd:
+        command: del %TEMP%\redcanary.cab >nul 2>&1 && C:\Windows\System32\replace.exe
+          \\127.0.0.1\c$\AtomicRedTeam\atomics\T1105\src\redcanary.cab %TEMP% /A
+        payloads: []
+        cleanup: del %TEMP%\redcanary.cab >nul 2>&1

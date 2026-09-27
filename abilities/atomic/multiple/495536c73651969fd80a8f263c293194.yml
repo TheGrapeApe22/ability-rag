@@ -1,0 +1,24 @@
+---
+- id: 495536c73651969fd80a8f263c293194
+  name: HKCU - Persistence using CommandProcessor AutoRun key (Without Elevation)
+  description: 'An adversary may abuse the CommandProcessor AutoRun registry key to
+    persist. Every time cmd.exe is executed, the command defined in the AutoRun key
+    also gets executed.
+
+    [reference](https://devblogs.microsoft.com/oldnewthing/20071121-00/?p=24433)'
+  tactic: multiple
+  technique:
+    attack_id: T1546
+    name: Event Triggered Execution
+  platforms:
+    windows:
+      psh:
+        command: $path = "HKCU:\Software\Microsoft\Command Processor"; if (!(Test-Path
+          -path $path)){;   New-Item -ItemType Key -Path $path; }; New-ItemProperty
+          -Path $path -Name "AutoRun" -Value "notepad.exe" -PropertyType "String"
+        payloads: []
+        cleanup: Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Command Processor"
+          -Name "AutoRun" -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

@@ -1,0 +1,32 @@
+---
+- id: ed65658e4431bc3b636dd0de29bf8e35
+  name: Registry key creation and/or modification events for SDB
+  description: 'Create registry keys in locations where fin7 typically places SDB
+    patches. Upon execution, output will be displayed describing
+
+    the registry keys that were created. These keys can also be viewed using the Registry
+    Editor.
+
+
+    https://www.fireeye.com/blog/threat-research/2017/05/fin7-shim-databases-persistence.html
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1546.011
+    name: 'Event Triggered Execution: Application Shimming'
+  platforms:
+    windows:
+      psh:
+        command: New-ItemProperty -Path HKLM:"\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Custom"
+          -Name "AtomicRedTeamT1546.011" -Value "AtomicRedTeamT1546.011"; New-ItemProperty
+          -Path HKLM:"\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\InstalledSDB"
+          -Name "AtomicRedTeamT1546.011" -Value "AtomicRedTeamT1546.011"
+        payloads: []
+        cleanup: Remove-ItemProperty -Path HKLM:"\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Custom"
+          -Name "AtomicRedTeamT1546.011" -ErrorAction Ignore; Remove-ItemProperty
+          -Path HKLM:"\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\InstalledSDB"
+          -Name "AtomicRedTeamT1546.011" -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

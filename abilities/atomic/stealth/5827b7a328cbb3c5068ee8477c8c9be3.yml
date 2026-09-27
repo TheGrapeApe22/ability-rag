@@ -1,0 +1,16 @@
+---
+- id: 5827b7a328cbb3c5068ee8477c8c9be3
+  name: Show all hidden files
+  description: 'Show all hidden files on MacOS
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1564.001
+    name: 'Hide Artifacts: Hidden Files and Directories'
+  platforms:
+    darwin:
+      sh:
+        command: defaults write com.apple.finder AppleShowAllFiles YES
+        payloads: []
+        cleanup: defaults write com.apple.finder AppleShowAllFiles NO

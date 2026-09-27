@@ -1,0 +1,18 @@
+---
+- id: 2d74c884d1e0b55f41542ef64bc8fe4b
+  name: LockBit Black - Disable Privacy Settings Experience Using Registry -cmd
+  description: 'LockBit Black - Disable Privacy Settings Experience Using Registry
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685
+    name: Disable or Modify Tools
+  platforms:
+    windows:
+      cmd:
+        command: reg add "HKCU\Software\Policies\Microsoft\Windows\OOBE" /v DisablePrivacyExperience
+          /t REG_DWORD /d 1 /f
+        payloads: []
+        cleanup: reg delete "HKCU\Software\Policies\Microsoft\Windows\OOBE" /v DisablePrivacyExperience
+          /f >nul 2>&1

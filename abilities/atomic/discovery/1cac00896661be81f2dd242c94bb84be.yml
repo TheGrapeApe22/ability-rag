@@ -1,0 +1,27 @@
+---
+- id: 1cac00896661be81f2dd242c94bb84be
+  name: Remote System Discovery - sweep
+  description: 'Identify remote systems via ping sweep.
+
+
+    Upon successful execution, sh will perform a ping sweep on the 192.168.1.1/24
+    and echo via stdout if an IP is active.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1018
+    name: Remote System Discovery
+  platforms:
+    linux:
+      sh:
+        command: 'for ip in $(seq 1 254); do ping -c 1 192.168.1.$ip; [ $? -eq 0 ]
+          && echo "192.168.1.$ip UP" || : ; done'
+        payloads: []
+        cleanup: ''
+    darwin:
+      sh:
+        command: 'for ip in $(seq 1 254); do ping -c 1 192.168.1.$ip; [ $? -eq 0 ]
+          && echo "192.168.1.$ip UP" || : ; done'
+        payloads: []
+        cleanup: ''

@@ -1,0 +1,25 @@
+---
+- id: 748fa92e56e154fe2b2720041845a7c7
+  name: AWS - Enumerate common cloud services
+  description: 'Upon successful execution, this test will enumerate common resources
+    that are contained within a valid AWS account.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1526
+    name: Cloud Service Discovery
+  platforms:
+    unknown:
+      psh:
+        command: Import-Module "PathToAtomicsFolder\T1526\src\AWSDiscovery.ps1"; $access_key
+          = ""; $secret_key = ""; $session_token = ""; $aws_profile = ""; $regions
+          = "us-east-1,us-east-2,us-west-1,us-west-2"; Set-AWSAuthentication -AccessKey
+          $access_key -SecretKey $secret_key -SessionToken $session_token -AWSProfile
+          $aws_profile; Get-AWSDiscoveryData -Regions $regions -OutputDirectory "$env:TMPDIR/aws_discovery";
+          Remove-BlankFiles -OutputDirectory "$env:TMPDIR/aws_discovery"
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

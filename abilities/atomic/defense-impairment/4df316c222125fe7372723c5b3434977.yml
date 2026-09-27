@@ -1,0 +1,31 @@
+---
+- id: 4df316c222125fe7372723c5b3434977
+  name: Lockbit Black - Use Registry Editor to turn on automatic logon -Powershell
+  description: 'Lockbit Black - Use Registry Editor to turn on automatic logon
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685
+    name: Disable or Modify Tools
+  platforms:
+    windows:
+      psh:
+        command: New-ItemProperty "HKLM:\Software\Policies\Microsoft\Windows NT\CurrentVersion\Winlogon"
+          -Name AutoAdminLogon -PropertyType DWord -Value 1 -Force; New-ItemProperty
+          "HKLM:\Software\Policies\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name
+          DefaultUserName -Value Administrator -Force; New-ItemProperty "HKLM:\Software\Policies\Microsoft\Windows
+          NT\CurrentVersion\Winlogon" -Name DefaultDomainName -Value contoso.com -Force;
+          New-ItemProperty "HKLM:\Software\Policies\Microsoft\Windows NT\CurrentVersion\Winlogon"
+          -Name DefaultPassword  -Value password1 -Force
+        payloads: []
+        cleanup: Remove-ItemProperty "HKLM:\Software\Policies\Microsoft\Windows NT\CurrentVersion\Winlogon"
+          -Name AutoAdminLogon -Force -ErrorAction Ignore; Remove-ItemProperty "HKLM:\Software\Policies\Microsoft\Windows
+          NT\CurrentVersion\Winlogon" -Name DefaultUserName -Force -ErrorAction Ignore;
+          Remove-ItemProperty "HKLM:\Software\Policies\Microsoft\Windows NT\CurrentVersion\Winlogon"
+          -Name DefaultDomainName -Force -ErrorAction Ignore; Remove-ItemProperty
+          "HKLM:\Software\Policies\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name
+          DefaultPassword -Force -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

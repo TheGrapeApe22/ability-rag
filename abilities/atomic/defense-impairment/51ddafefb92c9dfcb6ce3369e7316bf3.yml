@@ -1,0 +1,24 @@
+---
+- id: 51ddafefb92c9dfcb6ce3369e7316bf3
+  name: Install root CA on Windows
+  description: 'Creates a root CA with Powershell
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1553.004
+    name: 'Subvert Trust Controls: Install Root Certificate'
+  platforms:
+    windows:
+      psh:
+        command: $cert = Import-Certificate -FilePath rootCA.cer -CertStoreLocation
+          Cert:\LocalMachine\My; Move-Item -Path $cert.PSPath -Destination "Cert:\LocalMachine\Root"
+        payloads: []
+        cleanup: try {;    $cert = Import-Certificate -FilePath rootCA.cer -CertStoreLocation
+          Cert:\LocalMachine\My -ErrorAction Ignore;    Get-ChildItem Cert:\LocalMachine\My\$($cert.Thumbprint)
+          -ErrorAction Ignore | Remove-Item -ErrorAction Ignore;    Get-ChildItem
+          Cert:\LocalMachine\Root\$($cert.Thumbprint) -ErrorAction Ignore | Remove-Item
+          -ErrorAction Ignore; }; catch { }
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

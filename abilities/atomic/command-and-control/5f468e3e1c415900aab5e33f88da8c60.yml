@@ -1,0 +1,18 @@
+---
+- id: 5f468e3e1c415900aab5e33f88da8c60
+  name: iwr or Invoke Web-Request download
+  description: 'Use ''iwr'' or "Invoke-WebRequest" -URI argument to download a file
+    from the web. Note: without -URI also works in some versions.
+
+    '
+  tactic: command-and-control
+  technique:
+    attack_id: T1105
+    name: Ingress Tool Transfer
+  platforms:
+    windows:
+      cmd:
+        command: powershell.exe iwr -URI https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/LICENSE.txt
+          -Outfile %temp%\Atomic-license.txt
+        payloads: []
+        cleanup: del %temp%\Atomic-license.txt >nul 2>&1

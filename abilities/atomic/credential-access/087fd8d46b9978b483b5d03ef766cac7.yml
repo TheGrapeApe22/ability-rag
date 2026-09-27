@@ -1,0 +1,24 @@
+---
+- id: 087fd8d46b9978b483b5d03ef766cac7
+  name: Find GCP credentials
+  description: 'Find local Google Cloud Platform credentials from file, defaults to
+    using / as the look path.
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1552.001
+    name: 'Unsecured Credentials: Credentials In Files'
+  platforms:
+    darwin:
+      sh:
+        command: find //.config/gcloud -name "credentials.db" -o -name "access_tokens.db"
+          -type f 2>/dev/null
+        payloads: []
+        cleanup: ''
+    linux:
+      sh:
+        command: find //.config/gcloud -name "credentials.db" -o -name "access_tokens.db"
+          -type f 2>/dev/null
+        payloads: []
+        cleanup: ''

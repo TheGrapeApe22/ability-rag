@@ -1,0 +1,22 @@
+---
+- id: 148563e9c9fb2aaf64c617b2302d4c56
+  name: OSTAP Worming Activity
+  description: 'OSTap copies itself in a specfic way to shares and secondary drives.
+    This emulates the activity.
+
+    '
+  tactic: command-and-control
+  technique:
+    attack_id: T1105
+    name: Ingress Tool Transfer
+  platforms:
+    windows:
+      cmd:
+        command: pushd \\localhost\C$ && echo var fileObject = WScript.createobject("Scripting.FileSystemObject");var
+          newfile = fileObject.CreateTextFile("AtomicTestFileT1105.js", true);newfile.WriteLine("This
+          is an atomic red team test file for T1105. It simulates how OSTap worms
+          accross network shares and drives.");newfile.Close(); > AtomicTestT1105.js
+          && CScript.exe AtomicTestT1105.js //E:JScript && del AtomicTestT1105.js
+          /Q >nul 2>&1 && del AtomicTestFileT1105.js /Q >nul 2>&1 && popd
+        payloads: []
+        cleanup: ''

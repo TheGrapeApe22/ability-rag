@@ -1,0 +1,21 @@
+---
+- id: 6806b8f079875f34564d5bba7a13db5a
+  name: File download via nscurl
+  description: 'Use nscurl to download and write a file/payload from the internet.
+
+    -k = Disable certificate checking
+
+    -o = Output destination
+
+    '
+  tactic: command-and-control
+  technique:
+    attack_id: T1105
+    name: Ingress Tool Transfer
+  platforms:
+    darwin:
+      sh:
+        command: nscurl -k "https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/LICENSE.txt"
+          -o "license.txt"
+        payloads: []
+        cleanup: rm "license.txt"

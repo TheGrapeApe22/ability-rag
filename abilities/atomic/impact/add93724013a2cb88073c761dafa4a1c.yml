@@ -1,0 +1,17 @@
+---
+- id: add93724013a2cb88073c761dafa4a1c
+  name: Encrypt files using gpg (FreeBSD/Linux)
+  description: 'Uses gpg to encrypt a file
+
+    '
+  tactic: impact
+  technique:
+    attack_id: T1486
+    name: Data Encrypted for Impact
+  platforms:
+    linux:
+      sh:
+        command: echo "passwd" | $which_gpg --batch --yes --passphrase-fd 0 --cipher-algo
+          AES-256 -o /tmp/passwd.gpg -c /etc/passwd
+        payloads: []
+        cleanup: rm /tmp/passwd.gpg

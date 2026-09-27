@@ -1,0 +1,20 @@
+---
+- id: 98a57b579c4f8a3a434b1f36d428431d
+  name: linux rename /proc/pid/comm using prctl
+  description: 'Runs a C program that calls prctl(PR_SET_NAME) to modify /proc/pid/comm
+    value to "totally_legit".  This will show up as process name in simple ''ps''
+    listings.
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1036.004
+    name: 'Masquerading: Masquerade Task or Service'
+  platforms:
+    linux:
+      sh:
+        command: /tmp/T1036_004_prctl_rename & ps; TMP=`ps | grep totally_legit`;
+          if [ -z "${TMP}" ] ; then echo "renamed process NOT FOUND in process list"
+          && exit 1; fi; exit 0
+        payloads: []
+        cleanup: rm -f /tmp/T1036_004_prctl_rename

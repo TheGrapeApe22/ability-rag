@@ -1,0 +1,18 @@
+---
+- id: 0de9eab758de3853efadc9db956d3d04
+  name: Chown through c script (freebsd)
+  description: 'chowns a file to root using a c script
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1222.002
+    name: 'File and Directory Permissions Modification: FreeBSD, Linux and Mac File
+      and Directory Permissions Modification'
+  platforms:
+    linux:
+      sh:
+        command: /tmp/T1222002own 2a24e8_chown.c
+        payloads:
+        - 2a24e8_chown.c
+        cleanup: ''

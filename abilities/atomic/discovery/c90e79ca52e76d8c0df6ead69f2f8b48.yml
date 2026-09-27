@@ -1,0 +1,21 @@
+---
+- id: c90e79ca52e76d8c0df6ead69f2f8b48
+  name: Adfind - Enumerate Active Directory OUs
+  description: 'Adfind tool can be used for reconnaissance in an Active directory
+    environment. This example has been documented by ransomware actors enumerating
+    Active Directory OUs
+
+    reference- http://www.joeware.net/freetools/tools/adfind/, https://www.fireeye.com/blog/threat-research/2019/04/pick-six-intercepting-a-fin6-intrusion.html
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1482
+    name: Domain Trust Discovery
+  platforms:
+    windows:
+      cmd:
+        command: '"PathToAtomicsFolder\..\ExternalPayloads\AdFind.exe" -f (objectcategory=organizationalUnit)
+          None'
+        payloads: []
+        cleanup: ''

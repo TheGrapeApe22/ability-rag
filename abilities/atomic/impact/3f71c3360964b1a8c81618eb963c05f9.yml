@@ -1,0 +1,23 @@
+---
+- id: 3f71c3360964b1a8c81618eb963c05f9
+  name: Remove Account From Domain Admin Group
+  description: 'This test will remove an account from the domain admins group
+
+    '
+  tactic: impact
+  technique:
+    attack_id: T1531
+    name: Account Access Removal
+  platforms:
+    windows:
+      psh:
+        command: '$PWord = ConvertTo-SecureString -String; $Credential = New-Object
+          -TypeName System.Management.Automation.PSCredential -ArgumentList; if((Get-ADUser;   Remove-ADGroupMember
+          -Identity "Domain Admins" -Members; } else{;     write-host "Error - Make
+          sure #{remove_user} is in the domain admins group" -foregroundcolor Red;
+          }'
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

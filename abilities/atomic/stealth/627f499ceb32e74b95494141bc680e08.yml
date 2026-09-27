@@ -1,0 +1,21 @@
+---
+- id: 627f499ceb32e74b95494141bc680e08
+  name: Invoke CHM with Script Engine and Help Topic
+  description: Executes a CHM file with a defined script engine, ITS Protocol Handler,
+    and help topic extension.
+  tactic: stealth
+  technique:
+    attack_id: T1218.001
+    name: 'Signed Binary Proxy Execution: Compiled HTML File'
+  platforms:
+    windows:
+      psh:
+        command: $RequiredModule = Get-Module -Name AtomicTestHarnesses -ListAvailable;
+          if (-not $RequiredModule) {Install-Module -Name AtomicTestHarnesses -Scope
+          CurrentUser -Force};  Invoke-ATHCompiledHelp -ScriptEngine JScript -InfoTechStorageHandler
+          its -TopicExtension html -HHFilePath $env:windir\hh.exe -CHMFilePath Test.chm
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

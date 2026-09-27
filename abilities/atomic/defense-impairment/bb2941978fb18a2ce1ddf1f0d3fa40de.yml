@@ -1,0 +1,16 @@
+---
+- id: bb2941978fb18a2ce1ddf1f0d3fa40de
+  name: Gatekeeper Bypass
+  description: 'Gatekeeper Bypass via command line
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1553.001
+    name: 'Subvert Trust Controls: Gatekeeper Bypass'
+  platforms:
+    darwin:
+      sh:
+        command: xattr -d com.apple.quarantine myapp.app
+        payloads: []
+        cleanup: ''

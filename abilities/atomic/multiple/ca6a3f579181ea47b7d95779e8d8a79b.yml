@@ -1,0 +1,23 @@
+---
+- id: ca6a3f579181ea47b7d95779e8d8a79b
+  name: Portable Executable Injection
+  description: This test injects a portable executable into a remote Notepad process
+    memory using Portable Executable Injection and base-address relocation techniques.
+    When successful, a message box will appear with the title "Warning" and the content
+    "Atomic Red Team" after a few seconds.
+  tactic: multiple
+  technique:
+    attack_id: T1055.002
+    name: 'Process Injection: Portable Executable Injection'
+  platforms:
+    windows:
+      psh:
+        command: Start-Process "971b85_RedInjection.exe"; Start-Sleep -Seconds 7;
+          Get-Process -Name Notepad -ErrorAction SilentlyContinue | Stop-Process -Force
+        payloads:
+        - 971b85_RedInjection.exe
+        cleanup: Get-Process -Name Notepad -ErrorAction SilentlyContinue | Stop-Process
+          -Force
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

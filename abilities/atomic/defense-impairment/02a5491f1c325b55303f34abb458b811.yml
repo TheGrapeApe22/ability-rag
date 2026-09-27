@@ -1,0 +1,16 @@
+---
+- id: 02a5491f1c325b55303f34abb458b811
+  name: Reboot Linux Host via Kernel System Request
+  description: 'reboot system via system request seen in Awfulshred wiper.
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685
+    name: Disable or Modify Tools
+  platforms:
+    linux:
+      sh:
+        command: echo 1> /proc/sys/kernel/sysrq ; echo b> /proc/sysrq-trigger
+        payloads: []
+        cleanup: ''

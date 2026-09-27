@@ -1,0 +1,29 @@
+---
+- id: 196263c4c1f42138866d958193ad2ad4
+  name: Enumerate Linked Policies In ADSISearcher Discovery
+  description: 'The following Atomic test will utilize ADSISearcher to enumerate organizational
+    unit within Active Directory.
+
+    Upon successful execution a listing of users will output with their paths in AD.
+
+    Reference: https://medium.com/@pentesttas/discover-hidden-gpo-s-on-active-directory-using-ps-adsi-a284b6814c81
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1087.002
+    name: 'Account Discovery: Domain Account'
+  platforms:
+    windows:
+      psh:
+        command: (([adsisearcher]'(objectcategory=organizationalunit)').FindAll()).Path
+          | %{if(([ADSI]"$_").gPlink){Write-Host "[+] OU Path:"([ADSI]"$_").Path;$a=((([ADSI]"$_").gplink)
+          -replace "[[;]" -split "]");for($i=0;$i -lt $a.length;$i++){if($a[$i]){Write-Host
+          "Policy Path[$i]:"([ADSI]($a[$i]).Substring(0,$a[$i].length-1)).Path;Write-Host
+          "Policy Name[$i]:"([ADSI]($a[$i]).Substring(0,$a[$i].length-1)).DisplayName}
+          };Write-Output "`n" }}
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

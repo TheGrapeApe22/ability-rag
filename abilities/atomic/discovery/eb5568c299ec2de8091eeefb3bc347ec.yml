@@ -1,0 +1,20 @@
+---
+- id: eb5568c299ec2de8091eeefb3bc347ec
+  name: ESXi - Enumerate VMDKs available on an ESXi Host
+  description: 'An adversary uses the find command to enumerate vmdks on an ESXi host.
+
+    [Reference](https://www.crowdstrike.com/blog/hypervisor-jackpotting-ecrime-actors-increase-targeting-of-esxi-servers/)
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1083
+    name: File and Directory Discovery
+  platforms:
+    windows:
+      cmd:
+        command: echo "" | "PathToAtomicsFolder\..\ExternalPayloads\plink.exe" "atomic.local"
+          -ssh  -l "root" -pw "pass" -m "f719cb_esxi_file_discovery.txt"
+        payloads:
+        - f719cb_esxi_file_discovery.txt
+        cleanup: ''

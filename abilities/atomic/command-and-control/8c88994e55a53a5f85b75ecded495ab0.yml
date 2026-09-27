@@ -1,0 +1,20 @@
+---
+- id: 8c88994e55a53a5f85b75ecded495ab0
+  name: Tor Proxy Usage - MacOS
+  description: "This test is designed to launch the tor proxy service, which is what\
+    \ is utilized in the background by the Tor Browser and other applications with\
+    \ add-ons in order to provide onion routing functionality.\nUpon successful execution,\
+    \ the tor proxy service will be launched. \n"
+  tactic: command-and-control
+  technique:
+    attack_id: T1090.003
+    name: 'Proxy: Multi-hop Proxy'
+  platforms:
+    darwin:
+      sh:
+        command: 'if [ -x "$(command -v tor --version)" ]; then : ; else if [ ! -x
+          "$(command -v brew --version)" ]; then /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
+          keystroke return)"; fi; brew install tor; fi;  osascript -e ''tell application
+          "Terminal" to do script "tor"'''
+        payloads: []
+        cleanup: killall tor > /dev/null 2>&1

@@ -1,0 +1,35 @@
+---
+- id: 2f58053a0b7f76ab83218a7748642330
+  name: Microsoft Dev tunnels (Linux/macOS)
+  description: 'Dev Tunnels enables insiders as well as threat actors to expose local
+    ports over the internet via Microsoft dev tunnels.
+
+
+    This atomic will generate a dev tunnel binding it to the local service running
+    on the provided port. Can be used to expose local services, web applications and
+    local files etc.
+
+    Reference:
+
+    - [Microsoft Docs](https://learn.microsoft.com/en-us/tunnels/dev-tunnels-overview)
+
+    - [LOT Tunnels](https://lottunnels.github.io/lottunnels/Binaries/devtunnels/)
+
+    '
+  tactic: command-and-control
+  technique:
+    attack_id: T1572
+    name: Protocol Tunneling
+  platforms:
+    linux:
+      sh:
+        command: PathToAtomicsFolder/../ExternalPayloads/devtunnel host -p 8080 &
+        payloads: []
+        cleanup: pkill -9 $(basename "PathToAtomicsFolder/../ExternalPayloads/devtunnel");
+          PathToAtomicsFolder/../ExternalPayloads/devtunnel user logout; rm PathToAtomicsFolder/../ExternalPayloads/devtunnel
+    darwin:
+      sh:
+        command: PathToAtomicsFolder/../ExternalPayloads/devtunnel host -p 8080 &
+        payloads: []
+        cleanup: pkill -9 $(basename "PathToAtomicsFolder/../ExternalPayloads/devtunnel");
+          PathToAtomicsFolder/../ExternalPayloads/devtunnel user logout; rm PathToAtomicsFolder/../ExternalPayloads/devtunnel

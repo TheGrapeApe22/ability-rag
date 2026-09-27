@@ -1,0 +1,21 @@
+---
+- id: a9689b095fc56d3e23e98c20fe8e6f19
+  name: Adfind - Enumerate Active Directory Trusts
+  description: 'Adfind tool can be used for reconnaissance in an Active directory
+    environment. This example has been documented by ransomware actors enumerating
+    Active Directory Trusts
+
+    reference- http://www.joeware.net/freetools/tools/adfind/, https://www.fireeye.com/blog/threat-research/2019/04/pick-six-intercepting-a-fin6-intrusion.html
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1482
+    name: Domain Trust Discovery
+  platforms:
+    windows:
+      cmd:
+        command: '"PathToAtomicsFolder\..\ExternalPayloads\AdFind.exe" None -gcb -sc
+          trustdmp'
+        payloads: []
+        cleanup: ''

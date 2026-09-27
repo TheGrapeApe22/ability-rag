@@ -1,0 +1,23 @@
+---
+- id: 4519d5e005c13213fb80171661d2144c
+  name: BIOS Information Discovery through Registry
+  description: 'Looks up for BIOS information in the registry. BIOS information is
+    often read in order to detect sandboxing environments.  Upon execution, BIOS information
+    will be displayed.
+
+    - https://tria.ge/210111-eaz8mqhgh6/behavioral1
+
+    - https://evasions.checkpoint.com/techniques/registry.html
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1082
+    name: System Information Discovery
+  platforms:
+    windows:
+      cmd:
+        command: reg query HKEY_LOCAL_MACHINE\HARDWARE\DESCRIPTION\System /v SystemBiosVersion
+          && reg query HKEY_LOCAL_MACHINE\HARDWARE\DESCRIPTION\System /v VideoBiosVersion
+        payloads: []
+        cleanup: ''

@@ -1,0 +1,21 @@
+---
+- id: 4167979456caebfa370ebf25b3a19b40
+  name: Adfind - Query Active Directory Groups
+  description: 'Adfind tool can be used for reconnaissance in an Active directory
+    environment. This example has been documented by ransomware actors enumerating
+    Active Directory Groups
+
+    reference- http://www.joeware.net/freetools/tools/adfind/, https://www.fireeye.com/blog/threat-research/2019/04/pick-six-intercepting-a-fin6-intrusion.html
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1069.002
+    name: 'Permission Groups Discovery: Domain Groups'
+  platforms:
+    windows:
+      cmd:
+        command: '"PathToAtomicsFolder\..\ExternalPayloads\AdFind.exe" -f (objectcategory=group)
+          #{optional_args}'
+        payloads: []
+        cleanup: ''

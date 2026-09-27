@@ -1,0 +1,22 @@
+---
+- id: d65c4ebfab4fcd52f49e10ab1d6b4d2d
+  name: Enumerate All Network Shares with SharpShares
+  description: "SharpShares is a command line tool that can be integrated with Cobalt\
+    \ Strike's execute-assembly module, allowing for the enumeration of network shares.\
+    \ \nThis technique has been utilized by various ransomware groups, including BianLian.\n\
+    [Reference](https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-136a)\n"
+  tactic: discovery
+  technique:
+    attack_id: T1135
+    name: Network Share Discovery
+  platforms:
+    windows:
+      psh:
+        command: cmd /c 'PathToAtomicsFolder\..\ExternalPayloads\SharpShares.exe'
+          /ldap:all | out-file -filepath "$env:temp\T1135SharpSharesOutput.txt"
+        payloads: []
+        cleanup: remove-item "$env:temp\T1135SharpSharesOutput.txt" -force -erroraction
+          silentlycontinue
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

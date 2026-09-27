@@ -1,0 +1,17 @@
+---
+- id: a2946687ae1138d23b0dc040e43d0eb5
+  name: Enumerate Default Domain Admin Details (Domain)
+  description: 'This test will enumerate the details of the built-in domain admin
+    account
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1087.002
+    name: 'Account Discovery: Domain Account'
+  platforms:
+    windows:
+      cmd:
+        command: net user administrator /domain
+        payloads: []
+        cleanup: ''

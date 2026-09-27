@@ -1,0 +1,23 @@
+---
+- id: abc280f400f218aa1f4d5efe3c9e8228
+  name: Launch DirLister Executable
+  description: 'Launches the DirLister executable for a short period of time and then
+    exits.
+
+
+    Recently seen used by [BlackCat ransomware](https://news.sophos.com/en-us/2022/07/14/blackcat-ransomware-attacks-not-merely-a-byproduct-of-bad-luck/)
+    to create a list of accessible directories and files.'
+  tactic: discovery
+  technique:
+    attack_id: T1083
+    name: File and Directory Discovery
+  platforms:
+    windows:
+      psh:
+        command: Start-Process "PathToAtomicsFolder\..\ExternalPayloads\DirLister.exe";
+          Start-Sleep -Second 4; Stop-Process -Name "DirLister"
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

@@ -1,0 +1,32 @@
+---
+- id: d38cba2905e62b4c1a7e5c88137ce485
+  name: Linux Base64 Encoded Shebang in CLI
+  description: "Using Linux Base64 Encoded shell scripts that have Shebang in them.\
+    \ This is commonly how attackers obfuscate passing and executing a shell script.\
+    \ Seen [here](https://www.trendmicro.com/pl_pl/research/20/i/the-evolution-of-malicious-shell-scripts.html)\
+    \ by TrendMicro, as well as [LinPEAS](https://github.com/carlospolop/PEASS-ng/tree/master/linPEAS).\
+    \ Also a there is a great Sigma rule [here](https://github.com/SigmaHQ/sigma/blob/master/rules/linux/process_creation/proc_creation_lnx_base64_shebang_cli.yml)\
+    \ for it. \n"
+  tactic: stealth
+  technique:
+    attack_id: T1140
+    name: Deobfuscate/Decode Files or Information
+  platforms:
+    linux:
+      sh:
+        command: echo IyEvYmluL2Jhc2gKZWNobyAiaHR0cHM6Ly93d3cueW91dHViZS5jb20vQGF0b21pY3NvbmFmcmlkYXkgRlRXIgo=
+          | base64 -d | bash; echo IyEvYmluL2Rhc2gKZWNobyAiaHR0cHM6Ly93d3cueW91dHViZS5jb20vQGF0b21pY3NvbmFmcmlkYXkgRlRXIgo=
+          | base64 -d | bash; echo IyEvYmluL2Rhc2gKZWNobyAiaHR0cHM6Ly93d3cueW91dHViZS5jb20vQGF0b21pY3NvbmFmcmlkYXkgRlRXIgo=
+          | base64 -d | bash; echo IyEvYmluL3NoCmVjaG8gImh0dHBzOi8vd3d3LnlvdXR1YmUuY29tL0BhdG9taWNzb25hZnJpZGF5IEZUVyIK
+          | base64 -d | bash
+        payloads: []
+        cleanup: ''
+    darwin:
+      sh:
+        command: echo IyEvYmluL2Jhc2gKZWNobyAiaHR0cHM6Ly93d3cueW91dHViZS5jb20vQGF0b21pY3NvbmFmcmlkYXkgRlRXIgo=
+          | base64 -d | bash; echo IyEvYmluL2Rhc2gKZWNobyAiaHR0cHM6Ly93d3cueW91dHViZS5jb20vQGF0b21pY3NvbmFmcmlkYXkgRlRXIgo=
+          | base64 -d | bash; echo IyEvYmluL2Rhc2gKZWNobyAiaHR0cHM6Ly93d3cueW91dHViZS5jb20vQGF0b21pY3NvbmFmcmlkYXkgRlRXIgo=
+          | base64 -d | bash; echo IyEvYmluL3NoCmVjaG8gImh0dHBzOi8vd3d3LnlvdXR1YmUuY29tL0BhdG9taWNzb25hZnJpZGF5IEZUVyIK
+          | base64 -d | bash
+        payloads: []
+        cleanup: ''

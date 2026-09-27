@@ -1,0 +1,71 @@
+---
+- id: 432049c974d0f8ac5267944268524418
+  name: Instruction Overwrite Jump
+  description: 'This technique achieves control-flow hijacking via Code Patching.
+
+    It first identifies a code cave by scanning /proc/<pid>/maps
+
+    and writes the shellcode into it through /proc/<pid>/mem.
+
+    It then reads the current Instruction Pointer (RIP)
+
+    to understand exactly what instruction the CPU is about to execute,
+
+    and overwrites the instructions at that memory location
+
+    with an unconditional jump pointing to the shellcode address.
+
+
+    The injection targets RIP - 2 to account for Linux kernel syscall restarting:
+
+    when a process interrupted during a system call is resumed,
+
+    the kernel typically rewinds the instruction pointer by 2 bytes to re-execute
+    the syscall instruction.
+
+    To prevent crashes in cases where the process was not in a syscall,
+
+    a NOP sled (padding with 0x90) is prepended to the payload,
+
+    ensuring the execution flow safely slides into the shellcode regardless of the
+    exact byte offset.
+
+    [!]: Strictly speaking, this technique does not require handling syscall restarts,
+
+    since we are not interrupting the victim during a syscall. The NOP sled is included
+    for generality
+
+    (the same shellcode could be reused in scenarios where syscall restarting does
+    occur)
+
+    and as a defensive measure against off-by-a-few-bytes inaccuracies in the RIP
+    read from /proc/<pid>/syscall.
+
+
+    Note: this test forks a child process to use as the injection target.
+
+    This allows the test to run on systems where ptrace_scope=1 (default on most Linux
+    distributions),
+
+    where a process can only modify the memory of its own descendants.
+
+    This may differ from a real-world scenario where the attacker targets an arbitrary
+    process,
+
+    but for the purpose of this test it preserves the detection-relevant behavior:
+    the same syscalls and /proc/<pid>/mem
+
+    access patterns are generated regardless of the relationship between injector
+    and target.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1055.009
+    name: 'Process Injection: Proc Memory'
+  platforms:
+    linux:
+      sh:
+        command: PathToAtomicsFolder/T1055.009/bin/instruction_overwrite_jump
+        payloads: []
+        cleanup: rm -f /tmp/pwned

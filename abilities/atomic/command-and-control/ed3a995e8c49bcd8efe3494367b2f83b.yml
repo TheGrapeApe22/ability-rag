@@ -1,0 +1,20 @@
+---
+- id: ed3a995e8c49bcd8efe3494367b2f83b
+  name: Lolbas replace.exe use to copy file
+  description: 'Copy file.cab to destination
+
+    Reference: https://lolbas-project.github.io/lolbas/Binaries/Replace/
+
+    '
+  tactic: command-and-control
+  technique:
+    attack_id: T1105
+    name: Ingress Tool Transfer
+  platforms:
+    windows:
+      cmd:
+        command: del %TEMP%\redcanary.cab >nul 2>&1 && C:\Windows\System32\replace.exe
+          "682a17_redcanary.cab" %TEMP% /A
+        payloads:
+        - 682a17_redcanary.cab
+        cleanup: del %TEMP%\redcanary.cab >nul 2>&1

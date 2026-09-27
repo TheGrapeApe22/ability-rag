@@ -1,0 +1,16 @@
+---
+- id: 70795de7cbb842edb029b3378c27c008
+  name: Utilize Clipboard to store or execute commands from
+  description: 'Add data to clipboard to copy off or execute commands from.
+
+    '
+  tactic: collection
+  technique:
+    attack_id: T1115
+    name: Clipboard Data
+  platforms:
+    windows:
+      cmd:
+        command: dir | clip && echo "T1115" > %temp%\T1115.txt && clip < %temp%\T1115.txt
+        payloads: []
+        cleanup: del %temp%\T1115.txt >nul 2>&1

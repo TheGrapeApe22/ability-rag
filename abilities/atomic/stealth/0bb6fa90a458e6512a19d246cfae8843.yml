@@ -1,0 +1,22 @@
+---
+- id: 0bb6fa90a458e6512a19d246cfae8843
+  name: Invoke HTML Application - JScript Engine with Rundll32 and Inline Protocol
+    Handler
+  description: Executes an HTA Application with JScript Engine, Rundll32 and Inline
+    Protocol Handler.
+  tactic: stealth
+  technique:
+    attack_id: T1218.005
+    name: 'Signed Binary Proxy Execution: Mshta'
+  platforms:
+    windows:
+      psh:
+        command: $RequiredModule = Get-Module -Name AtomicTestHarnesses -ListAvailable;
+          if (-not $RequiredModule) {Install-Module -Name AtomicTestHarnesses -Scope
+          CurrentUser -Force};  Invoke-ATHHTMLApplication -ScriptEngine JScript -InlineProtocolHandler
+          About -UseRundll32 -Rundll32FilePath $env:windir\system32\rundll32.exe
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

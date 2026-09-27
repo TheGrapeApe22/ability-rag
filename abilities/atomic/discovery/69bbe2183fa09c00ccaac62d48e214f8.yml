@@ -1,0 +1,15 @@
+---
+- id: 69bbe2183fa09c00ccaac62d48e214f8
+  name: List Internet Explorer Bookmarks using the command prompt
+  description: This test will list the bookmarks for Internet Explorer that are found
+    in the Favorites folder
+  tactic: discovery
+  technique:
+    attack_id: T1217
+    name: Browser Bookmark Discovery
+  platforms:
+    windows:
+      cmd:
+        command: dir /s /b %USERPROFILE%\Favorites
+        payloads: []
+        cleanup: ''

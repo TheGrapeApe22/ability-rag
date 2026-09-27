@@ -1,0 +1,18 @@
+---
+- id: a88dfdecd5a6222c89f3c36322270be3
+  name: ESXi - Disable Firewall via Esxcli
+  description: 'Adversaries may disable the ESXI firewall via ESXCLI
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1686
+    name: Disable or Modify System Firewall
+  platforms:
+    windows:
+      cmd:
+        command: PathToAtomicsFolder\..\ExternalPayloads\plink.exe -ssh atomic.local
+          -l root -pw n/a -m PathToAtomicsFolder\..\atomics\T1686\src\esxi_disable_firewall.txt
+        payloads: []
+        cleanup: PathToAtomicsFolder\..\ExternalPayloads\plink.exe -ssh atomic.local
+          -l root -pw n/a -m PathToAtomicsFolder\..\atomics\T1686\src\esxi_enable_firewall.txt

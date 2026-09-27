@@ -1,0 +1,17 @@
+---
+- id: 80a46a05d2aea3b532ecc0ac8a46c9ee
+  name: Truncate system log files via truncate utility
+  description: 'This test truncates the system log files using the truncate utility
+    with (-s 0) parameter which sets file size to zero, thus emptying the file content
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685.006
+    name: 'Disable or Modify Tools: Clear Linux or Mac System Logs'
+  platforms:
+    darwin:
+      sh:
+        command: sudo truncate -s 0 /var/log/system.log
+        payloads: []
+        cleanup: ''

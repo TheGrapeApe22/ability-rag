@@ -1,0 +1,32 @@
+---
+- id: 8f2c53299c608f1c5168dfda3561de50
+  name: EXO - Full access mailbox permission granted to a user
+  description: 'Give a nominated user, full mailbox delegation access of another user.
+
+    This can be used by an adversary to maintain persistent access to a target''s
+    mailbox in M365.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1098.002
+    name: 'Account Manipulation: Additional Email Delegate Permissions'
+  platforms:
+    unknown:
+      psh:
+        command: Import-Module ExchangeOnlineManagement; $secure_pwd = "o365_password_test"
+          | ConvertTo-SecureString -AsPlainText -Force; $creds = New-Object System.Management.Automation.PSCredential
+          -ArgumentList "o365_user_test@contoso.com", $secure_pwd; Connect-ExchangeOnline
+          -Credential $creds; Add-MailboxPermission -Identity "delegate@contoso.com"
+          -User "operator@contoso.com" -AccessRights FullAccess -InheritanceType All;
+          Disconnect-ExchangeOnline -Confirm:$false
+        payloads: []
+        cleanup: Import-Module ExchangeOnlineManagement; $secure_pwd = "o365_password_test"
+          | ConvertTo-SecureString -AsPlainText -Force; $creds = New-Object System.Management.Automation.PSCredential
+          -ArgumentList "o365_user_test@contoso.com", $secure_pwd; Connect-ExchangeOnline
+          -Credential $creds; Remove-MailboxPermission -Identity "delegate@contoso.com"
+          -User "operator@contoso.com" -AccessRights FullAccess -InheritanceType All
+          -Confirm:$false; Disconnect-ExchangeOnline -Confirm:$false
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

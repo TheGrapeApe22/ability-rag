@@ -1,0 +1,28 @@
+---
+- id: a9bf610d26407d08e2e65f7f979ee90b
+  name: LOLBAS Msedge to Spawn Process
+  description: 'Executes a process under a trusted Microsoft signed binary,mseddge.
+    This test will spawn "calc.exe" as a child process of msedge.exe
+
+    - https://lolbas-project.github.io/lolbas/Binaries/Msedge/
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1218
+    name: Signed Binary Proxy Execution
+  platforms:
+    windows:
+      psh:
+        command: $edgePath64 = "C:\Program Files\Microsoft\Edge\Application\msedge.exe";
+          if (Test-Path $edgePath64) {;     $edgePath = $edgePath64; } else {;     $edgePath32
+          = "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe";     if
+          (Test-Path $edgePath32) {;         $edgePath = $edgePath32;     } else {;         exit
+          1;     }; }; & $edgePath --disable-gpu-sandbox --gpu-launcher="C:\\Windows\\System32\\calc.exe
+          &&"; sleep 5; taskkill -f -im msedge.exe; taskkill -f -im calc.exe; taskkill
+          -f -im win32calc.exe
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

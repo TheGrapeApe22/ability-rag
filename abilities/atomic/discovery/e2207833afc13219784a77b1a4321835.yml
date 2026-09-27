@@ -1,0 +1,34 @@
+---
+- id: e2207833afc13219784a77b1a4321835
+  name: Simulating MAZE Directory Enumeration
+  description: 'This test emulates MAZE ransomware''s ability to enumerate directories
+    using Powershell.
+
+    Upon successful execution, this test will output the directory enumeration results
+    to a specified file, as well as display them in the active window.
+
+    See https://www.mandiant.com/resources/tactics-techniques-procedures-associated-with-maze-ransomware-incidents
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1083
+    name: File and Directory Discovery
+  platforms:
+    windows:
+      psh:
+        command: $folderarray = @("Desktop", "Downloads", "Documents", "AppData/Local",
+          "AppData/Roaming"); Get-ChildItem -Path $env:homedrive -ErrorAction SilentlyContinue
+          | Out-File -append $env:temp\T1083Test5.txt; Get-ChildItem -Path $env:programfiles
+          -erroraction silentlycontinue | Out-File -append $env:temp\T1083Test5.txt;
+          Get-ChildItem -Path "${env:ProgramFiles(x86)}" -erroraction silentlycontinue
+          | Out-File -append $env:temp\T1083Test5.txt; $UsersFolder = "$env:homedrive\Users\";
+          foreach ($directory in Get-ChildItem -Path $UsersFolder -ErrorAction SilentlyContinue);
+          {; foreach ($secondarydirectory in $folderarray);  {Get-ChildItem -Path
+          "$UsersFolder/$directory/$secondarydirectory" -ErrorAction SilentlyContinue
+          | Out-File -append $env:temp\T1083Test5.txt}; }; cat $env:temp\T1083Test5.txt
+        payloads: []
+        cleanup: remove-item $env:temp\T1083Test5.txt -ErrorAction SilentlyContinue
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

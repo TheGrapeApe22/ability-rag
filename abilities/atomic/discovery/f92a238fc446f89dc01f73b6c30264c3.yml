@@ -1,0 +1,20 @@
+---
+- id: f92a238fc446f89dc01f73b6c30264c3
+  name: Discover System Language with chcp
+  description: 'Identify System language with the chcp command.
+
+
+    Upon successful execution, result in number format can be looked up to correlate
+    the language.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1614.001
+    name: 'System Location Discovery: System Language Discovery'
+  platforms:
+    windows:
+      cmd:
+        command: chcp
+        payloads: []
+        cleanup: ''

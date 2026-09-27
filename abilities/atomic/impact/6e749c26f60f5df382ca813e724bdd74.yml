@@ -1,0 +1,16 @@
+---
+- id: 6e749c26f60f5df382ca813e724bdd74
+  name: Reboot System via `halt` - FreeBSD
+  description: 'This test restarts a FreeBSD system using `halt`.
+
+    '
+  tactic: impact
+  technique:
+    attack_id: T1529
+    name: System Shutdown/Reboot
+  platforms:
+    linux:
+      sh:
+        command: halt -r
+        payloads: []
+        cleanup: ''

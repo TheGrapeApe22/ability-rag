@@ -1,0 +1,14 @@
+---
+- id: 6c971c62a2bcb9234e4fdc08f8a56976
+  name: Enable Guest Account on macOS
+  description: This test enables the guest account on macOS using sysadminctl utility.
+  tactic: multiple
+  technique:
+    attack_id: T1078.001
+    name: 'Valid Accounts: Default Accounts'
+  platforms:
+    darwin:
+      sh:
+        command: sudo sysadminctl -guestAccount on
+        payloads: []
+        cleanup: sudo sysadminctl -guestAccount off

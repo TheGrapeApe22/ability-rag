@@ -1,0 +1,25 @@
+---
+- id: 7282b390720ee1987054af6dd212d0f2
+  name: Setting the HISTIGNORE environment variable
+  description: "An Adversary may take advantage of the HISTIGNORE environment variable\
+    \ either to ignore particular commands or all commands. \n\nIn this test we 1.\
+    \ set HISTIGNORE to ignore ls, rm and ssh commands 2. clear this history cache\
+    \ 3..4 execute ls commands 5. confirm that the ls commands are not in the history\
+    \ cache 6. unset HISTIGNORE variable 7.. same again, but ignoring ALL commands.\n"
+  tactic: defense-impairment
+  technique:
+    attack_id: T1690
+    name: Prevent Command History Logging
+  platforms:
+    linux:
+      sh:
+        command: if ((${#HISTIGNORE[@]})); then echo "\$HISTIGNORE = $HISTIGNORE";
+          else export HISTIGNORE='ls*:rm*:ssh*'; echo "\$HISTIGNORE = $HISTIGNORE";
+          fi; history -c ; ls -la $HISTFILE; ls -la ~/.bash_logout; if [ $(history
+          |wc -l) -eq 1 ]; then echo "ls commands are not in history"; fi; unset HISTIGNORE;
+          if ((${#HISTIGNORE[@]})); then echo "\$HISTIGNORE = $HISTIGNORE"; else export
+          HISTIGNORE='*'; echo "\$HISTIGNORE = $HISTIGNORE"; fi; history -c ; whoami;
+          groups; if [ $(history |wc -l) -eq 0 ]; then echo "History cache is empty";
+          fi
+        payloads: []
+        cleanup: unset HISTIGNORE

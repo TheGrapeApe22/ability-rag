@@ -1,0 +1,19 @@
+---
+- id: 6bbb6f8b1db42e2c2c79892e8c31feb3
+  name: Enumerate credentials from Windows Credential Manager using vaultcmd.exe [Windows
+    Credentials]
+  description: This module will enumerate credentials stored in Windows Credentials
+    vault of Windows Credential Manager using builtin utility vaultcmd.exe
+  tactic: credential-access
+  technique:
+    attack_id: T1555
+    name: Credentials from Password Stores
+  platforms:
+    windows:
+      psh:
+        command: vaultcmd /listcreds:"Windows Credentials" /all
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

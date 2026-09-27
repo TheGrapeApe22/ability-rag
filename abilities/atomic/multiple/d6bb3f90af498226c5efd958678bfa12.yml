@@ -1,0 +1,23 @@
+---
+- id: d6bb3f90af498226c5efd958678bfa12
+  name: Lolbin Jsc.exe compile javascript to exe
+  description: 'Use jsc.exe to compile javascript code stored in scriptfile.js and
+    output scriptfile.exe.
+
+    https://lolbas-project.github.io/lolbas/Binaries/Jsc/
+
+    https://www.phpied.com/make-your-javascript-a-windows-exe/
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1127
+    name: Trusted Developer Utilities Proxy Execution
+  platforms:
+    windows:
+      cmd:
+        command: copy "a25c19_hello.js" %TEMP%\hello.js && C:\Windows\Microsoft.NET\Framework\v4.0.30319\jsc.exe
+          %TEMP%\hello.js
+        payloads:
+        - a25c19_hello.js
+        cleanup: del %TEMP%\hello.js && del %TEMP%\hello.exe

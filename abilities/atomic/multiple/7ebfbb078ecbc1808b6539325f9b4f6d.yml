@@ -1,0 +1,19 @@
+---
+- id: 7ebfbb078ecbc1808b6539325f9b4f6d
+  name: Packet Capture Linux socket AF_PACKET,SOCK_RAW with BPF filter for UDP with
+    sudo
+  description: 'Captures packets with domain=AF_PACKET,type=SOCK_RAW for a few seconds.
+
+    Sets a BPF filter on the socket to filter for UDP traffic.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1040
+    name: Network Sniffing
+  platforms:
+    linux:
+      sh:
+        command: sudo /tmp/t1040_linux_pcapdemo -a -f -t 3
+        payloads: []
+        cleanup: rm -f /tmp/t1040_linux_pcapdemo

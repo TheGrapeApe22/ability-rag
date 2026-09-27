@@ -1,0 +1,28 @@
+---
+- id: 753fc5a5a7f7427fde25e0ed8b3a0f76
+  name: Process Injection with Go using EtwpCreateEtwThread WinAPI
+  description: "Uses EtwpCreateEtwThread function from ntdll.dll to execute shellcode\
+    \ within the application's process.\nThis program loads the DLLs and gets a handle\
+    \ to the used procedures itself instead of using the windows package directly.\n\
+    \nSteps taken with this technique\n1. Allocate memory for the shellcode with VirtualAlloc\
+    \ setting the page permissions to Read/Write\n2. Use the RtlCopyMemory macro to\
+    \ copy the shellcode to the allocated memory space\n3. Change the memory page\
+    \ permissions to Execute/Read with VirtualProtect\n4. Call EtwpCreateEtwThread\
+    \ on shellcode address\n5. Call WaitForSingleObject so the program does not end\
+    \ before the shellcode is executed\n\n- PoC Credit: (https://github.com/Ne0nd0g/go-shellcode/tree/master#EtwpCreateEtwThread)\n\
+    - References: \n  - https://gist.github.com/TheWover/b2b2e427d3a81659942f4e8b9a978dc3\n\
+    \  - https://www.geoffchappell.com/studies/windows/win32/ntdll/api/etw/index.htm\n"
+  tactic: multiple
+  technique:
+    attack_id: T1055
+    name: Process Injection
+  platforms:
+    windows:
+      psh:
+        command: 66cc10_EtwpCreateEtwThread.exe -debug
+        payloads:
+        - 66cc10_EtwpCreateEtwThread.exe
+        cleanup: Stop-Process -Name CalculatorApp -ErrorAction SilentlyContinue
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

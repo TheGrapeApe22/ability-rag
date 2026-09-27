@@ -1,0 +1,17 @@
+---
+- id: 01d1dfec9efbf1f20ee65df03209cf5b
+  name: Append to the system shell profile
+  description: 'An adversary may wish to establish persistence by executing malicious
+    commands from the systems /etc/profile every time "any" user logs in.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1546.004
+    name: 'Event Triggered Execution: .bash_profile .bashrc and .shrc'
+  platforms:
+    linux:
+      sh:
+        command: echo '# Hello from Atomic Red Team T1546.004' >> /etc/profile
+        payloads: []
+        cleanup: sed -i "s/# Atomic Red Team was here! T1546.004//" /etc/profile

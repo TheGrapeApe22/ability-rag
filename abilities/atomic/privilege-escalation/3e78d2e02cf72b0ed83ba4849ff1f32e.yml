@@ -1,0 +1,17 @@
+---
+- id: 3e78d2e02cf72b0ed83ba4849ff1f32e
+  name: Do reconnaissance for files that have the setgid bit set
+  description: 'This test simulates a command that can be run to enumerate files that
+    have the setgid bit set
+
+    '
+  tactic: privilege-escalation
+  technique:
+    attack_id: T1548.001
+    name: 'Abuse Elevation Control Mechanism: Setuid and Setgid'
+  platforms:
+    linux:
+      sh:
+        command: find /usr/bin -perm -2000
+        payloads: []
+        cleanup: ''

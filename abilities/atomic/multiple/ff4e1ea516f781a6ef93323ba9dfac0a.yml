@@ -1,0 +1,27 @@
+---
+- id: ff4e1ea516f781a6ef93323ba9dfac0a
+  name: Running Chrome VPN Extensions via the Registry 2 vpn extension
+  description: 'Running Chrome VPN Extensions via the Registry install 2 vpn extension,
+    please see "T1133\src\list of vpn extension.txt" to view complete list
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1133
+    name: External Remote Services
+  platforms:
+    windows:
+      psh:
+        command: $extList = "fcfhplploccackoneaefokcmbjfbkenj", "fdcgdnkidjaadafnichfpabhfomcebme";
+          foreach ($extension in $extList) {;   New-Item -Path HKLM:\Software\Wow6432Node\Google\Chrome\Extensions\$extension
+          -Force;   New-ItemProperty -Path "HKLM:\Software\Wow6432Node\Google\Chrome\Extensions\$extension"
+          -Name "update_url" -Value "https://clients2.google.com/service/update2/crx"
+          -PropertyType "String" -Force}; Start chrome; Start-Sleep -Seconds 30; Stop-Process
+          -Name "chrome"
+        payloads: []
+        cleanup: $extList = "fcfhplploccackoneaefokcmbjfbkenj", "fdcgdnkidjaadafnichfpabhfomcebme";
+          foreach ($extension in $extList) {; Remove-Item -Path "HKLM:\Software\Wow6432Node\Google\Chrome\Extensions\$extension"
+          -ErrorAction Ignore}
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

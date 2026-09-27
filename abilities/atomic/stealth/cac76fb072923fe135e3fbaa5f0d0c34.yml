@@ -1,0 +1,25 @@
+---
+- id: cac76fb072923fe135e3fbaa5f0d0c34
+  name: Expand CAB with expand.exe
+  description: 'Uses expand.exe to extract a file from a CAB created locally. This
+    simulates adversarial use of expand on cabinet archives.
+
+    Upon success, art-expand-source.txt is extracted next to the CAB.
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1140
+    name: Deobfuscate/Decode Files or Information
+  platforms:
+    windows:
+      cmd:
+        command: mkdir "%TEMP%\art-expand-out" >nul 2>&1 && echo hello from atomic
+          red team > "PathToAtomicsFolder\T1140\src\art-expand-source.txt" && makecab
+          "PathToAtomicsFolder\T1140\src\art-expand-source.txt" "%TEMP%\art-expand-test.cab"
+          && pushd "%TEMP%\art-expand-out" && expand "%TEMP%\art-expand-test.cab"
+          -F:* . && popd
+        payloads: []
+        cleanup: del "PathToAtomicsFolder\T1140\src\art-expand-source.txt" >nul 2>&1
+          && del "%TEMP%\art-expand-test.cab" >nul 2>&1 && rmdir "%TEMP%\art-expand-out"
+          /s /q >nul 2>&1

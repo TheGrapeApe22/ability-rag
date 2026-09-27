@@ -1,0 +1,33 @@
+---
+- id: a02e38df9ad70c7b8f734d91b7d37965
+  name: Scheduled Task ("Ghost Task") via Registry Key Manipulation
+  description: 'Create a scheduled task through manipulation of registry keys. This
+    procedure is implemented using the [GhostTask](https://github.com/netero1010/GhostTask)
+    utility. By manipulating registry keys under HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree,
+    the tool creates user-specified scheduled tasks without a corresponding Windows
+    Event 4698, which is logged when scheduled tasks are created through conventional
+    means.
+
+    This requires a download of the GhostTask binary, which must be run as NT Authority\SYSTEM.
+    Upon successful execution of this test, a scheduled task will be set to run at
+    logon which launches notepad.exe or runs a user-specified command.
+
+    For further exploration of this procedure and guidance for hunting and detection,
+    see [Hunting G-G-G-GhostTasks!](https://medium.com/p/154b50ab6a78).
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1053.005
+    name: 'Scheduled Task/Job: Scheduled Task'
+  platforms:
+    windows:
+      cmd:
+        command: '"PathToAtomicsFolder\..\ExternalPayloads\PsExec.exe" \\localhost
+          -accepteula -s "cmd.exe" && "PathToAtomicsFolder\..\ExternalPayloads\GhostTask.exe"
+          \\localhost add lilghostie "cmd.exe" "/c notepad.exe" $env:USERDOMAIN +
+          ''\'' + $env:USERNAME logon'
+        payloads: []
+        cleanup: '"PathToAtomicsFolder\..\ExternalPayloads\PsExec.exe" \\localhost
+          -accepteula -s "cmd.exe" && "PathToAtomicsFolder\..\ExternalPayloads\GhostTask.exe"
+          \\localhost delete lilghostie > nul'

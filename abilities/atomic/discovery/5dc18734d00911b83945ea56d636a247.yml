@@ -1,0 +1,37 @@
+---
+- id: 5dc18734d00911b83945ea56d636a247
+  name: Permission Groups Discovery (Local)
+  description: 'Permission Groups Discovery
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1069.001
+    name: 'Permission Groups Discovery: Local Groups'
+  platforms:
+    linux:
+      sh:
+        command: if [ -x "$(command -v dscacheutil)" ]; then dscacheutil -q group;
+          else echo "dscacheutil is missing from the machine. skipping..."; fi; if
+          [ -x "$(command -v dscl)" ]; then dscl . -list /Groups; else echo "dscl
+          is missing from the machine. skipping..."; fi; if [ -x "$(command -v groups)"
+          ]; then groups; else echo "groups is missing from the machine. skipping...";
+          fi; if [ -x "$(command -v id)" ]; then id; else echo "id is missing from
+          the machine. skipping..."; fi; if [ -x "$(command -v getent)" ]; then getent
+          group; else echo "getent is missing from the machine. skipping..."; fi;
+          cat /etc/group
+        payloads: []
+        cleanup: ''
+    darwin:
+      sh:
+        command: if [ -x "$(command -v dscacheutil)" ]; then dscacheutil -q group;
+          else echo "dscacheutil is missing from the machine. skipping..."; fi; if
+          [ -x "$(command -v dscl)" ]; then dscl . -list /Groups; else echo "dscl
+          is missing from the machine. skipping..."; fi; if [ -x "$(command -v groups)"
+          ]; then groups; else echo "groups is missing from the machine. skipping...";
+          fi; if [ -x "$(command -v id)" ]; then id; else echo "id is missing from
+          the machine. skipping..."; fi; if [ -x "$(command -v getent)" ]; then getent
+          group; else echo "getent is missing from the machine. skipping..."; fi;
+          cat /etc/group
+        payloads: []
+        cleanup: ''

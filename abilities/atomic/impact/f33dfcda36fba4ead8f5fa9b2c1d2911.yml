@@ -1,0 +1,20 @@
+---
+- id: f33dfcda36fba4ead8f5fa9b2c1d2911
+  name: ESXi - Change Welcome Message on Direct Console User Interface (DCUI)
+  description: 'Changes the ESXi welcome message to potentially display ransom information.
+
+    [Reference](https://lolesxi-project.github.io/LOLESXi/lolesxi/Binaries/esxcli/#change%20display%20information)
+
+    '
+  tactic: impact
+  technique:
+    attack_id: T1491.001
+    name: 'Defacement: Internal Defacement'
+  platforms:
+    windows:
+      cmd:
+        command: echo "" | "PathToAtomicsFolder\..\ExternalPayloads\plink.exe" -batch
+          "atomic.local" -ssh -l root -pw "password" "esxcli system welcomemsg set
+          -m 'RANSOMWARE-NOTIFICATION'"
+        payloads: []
+        cleanup: ''

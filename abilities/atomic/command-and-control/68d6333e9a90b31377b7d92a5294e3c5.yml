@@ -1,0 +1,21 @@
+---
+- id: 68d6333e9a90b31377b7d92a5294e3c5
+  name: Arbitrary file download using the Notepad++ GUP.exe binary
+  description: 'GUP is an open source signed binary used by Notepad++ for software
+    updates, and can be used to download arbitrary files(.zip) from internet/github.
+
+    [Reference](https://x.com/nas_bench/status/1535322182863179776?s=20)
+
+    Upon execution, a sample zip file will be downloaded to C:\Temp\Sample folder'
+  tactic: command-and-control
+  technique:
+    attack_id: T1105
+    name: Ingress Tool Transfer
+  platforms:
+    windows:
+      cmd:
+        command: mkdir "c:\Temp" && cd PathToAtomicsFolder\T1105\bin\ && GUP.exe -unzipTo
+          "" "C:\Temp" "Sample https://getsamplefiles.com/download/zip/sample-2.zip
+          CAC4D26F32CA629DFB10FE614ED00EB1066A0C0011386290D3426C3DE2E53AC6"
+        payloads: []
+        cleanup: rmdir /s /q "C:\Temp\Sample" >nul 2>nul

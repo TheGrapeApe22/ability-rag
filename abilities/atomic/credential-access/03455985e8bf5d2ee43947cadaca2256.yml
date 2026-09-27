@@ -1,0 +1,20 @@
+---
+- id: 03455985e8bf5d2ee43947cadaca2256
+  name: Dump LSASS.exe Memory using direct system calls and API unhooking
+  description: "The memory of lsass.exe is often dumped for offline credential theft\
+    \ attacks. This can be achieved using direct system calls and API unhooking in\
+    \ an effort to avoid detection. \nhttps://github.com/outflanknl/Dumpert\nhttps://outflank.nl/blog/2019/06/19/red-team-tactics-combining-direct-system-calls-and-srdi-to-bypass-av-edr/\n\
+    Upon successful execution, you should see the following file created C:\\\\windows\\\
+    \\temp\\\\dumpert.dmp.\n\nIf you see a message saying \\\"The system cannot find\
+    \ the path specified.\\\", try using the  get-prereq_commands to download the\
+    \  tool first.\n"
+  tactic: credential-access
+  technique:
+    attack_id: T1003.001
+    name: 'OS Credential Dumping: LSASS Memory'
+  platforms:
+    windows:
+      cmd:
+        command: '"PathToAtomicsFolder\..\ExternalPayloads\Outflank-Dumpert.exe"'
+        payloads: []
+        cleanup: del C:\windows\temp\dumpert.dmp >nul 2> nul

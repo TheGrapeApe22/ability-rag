@@ -1,0 +1,19 @@
+---
+- id: 3a68db58e75f8887944e846f0455f758
+  name: Disable syslog
+  description: 'Disables syslog collection
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685
+    name: Disable or Modify Tools
+  platforms:
+    linux:
+      sh:
+        command: 'if (rpm -q rsyslog 2>&1 >/dev/null) || (dpkg -s rsyslog | grep -q
+          installed) > /dev/null; then : ; else sudo (which yum && yum -y install
+          epel-release rsyslog)||(which apt-get && apt-get install -y rsyslog); fi;  systemctl
+          stop rsyslog ; systemctl disable rsyslog'
+        payloads: []
+        cleanup: systemctl start rsyslog ; systemctl enable rsyslog

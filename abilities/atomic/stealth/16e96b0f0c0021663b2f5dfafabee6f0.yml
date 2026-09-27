@@ -1,0 +1,17 @@
+---
+- id: 16e96b0f0c0021663b2f5dfafabee6f0
+  name: Execution of non-dll using rundll32.exe
+  description: "Rundll32.exe running non-dll \n"
+  tactic: stealth
+  technique:
+    attack_id: T1218.011
+    name: 'Signed Binary Proxy Execution: Rundll32'
+  platforms:
+    windows:
+      psh:
+        command: rundll32.exe C:\Users\$env:username\Downloads\calc.png, StartW
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

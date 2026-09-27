@@ -1,0 +1,16 @@
+---
+- id: 2cf301ed4e4449a10a6ffe848bac21b1
+  name: Odbcconf.exe - Execute Arbitrary DLL
+  description: 'Execute arbitrary DLL file stored locally.
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1218.008
+    name: 'Signed Binary Proxy Execution: Odbcconf'
+  platforms:
+    windows:
+      cmd:
+        command: odbcconf.exe /S /A {REGSVR "#{dll_payload}"}
+        payloads: []
+        cleanup: ''

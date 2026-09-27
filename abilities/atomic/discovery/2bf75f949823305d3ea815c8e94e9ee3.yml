@@ -1,0 +1,19 @@
+---
+- id: 2bf75f949823305d3ea815c8e94e9ee3
+  name: User Discovery With Env Vars PowerShell Script
+  description: Use the PowerShell environment variables to identify the current logged
+    user.
+  tactic: discovery
+  technique:
+    attack_id: T1033
+    name: System Owner/User Discovery
+  platforms:
+    windows:
+      psh:
+        command: '[System.Environment]::UserName | Out-File -FilePath .\CurrentactiveUser.txt
+          ; $env:UserName | Out-File -FilePath .\CurrentactiveUser.txt -Append'
+        payloads: []
+        cleanup: Remove-Item -Path .\CurrentactiveUser.txt -Force
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

@@ -1,0 +1,27 @@
+---
+- id: 6a80256d3b034f1014d5291e51cf052b
+  name: 'Masquerading: Right-to-Left Override Batch File Creation and Execution'
+  description: '''Creates a batch file and then uses the RTLO operator (0x202E) to
+    transform the file name from "evil_batchfdp.bat" to "evil_batchtab.pdf". The script
+    then executes the batch file which displays "Hello World!" for 30 seconds before
+    closing out.'''
+  tactic: stealth
+  technique:
+    attack_id: T1036.002
+    name: Masquerading:Right-to-Left Override
+  platforms:
+    windows:
+      psh:
+        command: '$filepath =; $rtlo = [char]0x202E; $fileloc = Join-Path "$filepath"
+          ("evil_batch" + $rtlo + "fdp.bat"); $payload = @"; @echo off; echo Hello
+          World!; timeout /t 30 /nobreak; exit; "@; Set-Content -Path $fileloc -Value
+          $payload -Encoding Ascii -Force; Write-Host "Real filename on disk: $fileloc";
+          Write-Host "Displays in explorer as: evil_batchtab.pdf"; Start-Process -FilePath
+          $fileloc -Wait'
+        payloads: []
+        cleanup: $rtlo = [char]0x202E; $filepath = [System.IO.Path]::Combine($env:USERPROFILE,
+          "Desktop"); $fileloc = Join-Path "$filepath" ("evil_batch" + $rtlo + "fdp.bat");
+          Remove-Item -Path $fileloc -Force -ErrorAction SilentlyContinue
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

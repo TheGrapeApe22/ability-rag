@@ -1,0 +1,16 @@
+---
+- id: f58f80caac692c8dce6013303d866d7c
+  name: Shutdown System via `halt` - FreeBSD/Linux
+  description: 'This test shuts down a FreeBSD/Linux system using `halt`.
+
+    '
+  tactic: impact
+  technique:
+    attack_id: T1529
+    name: System Shutdown/Reboot
+  platforms:
+    linux:
+      sh:
+        command: halt -p
+        payloads: []
+        cleanup: ''

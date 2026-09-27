@@ -1,0 +1,23 @@
+---
+- id: f39aace719f4cdcf8569001f7a25aabf
+  name: Create a new user in PowerShell
+  description: 'Creates a new user in PowerShell. Upon execution, details about the
+    new account will be displayed in the powershell session. To verify the
+
+    new account, run "net user" in powershell or CMD and observe that there is a new
+    user named "T1136.001_PowerShell"
+
+    '
+  tactic: persistence
+  technique:
+    attack_id: T1136.001
+    name: 'Create Account: Local Account'
+  platforms:
+    windows:
+      psh:
+        command: New-LocalUser -Name "T1136.001_PowerShell" -NoPassword
+        payloads: []
+        cleanup: Remove-LocalUser -Name "T1136.001_PowerShell" -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

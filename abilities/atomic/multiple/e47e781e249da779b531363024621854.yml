@@ -1,0 +1,34 @@
+---
+- id: e47e781e249da779b531363024621854
+  name: Process Injection via C#
+  description: 'Process Injection using C#
+
+    reference: https://github.com/pwndizzle/c-sharp-memory-injection
+
+    Excercises Five Techniques
+
+    1. Process injection
+
+    2. ApcInjectionAnyProcess
+
+    3. ApcInjectionNewProcess
+
+    4. IatInjection
+
+    5. ThreadHijack
+
+    Upon successful execution, cmd.exe will execute T1055.exe, which exercises 5 techniques.
+    Output will be via stdout.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1055.004
+    name: 'Process Injection: Asynchronous Procedure Call'
+  platforms:
+    windows:
+      cmd:
+        command: '"0cb710_T1055.exe"'
+        payloads:
+        - 0cb710_T1055.exe
+        cleanup: ''

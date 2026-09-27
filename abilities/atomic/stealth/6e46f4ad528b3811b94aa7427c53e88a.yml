@@ -1,0 +1,19 @@
+---
+- id: 6e46f4ad528b3811b94aa7427c53e88a
+  name: Control Panel Items
+  description: 'This test simulates an adversary leveraging control.exe
+
+    Upon execution calc.exe will be launched
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1218.002
+    name: 'Signed Binary Proxy Execution: Control Panel'
+  platforms:
+    windows:
+      cmd:
+        command: control.exe "187e67_calc.cpl"
+        payloads:
+        - 187e67_calc.cpl
+        cleanup: ''

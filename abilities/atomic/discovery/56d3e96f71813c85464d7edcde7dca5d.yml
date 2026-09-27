@@ -1,0 +1,16 @@
+---
+- id: 56d3e96f71813c85464d7edcde7dca5d
+  name: Remote System Discovery - netstat
+  description: 'Use the netstat command to display the kernels routing tables.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1018
+    name: Remote System Discovery
+  platforms:
+    linux:
+      sh:
+        command: netstat -r | grep default
+        payloads: []
+        cleanup: ''

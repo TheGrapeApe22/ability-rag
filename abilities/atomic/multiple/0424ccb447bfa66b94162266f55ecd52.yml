@@ -1,0 +1,24 @@
+---
+- id: 0424ccb447bfa66b94162266f55ecd52
+  name: Change Powershell Execution Policy to Bypass
+  description: 'Attackers need to change the powershell execution policy in order
+    to run their malicious powershell scripts.
+
+    They can either specify it during the execution of the powershell script or change
+    the registry value for it.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1112
+    name: Modify Registry
+  platforms:
+    windows:
+      psh:
+        command: Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope LocalMachine
+        payloads: []
+        cleanup: try { Set-ExecutionPolicy -ExecutionPolicy Default -Scope LocalMachine
+          -Force } catch {}
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

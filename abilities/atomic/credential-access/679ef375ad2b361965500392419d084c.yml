@@ -1,0 +1,24 @@
+---
+- id: 679ef375ad2b361965500392419d084c
+  name: Simulating access to Windows Firefox Login Data
+  description: 'Simulates an adversary accessing encrypted credentials from firefox
+    web browser''s login database.
+
+    more info in https://support.mozilla.org/en-US/kb/profiles-where-firefox-stores-user-data
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1555.003
+    name: 'Credentials from Password Stores: Credentials from Web Browsers'
+  platforms:
+    windows:
+      psh:
+        command: Copy-Item "$env:APPDATA\Mozilla\Firefox\Profiles\" -Destination "PathToAtomicsFolder\..\ExternalPayloads"
+          -Force -Recurse
+        payloads: []
+        cleanup: Remove-Item -Path "PathToAtomicsFolder\..\ExternalPayloads\Profiles"
+          -Force -ErrorAction Ignore -Recurse
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

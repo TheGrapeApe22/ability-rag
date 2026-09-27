@@ -1,0 +1,21 @@
+---
+- id: ecd9732b3267b5bb4e2dbca15d4a7317
+  name: System Service Discovery - Linux init scripts
+  description: 'Enumerates system services by listing SysV init scripts and runlevel
+
+    symlinks under /etc/init.d and /etc/rc*.d.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1007
+    name: System Service Discovery
+  platforms:
+    linux:
+      sh:
+        command: echo "[*] Listing SysV init scripts (/etc/init.d):"; if [ -d /etc/init.d
+          ]; then ls -l /etc/init.d; else echo "/etc/init.d not present on this system";
+          fi; echo; echo "[*] Listing runlevel directories (/etc/rc*.d):"; ls -ld
+          /etc/rc*.d 2>/dev/null || echo "No /etc/rc*.d directories found"
+        payloads: []
+        cleanup: ''

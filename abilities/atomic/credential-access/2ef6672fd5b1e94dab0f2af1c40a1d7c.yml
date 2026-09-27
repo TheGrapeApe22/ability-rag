@@ -1,0 +1,16 @@
+---
+- id: 2ef6672fd5b1e94dab0f2af1c40a1d7c
+  name: Access /etc/master.passwd (Local)
+  description: '/etc/master.passwd file is accessed in FreeBSD environments
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1003.008
+    name: 'OS Credential Dumping: /etc/passwd, /etc/master.passwd and /etc/shadow'
+  platforms:
+    linux:
+      sh:
+        command: sudo cat /etc/master.passwd > /tmp/T1003.008.txt; cat /tmp/T1003.008.txt
+        payloads: []
+        cleanup: rm -f /tmp/T1003.008.txt

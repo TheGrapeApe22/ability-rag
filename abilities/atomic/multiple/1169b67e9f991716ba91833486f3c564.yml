@@ -1,0 +1,25 @@
+---
+- id: 1169b67e9f991716ba91833486f3c564
+  name: Change Startup Folder - HKLM Modify User Shell Folders Common Startup Value
+  description: "This test will modify the HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\\
+    Windows\\CurrentVersion\\Explorer\\User Shell Folders -V \"Common Startup\" \n\
+    value to point to a new startup folder where a payload could be stored to launch\
+    \ at boot.  *successful execution requires system restart\n"
+  tactic: multiple
+  technique:
+    attack_id: T1547.001
+    name: 'Boot or Logon Autostart Execution: Registry Run Keys / Startup Folder'
+  platforms:
+    windows:
+      psh:
+        command: New-Item -ItemType Directory -path "#{new_startup_folder}"; Copy-Item
+          -path "#{payload}" -destination "#{new_startup_folder}"; Set-ItemProperty
+          -Path  "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell
+          Folders" -Name "Common Startup" -Value "#{new_startup_folder}"
+        payloads: []
+        cleanup: Set-ItemProperty -Path  "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User
+          Shell Folders" -Name "Common Startup" -Value "%ProgramData%\Microsoft\Windows\Start
+          Menu\Programs\Startup"; Remove-Item "$env:TMP\atomictest\" -Recurse -Force
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

@@ -1,0 +1,18 @@
+---
+- id: 9de217b5623080a6bc898c636b1e599d
+  name: Password Change on Directory Service Restore Mode (DSRM) Account
+  description: 'Change the password on the Directory Service Restore Mode (DSRM) account
+    using ntdsutil by syncing to existing account
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1098
+    name: Account Manipulation
+  platforms:
+    windows:
+      cmd:
+        command: ntdsutil "set dsrm password" "sync from domain account %username%"
+          "q" "q"
+        payloads: []
+        cleanup: ''

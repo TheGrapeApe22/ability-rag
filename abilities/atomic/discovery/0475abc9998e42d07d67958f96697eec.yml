@@ -1,0 +1,22 @@
+---
+- id: 0475abc9998e42d07d67958f96697eec
+  name: Discover System Language with locale
+  description: 'Identify System language with the `locale` command.
+
+
+    Upon successful execution, the output will contain the environment variables that
+    indicate
+
+    the 5 character locale that can be looked up to correlate the language and territory.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1614.001
+    name: 'System Location Discovery: System Language Discovery'
+  platforms:
+    linux:
+      sh:
+        command: locale
+        payloads: []
+        cleanup: ''

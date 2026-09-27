@@ -1,0 +1,32 @@
+---
+- id: 6004a80b66c4c3e30595f178d91e2051
+  name: Hex decoding with shell utilities
+  description: 'Use common shell utilities to decode a hex-encoded text string and
+    echo it to the console
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1140
+    name: Deobfuscate/Decode Files or Information
+  platforms:
+    linux:
+      sh:
+        command: ENCODED=$(echo 'Hello from Atomic Red Team test T1140!' | xxd -ps
+          -c 256); printf $ENCODED | xxd -r -p; echo $ENCODED | xxd -r -p; echo $(echo
+          $ENCODED) | xxd -r -p; echo $ENCODED > /tmp/T1140.encoded && xxd -r -p /tmp/T1140.encoded;
+          echo $ENCODED > /tmp/T1140.encoded && xxd -r -p < /tmp/T1140.encoded; echo
+          $ENCODED > /tmp/T1140.encoded && cat /tmp/T1140.encoded | xxd -r -p; echo
+          $ENCODED > /tmp/T1140.encoded && cat < /tmp/T1140.encoded | xxd -r -p
+        payloads: []
+        cleanup: ''
+    darwin:
+      sh:
+        command: ENCODED=$(echo 'Hello from Atomic Red Team test T1140!' | xxd -ps
+          -c 256); printf $ENCODED | xxd -r -p; echo $ENCODED | xxd -r -p; echo $(echo
+          $ENCODED) | xxd -r -p; echo $ENCODED > /tmp/T1140.encoded && xxd -r -p /tmp/T1140.encoded;
+          echo $ENCODED > /tmp/T1140.encoded && xxd -r -p < /tmp/T1140.encoded; echo
+          $ENCODED > /tmp/T1140.encoded && cat /tmp/T1140.encoded | xxd -r -p; echo
+          $ENCODED > /tmp/T1140.encoded && cat < /tmp/T1140.encoded | xxd -r -p
+        payloads: []
+        cleanup: ''

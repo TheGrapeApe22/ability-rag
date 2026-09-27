@@ -1,0 +1,24 @@
+---
+- id: fa93e59e1418d91ce03418913ca80fa7
+  name: Disable Administrative Share Creation at Startup
+  description: "Administrative shares are hidden network shares created by Microsoft\u2019\
+    s Windows NT operating systems that grant system administrators \nremote access\
+    \ to every disk volume on a network-connected system. These shares are automatically\
+    \ created at started unless they have been\npurposefully disabled as is done in\
+    \ this Atomic test. As Microsoft puts it, \"Missing administrative shares typically\
+    \ \nindicate that the computer in question has been compromised by malicious software.\"\
+    \nhttps://threatpost.com/conti-ransomware-gang-has-full-log4shell-attack-chain/177173/\n"
+  tactic: stealth
+  technique:
+    attack_id: T1070.005
+    name: 'Indicator Removal on Host: Network Share Connection Removal'
+  platforms:
+    windows:
+      cmd:
+        command: reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters"
+          /v AutoShareServer /t REG_DWORD /d 0 /f && reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters"
+          /v AutoShareWks /t REG_DWORD /d 0 /f
+        payloads: []
+        cleanup: reg delete "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters"
+          /v AutoShareServer /f && reg delete "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters"
+          /v AutoShareWks /f

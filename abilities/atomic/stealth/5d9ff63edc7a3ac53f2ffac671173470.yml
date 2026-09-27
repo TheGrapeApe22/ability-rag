@@ -1,0 +1,21 @@
+---
+- id: 5d9ff63edc7a3ac53f2ffac671173470
+  name: Clear Bash history (cat dev/null)
+  description: 'Clears bash history via cat /dev/null
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1070.003
+    name: 'Indicator Removal on Host: Clear Command History'
+  platforms:
+    linux:
+      sh:
+        command: cat /dev/null > ~/.bash_history
+        payloads: []
+        cleanup: ''
+    darwin:
+      sh:
+        command: cat /dev/null > ~/.bash_history
+        payloads: []
+        cleanup: ''

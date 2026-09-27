@@ -1,0 +1,17 @@
+---
+- id: 2d53d6fabd39bf9c70b0dfcdfbbc926d
+  name: Windows - Disable the SR scheduled task
+  description: 'Use schtasks.exe to disable the System Restore (SR) scheduled task
+
+    '
+  tactic: impact
+  technique:
+    attack_id: T1490
+    name: Inhibit System Recovery
+  platforms:
+    windows:
+      cmd:
+        command: schtasks.exe /Change /TN "\Microsoft\Windows\SystemRestore\SR" /disable
+        payloads: []
+        cleanup: schtasks.exe /Change /TN "\Microsoft\Windows\SystemRestore\SR" /enable
+          >nul 2>&1

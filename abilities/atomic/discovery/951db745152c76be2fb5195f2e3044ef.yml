@@ -1,0 +1,18 @@
+---
+- id: 951db745152c76be2fb5195f2e3044ef
+  name: Show if a user account has ever logged in remotely
+  description: 'Show if a user account has ever logged in remotely
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1087.001
+    name: 'Account Discovery: Local Account'
+  platforms:
+    linux:
+      sh:
+        command: 'if [ -x "$(command -v lastlog)" ]; then : ; else sudo apt-get install
+          login; exit 1;; fi;  [ "$(uname)" = ''FreeBSD'' ] && cmd="lastlogin" ||
+          cmd="lastlog" ; $cmd > /tmp/T1087.001.txt; cat /tmp/T1087.001.txt'
+        payloads: []
+        cleanup: rm -f /tmp/T1087.001.txt

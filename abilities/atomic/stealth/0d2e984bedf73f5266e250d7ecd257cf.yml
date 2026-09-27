@@ -1,0 +1,20 @@
+---
+- id: 0d2e984bedf73f5266e250d7ecd257cf
+  name: Invoke CHM with default Shortcut Command Execution
+  description: Executes a CHM file with the default Shortcut Command method.
+  tactic: stealth
+  technique:
+    attack_id: T1218.001
+    name: 'Signed Binary Proxy Execution: Compiled HTML File'
+  platforms:
+    windows:
+      psh:
+        command: $RequiredModule = Get-Module -Name AtomicTestHarnesses -ListAvailable;
+          if (-not $RequiredModule) {Install-Module -Name AtomicTestHarnesses -Scope
+          CurrentUser -Force};  Invoke-ATHCompiledHelp -HHFilePath $env:windir\hh.exe
+          -CHMFilePath Test.chm
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

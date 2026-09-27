@@ -1,0 +1,18 @@
+---
+- id: 631edc2d49b2033f7db9fdee6a5ad447
+  name: Disable Time Machine
+  description: 'Disables Time Machine which is Apple''s automated backup utility software.
+    Attackers can use this to prevent backups from occurring and hinder the victim''s
+    ability to recover from any damage.
+
+    '
+  tactic: impact
+  technique:
+    attack_id: T1490
+    name: Inhibit System Recovery
+  platforms:
+    darwin:
+      sh:
+        command: sudo tmutil disable
+        payloads: []
+        cleanup: sudo tmutil enable

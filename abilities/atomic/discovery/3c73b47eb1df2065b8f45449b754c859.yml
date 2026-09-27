@@ -1,0 +1,15 @@
+---
+- id: 3c73b47eb1df2065b8f45449b754c859
+  name: Remote System Discovery - ip route
+  description: "Use the ip route command to display the kernels routing tables. \n"
+  tactic: discovery
+  technique:
+    attack_id: T1018
+    name: Remote System Discovery
+  platforms:
+    linux:
+      sh:
+        command: 'if [ -x "$(command -v ip)" ]; then : ; else apt-get install iproute2
+          -y; fi;  ip route show'
+        payloads: []
+        cleanup: ''

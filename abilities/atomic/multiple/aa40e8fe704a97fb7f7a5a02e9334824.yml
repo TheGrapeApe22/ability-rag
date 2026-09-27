@@ -1,0 +1,23 @@
+---
+- id: aa40e8fe704a97fb7f7a5a02e9334824
+  name: Parent PID Spoofing - Spawn from svchost.exe
+  description: Spawnd a process as a child of the first accessible svchost.exe process.
+  tactic: multiple
+  technique:
+    attack_id: T1134.004
+    name: 'Access Token Manipulation: Parent PID Spoofing'
+  platforms:
+    windows:
+      psh:
+        command: $RequiredModule = Get-Module -Name AtomicTestHarnesses -ListAvailable;
+          if (-not $RequiredModule) {Install-Module -Name AtomicTestHarnesses -Scope
+          CurrentUser -Force};  Get-CimInstance -ClassName Win32_Process -Property
+          Name, CommandLine, ProcessId -Filter "Name = 'svchost.exe' AND CommandLine
+          LIKE '%'" | Select-Object -First 1 | Start-ATHProcessUnderSpecificParent
+          -FilePath $Env:windir\System32\WindowsPowerShell\v1.0\powershell.exe -CommandLine
+          '-Command Start-Sleep 10'
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

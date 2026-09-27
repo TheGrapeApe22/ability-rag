@@ -1,0 +1,17 @@
+---
+- id: b2aeb3ccd1d9eec56e86854868b67d38
+  name: Real-time system log clearance/deletion
+  description: 'This test reads real-time system log file and writes empty string
+    to it, thus clearing the log file without tampering with the logging process
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685.006
+    name: 'Disable or Modify Tools: Clear Linux or Mac System Logs'
+  platforms:
+    darwin:
+      sh:
+        command: 'sudo log -f /var/log/system.log | : > /var/log/system.log'
+        payloads: []
+        cleanup: ''

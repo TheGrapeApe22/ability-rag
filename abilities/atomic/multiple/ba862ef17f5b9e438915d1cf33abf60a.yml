@@ -1,0 +1,22 @@
+---
+- id: ba862ef17f5b9e438915d1cf33abf60a
+  name: Disable Windows Registry Tool
+  description: 'Modify the registry of the currently logged in user using reg.exe
+    via cmd console to disable the windows registry tool to prevent user modifying
+    registry entry.
+
+    See example how Agent Tesla malware abuses this technique: https://any.run/report/ea4ea08407d4ee72e009103a3b77e5a09412b722fdef67315ea63f22011152af/a866d7b1-c236-4f26-a391-5ae32213dfc4#registry
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1112
+    name: Modify Registry
+  platforms:
+    windows:
+      cmd:
+        command: reg add HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\policies\system
+          /v DisableRegistryTools /t REG_DWORD /d 1 /f
+        payloads: []
+        cleanup: powershell Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\policies\system"
+          -Name DisableRegistryTools -ErrorAction Ignore

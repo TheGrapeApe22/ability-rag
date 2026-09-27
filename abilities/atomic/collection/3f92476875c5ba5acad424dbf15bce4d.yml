@@ -1,0 +1,26 @@
+---
+- id: 3f92476875c5ba5acad424dbf15bce4d
+  name: Data Compressed - nix - gzip Single File
+  description: 'An adversary may compress data (e.g., sensitive documents) that is
+    collected prior to exfiltration. This test uses standard gzip compression.
+
+    '
+  tactic: collection
+  technique:
+    attack_id: T1560.001
+    name: 'Archive Collected Data: Archive via Utility'
+  platforms:
+    linux:
+      sh:
+        command: 'test -e $HOME/victim-gzip.txt && gzip -k $HOME/victim-gzip.txt ||
+          (echo ''confidential! SSN: 078-05-1120 - CCN: 4000 1234 5678 9101'' >> $HOME/victim-gzip.txt;
+          gzip -k $HOME/victim-gzip.txt)'
+        payloads: []
+        cleanup: rm -f $HOME/victim-gzip.txt.gz
+    darwin:
+      sh:
+        command: 'test -e $HOME/victim-gzip.txt && gzip -k $HOME/victim-gzip.txt ||
+          (echo ''confidential! SSN: 078-05-1120 - CCN: 4000 1234 5678 9101'' >> $HOME/victim-gzip.txt;
+          gzip -k $HOME/victim-gzip.txt)'
+        payloads: []
+        cleanup: rm -f $HOME/victim-gzip.txt.gz

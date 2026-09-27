@@ -1,0 +1,16 @@
+---
+- id: 8694818da4f9da7580fdb477b6a3685a
+  name: Packet Capture macOS using /dev/bpfN with sudo
+  description: 'Opens a /dev/bpf file (O_RDONLY) and captures packets for a few seconds.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1040
+    name: Network Sniffing
+  platforms:
+    darwin:
+      sh:
+        command: sudo /tmp/t1040_macos_pcapdemo -i en0 -t 3
+        payloads: []
+        cleanup: rm -f /tmp/t1040_macos_pcapdemo

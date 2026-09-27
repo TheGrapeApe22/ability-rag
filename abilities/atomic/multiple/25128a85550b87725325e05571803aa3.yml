@@ -1,0 +1,25 @@
+---
+- id: 25128a85550b87725325e05571803aa3
+  name: HKCU - Policy Settings Explorer Run Key
+  description: "This test will create a new value under HKEY_CURRENT_USER\\Software\\\
+    Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\\Run to launch calc.exe\
+    \ on boot. \n*Requires reboot\n"
+  tactic: multiple
+  technique:
+    attack_id: T1547.001
+    name: 'Boot or Logon Autostart Execution: Registry Run Keys / Startup Folder'
+  platforms:
+    windows:
+      psh:
+        command: if (!(Test-Path -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer")){;   New-Item
+          -ItemType Key -Path  "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer";
+          }; if (!(Test-Path -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\Run")){;   New-Item
+          -ItemType Key -Path  "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\Run";
+          }; Set-ItemProperty -Path  "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\Run"
+          -Name "#{target_key_value_name}" -Value "#{payload}"
+        payloads: []
+        cleanup: Remove-ItemProperty -Path  "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\Run"
+          -Name "atomictest"
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

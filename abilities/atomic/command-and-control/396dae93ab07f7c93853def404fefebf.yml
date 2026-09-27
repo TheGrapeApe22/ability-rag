@@ -1,0 +1,20 @@
+---
+- id: 396dae93ab07f7c93853def404fefebf
+  name: NetSupport - RAT Execution
+  description: "A recent trend by threat actors, once a foothold is established, maintain\
+    \ long term persistence using third party remote services such as NetSupport to\
+    \ provide the operator with access to the network using legitimate services. \n"
+  tactic: command-and-control
+  technique:
+    attack_id: T1219
+    name: Remote Access Software
+  platforms:
+    windows:
+      psh:
+        command: Start-Process "PathToAtomicsFolder\..\ExternalPayloads\T1219_NetSupport.exe"
+          -ArgumentList "/S /v/qn"
+        payloads: []
+        cleanup: Stop-Process -Name "client32" -force -erroraction silentlycontinue
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

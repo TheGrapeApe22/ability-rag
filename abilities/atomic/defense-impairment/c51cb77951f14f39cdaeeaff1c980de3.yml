@@ -1,0 +1,21 @@
+---
+- id: c51cb77951f14f39cdaeeaff1c980de3
+  name: ESXi - Set Firewall to PASS Traffic
+  description: 'This test sets the default ESXi firewall action to PASS instead of
+    DROP. This allows all incoming and outgoing traffic.
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1686
+    name: Disable or Modify System Firewall
+  platforms:
+    windows:
+      cmd:
+        command: echo "" | "PathToAtomicsFolder\..\ExternalPayloads\plink.exe" -batch
+          "atomic.local" -ssh -l root -pw "password" "esxcli network firewall set
+          --default-action true"
+        payloads: []
+        cleanup: echo "" | "PathToAtomicsFolder\..\ExternalPayloads\plink.exe" -batch
+          "atomic.local" -ssh -l root -pw "password" "esxcli network firewall set
+          --default-action false"

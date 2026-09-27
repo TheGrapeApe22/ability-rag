@@ -1,0 +1,27 @@
+---
+- id: 7fa328192c9a6815c2ea93fe54fa0059
+  name: List All Secrets
+  description: 'A Kubernetes secret is an object that lets users store and manage
+    sensitive information, such as passwords and connection strings in the cluster.
+    Secrets can be consumed by reference in the pod configuration. Attackers who have
+    permissions to retrieve the secrets from the API server (by using the pod service
+    account, for example) can access sensitive information that might include credentials
+    to various services or provide further access to the cluster.
+
+    [More information about secrets](https://kubernetes.io/docs/concepts/configuration/secret/).
+
+
+    This test will make a request to the Kubernetes api at the `/api/v1/secrets` endpoint
+    requesting every secret stored within the cluster.
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1552.007
+    name: Kubernetes List Secrets
+  platforms:
+    unknown:
+      sh:
+        command: kubectl get secrets --all-namespaces
+        payloads: []
+        cleanup: ''

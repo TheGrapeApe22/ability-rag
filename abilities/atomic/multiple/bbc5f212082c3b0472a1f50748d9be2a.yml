@@ -1,0 +1,16 @@
+---
+- id: bbc5f212082c3b0472a1f50748d9be2a
+  name: Create local account with admin privileges using sysadminctl utility - MacOS
+  description: After execution the new account will be active and added to the Administrators
+    group
+  tactic: multiple
+  technique:
+    attack_id: T1078.003
+    name: 'Valid Accounts: Local Accounts'
+  platforms:
+    darwin:
+      sh:
+        command: sysadminctl interactive -addUser art-tester -fullName ARTUser -password
+          !pass123! -admin
+        payloads: []
+        cleanup: sysadminctl interactive -deleteUser art-tester

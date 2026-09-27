@@ -1,0 +1,29 @@
+---
+- id: 08faa1ff79f2c8e48a2869a830c210f7
+  name: DNS Regular Beaconing
+  description: 'This test simulates an infected host beaconing via DNS queries to
+    a command and control server at regular intervals over time.
+
+    This behaviour is typical of implants either in an idle state waiting for instructions
+    or configured to use a low query volume over time to evade threshold based detection.
+
+    A custom domain and sub-domain will need to be passed as input parameters for
+    this test to work. Upon execution, DNS information about the domain will be displayed
+    for each callout.
+
+    '
+  tactic: command-and-control
+  technique:
+    attack_id: T1071.004
+    name: 'Application Layer Protocol: DNS'
+  platforms:
+    windows:
+      psh:
+        command: Set-Location "PathToAtomicsFolder"; .\T1071.004\src\T1071-dns-beacon.ps1
+          -Domain 127.0.0.1.nip.io -Subdomain atomicredteam -QueryType TXT -C2Interval
+          30 -C2Jitter 20 -RunTime 30
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

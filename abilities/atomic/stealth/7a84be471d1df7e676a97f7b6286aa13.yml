@@ -1,0 +1,26 @@
+---
+- id: 7a84be471d1df7e676a97f7b6286aa13
+  name: Base64 decoding with Perl
+  description: "Use Perl to decode a base64-encoded text string and echo it to the\
+    \ console    \n"
+  tactic: stealth
+  technique:
+    attack_id: T1140
+    name: Deobfuscate/Decode Files or Information
+  platforms:
+    linux:
+      sh:
+        command: ENCODED=$(perl -e "use MIME::Base64;print(encode_base64('Hello from
+          Atomic Red Team test T1140!'));"); perl -le "use MIME::Base64;print(decode_base64('$ENCODED'));";
+          echo $ENCODED | perl -le 'use MIME::Base64;print(decode_base64(<STDIN>));';
+          echo $ENCODED > /tmp/T1140.encoded && perl -le 'use MIME::Base64;open($f,"<","/tmp/T1140.encoded");print(decode_base64(<$f>));'
+        payloads: []
+        cleanup: ''
+    darwin:
+      sh:
+        command: ENCODED=$(perl -e "use MIME::Base64;print(encode_base64('Hello from
+          Atomic Red Team test T1140!'));"); perl -le "use MIME::Base64;print(decode_base64('$ENCODED'));";
+          echo $ENCODED | perl -le 'use MIME::Base64;print(decode_base64(<STDIN>));';
+          echo $ENCODED > /tmp/T1140.encoded && perl -le 'use MIME::Base64;open($f,"<","/tmp/T1140.encoded");print(decode_base64(<$f>));'
+        payloads: []
+        cleanup: ''

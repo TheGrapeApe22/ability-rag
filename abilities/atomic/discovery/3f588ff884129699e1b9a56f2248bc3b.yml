@@ -1,0 +1,22 @@
+---
+- id: 3f588ff884129699e1b9a56f2248bc3b
+  name: Permission Groups Discovery PowerShell (Domain)
+  description: 'Permission Groups Discovery utilizing PowerShell. This test will display
+    some errors if run on a computer not connected to a domain. Upon execution, domain
+
+    information will be displayed.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1069.002
+    name: 'Permission Groups Discovery: Domain Groups'
+  platforms:
+    windows:
+      psh:
+        command: get-ADPrincipalGroupMembership $env:USERNAME | select name
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

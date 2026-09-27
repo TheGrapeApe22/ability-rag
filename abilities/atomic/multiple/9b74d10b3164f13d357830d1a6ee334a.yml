@@ -1,0 +1,25 @@
+---
+- id: 9b74d10b3164f13d357830d1a6ee334a
+  name: SystemBC Malware-as-a-Service Registry
+  description: 'This Atomic will create a registry key called socks5_powershell for
+    persistance access
+
+    https://medium.com/walmartglobaltech/systembc-powershell-version-68c9aad0f85c
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1547.001
+    name: 'Boot or Logon Autostart Execution: Registry Run Keys / Startup Folder'
+  platforms:
+    windows:
+      psh:
+        command: $RunKey = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Run";
+          Set-ItemProperty -Path $RunKey -Name "socks5_powershell" -Value "powershell.exe
+          -windowstyle hidden -ExecutionPolicy Bypass -File"
+        payloads: []
+        cleanup: Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Run
+          -Name "socks5_powershell" -Force -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

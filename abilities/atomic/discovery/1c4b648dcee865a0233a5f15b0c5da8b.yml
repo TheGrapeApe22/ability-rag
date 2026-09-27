@@ -1,0 +1,16 @@
+---
+- id: 1c4b648dcee865a0233a5f15b0c5da8b
+  name: Network Share Discovery
+  description: 'Network Share Discovery
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1135
+    name: Network Share Discovery
+  platforms:
+    darwin:
+      sh:
+        command: df -aH; smbutil view -g //computer1; showmount computer1
+        payloads: []
+        cleanup: ''

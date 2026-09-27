@@ -1,0 +1,25 @@
+---
+- id: 51f6d5c78fbdfb07bc0fd2f87df1ada6
+  name: Process Hollowing in Go using CreateProcessW WinAPI
+  description: 'Creates a process in a suspended state, executes shellcode to spawn
+    calc.exe in a child process, and then resumes the original process.
+
+    - PoC Credit: (https://github.com/Ne0nd0g/go-shellcode#createprocess)
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1055.012
+    name: 'Process Injection: Process Hollowing'
+  platforms:
+    windows:
+      psh:
+        command: 38c326_CreateProcess.exe -program "C:\Windows\System32\werfault.exe"
+          -debug
+        payloads:
+        - 38c326_CreateProcess.exe
+        cleanup: Stop-Process -Name CalculatorApp -ErrorAction SilentlyContinue; Stop-Process
+          -Name "werfault" -ErrorAction SilentlyContinue
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

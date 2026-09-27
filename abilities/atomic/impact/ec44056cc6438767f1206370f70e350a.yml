@@ -1,0 +1,18 @@
+---
+- id: ec44056cc6438767f1206370f70e350a
+  name: Abuse of Linux Magic System Request Key for Reboot
+  description: 'adversaries with root or sufficient privileges to silently manipulate
+    or destabilize a system. By writing to /proc/sysrq-trigger, they can forced to
+    reboot.
+
+    '
+  tactic: impact
+  technique:
+    attack_id: T1529
+    name: System Shutdown/Reboot
+  platforms:
+    linux:
+      sh:
+        command: echo "b" > /proc/sysrq-trigger
+        payloads: []
+        cleanup: ''

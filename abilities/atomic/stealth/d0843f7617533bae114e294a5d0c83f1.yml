@@ -1,0 +1,22 @@
+---
+- id: d0843f7617533bae114e294a5d0c83f1
+  name: Invisible Unicode in Environment Variables
+  description: "Sets an environment variable that includes a Zero-Width Non-Joiner\
+    \ (U+200C). \nThis emulates techniques used to hide configuration data or persistence\
+    \ paths from administrators performing manual audits.\n"
+  tactic: stealth
+  technique:
+    attack_id: T1027.018
+    name: 'Obfuscated Files or Information: Invisible Unicode'
+  platforms:
+    windows:
+      psh:
+        command: $varName = "PATH" + [char]0x200C; [Environment]::SetEnvironmentVariable($varName,
+          "C:\Users\Public\Malicious", "User"); Write-Host "Hidden environment variable
+          '$varName' set."
+        payloads: []
+        cleanup: $varName = "PATH" + [char]0x200C; [Environment]::SetEnvironmentVariable($varName,
+          $null, "User")
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

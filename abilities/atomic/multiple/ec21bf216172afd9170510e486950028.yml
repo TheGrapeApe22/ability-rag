@@ -1,0 +1,23 @@
+---
+- id: ec21bf216172afd9170510e486950028
+  name: Lolbin Jsc.exe compile javascript to dll
+  description: 'Use jsc.exe to compile javascript code stored in Library.js and output
+    Library.dll.
+
+    https://lolbas-project.github.io/lolbas/Binaries/Jsc/
+
+    https://www.phpied.com/make-your-javascript-a-windows-exe/
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1127
+    name: Trusted Developer Utilities Proxy Execution
+  platforms:
+    windows:
+      cmd:
+        command: copy "5bdafa_LibHello.js" %TEMP%\LibHello.js && C:\Windows\Microsoft.NET\Framework\v4.0.30319\jsc.exe
+          /t:library %TEMP%\LibHello.js
+        payloads:
+        - 5bdafa_LibHello.js
+        cleanup: del %TEMP%\LibHello.js && del %TEMP%\LibHello.dll

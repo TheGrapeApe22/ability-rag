@@ -1,0 +1,34 @@
+---
+- id: 4e1f494980c18a59696b196d51ca5732
+  name: GOT Injection
+  description: "This technique identifies a code cave by scanning /proc/<pid>/maps\n\
+    and writes the shellcode into it through /proc/<pid>/mem.\nTo redirect the execution\
+    \ flow, it parses the target's ELF structure through /proc/<pid>/exe\nto locate\
+    \ the Global Offset Table (.got.plt) and calculates the absolute addresses for\
+    \ PIE-enabled binaries.\nBy overwriting these GOT entries with the shellcode's\
+    \ address,\nthe injector ensures that the next time the victim calls a dynamic\
+    \ library function,\nit will inadvertently execute the injected payload instead.\n\
+    \nget_got:\nLocates the Global Offset Table (.got.plt or .got), which is an array\
+    \ of pointers \nthe program uses to dynamically find external library functions.\n\
+    - Finds the string table (shstrtab) containing the names of all sections.\n- Searches\
+    \ for the section named \".got.plt\", extracting its address and size.\n- PIE\
+    \ Handling: If the executable is dynamic (ET_DYN / PIE), the found \naddress is\
+    \ just a relative offset. It must be added to the base_address \n(found before)\
+    \ to get the absolute RAM address.\n\nNote: this test forks a child process to\
+    \ use as the injection target.\nThis allows the test to run on systems where ptrace_scope=1\
+    \ (default on most Linux distributions),\nwhere a process can only modify the\
+    \ memory of its own descendants.\nThis may differ from a real-world scenario where\
+    \ the attacker targets an arbitrary process,\nbut for the purpose of this test\
+    \ it preserves the detection-relevant behavior: the same syscalls and /proc/<pid>/mem\n\
+    access patterns are generated regardless of the relationship between injector\
+    \ and target.\n"
+  tactic: multiple
+  technique:
+    attack_id: T1055.009
+    name: 'Process Injection: Proc Memory'
+  platforms:
+    linux:
+      sh:
+        command: PathToAtomicsFolder/T1055.009/bin/got_injection
+        payloads: []
+        cleanup: rm -f /tmp/pwned

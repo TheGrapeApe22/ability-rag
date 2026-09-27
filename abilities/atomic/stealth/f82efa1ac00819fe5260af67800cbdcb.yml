@@ -1,0 +1,22 @@
+---
+- id: f82efa1ac00819fe5260af67800cbdcb
+  name: Masquerading - powershell.exe running as taskhostw.exe
+  description: 'Copies powershell.exe, renames it, and launches it to masquerade as
+    an instance of taskhostw.exe.
+
+
+    Upon successful execution, powershell.exe is renamed as taskhostw.exe and executed
+    from non-standard path.
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1036.003
+    name: 'Masquerading: Rename System Utilities'
+  platforms:
+    windows:
+      cmd:
+        command: copy %windir%\System32\windowspowershell\v1.0\powershell.exe %APPDATA%\taskhostw.exe
+          /Y && cmd.exe /K %APPDATA%\taskhostw.exe
+        payloads: []
+        cleanup: del /Q /F %APPDATA%\taskhostw.exe >nul 2>&1

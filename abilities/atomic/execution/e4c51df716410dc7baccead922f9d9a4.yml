@@ -1,0 +1,35 @@
+---
+- id: e4c51df716410dc7baccead922f9d9a4
+  name: BlackCat pre-encryption cmds with Lateral Movement
+  description: This atomic attempts to emulate the unique behavior of BlackCat ransomware
+    prior to encryption and during Lateral Movement attempts via PsExec on Windows.
+    Uses bundled PsExec like BlackCat
+  tactic: execution
+  technique:
+    attack_id: T1569.002
+    name: 'System Services: Service Execution'
+  platforms:
+    windows:
+      psh:
+        command: "if (Test-Path \"PathToAtomicsFolder\\..\\ExternalPayloads\\PsExec.exe\"\
+          ) { ; } else {Invoke-WebRequest \"https://download.sysinternals.com/files/PSTools.zip\"\
+          \ -OutFile \"PathToAtomicsFolder\\..\\ExternalPayloads\\PsTools.zip\"; Expand-Archive\
+          \ \"PathToAtomicsFolder\\..\\ExternalPayloads\\PsTools.zip\" \"PathToAtomicsFolder\\\
+          ..\\ExternalPayloads\\PsTools\" -Force; New-Item -ItemType Directory (Split-Path\
+          \ \"PathToAtomicsFolder\\..\\ExternalPayloads\\PsExec.exe\") -Force | Out-Null;\
+          \ Copy-Item \"PathToAtomicsFolder\\..\\ExternalPayloads\\PsTools\\PsExec.exe\"\
+          \ \"PathToAtomicsFolder\\..\\ExternalPayloads\\PsExec.exe\" -Force};  cmd.exe\
+          \ /c \"wmic \tcsproduct \tget UUID\" ; cmd.exe /c \"fsutil behavior \tset\
+          \ SymlinkEvaluation R2L:1\" ; cmd.exe /c \"fsutil behavior set \tSymlinkEvaluation\
+          \ R2R:1\"; reg    add    HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\\
+          Services\\LanmanServer\\Parameters    /v MaxMpxCt /d 65535 /t REG_DWORD\
+          \ /f      ; copy \"PathToAtomicsFolder\\..\\ExternalPayloads\\PsExec.exe\"\
+          \ $env:temp; cmd.exe /c \"$env:temp\\psexec.exe  -accepteula  \\\\$ENV:COMPUTERNAME\
+          \ cmd.exe  /c echo \"--access-token\"\""
+        payloads: []
+        cleanup: reg delete HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters
+          /v MaxMpxCt /f; cmd.exe /c "fsutil behavior set SymlinkEvaluation R2L:0"
+          ; cmd.exe /c "fsutil behavior set SymlinkEvaluation R2R:0"; rm $env:temp\psexec.exe
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

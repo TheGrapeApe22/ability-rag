@@ -1,0 +1,19 @@
+---
+- id: 8c0f619c7dfd33907bf20b1dfb58022b
+  name: Execute Commands from Clipboard using PowerShell
+  description: 'Utilize PowerShell to echo a command to clipboard and execute it
+
+    '
+  tactic: collection
+  technique:
+    attack_id: T1115
+    name: Clipboard Data
+  platforms:
+    windows:
+      psh:
+        command: echo Get-Process | clip; Get-Clipboard | iex
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

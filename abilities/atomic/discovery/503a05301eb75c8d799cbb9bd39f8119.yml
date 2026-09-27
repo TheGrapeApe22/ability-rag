@@ -1,0 +1,15 @@
+---
+- id: 503a05301eb75c8d799cbb9bd39f8119
+  name: Enumerate Stored Wi-Fi Profiles And Passwords via netsh
+  description: Upon successful execution, information about previously connected Wi-Fi
+    networks will be displayed with their corresponding key (if present).
+  tactic: discovery
+  technique:
+    attack_id: T1016.002
+    name: 'System Network Configuration Discovery: Wi-Fi Discovery'
+  platforms:
+    windows:
+      cmd:
+        command: netsh wlan show profile * key=clear
+        payloads: []
+        cleanup: ''

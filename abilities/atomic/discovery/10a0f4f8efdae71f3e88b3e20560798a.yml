@@ -1,0 +1,32 @@
+---
+- id: 10a0f4f8efdae71f3e88b3e20560798a
+  name: Enumerate Active Directory for Unconstrained Delegation
+  description: 'Attackers may attempt to query for computer objects with the UserAccountControl
+    property
+
+    ''TRUSTED_FOR_DELEGATION'' (0x80000;524288) set
+
+    More Information - https://shenaniganslabs.io/2019/01/28/Wagging-the-Dog.html#when-the-stars-align-unconstrained-delegation-leads-to-rce
+
+    Prerequisite: AD RSAT PowerShell module is needed and it must run under a domain
+    user
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1087.002
+    name: 'Account Discovery: Domain Account'
+  platforms:
+    windows:
+      psh:
+        command: Try {;     Import-Module ActiveDirectory -ErrorAction Stop | Out-Null;      ;
+          }; Catch {;     if((Get-CimInstance -ClassName Win32_OperatingSystem).ProductType
+          -eq 1) {;   Add-WindowsCapability -Name (Get-WindowsCapability -Name RSAT.ActiveDirectory.DS*
+          -Online).Name -Online; } else {;   Install-WindowsFeature RSAT-AD-PowerShell;
+          }; };  Get-ADObject -LDAPFilter '(UserAccountControl:1.2.840.113556.1.4.803:=524288)'
+          -Server $env:UserDnsDomain
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

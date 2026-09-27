@@ -1,0 +1,20 @@
+---
+- id: 9378f5d52c7f94cd08f407f8c0a5fbd7
+  name: Open a local port through Windows Firewall to any profile
+  description: This test will attempt to open a local port defined by input arguments
+    to any profile
+  tactic: defense-impairment
+  technique:
+    attack_id: T1686
+    name: Disable or Modify System Firewall
+  platforms:
+    windows:
+      psh:
+        command: netsh advfirewall firewall add rule name="Open Port to Any" dir=in
+          protocol=tcp localport=3389 action=allow profile=any
+        payloads: []
+        cleanup: netsh advfirewall firewall delete rule name="Open Port to Any" |
+          Out-Null
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

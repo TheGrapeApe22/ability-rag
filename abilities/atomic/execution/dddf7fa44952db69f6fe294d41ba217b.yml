@@ -1,0 +1,25 @@
+---
+- id: dddf7fa44952db69f6fe294d41ba217b
+  name: Create and Execute Bash Shell Script
+  description: 'Creates and executes a simple sh script.
+
+    '
+  tactic: execution
+  technique:
+    attack_id: T1059.004
+    name: 'Command and Scripting Interpreter: Bash'
+  platforms:
+    linux:
+      sh:
+        command: sh -c "echo 'echo Hello from the Atomic Red Team' > /tmp/art.sh";
+          sh -c "echo 'ping -c 4 8.8.8.8' >> /tmp/art.sh"; chmod +x /tmp/art.sh; sh
+          /tmp/art.sh
+        payloads: []
+        cleanup: rm /tmp/art.sh
+    darwin:
+      sh:
+        command: sh -c "echo 'echo Hello from the Atomic Red Team' > /tmp/art.sh";
+          sh -c "echo 'ping -c 4 8.8.8.8' >> /tmp/art.sh"; chmod +x /tmp/art.sh; sh
+          /tmp/art.sh
+        payloads: []
+        cleanup: rm /tmp/art.sh

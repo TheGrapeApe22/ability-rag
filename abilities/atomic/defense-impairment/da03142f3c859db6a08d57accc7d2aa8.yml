@@ -1,0 +1,15 @@
+---
+- id: da03142f3c859db6a08d57accc7d2aa8
+  name: Stop/Start UFW firewall systemctl
+  description: "Stop the Uncomplicated Firewall (UFW) if installed, using systemctl.\
+    \ \n"
+  tactic: defense-impairment
+  technique:
+    attack_id: T1686
+    name: Disable or Modify System Firewall
+  platforms:
+    linux:
+      sh:
+        command: systemctl stop ufw
+        payloads: []
+        cleanup: systemctl start ufw; systemctl status ufw

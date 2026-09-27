@@ -1,0 +1,31 @@
+---
+- id: 1c327e5975504fa79547447421c5b670
+  name: Data Encrypted with zip and gpg symmetric
+  description: 'Encrypt data for exiltration
+
+    '
+  tactic: collection
+  technique:
+    attack_id: T1560.001
+    name: 'Archive Collected Data: Archive via Utility'
+  platforms:
+    linux:
+      sh:
+        command: if [ ! -x "$(command -v gpg)" ] || [ ! -x "$(command -v zip)" ];
+          then (which pkg && pkg install -y gnupg zip)||(which yum && yum -y install
+          epel-release zip gpg)||(which apt-get && apt-get install -y zip gpg); fi;  mkdir
+          -p /tmp/T1560; cd /tmp/T1560; touch a b c d e f g; zip --password "InsertPasswordHere"
+          /tmp/T1560/T1560 ./*; echo "InsertPasswordHere" | gpg --batch --yes --passphrase-fd
+          0 --output /tmp/T1560/T1560.zip.gpg -c /tmp/T1560/T1560.zip; ls -l /tmp/T1560
+        payloads: []
+        cleanup: rm -Rf /tmp/T1560
+    darwin:
+      sh:
+        command: if [ ! -x "$(command -v gpg)" ] || [ ! -x "$(command -v zip)" ];
+          then (which pkg && pkg install -y gnupg zip)||(which yum && yum -y install
+          epel-release zip gpg)||(which apt-get && apt-get install -y zip gpg); fi;  mkdir
+          -p /tmp/T1560; cd /tmp/T1560; touch a b c d e f g; zip --password "InsertPasswordHere"
+          /tmp/T1560/T1560 ./*; echo "InsertPasswordHere" | gpg --batch --yes --passphrase-fd
+          0 --output /tmp/T1560/T1560.zip.gpg -c /tmp/T1560/T1560.zip; ls -l /tmp/T1560
+        payloads: []
+        cleanup: rm -Rf /tmp/T1560

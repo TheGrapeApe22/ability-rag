@@ -1,0 +1,24 @@
+---
+- id: 95481531be8dd17202e00b09521657aa
+  name: Clear and Disable Bash History Logging
+  description: 'Clears the history and disable bash history logging of the current
+    shell and future shell sessions
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1070.003
+    name: 'Indicator Removal on Host: Clear Command History'
+  platforms:
+    linux:
+      sh:
+        command: set +o history; echo 'set +o history' >> ~/.bashrc; . ~/.bashrc;
+          history -c
+        payloads: []
+        cleanup: sed -i 's/set +o history//g' ~/.bashrc; . ~/.bashrc; set -o history
+    darwin:
+      sh:
+        command: set +o history; echo 'set +o history' >> ~/.bashrc; . ~/.bashrc;
+          history -c
+        payloads: []
+        cleanup: sed -i 's/set +o history//g' ~/.bashrc; . ~/.bashrc; set -o history

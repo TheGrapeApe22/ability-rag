@@ -1,0 +1,20 @@
+---
+- id: fca2ce47cdb3acfde35139ca9017af80
+  name: ATHPowerShellCommandLineParameter -EncodedCommand parameter variations
+  description: Executes powershell.exe with variations of the -EncodedCommand parameter
+  tactic: execution
+  technique:
+    attack_id: T1059.001
+    name: 'Command and Scripting Interpreter: PowerShell'
+  platforms:
+    windows:
+      psh:
+        command: $RequiredModule = Get-Module -Name AtomicTestHarnesses -ListAvailable;
+          if (-not $RequiredModule) {Install-Module -Name AtomicTestHarnesses -Scope
+          CurrentUser -Force};  Out-ATHPowerShellCommandLineParameter -CommandLineSwitchType
+          Hyphen -EncodedCommandParamVariation E -Execute -ErrorAction Stop
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

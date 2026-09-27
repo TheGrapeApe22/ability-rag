@@ -1,0 +1,19 @@
+---
+- id: 1acc4fdfc2d18cd4f768899edc40fce5
+  name: Disable Windows Auto Reboot for current logon user
+  description: 'Disable Windows Auto Reboot for current logon user. Redline is using
+    this as part of its defense evasion.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1112
+    name: Modify Registry
+  platforms:
+    windows:
+      cmd:
+        command: reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU"
+          /v "NoAutoRebootWithLoggedOnUsers" /t REG_DWORD /d 1 /f
+        payloads: []
+        cleanup: reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU"
+          /v "NoAutoRebootWithLoggedOnUsers" /t REG_DWORD /d 0 /f

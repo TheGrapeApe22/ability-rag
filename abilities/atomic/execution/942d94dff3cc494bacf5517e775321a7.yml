@@ -1,0 +1,22 @@
+---
+- id: 942d94dff3cc494bacf5517e775321a7
+  name: Simulate BlackByte Ransomware Print Bombing
+  description: "This test attempts to open a file a specified number of times in Wordpad,\
+    \ then prints the contents. \nIt is designed to mimic BlackByte ransomware's print\
+    \ bombing technique, where tree.dll, which contains the ransom note, is opened\
+    \ in Wordpad 75 times and then printed. \nSee https://redcanary.com/blog/blackbyte-ransomware/.\
+    \ \n"
+  tactic: execution
+  technique:
+    attack_id: T1059.003
+    name: 'Command and Scripting Interpreter: Windows Command Shell'
+  platforms:
+    windows:
+      psh:
+        command: cmd /c "for /l %x in (1,1,75) do start wordpad.exe /p PathToAtomicsFolder\..\ExternalPayloads\T1059_003note.txt"
+          | out-null
+        payloads: []
+        cleanup: stop-process -name wordpad -force -erroraction silentlycontinue
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

@@ -1,0 +1,23 @@
+---
+- id: 9e62fabced0c827c22ff9a6b8fa339fe
+  name: Discover Private SSH Keys
+  description: 'Discover private SSH keys on a FreeBSD, macOS or Linux system.
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1552.004
+    name: 'Unsecured Credentials: Private Keys'
+  platforms:
+    linux:
+      sh:
+        command: find / -name id_rsa 2>/dev/null >> /tmp/keyfile_locations.txt; exit
+          0
+        payloads: []
+        cleanup: rm /tmp/keyfile_locations.txt
+    darwin:
+      sh:
+        command: find / -name id_rsa 2>/dev/null >> /tmp/keyfile_locations.txt; exit
+          0
+        payloads: []
+        cleanup: rm /tmp/keyfile_locations.txt

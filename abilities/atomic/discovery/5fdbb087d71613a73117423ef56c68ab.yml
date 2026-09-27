@@ -1,0 +1,16 @@
+---
+- id: 5fdbb087d71613a73117423ef56c68ab
+  name: Examine password complexity policy - Ubuntu
+  description: 'Lists the password complexity policy to console on Ubuntu Linux.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1201
+    name: Password Policy Discovery
+  platforms:
+    linux:
+      sh:
+        command: cat /etc/pam.d/common-password
+        payloads: []
+        cleanup: ''

@@ -1,0 +1,20 @@
+---
+- id: aa7ebf0f79fdebb7ecbfa2c2f5db35d7
+  name: Check internet connection using Test-NetConnection in PowerShell (ICMP-Ping)
+  description: 'Check internet connection using PowerShell''s Test-NetConnection cmdlet
+    and the ICMP/Ping protocol. The default target is 8.8.8.8 (Google Public DNS).
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1016.001
+    name: 'System Network Configuration Discovery: Internet Connection Discovery'
+  platforms:
+    windows:
+      psh:
+        command: Test-NetConnection -ComputerName 8.8.8.8
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

@@ -1,0 +1,25 @@
+---
+- id: 39a4c31e14ab1a37e8e3ab501ddf0d79
+  name: Windows Screen Capture (CopyFromScreen)
+  description: 'Take a screen capture of the desktop through a call to the [Graphics.CopyFromScreen]
+    .NET API.
+
+    [Graphics.CopyFromScreen]: https://docs.microsoft.com/en-us/dotnet/api/system.drawing.graphics.copyfromscreen
+
+    '
+  tactic: collection
+  technique:
+    attack_id: T1113
+    name: Screen Capture
+  platforms:
+    windows:
+      psh:
+        command: Add-Type -AssemblyName System.Windows.Forms; $screen = [Windows.Forms.SystemInformation]::VirtualScreen;
+          $bitmap = New-Object Drawing.Bitmap $screen.Width, $screen.Height; $graphic
+          = [Drawing.Graphics]::FromImage($bitmap); $graphic.CopyFromScreen($screen.Left,
+          $screen.Top, 0, 0, $bitmap.Size); $bitmap.Save("$env:TEMP\T1113.png")
+        payloads: []
+        cleanup: Remove-Item $env:TEMP\T1113.png -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

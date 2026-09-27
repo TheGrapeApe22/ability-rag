@@ -1,0 +1,16 @@
+---
+- id: c59d5b6399f7708eb5595e2a8381814c
+  name: Disable syslog (freebsd)
+  description: 'Disables syslog collection
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685
+    name: Disable or Modify Tools
+  platforms:
+    linux:
+      sh:
+        command: service syslogd stop; sysrc syslogd_enable="NO"
+        payloads: []
+        cleanup: sysrc syslogd_enable="YES"; service syslogd start

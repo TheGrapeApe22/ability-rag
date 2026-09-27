@@ -1,0 +1,16 @@
+---
+- id: 7da5d9b41d451db2cced3a2eae80cde0
+  name: Reboot System via `poweroff` - FreeBSD
+  description: 'This test restarts a FreeBSD system using `poweroff`.
+
+    '
+  tactic: impact
+  technique:
+    attack_id: T1529
+    name: System Shutdown/Reboot
+  platforms:
+    linux:
+      sh:
+        command: poweroff -r 3
+        payloads: []
+        cleanup: ''

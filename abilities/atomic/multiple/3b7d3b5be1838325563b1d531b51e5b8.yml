@@ -1,0 +1,21 @@
+---
+- id: 3b7d3b5be1838325563b1d531b51e5b8
+  name: Leverage Virtual Channels to execute custom DLL during successful RDP session
+  description: "Virtual Channels can be leveraged to alter RDP behavior using dedicated\
+    \ Addins.The mechanism is implemented using DLLs which can be executed during\
+    \ RDP session automatically. \nThe DLLs are loaded in the host system only after\
+    \ successful connection is established with the remote system.\nOnce the test\
+    \ is run, amsi.dll will be loaded on the host system during successful RDP session.\n\
+    Blog :https://learn.microsoft.com/en-us/windows/win32/termserv/terminal-services-virtual-channels?redirectedfrom=MSDN\n"
+  tactic: multiple
+  technique:
+    attack_id: T1547
+    name: Boot or Logon Autostart Execution
+  platforms:
+    windows:
+      cmd:
+        command: reg add "HKEY_CURRENT_USER\Software\Microsoft\Terminal Server Client\Default\Addins\Malware"
+          /v Name /t REG_SZ /d "C:\Windows\System32\amsi.dll" /f
+        payloads: []
+        cleanup: reg delete "HKEY_CURRENT_USER\Software\Microsoft\Terminal Server
+          Client\Default\Addins\Malware" /f

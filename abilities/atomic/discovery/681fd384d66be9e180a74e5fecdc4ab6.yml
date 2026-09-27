@@ -1,0 +1,26 @@
+---
+- id: 681fd384d66be9e180a74e5fecdc4ab6
+  name: Enumerate domain computers within Active Directory using DirectorySearcher
+  description: "This test is a Powershell script that enumerates Active Directory\
+    \ to determine computers that are joined to the domain. \nThis test is designed\
+    \ to mimic how SessionGopher can determine the additional systems within a domain,\
+    \ which has been used before by threat actors to aid in lateral movement. \nReference:\
+    \ [Head Fake: Tackling Disruptive Ransomware Attacks](https://www.mandiant.com/resources/head-fake-tackling-disruptive-ransomware-attacks).\
+    \ \nUpon successful execution, this test will output the names of the computers\
+    \ that reside on the domain to the console window. \n"
+  tactic: discovery
+  technique:
+    attack_id: T1018
+    name: Remote System Discovery
+  platforms:
+    windows:
+      psh:
+        command: $DirectorySearcher = New-Object System.DirectoryServices.DirectorySearcher("(ObjectCategory=Computer)");
+          $DirectorySearcher.PropertiesToLoad.Add("Name"); $Computers = $DirectorySearcher.findall();
+          foreach ($Computer in $Computers) {;   $Computer = $Computer.Properties.name;   if
+          (!$Computer) { Continue };   Write-Host $Computer}
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

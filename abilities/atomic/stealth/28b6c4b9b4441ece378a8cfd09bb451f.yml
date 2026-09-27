@@ -1,0 +1,16 @@
+---
+- id: 28b6c4b9b4441ece378a8cfd09bb451f
+  name: Hide a Directory
+  description: 'Hide a directory on MacOS
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1564.001
+    name: 'Hide Artifacts: Hidden Files and Directories'
+  platforms:
+    darwin:
+      sh:
+        command: touch /var/tmp/T1564.001_mac.txt; chflags hidden /var/tmp/T1564.001_mac.txt
+        payloads: []
+        cleanup: rm /var/tmp/T1564.001_mac.txt

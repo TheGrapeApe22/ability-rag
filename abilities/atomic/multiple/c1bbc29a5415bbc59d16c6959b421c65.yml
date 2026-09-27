@@ -1,0 +1,22 @@
+---
+- id: c1bbc29a5415bbc59d16c6959b421c65
+  name: Enabling Restricted Admin Mode via Command_Prompt
+  description: 'Enabling Restricted Admin Mode via Command_Prompt,enables an attacker
+    to perform a pass-the-hash attack using RDP.
+
+
+    See [Passing the Hash with Remote Desktop](https://www.kali.org/blog/passing-hash-remote-desktop/)
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1112
+    name: Modify Registry
+  platforms:
+    windows:
+      cmd:
+        command: reg add "hklm\system\currentcontrolset\control\lsa" /f /v DisableRestrictedAdmin
+          /t REG_DWORD /d 0
+        payloads: []
+        cleanup: reg delete "hklm\system\currentcontrolset\control\lsa" /f /v DisableRestrictedAdmin
+          >nul 2>&1

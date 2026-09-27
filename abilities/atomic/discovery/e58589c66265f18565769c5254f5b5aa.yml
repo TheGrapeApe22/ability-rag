@@ -1,0 +1,19 @@
+---
+- id: e58589c66265f18565769c5254f5b5aa
+  name: Security Software Discovery - ps (macOS)
+  description: 'Methods to identify Security Software on an endpoint
+
+    when sucessfully executed, command shell  is going to display AV/Security software
+    it is running.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1518.001
+    name: 'Software Discovery: Security Software Discovery'
+  platforms:
+    darwin:
+      sh:
+        command: ps aux | egrep 'Little\ Snitch|CbOsxSensorService|falcond|nessusd|santad|CbDefense|td-agent|packetbeat|filebeat|auditbeat|osqueryd|BlockBlock|LuLu'
+        payloads: []
+        cleanup: ''

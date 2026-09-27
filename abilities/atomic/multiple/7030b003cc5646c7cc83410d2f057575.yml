@@ -1,0 +1,27 @@
+---
+- id: 7030b003cc5646c7cc83410d2f057575
+  name: Service Installation PowerShell
+  description: 'Installs A Local Service via PowerShell.
+
+    Upon successful execution, powershell will download `AtomicService.exe` from github.
+    Powershell will then use `New-Service` and `Start-Service` to start service. Results
+    will be displayed.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1543.003
+    name: 'Create or Modify System Process: Windows Service'
+  platforms:
+    windows:
+      psh:
+        command: New-Service -Name "AtomicTestService_PowerShell" -BinaryPathName
+          "411da5_AtomicService.exe"; Start-Service -Name "AtomicTestService_PowerShell"
+        payloads:
+        - 411da5_AtomicService.exe
+        cleanup: Stop-Service -Name "AtomicTestService_PowerShell" 2>&1 | Out-Null;
+          try {(Get-WmiObject Win32_Service -filter "name='AtomicTestService_PowerShell'").Delete()};
+          catch {}
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

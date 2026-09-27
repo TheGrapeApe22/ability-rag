@@ -1,0 +1,23 @@
+---
+- id: 42102f01777d40a7db982282c4c791e9
+  name: Get-ADUser Enumeration using UserAccountControl flags (AS-REP Roasting)
+  description: 'When successful, accounts that do not require kerberos pre-auth will
+    be returned.
+
+    Reference: https://m0chan.github.io/2019/07/31/How-To-Attack-Kerberos-101.html
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1069.002
+    name: 'Permission Groups Discovery: Domain Groups'
+  platforms:
+    windows:
+      psh:
+        command: Get-ADUser -Filter 'useraccountcontrol -band 4194304' -Properties
+          useraccountcontrol | Format-Table name
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

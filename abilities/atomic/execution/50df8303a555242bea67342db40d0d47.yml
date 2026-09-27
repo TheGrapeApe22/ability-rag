@@ -1,0 +1,28 @@
+---
+- id: 50df8303a555242bea67342db40d0d47
+  name: PowerShell Fileless Script Execution
+  description: 'Execution of a PowerShell payload from the Windows Registry similar
+    to that seen in fileless malware infections. Upon exection, open "C:\Windows\Temp"
+    and verify that
+
+    art-marker.txt is in the folder.
+
+    '
+  tactic: execution
+  technique:
+    attack_id: T1059.001
+    name: 'Command and Scripting Interpreter: PowerShell'
+  platforms:
+    windows:
+      psh:
+        command: reg.exe add "HKEY_CURRENT_USER\Software\Classes\AtomicRedTeam" /v
+          ART /t REG_SZ /d "U2V0LUNvbnRlbnQgLXBhdGggIiRlbnY6U3lzdGVtUm9vdC9UZW1wL2FydC1tYXJrZXIudHh0IiAtdmFsdWUgIkhlbGxvIGZyb20gdGhlIEF0b21pYyBSZWQgVGVhbSI="
+          /f; iex ([Text.Encoding]::ASCII.GetString([Convert]::FromBase64String((gp
+          'HKCU:\Software\Classes\AtomicRedTeam').ART)))
+        payloads: []
+        cleanup: Remove-Item -path C:\Windows\Temp\art-marker.txt -Force -ErrorAction
+          Ignore; Remove-Item HKCU:\Software\Classes\AtomicRedTeam -Force -ErrorAction
+          Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

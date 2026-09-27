@@ -1,0 +1,18 @@
+---
+- id: 5503b4931592d3d01840133599b87893
+  name: Reg Key Run
+  description: "Run Key Persistence\n\nUpon successful execution, cmd.exe will modify\
+    \ the registry by adding \\\"Atomic Red Team\\\" to the Run key. Output will be\
+    \ via stdout. \n"
+  tactic: multiple
+  technique:
+    attack_id: T1547.001
+    name: 'Boot or Logon Autostart Execution: Registry Run Keys / Startup Folder'
+  platforms:
+    windows:
+      cmd:
+        command: REG ADD "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /V "Atomic
+          Red Team" /t REG_SZ /F /D "C:\Path\AtomicRedTeam.exe"
+        payloads: []
+        cleanup: REG DELETE "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /V
+          "Atomic Red Team" /f >nul 2>&1

@@ -1,0 +1,21 @@
+---
+- id: 6ac8f48413127289ac42b76a0785b08f
+  name: Hide Files Through Registry
+  description: "Disable Show Hidden files switch in registry. This technique was abused\
+    \ by several malware to hide their files from normal user.\nSee how this trojan\
+    \ abuses this technique - https://www.sophos.com/en-us/threat-center/threat-analyses/viruses-and-spyware/W32~Tiotua-P/detailed-analysis.aspx\
+    \ \n"
+  tactic: stealth
+  technique:
+    attack_id: T1564.001
+    name: 'Hide Artifacts: Hidden Files and Directories'
+  platforms:
+    windows:
+      cmd:
+        command: reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced
+          /v ShowSuperHidden /t REG_DWORD /d 0 /f && reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced
+          /v Hidden /t REG_DWORD /d 0 /f
+        payloads: []
+        cleanup: reg delete "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
+          /v ShowSuperHidden /f >nul 2>&1 && reg delete "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
+          /v Hidden /f >nul 2>&1

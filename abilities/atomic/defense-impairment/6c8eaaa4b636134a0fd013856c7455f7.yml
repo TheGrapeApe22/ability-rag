@@ -1,0 +1,19 @@
+---
+- id: 6c8eaaa4b636134a0fd013856c7455f7
+  name: Set a firewall rule using New-NetFirewallRule
+  description: This test will attempt to create a new inbound/outbound firewall rule
+    using the New-NetFirewallRule commandlet.
+  tactic: defense-impairment
+  technique:
+    attack_id: T1686
+    name: Disable or Modify System Firewall
+  platforms:
+    windows:
+      psh:
+        command: New-NetFirewallRule -DisplayName "New rule" -Direction "Inbound"
+          -LocalPort "21" -Protocol "TCP" -Action "allow"
+        payloads: []
+        cleanup: Remove-NetFirewallRule -DisplayName "New rule"
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

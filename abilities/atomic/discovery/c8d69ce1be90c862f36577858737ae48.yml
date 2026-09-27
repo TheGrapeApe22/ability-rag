@@ -1,0 +1,41 @@
+---
+- id: c8d69ce1be90c862f36577858737ae48
+  name: Recursive Enumerate Files And Directories By Powershell
+  description: "Adversary attempting to discover and collect sensitive documents and\
+    \ archives\nfrom a user\u2019s system. The test recursively enumerates common\
+    \ user folders\n(Documents, Downloads, Desktop, OneDrive) for file types of interest\
+    \ such as .pdf, .doc,\n.docx, .xls, .xlsx, .txt, .zip, .rar, and .7z.\nThis behavior\
+    \ is similar to malware like LOSTKEYS used by COLDRIVER in January 2025,\nwhere\
+    \ attackers perform targeted file discovery to support strategic intelligence\
+    \ collection https://www.zscaler.com/blogs/security-research/coldriver-updates-arsenal-baitswitch-and-simplefix.\n"
+  tactic: discovery
+  technique:
+    attack_id: T1083
+    name: File and Directory Discovery
+  platforms:
+    windows:
+      psh:
+        command: '$out = "$env:TEMP\T1083-Enumerate-net.txt"; $dirsFilter = @(''Documents'',''Downloads'',''Desktop'',''OneDrive'');
+          $exts = @(''.pdf'',''.doc'',''.docx'',''.xls'',''.xlsx'',''.txt'',''.zip'',''.rar'',''.7z'');
+          $userProfile = [Environment]::GetFolderPath(''UserProfile''); $tr = [System.Collections.Generic.List[string]]::new();
+          function MatchesExtension($path) {;   try {;     $e = [System.IO.Path]::GetExtension($path).ToLower();     return
+          $exts -contains $e;   } catch { return $false }; }; function Scan-Dir($root)
+          {;   try {;     $match = $false;     foreach ($f in $dirsFilter) { if ($root
+          -like "*$f*") { $match = $true; break } };     if (-not $match) { return
+          };     [System.IO.Directory]::EnumerateFiles($root) | ForEach-Object {;       if
+          (MatchesExtension $_) {;         $fi = [System.IO.FileInfo]::new($_);         $tr.Add("[File]
+          $_ Size:$($fi.Length) LastWrite:$($fi.LastWriteTime)");       };     };     [System.IO.Directory]::EnumerateDirectories($root)
+          | ForEach-Object {;       Scan-Dir $_;     };   } catch [System.UnauthorizedAccessException]
+          {;     $tr.Add("[AccessDenied] $root");   } catch {;     $tr.Add("[Error]
+          $root => $($_.Exception.Message)");   }; }; [System.IO.Directory]::EnumerateDirectories($userProfile)
+          | ForEach-Object { Scan-Dir $_ }; $outDir = [System.IO.Path]::GetDirectoryName($out);
+          if (-not [string]::IsNullOrEmpty($outDir) -and -not (Test-Path $outDir))
+          {;   New-Item -Path $outDir -ItemType Directory -Force | Out-Null; }; $tr
+          | Out-File -FilePath $out -Encoding UTF8; Write-Output "Enumeration complete.
+          Results written to: $out"'
+        payloads: []
+        cleanup: Remove-Item -Path "$env:TEMP\T1083-Enumerate-net.txt" -ErrorAction
+          SilentlyContinue
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

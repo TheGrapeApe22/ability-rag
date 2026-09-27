@@ -1,0 +1,20 @@
+---
+- id: 308a5e4a467292d27ddeca0073aa9a1a
+  name: Regsvr32 local DLL execution
+  description: 'Regsvr32.exe is a command-line program used to register and unregister
+    OLE controls. Upon execution, calc.exe will be launched.
+
+    '
+  tactic: stealth
+  technique:
+    attack_id: T1218.010
+    name: 'Signed Binary Proxy Execution: Regsvr32'
+  platforms:
+    windows:
+      cmd:
+        command: IF "%PROCESSOR_ARCHITECTURE%"=="AMD64" (C:\Windows\syswow64\regsvr32.exe
+          /s bafdf3_AllTheThingsx86.dll) ELSE ( C:\Windows\system32\regsvr32.exe /s
+          bafdf3_AllTheThingsx86.dll )
+        payloads:
+        - bafdf3_AllTheThingsx86.dll
+        cleanup: ''

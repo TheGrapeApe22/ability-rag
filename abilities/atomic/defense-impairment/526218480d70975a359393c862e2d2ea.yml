@@ -1,0 +1,20 @@
+---
+- id: 526218480d70975a359393c862e2d2ea
+  name: GCP - Create Snapshot from Persistent Disk
+  description: 'Creates a snapshot of a persistent disk in GCP using the gcloud CLI.
+
+    Emulates adversary behavior to gain access to volume data or replicate environment
+    state.
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1578.001
+    name: 'Modify Cloud Compute Infrastructure: Create Snapshot'
+  platforms:
+    unknown:
+      sh:
+        command: gcloud compute snapshots create mySnapshotName --source-disk=myDiskName
+          --zone=us-central1-a
+        payloads: []
+        cleanup: gcloud compute snapshots delete mySnapshotName --quiet

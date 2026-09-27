@@ -1,0 +1,16 @@
+---
+- id: f674301b84ea3344f119270bf7bb97cd
+  name: rm -rf
+  description: 'Delete messages and security logs
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685.006
+    name: 'Disable or Modify Tools: Clear Linux or Mac System Logs'
+  platforms:
+    linux:
+      sh:
+        command: rm -rf /var/log/messages; rm -rf /var/log/security
+        payloads: []
+        cleanup: ''

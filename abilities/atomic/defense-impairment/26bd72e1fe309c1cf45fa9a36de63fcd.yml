@@ -1,0 +1,19 @@
+---
+- id: 26bd72e1fe309c1cf45fa9a36de63fcd
+  name: Disable Cb Response
+  description: 'Disable the Cb Response service
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1685
+    name: Disable or Modify Tools
+  platforms:
+    linux:
+      sh:
+        command: if [ $(rpm -q --queryformat '%{VERSION}' centos-release) -eq "6"
+          ]; then   service cbdaemon stop;   chkconfig off cbdaemon; else if [ $(rpm
+          -q --queryformat '%{VERSION}' centos-release) -eq "7" ];   systemctl stop
+          cbdaemon;   systemctl disable cbdaemon; fi
+        payloads: []
+        cleanup: ''

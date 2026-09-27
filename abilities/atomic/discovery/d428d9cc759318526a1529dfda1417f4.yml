@@ -1,0 +1,38 @@
+---
+- id: d428d9cc759318526a1529dfda1417f4
+  name: Nix File and Directory Discovery
+  description: 'Find or discover files on the file system
+
+
+    References:
+
+
+    http://osxdaily.com/2013/01/29/list-all-files-subdirectory-contents-recursively/
+
+
+    https://perishablepress.com/list-files-folders-recursively-terminal/
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1083
+    name: File and Directory Discovery
+  platforms:
+    linux:
+      sh:
+        command: ls -a >> /tmp/T1083.txt; if [ -d /Library/Preferences/ ]; then ls
+          -la /Library/Preferences/ > /tmp/T1083.txt; fi; file */* *>> /tmp/T1083.txt;
+          cat /tmp/T1083.txt 2>/dev/null; find . -type f; ls -R | grep ":$" | sed
+          -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/ /' -e 's/-/|/'; locate *;
+          which sh
+        payloads: []
+        cleanup: rm /tmp/T1083.txt
+    darwin:
+      sh:
+        command: ls -a >> /tmp/T1083.txt; if [ -d /Library/Preferences/ ]; then ls
+          -la /Library/Preferences/ > /tmp/T1083.txt; fi; file */* *>> /tmp/T1083.txt;
+          cat /tmp/T1083.txt 2>/dev/null; find . -type f; ls -R | grep ":$" | sed
+          -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/ /' -e 's/-/|/'; locate *;
+          which sh
+        payloads: []
+        cleanup: rm /tmp/T1083.txt

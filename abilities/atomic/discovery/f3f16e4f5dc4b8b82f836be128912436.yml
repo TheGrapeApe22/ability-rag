@@ -1,0 +1,31 @@
+---
+- id: f3f16e4f5dc4b8b82f836be128912436
+  name: List OS Information
+  description: 'Identify System Info
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1082
+    name: System Information Discovery
+  platforms:
+    linux:
+      sh:
+        command: uname -a >> /tmp/T1082.txt; if [ -f /etc/lsb-release ]; then cat
+          /etc/lsb-release >> /tmp/T1082.txt; fi; if [ -f /etc/redhat-release ]; then
+          cat /etc/redhat-release >> /tmp/T1082.txt; fi   ; if [ -f /etc/issue ];
+          then cat /etc/issue >> /tmp/T1082.txt; fi; if [ -f /etc/os-release ]; then
+          cat /etc/os-release >> /tmp/T1082.txt; fi; uptime >> /tmp/T1082.txt; cat
+          /tmp/T1082.txt 2>/dev/null
+        payloads: []
+        cleanup: rm /tmp/T1082.txt 2>/dev/null
+    darwin:
+      sh:
+        command: uname -a >> /tmp/T1082.txt; if [ -f /etc/lsb-release ]; then cat
+          /etc/lsb-release >> /tmp/T1082.txt; fi; if [ -f /etc/redhat-release ]; then
+          cat /etc/redhat-release >> /tmp/T1082.txt; fi   ; if [ -f /etc/issue ];
+          then cat /etc/issue >> /tmp/T1082.txt; fi; if [ -f /etc/os-release ]; then
+          cat /etc/os-release >> /tmp/T1082.txt; fi; uptime >> /tmp/T1082.txt; cat
+          /tmp/T1082.txt 2>/dev/null
+        payloads: []
+        cleanup: rm /tmp/T1082.txt 2>/dev/null

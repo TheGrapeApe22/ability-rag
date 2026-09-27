@@ -1,0 +1,20 @@
+---
+- id: 00247fe6f9f21aa2f4abce3464bc4cd0
+  name: Enumerate Remote Hosts with Netscan
+  description: This test uses Netscan to identify remote hosts in a specified network
+    range.
+  tactic: discovery
+  technique:
+    attack_id: T1018
+    name: Remote System Discovery
+  platforms:
+    windows:
+      psh:
+        command: cmd /c 'PathToAtomicsFolder\..\ExternalPayloads\netscan\64-bit\netscan.exe'
+          /hide /auto:"$env:temp\T1018NetscanOutput.txt" /range:'127.0.0.1-127.0.0.1'
+        payloads: []
+        cleanup: remove-item "$env:temp\T1018NetscanOutput.txt" -force -erroraction
+          silentlycontinue
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

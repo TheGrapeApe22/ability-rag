@@ -1,0 +1,16 @@
+---
+- id: 36d1f9546258d3a8ca9489853597acd3
+  name: Packet Capture Linux socket AF_PACKET,SOCK_RAW with sudo
+  description: 'Captures packets with domain=AF_PACKET, type=SOCK_RAW for a few seconds.
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1040
+    name: Network Sniffing
+  platforms:
+    linux:
+      sh:
+        command: sudo /tmp/t1040_linux_pcapdemo -a -t 3
+        payloads: []
+        cleanup: rm -f /tmp/t1040_linux_pcapdemo

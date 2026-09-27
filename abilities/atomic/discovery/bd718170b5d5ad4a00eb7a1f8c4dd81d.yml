@@ -1,0 +1,20 @@
+---
+- id: bd718170b5d5ad4a00eb7a1f8c4dd81d
+  name: Discover OS Build Number via Registry
+  description: 'Identify the Operating System Build Number via registry with the reg.exe
+    command.
+
+    Upon execution, the OS Build Number will be displayed.
+
+    '
+  tactic: discovery
+  technique:
+    attack_id: T1082
+    name: System Information Discovery
+  platforms:
+    windows:
+      cmd:
+        command: reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v
+          CurrentBuildNumber
+        payloads: []
+        cleanup: ''

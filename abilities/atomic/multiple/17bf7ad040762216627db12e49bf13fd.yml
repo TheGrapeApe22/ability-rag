@@ -1,0 +1,31 @@
+---
+- id: 17bf7ad040762216627db12e49bf13fd
+  name: Read-Write-Execute process Injection
+  description: "This test exploited the vulnerability in legitimate PE formats where\
+    \ sections have RWX permission and enough space for shellcode.\nThe RWX injection\
+    \ avoided the use of VirtualAlloc, WriteVirtualMemory, and ProtectVirtualMemory,\
+    \ thus evading detection mechanisms \nthat relied on API call sequences and heuristics.\
+    \ The RWX injection utilises API call sequences: LoadLibrary --> GetModuleInformation\
+    \ --> GetModuleHandleA --> RtlCopyMemory --> CreateThread.\nThe injected shellcode\
+    \ will open a message box and a notepad.\nRWX Process Injection, also known as\
+    \ MockingJay, was introduced to the security community by SecurityJoes.\nMore\
+    \ details can be found at https://www.securityjoes.com/post/process-mockingjay-echoing-rwx-in-userland-to-achieve-code-execution.\n\
+    The original injector and idea were developed for game cheats, as visible at https://github.com/M-r-J-o-h-n/SWH-Injector.\n"
+  tactic: multiple
+  technique:
+    attack_id: T1055
+    name: Process Injection
+  platforms:
+    windows:
+      psh:
+        command: '$address = (& "$PathToAtomicsFolder\T1055\bin\x64\searchVuln.exe"
+          "$PathToAtomicsFolder\T1055\bin\x64\vuln_dll\" | Out-String | Select-String
+          -Pattern "VirtualAddress: (\w+)").Matches.Groups[1].Value; & "PathToAtomicsFolder\T1055\bin\x64\RWXinjectionLocal.exe"
+          "b44fc8_msys-2.0.dll" $address'
+        payloads:
+        - b44fc8_msys-2.0.dll
+        cleanup: Get-Process -Name Notepad -ErrorAction SilentlyContinue | Stop-Process
+          -Force
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

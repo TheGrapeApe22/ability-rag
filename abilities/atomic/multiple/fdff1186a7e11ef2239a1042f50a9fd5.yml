@@ -1,0 +1,21 @@
+---
+- id: fdff1186a7e11ef2239a1042f50a9fd5
+  name: Reactivate a locked/expired account (Linux)
+  description: "A system administrator may have locked and expired a user account\
+    \ rather than deleting it. \"the user is coming back, at some stage\" An adversary\
+    \ may reactivate a inactive account in an attempt to appear legitimate. \n\nIn\
+    \ this test we create a \"art\" user with the password art, lock and expire the\
+    \ account, try to su to art and fail, unlock and renew the account, su successfully,\
+    \ then delete the account.\n"
+  tactic: multiple
+  technique:
+    attack_id: T1078.003
+    name: 'Valid Accounts: Local Accounts'
+  platforms:
+    linux:
+      sh:
+        command: useradd --shell /bin/bash --create-home --password $(openssl passwd
+          -1 art) art; usermod --lock art; usermod --expiredate "1" art; usermod --unlock
+          art; usermod --expiredate "99999" art; su -c whoami art
+        payloads: []
+        cleanup: userdel -r art

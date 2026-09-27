@@ -1,0 +1,32 @@
+---
+- id: a515bb54fd6e14b78297814875f3c73b
+  name: Parent PID Spoofing using PowerShell
+  description: 'This test uses PowerShell to replicates how Cobalt Strike does ppid
+    spoofing and masquerade a spawned process.
+
+    Upon execution, "Process C:\Program Files\Internet Explorer\iexplore.exe is spawned
+    with pid ####" will be displayed and
+
+    calc.exe will be launched.
+
+
+    Credit to In Ming Loh (https://github.com/countercept/ppid-spoofing/blob/master/PPID-Spoof.ps1)
+
+    '
+  tactic: multiple
+  technique:
+    attack_id: T1134.004
+    name: 'Access Token Manipulation: Parent PID Spoofing'
+  platforms:
+    windows:
+      psh:
+        command: . "$PathToAtomicsFolder\T1134.004\src\PPID-Spoof.ps1"; $ppid=Get-Process
+          explorer | select -expand id; PPID-Spoof -ppid $ppid -spawnto "C:\Program
+          Files\Internet Explorer\iexplore.exe" -dllpath "8b38ee_calc.dll"
+        payloads:
+        - 8b38ee_calc.dll
+        cleanup: Stop-Process -Name "calculator" -ErrorAction Ignore; Stop-Process
+          -Name "iexplore" -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

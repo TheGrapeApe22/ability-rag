@@ -1,0 +1,32 @@
+---
+- id: 19fe19da989b1c312f6730eb17ddb1d4
+  name: Create EC2 Instance with user data
+  description: 'Creates an EC2 instance with a keypair while passing user data in
+    a script.
+
+    The script runs at launch.
+
+    '
+  tactic: defense-impairment
+  technique:
+    attack_id: T1578.002
+    name: Create Cloud Instance
+  platforms:
+    unknown:
+      sh:
+        command: printf '%s\n' '#!/bin/bash' 'date -u > /var/tmp/userdata-ran.txt'
+          > my_script.txt; aws ec2 run-instances \;   --image-id ami-12345678 \;   --instance-type
+          tg4.nano \;   --count 1 \;   --subnet-id subnet-XXXXXXXXXXXXXXX \;   --key-name
+          MyKeyPair \;   --user-data file://my_script.txt
+        payloads: []
+        cleanup: aws ec2 terminate-instances --instance-ids i-1234567890abcdef0 \;   --region  us-west-2
+          --profile default
+    linux:
+      sh:
+        command: printf '%s\n' '#!/bin/bash' 'date -u > /var/tmp/userdata-ran.txt'
+          > my_script.txt; aws ec2 run-instances \;   --image-id ami-12345678 \;   --instance-type
+          tg4.nano \;   --count 1 \;   --subnet-id subnet-XXXXXXXXXXXXXXX \;   --key-name
+          MyKeyPair \;   --user-data file://my_script.txt
+        payloads: []
+        cleanup: aws ec2 terminate-instances --instance-ids i-1234567890abcdef0 \;   --region  us-west-2
+          --profile default

